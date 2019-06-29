@@ -1,0 +1,23 @@
+@import "../../../assets/_variables.less"; // variables to override above
+
+.profile-button-wrapper {
+    .flex();
+    padding: 0 .5rem;
+
+    .profile-button {
+        border-radius: 0.25rem 0.2rem 0.25rem 0.2rem;
+        background: lighten(@bgColor, 10%);
+        padding: .25rem;
+        cursor: pointer;
+        font: normal normal normal 24px/1 "Material Design Icons";
+
+        &::before {
+            content: "\F004";
+            display: block;
+        }
+
+        &:hover {
+            color: lighten(@mainFontColor, 50%);
+        }
+    }
+}

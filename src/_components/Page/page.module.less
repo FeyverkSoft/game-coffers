@@ -1,0 +1,33 @@
+@import "../../../assets/_variables.less"; // variables to override above
+
+.page {
+    .flex();
+    flex-direction: column;
+
+    >.title {
+        .flex();
+        flex: 1 1 100%;
+        color: @mainFontColor;
+        font-weight: 300;
+        padding: @12px;
+        flex-direction: row;
+        text-align: right;
+        justify-content: space-between;
+        font-size: @22px; //text-transform: uppercase;
+
+        @media screen and (max-width: @mobile-L) {
+            font-size: @16px;
+        }
+    }
+
+
+    >.content {
+        z-index: 0;
+        margin: .5rem 1rem .5rem 1rem;
+        position: relative;
+
+        @media screen and (max-width: @mobile-L) {
+            margin: .25em .25em .25em .25em;
+        }
+    }
+}

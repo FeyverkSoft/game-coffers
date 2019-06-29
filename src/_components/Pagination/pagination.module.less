@@ -1,0 +1,38 @@
+@import "../../../assets/_variables.less"; // variables to override above
+
+.pagination {
+    .flex();
+    align-items: center;
+
+    .pg {
+        background-color: @mainButonBgColor;
+        color: @bgColor;
+        line-height: 1.2em;
+        padding: .3em;
+        margin: .05rem .1rem;
+        font-size: @19px;
+        user-select: none;
+        min-width: 1.75rem;
+        text-align: center;
+        cursor: pointer;
+
+        &:first-child {
+            border-radius: .75rem 0 0 .2rem;
+        }
+
+        &:last-child {
+            border-radius: 0 .2rem .75rem 0;
+        }
+
+        &.active {
+            font-weight: 500;
+            background-color: saturate(@mainButonBgColor, 25%);
+            cursor: inherit;
+        }
+
+        &:hover:not(.active) {
+            font-weight: 500;
+            background-color: saturate(@mainButonBgColor, @hover);
+        }
+    }
+}

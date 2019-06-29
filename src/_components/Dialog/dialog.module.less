@@ -1,0 +1,72 @@
+@import "../../../assets/_variables.less"; // variables to override above
+
+.dialog {
+    .flex();
+    background-color: fade(black, 85%);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    z-index: 10000;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    .timeout();
+
+    >.wrapper {
+        .flex();
+        flex-direction: column;
+        background-color: @lightBgColor;
+        box-shadow: @box-shadow-2;
+        position: relative;
+        min-width: @mobile-M;
+        border-radius: @10px @5px @10px @5px;
+
+        @media screen and (max-width: @mobile-M) {
+            min-width: 100%;
+            width: 100%;
+        }
+
+        >.header {
+            .flex();
+            flex: 1 1;
+            font-weight: 400;
+            padding: @10px @24px @10px @10px ;
+            border-radius: @10px @5px 0 0;
+            border-bottom: 1px solid lighten(black, 89%);
+            position: relative;
+
+            >.close {
+                display: block;
+                position: absolute;
+                font-weight: 800;
+                font-size: @22px;
+                right: @10px;
+                top: 50% - 30px;
+                cursor: pointer;
+                user-select: none;
+
+                &:hover {
+                    display: block;
+                    color: fade(@mainFontColor, 50%);
+                }
+            }
+        }
+
+        >.body {
+            .flex();
+            flex: 1 1;
+            padding: @10px ;
+        }
+
+        >.footer {
+            .flex();
+            flex: 1 1;
+            padding: @10px ;
+            border-top: 1px solid lighten(black, 89%);
+            border-radius: 0 0 @10px @5px;
+        }
+    }
+}

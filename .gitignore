@@ -1,0 +1,4 @@
+/src/_services/config.js
+node_modules/*
+.vscode/*
+styles/*

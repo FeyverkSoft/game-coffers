@@ -1,0 +1,89 @@
+@import "../../../assets/_variables.less"; // variables to override above
+
+.button {
+    .transition(~'background, box-shadow');
+    background-color: @mainButonBgColor;
+    color: @whiteFontColor;
+    box-shadow: @box-shadow-1;
+    display: inline-block;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+    padding: .5rem 2rem;
+    text-transform: uppercase;
+    border: none;
+    box-sizing: border-box;
+    letter-spacing: 0.03em;
+    will-change: background-color, box-shadow;
+    outline:none;
+
+    @media screen and (min-width: @mobile-M) {
+        border-radius: .75rem .2rem .75rem .2rem;
+    }
+
+    @media screen and (max-width: @mobile-M) {
+        width: 100%;
+    }
+
+    &:not(.disabled):not([disabled]):hover,
+    &:not(.disabled):not([disabled]):focus {
+        cursor: pointer;
+        box-shadow: @box-shadow-2;
+        background-color: saturate(lighten(@mainButonBgColor, @hover), @hover);
+    }
+
+    &.disabled,
+    &[disabled] {
+        color: @lightFontColor;
+        cursor: not-allowed;
+        background-color: lighten(@lightFontColor, 80%);
+        box-shadow: @box-shadow-0;
+    }
+
+    &.default {
+        background-color: @defaultColor;
+
+        &.disabled,
+        &[disabled] {
+            background-color: lighten(@defaultColor, 80%);
+        }
+
+        &:not(.disabled):not([disabled]):hover,
+        &:not(.disabled):not([disabled]):focus {
+            background-color: saturate(lighten(@defaultColor, @hover), @hover);
+        }
+    }
+
+    &.important {
+        background-color: @importantColor;
+
+        &.disabled,
+        &[disabled] {
+            background-color: lighten(@importantColor, 80%);
+        }
+
+        &:not(.disabled):not([disabled]):hover,
+        &:not(.disabled):not([disabled]):focus {
+            background-color: saturate(lighten(@importantColor, @hover), @hover);
+        }
+    }
+
+    &.success {
+        background-color: @successColor;
+
+        &.disabled,
+        &[disabled] {
+            background-color: lighten(@successColor, 80%);
+        }
+
+        &:not(.disabled):not([disabled]):hover,
+        &:not(.disabled):not([disabled]):focus {
+            background-color: saturate(lighten(@successColor, @hover), @hover);
+        }
+    }
+}

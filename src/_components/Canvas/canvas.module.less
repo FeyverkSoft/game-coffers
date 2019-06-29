@@ -1,0 +1,59 @@
+@import "../../../assets/_variables.less"; // variables to override above
+
+.canvas {
+    .flex();
+    position: relative;
+    overflow: hidden;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 1 auto;
+    flex: 0 1 auto;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    background-color: lighten(@bgColor, 15%);
+    padding: @5px;
+    min-height: 2rem;
+    border-radius: .75rem;
+
+    .title {
+        position: absolute;
+        display: block;
+        z-index: 10;
+        top: 0;
+        left: 0;
+        padding: .25rem .75rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        user-select: none;
+        text-align: center;
+        font-size: @14px;
+        color: @white;
+        border-radius: .75rem 0 .75rem 0;
+        box-shadow: @box-shadow-0;
+
+        &.success {
+            background-color: fade(@successColor, 80%);
+        }
+
+        &.important {
+            background-color: fade(@importantColor, 80%);
+        }
+
+        &.default {
+            background-color: fade(@defaultColor, 80%);
+        }
+
+        &.error {
+            background-color: fade(@errorColor, 80%);
+        }
+    }
+
+    &.titled {
+        padding-top: 1.5rem;
+    }
+
+}

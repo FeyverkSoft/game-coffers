@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+  <meta charset="utf-8">
+  <title>Казна БатькоИКо</title>
+  <meta name="viewport" content="user-scalable=yes, width=device-width, initial-scale=1.0, maximum-scale=2.0">
+  <meta name="theme-color" content="#137ae0">
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  <meta name="msapplication-TileColor" content="#137ae0">
+  <link async="true" href="style/app.css" rel="stylesheet" type="text/css">
+  <link async="true" rel="stylesheet" href="fonts/MaterialDesign/materialdesignicons.min.css">
+  <link async="true" rel="stylesheet" href="fonts/Roboto/Roboto.min.css">
+</head>
+
+<body>
+  <script type="text/javascript">
+    var config = {
+      ApiUrl: 'https://localhost',
+    }
+  </script>
+
+  <div class="wrapper">
+    <!-- Begin React App -->
+    <div id="app" class="app">
+      <!-- Begin Анимация загрузки -->
+      <div class="JS Error">
+        Загрузка...
+        <noscript>Для работы с сайтом необходимо включить поддержку Javascript</noscript>
+      </div>
+      <div class="loading">
+        <div class="wBall" id="wBall_1">
+          <div class="wInnerBall"></div>
+        </div>
+        <div class="wBall" id="wBall_2">
+          <div class="wInnerBall"></div>
+        </div>
+        <div class="wBall" id="wBall_3">
+          <div class="wInnerBall"></div>
+        </div>
+        <div class="wBall" id="wBall_4">
+          <div class="wInnerBall"></div>
+        </div>
+        <div class="wBall" id="wBall_5">
+          <div class="wInnerBall"></div>
+        </div>
+      </div>
+      <!-- End Анимация загрузки -->
+    </div>
+    <!-- End React App -->
+    <div class="footer">
+      <div id="copiright" class="copiright">© Казна 2019</div>
+      <div class="developed">developed by
+        <a href="https://petr-mazin.ru/" target="_blanc">Mazin Peter</a>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="./serviceWorker.js"></script>
+  <script type="text/javascript">
+    try {
+      document.getElementById("copiright").innerText = "© Peter 2019 - " + (new Date()).getFullYear();
+    } catch (e) {
+      console.debug(e);
+    }
+    register();
+  </script>
+</body>
+
+</html>
