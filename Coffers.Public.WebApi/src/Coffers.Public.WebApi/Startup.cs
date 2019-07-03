@@ -1,4 +1,5 @@
 using System.Net;
+using Coffers.DB.Migration;
 using Coffers.Public.Domain.Guilds;
 using Coffers.Public.Infrastructure.Guilds;
 using Coffers.Public.WebApi.Extensions;
@@ -34,6 +35,7 @@ namespace Coffers.Public.WebApi
         {
             //add dependencies here
             services.AddMemoryCache();
+            services.AddLogging();
 
             //httpclient example
             //services.AddHttpClient<TClient>(client => client.BaseAddress = new Uri(Configuration["host"]))
@@ -48,10 +50,10 @@ namespace Coffers.Public.WebApi
             services.AddScoped<IGuildRepository, GuildRepository>();
 
 
-              services.RegQueryProcessor(registry =>
-              {
-                  registry.Register<GuildsQueryHandler>();
-              });
+            services.RegQueryProcessor(registry =>
+            {
+                registry.Register<GuildsQueryHandler>();
+            });
 
 
             services
@@ -81,6 +83,16 @@ namespace Coffers.Public.WebApi
 
             services.AddSwagger();
 
+
+            #region Регион подключения проекта миграции
+
+            services.AddDbContext<MigrateDbContext>(options =>
+            {
+                options.UseMySQL(Configuration.GetConnectionString("Coffers"));
+            });
+            services.AddHostedService<MigrateService<MigrateDbContext>>();
+
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

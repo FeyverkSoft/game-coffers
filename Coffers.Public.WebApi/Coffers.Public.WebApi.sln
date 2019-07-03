@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coffers.Public.Queries", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coffers.Public.WebApi", "src\Coffers.Public.WebApi\Coffers.Public.WebApi.csproj", "{A0AE7CF7-5CDD-4C38-B52C-EB52330A429C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Query.Core", "Query.Core\Query.Core.csproj", "{78255524-DA7A-4FCB-8EFE-3059638C2327}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Query.Core", "Query.Core\Query.Core.csproj", "{78255524-DA7A-4FCB-8EFE-3059638C2327}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coffers.DB.Migration", "src\Coffers.DB.Migration\Coffers.DB.Migration.csproj", "{8472EB52-E28E-4DC4-9747-4AEB207F28CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{78255524-DA7A-4FCB-8EFE-3059638C2327}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78255524-DA7A-4FCB-8EFE-3059638C2327}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78255524-DA7A-4FCB-8EFE-3059638C2327}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8472EB52-E28E-4DC4-9747-4AEB207F28CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8472EB52-E28E-4DC4-9747-4AEB207F28CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8472EB52-E28E-4DC4-9747-4AEB207F28CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8472EB52-E28E-4DC4-9747-4AEB207F28CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -51,6 +57,7 @@ Global
 		{638D4909-4289-4EF6-9972-0C41C375BF0D} = {343B916F-3AA1-4745-B51A-E1A98D3BDE08}
 		{A0AE7CF7-5CDD-4C38-B52C-EB52330A429C} = {343B916F-3AA1-4745-B51A-E1A98D3BDE08}
 		{78255524-DA7A-4FCB-8EFE-3059638C2327} = {343B916F-3AA1-4745-B51A-E1A98D3BDE08}
+		{8472EB52-E28E-4DC4-9747-4AEB207F28CB} = {343B916F-3AA1-4745-B51A-E1A98D3BDE08}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2E6C263F-F130-461B-8A90-C9F19C17DC07}

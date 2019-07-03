@@ -11,9 +11,14 @@ namespace Coffers.Public.WebApi.Controllers
     [ApiController]
     public class VersionController : ControllerBase
     {
+        /// <summary>
+        /// Возвращает текущую версию сервиса
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(VersionView), 200)]
-        public async Task<IActionResult> Get(CancellationToken cancellationToken)
+        public IActionResult Get(CancellationToken cancellationToken)
         {
             return Ok(new VersionView
             {
