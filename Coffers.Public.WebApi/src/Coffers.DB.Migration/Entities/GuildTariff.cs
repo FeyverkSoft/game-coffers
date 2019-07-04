@@ -1,0 +1,46 @@
+﻿
+using System;
+
+namespace Coffers.DB.Migrations.Entities
+{
+    internal class GuildTariff
+    {
+        /// <summary>
+        /// Идентификатор тарифа гильдии
+        /// </summary>
+        public Guid Id { get; set; }
+        /// <summary>
+        /// Тариф для главы
+        /// </summary>
+        public Tariff LeaderTariff { get; set; }
+        /// <summary>
+        /// Тариф для офицера
+        /// </summary>
+        public Tariff OfficerTariff { get; set; }
+        /// <summary>
+        /// Тариф для ветерана
+        /// </summary>
+        public Tariff VeteranTariff { get; set; }
+        /// <summary>
+        /// Тариф для солдата
+        /// </summary>
+        public Tariff SoldierTariff { get; set; }
+        /// <summary>
+        /// Тариф для духа
+        /// </summary>
+        public Tariff BeginnerTariff { get; set; }
+    }
+
+    internal class Tariff
+    {
+        public Guid Id { get; set; }
+
+        public DateTime CreateDate { get; set; }
+
+        public Decimal LoanTax { get; set; }
+
+        public Decimal ExpiredLoanTax { get; set; }
+
+        public string Tax { get; set; }
+    }
+}

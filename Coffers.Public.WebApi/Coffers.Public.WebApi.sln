@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coffers.Public.WebApi", "sr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Query.Core", "Query.Core\Query.Core.csproj", "{78255524-DA7A-4FCB-8EFE-3059638C2327}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coffers.DB.Migration", "src\Coffers.DB.Migration\Coffers.DB.Migration.csproj", "{8472EB52-E28E-4DC4-9747-4AEB207F28CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coffers.DB.Migrations", "src\Coffers.DB.Migration\Coffers.DB.Migrations.csproj", "{8472EB52-E28E-4DC4-9747-4AEB207F28CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

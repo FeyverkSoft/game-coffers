@@ -1,5 +1,5 @@
 using System.Net;
-using Coffers.DB.Migration;
+using Coffers.DB.Migrations;
 using Coffers.Public.Domain.Guilds;
 using Coffers.Public.Infrastructure.Guilds;
 using Coffers.Public.WebApi.Extensions;
@@ -42,19 +42,6 @@ namespace Coffers.Public.WebApi
             //    .AddHttpMessageHandler<RequestIdDelegatingHandler>()
             //    .AddHttpMessageHandler<LoggingDelegatingHandler>();
 
-            services.AddDbContext<GuildsDbContext>(options =>
-                {
-                    options.UseMySQL(Configuration.GetConnectionString("Coffers"));
-                });
-
-            services.AddScoped<IGuildRepository, GuildRepository>();
-
-
-            services.RegQueryProcessor(registry =>
-            {
-                registry.Register<GuildsQueryHandler>();
-            });
-
 
             services
                 .AddMvc(options =>
@@ -81,18 +68,29 @@ namespace Coffers.Public.WebApi
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddSwagger();
-
-
-            #region Регион подключения проекта миграции
-
-            services.AddDbContext<MigrateDbContext>(options =>
+            services.AddDbContext<GuildsDbContext>(options =>
             {
                 options.UseMySQL(Configuration.GetConnectionString("Coffers"));
             });
+
+            services.AddScoped<IGuildRepository, GuildRepository>();
+
+
+            services.RegQueryProcessor(registry =>
+            {
+                registry.Register<GuildsQueryHandler>();
+            });
+
+
+            #region Регион подключения проекта миграции
+            services.AddDbContext<MigrateDbContext>(options =>
+                options.UseMySQL(Configuration.GetConnectionString("Coffers")));
             services.AddHostedService<MigrateService<MigrateDbContext>>();
 
             #endregion
+
+
+            services.AddSwagger();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

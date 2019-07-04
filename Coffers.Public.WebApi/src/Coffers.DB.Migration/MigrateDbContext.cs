@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Coffers.DB.Migrations.Entities;
+using Microsoft.EntityFrameworkCore;
 
-namespace Coffers.DB.Migration
+namespace Coffers.DB.Migrations
 {
     public class MigrateDbContext
         : DbContext
@@ -9,10 +11,320 @@ namespace Coffers.DB.Migration
         {
         }
 
+       /* public DbSet<Guild> Guilds { get; set; }
+        public DbSet<Tariff> Tariffs { get; set; }
+        public DbSet<GuildTariff> GuildTariffs { get; set; }
+        public DbSet<Gamer> Gamers { get; set; }
+        public DbSet<Loan> Loans { get; set; }
+        public DbSet<Penalty> Penalties { get; set; }
+        public DbSet<History> Histories { get; set; }
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<Operation> Operations { get; set; }
+        public DbSet<Character> Characters { get; set; }
+        */
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Guild>(b =>
+            {
+                b.ToTable(nameof(Guild));
+
+                b.HasIndex(g => g.Id)
+                    .IsUnique();
+                b.HasKey(g => g.Id);
+                b.Property(g => g.Id)
+                    .HasColumnName("Id")
+                    .IsRequired();
+
+                b.Property(g => g.CreateDate)
+                    .IsRequired();
+                b.Property(g => g.UpdateDate);
+
+                b.Property(g => g.Name)
+                    .HasColumnName("Name")
+                    .HasMaxLength(512)
+                    .IsRequired();
+
+                b.Property(g => g.RecruitmentStatus)
+                    .HasColumnName("RecruitmentStatus")
+                    .HasConversion<String>()
+                    .HasMaxLength(32)
+                    .IsRequired();
+
+                b.Property(g => g.Status)
+                    .HasColumnName("Status")
+                    .HasConversion<String>()
+                    .HasMaxLength(32)
+                    .IsRequired();
+
+                b.HasOne(t => t.Tariff)
+                    .WithMany()
+                    .HasPrincipalKey(_ => _.Id);
+
+                b.HasMany(g => g.Gamers)
+                    .WithOne(_ => _.Guild)
+                    .HasPrincipalKey(_ => _.Id);
+
+            });
+
+            modelBuilder.Entity<Tariff>(b =>
+            {
+                b.ToTable(nameof(Tariff));
+
+                b.HasIndex(t => t.Id)
+                    .IsUnique();
+                b.HasKey(t => t.Id);
+                b.Property(t => t.Id)
+                    .HasColumnName("Id")
+                    .IsRequired();
+
+                b.Property(t => t.CreateDate)
+                    .IsRequired();
+
+                b.Property(t => t.ExpiredLoanTax)
+                    .HasDefaultValue(0)
+                    .IsRequired();
+                b.Property(t => t.LoanTax)
+                    .HasDefaultValue(0)
+                    .IsRequired();
+                b.Property(t => t.Tax)
+                    .HasDefaultValue(0)
+                    .IsRequired();
+            });
+
+            modelBuilder.Entity<GuildTariff>(b =>
+            {
+                b.ToTable(nameof(GuildTariff));
+
+                b.HasIndex(gt => gt.Id)
+                    .IsUnique();
+                b.HasKey(gt => gt.Id);
+                b.Property(gt => gt.Id)
+                    .HasColumnName("Id")
+                    .IsRequired();
+
+                b.HasOne(t => t.BeginnerTariff)
+                    .WithMany()
+                    .HasPrincipalKey(_ => _.Id);
+                b.HasOne(t => t.LeaderTariff)
+                    .WithMany()
+                    .HasPrincipalKey(_ => _.Id);
+                b.HasOne(t => t.OfficerTariff)
+                    .WithMany()
+                    .HasPrincipalKey(_ => _.Id);
+                b.HasOne(t => t.SoldierTariff)
+                    .WithMany()
+                    .HasPrincipalKey(_ => _.Id);
+                b.HasOne(t => t.VeteranTariff)
+                    .WithMany()
+                    .HasPrincipalKey(_ => _.Id);
+
+            });
+
+            modelBuilder.Entity<Gamer>(b =>
+            {
+                b.ToTable(nameof(Gamer));
+
+                b.HasIndex(g => g.Id)
+                    .IsUnique();
+                b.HasKey(g => g.Id);
+                b.Property(g => g.Id)
+                    .HasColumnName("Id")
+                    .IsRequired();
+
+                b.Property(g => g.CreateDate)
+                    .IsRequired();
+                b.Property(g => g.UpdateDate);
+                b.Property(g => g.DeletedDate);
+
+                b.Property(g => g.DateOfBirth)
+                    .HasDefaultValue(new DateTime(1900, 1, 1))
+                    .IsRequired();
+
+                b.Property(g => g.Name)
+                    .HasMaxLength(64);
+                b.Property(g => g.Rank)
+                    .HasConversion<String>()
+                    .HasMaxLength(32);
+                b.Property(g => g.Status)
+                    .HasConversion<String>()
+                    .HasMaxLength(32);
+
+                b.Property(g => g.Login)
+                    .HasMaxLength(64);
+                b.Property(g => g.Password)
+                    .HasMaxLength(64);
+
+
+                b.HasMany(g => g.Characters)
+                    .WithOne()
+                    .HasPrincipalKey(_ => _.Id);
+
+                b.HasMany(g => g.Loans)
+                    .WithOne()
+                    .HasPrincipalKey(_ => _.Id);
+
+                b.HasMany(g => g.Penalties)
+                    .WithOne()
+                    .HasPrincipalKey(_ => _.Id);
+
+                b.HasOne(g => g.DefaultAccount)
+                    .WithMany()
+                    .HasPrincipalKey(_ => _.Id);
+
+                b.HasMany(g => g.Histories)
+                    .WithOne()
+                    .HasPrincipalKey(_ => _.Id);
+
+            });
+
+            modelBuilder.Entity<Loan>(b =>
+            {
+                b.ToTable(nameof(Loan));
+
+                b.HasIndex(l => l.Id)
+                    .IsUnique();
+                b.HasKey(l => l.Id);
+                b.Property(l => l.Id)
+                    .HasColumnName("Id")
+                    .IsRequired();
+
+                b.Property(l => l.CreateDate)
+                    .IsRequired();
+                b.Property(l => l.BorrowDate)
+                    .IsRequired();
+                b.Property(l => l.UpdateDate);
+                b.Property(l => l.ExpiredDate)
+                    .IsRequired();
+
+                b.Property(l => l.Amount)
+                    .HasDefaultValue(0)
+                    .IsRequired();
+                b.Property(l => l.LoanStatus)
+                    .HasConversion<String>()
+                    .HasMaxLength(32)
+                    .IsRequired();
+                b.Property(l => l.PenaltyAmount)
+                    .HasDefaultValue(0)
+                    .IsRequired();
+                b.Property(l => l.TaxAmount)
+                    .HasDefaultValue(0)
+                    .IsRequired();
+                b.Property(l => l.Description)
+                    .HasMaxLength(512);
+
+                b.HasOne(l => l.Gamer)
+                    .WithMany(_ => _.Loans)
+                    .HasPrincipalKey(_ => _.Id);
+
+                b.HasOne(l => l.Tariff)
+                    .WithMany()
+                    .HasPrincipalKey(_ => _.Id);
+            });
+
+            modelBuilder.Entity<Penalty>(b =>
+            {
+                b.ToTable(nameof(Penalty));
+
+                b.HasIndex(p => p.Id)
+                    .IsUnique();
+                b.HasKey(p => p.Id);
+                b.Property(p => p.Id)
+                    .HasColumnName("Id")
+                    .IsRequired();
+
+                b.Property(p => p.CreateDate)
+                    .IsRequired();
+                b.Property(p => p.Description)
+                    .HasMaxLength(2048);
+                b.Property(p => p.PenaltyStatus)
+                    .HasConversion<String>()
+                    .HasMaxLength(32);
+
+                b.HasOne(p => p.Gamer)
+                    .WithMany(_ => _.Penalties)
+                    .HasPrincipalKey(_ => _.Id);
+
+            });
+
+            modelBuilder.Entity<History>(b =>
+            {
+                b.ToTable(nameof(History));
+
+                b.HasIndex(h => h.Id)
+                    .IsUnique();
+                b.HasKey(h => h.Id);
+                b.Property(h => h.Id)
+                    .HasColumnName("Id")
+                    .IsRequired();
+
+                b.Property(h => h.CreateDate)
+                    .IsRequired();
+                b.Property(h => h.Action)
+                    .HasMaxLength(1024)
+                    .IsRequired();
+
+                b.HasOne(p => p.Gamer)
+                    .WithMany(_ => _.Histories)
+                    .HasPrincipalKey(_ => _.Id);
+
+            });
+
+            modelBuilder.Entity<Account>(b =>
+            {
+                b.ToTable(nameof(Account));
+
+                b.HasIndex(a => a.Id)
+                    .IsUnique();
+                b.HasKey(a => a.Id);
+                b.Property(a => a.Id)
+                    .HasColumnName("Id")
+                    .IsRequired();
+
+                b.Property(a => a.Balance)
+                    .HasDefaultValue(0)
+                    .IsRequired();
+                b.Property(a => a.ConcurrencyTokens)
+                    .IsConcurrencyToken()
+                    .IsRequired();
+
+                b.HasMany(a => a.Operations)
+                    .WithOne(_ => _.Account)
+                    .HasPrincipalKey(_ => _.Id);
+            });
+
+            modelBuilder.Entity<Operation>(b =>
+            {
+                b.ToTable(nameof(Operation));
+
+                b.HasIndex(o => o.Id)
+                    .IsUnique();
+                b.HasKey(o => o.Id);
+                b.Property(o => o.Id)
+                    .HasColumnName("Id")
+                    .IsRequired();
+
+                b.Property(o => o.CreateDate)
+                    .IsRequired();
+                b.Property(o => o.OperationDate)
+                    .IsRequired();
+                b.Property(o => o.DocumentId);
+                b.Property(o => o.Amount)
+                    .HasDefaultValue(0)
+                    .IsRequired();
+                b.Property(o => o.Description)
+                    .HasMaxLength(512);
+                b.Property(o => o.Type)
+                    .HasConversion<String>()
+                    .HasMaxLength(32);
+
+                b.HasOne(o => o.Account)
+                    .WithMany(_ => _.Operations)
+                    .HasPrincipalKey(_ => _.Id);
+            });
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

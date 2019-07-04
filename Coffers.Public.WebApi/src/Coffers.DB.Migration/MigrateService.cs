@@ -1,12 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System.Net.Sockets;
+﻿using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
-namespace Coffers.DB.Migration
+namespace Coffers.DB.Migrations
 {
     public class MigrateService<TContext> : BackgroundService
         where TContext : DbContext
