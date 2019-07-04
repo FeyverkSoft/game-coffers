@@ -1,4 +1,5 @@
-﻿using System.Net.Sockets;
+﻿using System;
+using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -45,6 +46,10 @@ namespace Coffers.DB.Migrations
                     catch (SocketException e)
                     {
                         _logger.LogError(e, $"Try #{attempt}; Connection to Database server FAILED");
+                    }
+                    catch (Exception exception)
+                    {
+                        _logger.LogError(exception, $"Try #{attempt};");
                     }
 
                     await Task.Delay(attempt * 1000, stoppingToken);
