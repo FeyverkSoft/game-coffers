@@ -16,12 +16,12 @@ namespace Coffers.Public.WebApi
             .AddEnvironmentVariables()
             .Build();
 
-        public static void Main(string[] args)
+        public static void Main(String[] args)
         {
             CreateWebHostBuilder(args).Build().Run();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+        public static IWebHostBuilder CreateWebHostBuilder(String[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .UseConfiguration(Configuration)

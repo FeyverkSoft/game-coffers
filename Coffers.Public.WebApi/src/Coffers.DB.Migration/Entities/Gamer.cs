@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Coffers.Types.Gamer;
 
 namespace Coffers.DB.Migrations.Entities
 {
@@ -79,29 +80,17 @@ namespace Coffers.DB.Migrations.Entities
         /// <summary>
         /// Логин для авторизации
         /// </summary>
-        public string Login { get; set; }
+        public String Login { get; set; }
 
         /// <summary>
         /// Пароль для авторизации
         /// </summary>
-        public string Password { get; set; }
-    }
+        public String Password { get; set; }
 
-    internal enum GamerStatus
-    {
-        Afk,
-        Banned,
-        Active,
-        Left,
-        New
-    }
+        /// <summary>
+        /// Права доступа игрока, JSON строка
+        /// </summary>
+        public String Roles { get; set; }
 
-    internal enum GamerRank
-    {
-        Leader,
-        Officer,
-        Veteran,
-        Soldier,
-        Beginner
     }
 }

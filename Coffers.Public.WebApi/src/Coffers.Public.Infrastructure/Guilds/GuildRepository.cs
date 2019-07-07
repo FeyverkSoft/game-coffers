@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using System;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Coffers.Public.Domain.Guilds;
 using Microsoft.EntityFrameworkCore;
@@ -14,9 +16,32 @@ namespace Coffers.Public.Infrastructure.Guilds
             _context = context;
         }
 
-        public async Task<Guild> Get(string id, CancellationToken cancellationToken)
+        public async Task<Guild> UnsafeGet(Guid id, CancellationToken cancellationToken)
         {
-            return await _context.Guilds.FirstOrDefaultAsync(guild => guild.Id == id, cancellationToken);
+            return await _context.Guilds
+                .FirstOrDefaultAsync(guild => guild.Id == id, cancellationToken);
+        }
+
+        public async Task<Guild> Get(Guid id, Guid userId, CancellationToken cancellationToken)
+        {
+            return await _context.Guilds
+                .Include(x => x.Gamers)
+                .FirstOrDefaultAsync(guild => guild.Id == id &&
+                                              guild.Gamers.Any(x => x.Id == userId),
+                    cancellationToken);
+        }
+
+        /// <summary>
+        /// Подгружает список игроков в объект гильдии
+        /// </summary>
+        /// <param name="guild"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task LoadGamers(Guild guild, CancellationToken cancellationToken)
+        {
+            await _context.Entry(guild)
+                .Collection(e => e.Gamers)
+                .LoadAsync(cancellationToken);
         }
 
         public async Task Save(Guild guild)

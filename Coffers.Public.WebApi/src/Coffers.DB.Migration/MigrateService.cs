@@ -12,7 +12,7 @@ namespace Coffers.DB.Migrations
     public class MigrateService<TContext> : BackgroundService
         where TContext : DbContext
     {
-        private readonly int _retryCount;
+        private readonly Int32 _retryCount;
         private readonly ILogger _logger;
         private readonly IServiceScopeFactory _scopeFactory;
 

@@ -1,4 +1,6 @@
-﻿namespace Coffers.Public.WebApi.Models
+﻿using System;
+
+namespace Coffers.Public.WebApi.Models
 {
     /// <summary>
     /// Возвращает версию сервиса
@@ -8,6 +10,6 @@
         /// <summary>
         /// Текущая версия сервиса
         /// </summary>
-        public string Version { get; set; }
+        public String Version { get; set; }
     }
 }

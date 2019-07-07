@@ -66,6 +66,10 @@ namespace Coffers.DB.Migrations
                     .WithOne(_ => _.Guild)
                     .HasPrincipalKey(_ => _.Id);
 
+                b.HasOne(g => g.GuildAccount)
+                    .WithMany()
+                    .HasPrincipalKey(_ => _.Id);
+
             });
 
             modelBuilder.Entity<Tariff>(b =>
@@ -77,9 +81,6 @@ namespace Coffers.DB.Migrations
                 b.HasKey(t => t.Id);
                 b.Property(t => t.Id)
                     .HasColumnName("Id")
-                    .IsRequired();
-
-                b.Property(t => t.CreateDate)
                     .IsRequired();
 
                 b.Property(t => t.ExpiredLoanTax)
@@ -103,6 +104,9 @@ namespace Coffers.DB.Migrations
                 b.HasKey(gt => gt.Id);
                 b.Property(gt => gt.Id)
                     .HasColumnName("Id")
+                    .IsRequired();
+
+                b.Property(t => t.CreateDate)
                     .IsRequired();
 
                 b.HasOne(t => t.BeginnerTariff)
@@ -153,9 +157,12 @@ namespace Coffers.DB.Migrations
                     .HasMaxLength(32);
 
                 b.Property(g => g.Login)
+                    .IsRequired()
                     .HasMaxLength(64);
                 b.Property(g => g.Password)
-                    .HasMaxLength(64);
+                    .HasMaxLength(128);
+                b.Property(g => g.Roles)
+                    .HasMaxLength(512);
 
 
                 b.HasMany(g => g.Characters)
@@ -323,6 +330,28 @@ namespace Coffers.DB.Migrations
                 b.HasOne(o => o.Account)
                     .WithMany(_ => _.Operations)
                     .HasPrincipalKey(_ => _.Id);
+            });
+
+            modelBuilder.Entity<Session>(b =>
+            {
+                b.ToTable(nameof(Session));
+
+                b.HasIndex(o => o.SessionId)
+                    .IsUnique();
+                b.HasKey(o => o.SessionId);
+                b.Property(o => o.SessionId)
+                    .HasColumnName("SessionId")
+                    .IsRequired();
+
+                b.Property(o => o.CreateDate)
+
+                    .IsRequired();
+                b.Property(o => o.ExpireDate)
+                    .IsRequired();
+
+                b.Property(o => o.Ip)
+                    .HasMaxLength(128);
+
             });
 
             base.OnModelCreating(modelBuilder);

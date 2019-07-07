@@ -41,7 +41,7 @@ namespace Coffers.Public.WebApi.Middlewares
                 var resp = new ProblemDetails
                 {
                     Type = ErrorCodes.InternalServerError,
-                    Status = (int)HttpStatusCode.InternalServerError,
+                    Status = (Int32)HttpStatusCode.InternalServerError,
 #if DEBUG
                     Detail = exc.Message,
 #else
@@ -52,7 +52,7 @@ namespace Coffers.Public.WebApi.Middlewares
 
                 await _executor.ExecuteAsync(actionContext, new ObjectResult(resp)
                 {
-                    StatusCode = (int)HttpStatusCode.InternalServerError
+                    StatusCode = (Int32)HttpStatusCode.InternalServerError
                 });
             }
         }

@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Coffers.Public.Queries</name>
+    </assembly>
+    <members>
+        <member name="T:Coffers.Public.Queries.Guilds.GuildQuery">
+            <summary>
+            Возвращает гильдию с подробной информацией по её ID и id пользователя состоящего в ней
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Guilds.GuildQuery.Id">
+            <summary>
+            ID гильдии
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Guilds.GuildQuery.UserId">
+            <summary>
+            Идентификатор пользователя, для контроля того что он состоит в этой гильдии
+            </summary>
+        </member>
+        <member name="T:Coffers.Public.Queries.Guilds.GuildsQuery">
+            <summary>
+            Возвращает список гильдий
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Guilds.GuildView.Id">
+            <summary>
+            Id гильдии
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Guilds.GuildView.CreateDate">
+            <summary>
+            Дата создания записи
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Guilds.GuildView.UpdateDate">
+            <summary>
+            Дата обновления записи
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Guilds.GuildView.Name">
+            <summary>
+            Название гильдии
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Guilds.GuildView.Status">
+            <summary>
+            Статус гильдии
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Guilds.GuildView.RecruitmentStatus">
+            <summary>
+            Статус набора в гильдию
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Guilds.TariffsView.Leader">
+            <summary>
+            Тариф для главы
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Guilds.TariffsView.Officer">
+            <summary>
+            Тариф для офицера
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Guilds.TariffsView.Veteran">
+            <summary>
+            Тариф для ветерана
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Guilds.TariffsView.Soldier">
+            <summary>
+            Тариф для солдата
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Guilds.TariffsView.Beginner">
+            <summary>
+            Тариф для духа
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Guilds.TariffView.LoanTax">
+            <summary>
+            Стоимость займа за 1 день в процентах
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Guilds.TariffView.ExpiredLoanTax">
+            <summary>
+            Стоимость просрочки займа, за один день в процентах
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Guilds.TariffView.Tax">
+            <summary>
+            Налог с 1го персонажа.
+            Список. 1 персонаж, 2 персонажа, 3 итд.
+            </summary>
+        </member>
+    </members>
+</doc>

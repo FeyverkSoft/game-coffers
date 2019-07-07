@@ -15,11 +15,11 @@ namespace Query.Core
             _registry = registry;
         }
 
-        public async Task<TResult> Process<TResult>(IQuery<TResult> query, CancellationToken cancellationToken)
+        public async Task<TResult> Process<TQuery, TResult>(TQuery query, CancellationToken cancellationToken)
+        where TQuery : IQuery<TResult>
         {
             var handlerType = _registry.HandlerFor(query.GetType());
-            var queryHandler = (IQueryHandler<IQuery<TResult>, TResult>)_serviceProvider.GetService(handlerType);
-
+            var queryHandler = _serviceProvider.GetService(handlerType) as IQueryHandler<TQuery, TResult>;
             return await queryHandler.Handle(query, cancellationToken);
         }
     }

@@ -111,6 +111,7 @@ namespace Coffers.DB.Migrations.Migrations
                 {
                     Id = table.Column<byte[]>(nullable: false),
                     TariffId = table.Column<byte[]>(nullable: true),
+                    GuildAccountId = table.Column<byte[]>(nullable: true),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     UpdateDate = table.Column<DateTime>(nullable: false),
                     Name = table.Column<string>(maxLength: 512, nullable: false),
@@ -120,6 +121,12 @@ namespace Coffers.DB.Migrations.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Guild", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Guild_Account_GuildAccountId",
+                        column: x => x.GuildAccountId,
+                        principalTable: "Account",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Guild_GuildTariff_TariffId",
                         column: x => x.TariffId,
@@ -142,8 +149,8 @@ namespace Coffers.DB.Migrations.Migrations
                     Rank = table.Column<string>(maxLength: 32, nullable: false),
                     Status = table.Column<string>(maxLength: 32, nullable: false),
                     DateOfBirth = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)),
-                    Login = table.Column<string>(maxLength: 64, nullable: true),
-                    Password = table.Column<string>(maxLength: 64, nullable: true)
+                    Login = table.Column<string>(maxLength: 64, nullable: false),
+                    Password = table.Column<string>(maxLength: 128, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -286,6 +293,11 @@ namespace Coffers.DB.Migrations.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Guild_GuildAccountId",
+                table: "Guild",
+                column: "GuildAccountId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Guild_Id",
                 table: "Guild",
                 column: "Id",
@@ -404,10 +416,10 @@ namespace Coffers.DB.Migrations.Migrations
                 name: "Gamer");
 
             migrationBuilder.DropTable(
-                name: "Account");
+                name: "Guild");
 
             migrationBuilder.DropTable(
-                name: "Guild");
+                name: "Account");
 
             migrationBuilder.DropTable(
                 name: "GuildTariff");

@@ -8,20 +8,20 @@ namespace Coffers.Public.WebApi.Exceptions
     {
         private readonly HttpStatusCode _httpCode;
 
-        public ApiException(HttpStatusCode httpCode, string code, string message)
+        public ApiException(HttpStatusCode httpCode, String code, String message)
             : this(httpCode, code, message, null)
         {
             _httpCode = httpCode;
         }
 
-        public ApiException(HttpStatusCode httpCode, string code, string message, Exception innerException = null)
+        public ApiException(HttpStatusCode httpCode, String code, String message, Exception innerException = null)
             : base(message, innerException)
         {
             Code = code;
             _httpCode = httpCode;
         }
 
-        public ApiException(HttpStatusCode httpCode, string code, string message, IDictionary<string, object> fields, Exception innerException = null)
+        public ApiException(HttpStatusCode httpCode, String code, String message, IDictionary<String, Object> fields, Exception innerException = null)
             : base(message, innerException)
         {
             _httpCode = httpCode;
@@ -29,10 +29,10 @@ namespace Coffers.Public.WebApi.Exceptions
             Fields = fields;
         }
 
-        public int GetHttpStatusCode() => (int)_httpCode;
+        public Int32 GetHttpStatusCode() => (Int32)_httpCode;
 
-        public string Code { get; }
+        public String Code { get; }
 
-        public IDictionary<string, object> Fields { get; set; }
+        public IDictionary<String, Object> Fields { get; set; }
     }
 }

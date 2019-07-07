@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Coffers.Types.Guilds;
+using System;
 using System.Collections.Generic;
 
 namespace Coffers.DB.Migrations.Entities
@@ -14,6 +15,11 @@ namespace Coffers.DB.Migrations.Entities
         /// тариф гильдии, действующий на данный момент
         /// </summary>
         public GuildTariff Tariff { get; set; }
+
+        /// <summary>
+        /// Счёт гильдии
+        /// </summary>
+        public Account GuildAccount { get; set; }
 
         /// <summary>
         /// Дата создания записи
@@ -41,18 +47,5 @@ namespace Coffers.DB.Migrations.Entities
         /// Список игроков в гильдии
         /// </summary>
         public ICollection<Gamer> Gamers { get; set; }
-    }
-
-    internal enum GuildStatus
-    {
-        Active,
-        InActive
-    }
-
-    internal enum RecruitmentStatus
-    {
-        Open,
-        Close,
-        Internal
     }
 }

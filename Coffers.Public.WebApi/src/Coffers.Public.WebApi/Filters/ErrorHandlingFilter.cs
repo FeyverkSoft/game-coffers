@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using Coffers.Public.WebApi.Exceptions;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +28,7 @@ namespace Coffers.Public.WebApi.Filters
                 var resp = new ProblemDetails
                 {
                     Type = ErrorCodes.InternalServerError,
-                    Status = (int)HttpStatusCode.InternalServerError,
+                    Status = (Int32)HttpStatusCode.InternalServerError,
 #if DEBUG
                     Detail = execution.Exception.Message,
 #else
@@ -61,7 +62,7 @@ namespace Coffers.Public.WebApi.Filters
 
                 execution.Result = new ObjectResult(resp)
                 {
-                    StatusCode = (int)HttpStatusCode.InternalServerError
+                    StatusCode = (Int32)HttpStatusCode.InternalServerError
                 };
             }
         }

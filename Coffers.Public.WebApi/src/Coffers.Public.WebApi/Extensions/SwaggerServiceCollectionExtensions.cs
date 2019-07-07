@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
@@ -25,6 +26,22 @@ namespace Coffers.Public.WebApi.Extensions
 
                 var basePath = AppDomain.CurrentDomain.BaseDirectory;
                 options.IncludeXmlComments(Path.Combine(basePath, "Coffer.Public.WebApi.xml"));
+                options.IncludeXmlComments(Path.Combine(basePath, "Coffers.Public.Queries.xml"));
+                options.IncludeXmlComments(Path.Combine(basePath, "Coffers.Types.xml"));
+
+                options.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                {
+                    In = "header",
+                    Description = "<p>Вставьте идентификатор сессии вместе c Bearer в поле. </p>" +
+                                  "<p><b>Пример:</b> <br />" +
+                                  "Authorization: Bearer 00000000-0000-4000-0000-000000000000</p>",
+                    Name = "Authorization",
+                    Type = "apiKey"
+                });
+                options.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>
+                {
+                    { "Bearer", new string[] { } }
+                });
             });
         }
     }

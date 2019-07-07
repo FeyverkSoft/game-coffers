@@ -9,6 +9,12 @@ namespace Coffers.DB.Migrations.Entities
         /// Идентификатор тарифа гильдии
         /// </summary>
         public Guid Id { get; set; }
+
+        /// <summary>
+        /// Дата создания тарифа
+        /// /// </summary>
+        public DateTime CreateDate { get; set; }
+
         /// <summary>
         /// Тариф для главы
         /// </summary>
@@ -35,12 +41,10 @@ namespace Coffers.DB.Migrations.Entities
     {
         public Guid Id { get; set; }
 
-        public DateTime CreateDate { get; set; }
-
         public Decimal LoanTax { get; set; }
 
         public Decimal ExpiredLoanTax { get; set; }
 
-        public string Tax { get; set; }
+        public String Tax { get; set; }
     }
 }

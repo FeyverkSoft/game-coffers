@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Threading.Tasks;
 using Coffers.Public.WebApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Coffers.Public.WebApi.Controllers
@@ -16,6 +16,7 @@ namespace Coffers.Public.WebApi.Controllers
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
+        [AllowAnonymous]
         [HttpGet]
         [ProducesResponseType(typeof(VersionView), 200)]
         public IActionResult Get(CancellationToken cancellationToken)

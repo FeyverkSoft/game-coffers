@@ -84,17 +84,21 @@ namespace Coffers.DB.Migrations.Migrations
                         .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
 
                     b.Property<string>("Login")
+                        .IsRequired()
                         .HasMaxLength(64);
 
                     b.Property<string>("Name")
                         .HasMaxLength(64);
 
                     b.Property<string>("Password")
-                        .HasMaxLength(64);
+                        .HasMaxLength(128);
 
                     b.Property<string>("Rank")
                         .IsRequired()
                         .HasMaxLength(32);
+
+                    b.Property<string>("Roles")
+                        .HasMaxLength(512);
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -123,6 +127,9 @@ namespace Coffers.DB.Migrations.Migrations
 
                     b.Property<DateTime>("CreateDate");
 
+                    b.Property<byte[]>("GuildAccountId")
+                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnName("Name")
@@ -145,6 +152,8 @@ namespace Coffers.DB.Migrations.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GuildAccountId");
+
                     b.HasIndex("Id")
                         .IsUnique();
 
@@ -162,6 +171,8 @@ namespace Coffers.DB.Migrations.Migrations
 
                     b.Property<byte[]>("BeginnerTariffId")
                         .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
+
+                    b.Property<DateTime>("CreateDate");
 
                     b.Property<byte[]>("LeaderTariffId")
                         .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
@@ -339,14 +350,38 @@ namespace Coffers.DB.Migrations.Migrations
                     b.ToTable("Penalty");
                 });
 
+            modelBuilder.Entity("Coffers.DB.Migrations.Entities.Session", b =>
+                {
+                    b.Property<byte[]>("SessionId")
+                        .ValueGeneratedOnAdd()
+                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)))
+                        .HasColumnName("SessionId");
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<DateTime>("ExpireDate");
+
+                    b.Property<byte[]>("GamerId")
+                        .IsRequired()
+                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
+
+                    b.Property<string>("Ip")
+                        .HasMaxLength(128);
+
+                    b.HasKey("SessionId");
+
+                    b.HasIndex("SessionId")
+                        .IsUnique();
+
+                    b.ToTable("Session");
+                });
+
             modelBuilder.Entity("Coffers.DB.Migrations.Entities.Tariff", b =>
                 {
                     b.Property<byte[]>("Id")
                         .ValueGeneratedOnAdd()
                         .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)))
                         .HasColumnName("Id");
-
-                    b.Property<DateTime>("CreateDate");
 
                     b.Property<decimal>("ExpiredLoanTax")
                         .ValueGeneratedOnAdd()
@@ -390,6 +425,10 @@ namespace Coffers.DB.Migrations.Migrations
 
             modelBuilder.Entity("Coffers.DB.Migrations.Entities.Guild", b =>
                 {
+                    b.HasOne("Coffers.DB.Migrations.Entities.Account", "GuildAccount")
+                        .WithMany()
+                        .HasForeignKey("GuildAccountId");
+
                     b.HasOne("Coffers.DB.Migrations.Entities.GuildTariff", "Tariff")
                         .WithMany()
                         .HasForeignKey("TariffId");

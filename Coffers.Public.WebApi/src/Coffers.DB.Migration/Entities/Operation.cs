@@ -27,7 +27,7 @@ namespace Coffers.DB.Migrations.Entities
         /// <summary>
         /// Сумма операции
         /// </summary>
-        public decimal Amount { get; set; }
+        public Decimal Amount { get; set; }
 
         /// <summary>
         /// Счёт с которым проводится операция

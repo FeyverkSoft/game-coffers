@@ -8,7 +8,8 @@ namespace Query.Core
     /// </summary>
     public interface IQueryProcessor
     {
-        Task<TResult> Process<TResult>(IQuery<TResult> query, CancellationToken cancellationToken);
+        Task<TResult> Process<TQuery, TResult>(TQuery query, CancellationToken cancellationToken)
+            where TQuery : IQuery<TResult>;
     }
 
 }

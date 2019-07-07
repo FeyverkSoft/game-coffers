@@ -6,6 +6,10 @@
     <OutputType>Library</OutputType>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\Proj\Coffers\Coffers.Public.WebApi\src\Coffers.Public.Queries\Coffers.Public.Queries.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\Query.Core\Query.Core.csproj" />
     <ProjectReference Include="..\Coffers.Public.Domain\Coffers.Public.Domain.csproj" />

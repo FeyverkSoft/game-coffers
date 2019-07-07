@@ -30,7 +30,7 @@ namespace Coffers.DB.Migrations.Entities
         /// <summary>
         /// Необязательное описание, для чего был взят займ
         /// </summary>
-        public string Description { get; set; }
+        public String Description { get; set; }
 
         /// <summary>
         /// Дата обновления записи
