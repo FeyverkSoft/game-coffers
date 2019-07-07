@@ -19,7 +19,7 @@ namespace Query.Core
         where TQuery : IQuery<TResult>
         {
             var handlerType = _registry.HandlerFor(query.GetType());
-            var queryHandler = _serviceProvider.GetService(handlerType) as IQueryHandler<TQuery, TResult>;
+            var queryHandler = (IQueryHandler<TQuery, TResult>)_serviceProvider.GetService(handlerType);
             return await queryHandler.Handle(query, cancellationToken);
         }
     }

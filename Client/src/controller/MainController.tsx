@@ -1,18 +1,19 @@
 import * as React from 'react';
 import { connect, DispatchProp } from 'react-redux';
-import { Lang } from '../_services';
+import { Lang, GuildInfo, LangF } from '../_services';
 import { Crumbs, BaseReactComp, Form, Input, Button, СanvasBlock, Page, MaterialSelect, Grid, Col2, Col1, NamedValue } from '../_components';
 
-import { sessionInstance } from '../_actions';
+import { guildInstance } from '../_actions';
 import { IStore } from '../_helpers';
 
-interface GuildInfo {
+interface GuildInfos {
     charCount: number;
     inFactCharCount: number;
     tax: number;
 }
 interface IMainProps extends DispatchProp<any> {
     isLoading?: boolean;
+    guildId?: string;
     guildInfo: GuildInfo;
 
 }
@@ -30,6 +31,10 @@ class Main extends BaseReactComp<IMainProps, any> {
         </div>;
     }
 
+    componentDidMount() {
+        if (this.props.guildInfo.id == '' && this.props.guildId)
+            this.props.dispatch(guildInstance.GetGuild({ guildId: this.props.guildId }))
+    }
 
     baseInfo = () => {
         return <Grid
@@ -40,7 +45,7 @@ class Main extends BaseReactComp<IMainProps, any> {
                     title={Lang("MAIN_PAGE_MAIN_INFO")}
                     type="important"
                 >
-                    <Grid
+                    {/*  <Grid
                         direction="vertical"
                     >
                         <Col1>
@@ -84,7 +89,7 @@ class Main extends BaseReactComp<IMainProps, any> {
                                 {this.props.guildInfo.tax || 0}
                             </NamedValue>
                         </Col1>
-                    </Grid>
+                    </Grid>*/}
                 </СanvasBlock>
             </Col2>
         </Grid>;
@@ -100,8 +105,8 @@ class Main extends BaseReactComp<IMainProps, any> {
 
     render() {
         return <Page
-            title={Lang("MAIN_PAGE")}
-            breadcrumbs={[new Crumbs("./", Lang("MAIN_PAGE"))]}
+            title={LangF("MAIN_PAGE", this.props.guildInfo.name)}
+            breadcrumbs={[new Crumbs("./", LangF("MAIN_PAGE", this.props.guildInfo.name))]}
             pageActions={this.pageActions()}
         >
             {this.baseInfo()}
@@ -111,11 +116,11 @@ class Main extends BaseReactComp<IMainProps, any> {
 }
 
 const connectedMain = connect<{}, {}, {}, IStore>((state: IStore) => {
-    const { session } = state;
+    const { guild } = state.guild;
     return {
-        session,
-        isLoading: session && session.holding,
-        guildInfo: {}
+        isLoading: guild.holding,
+        guildInfo: guild,
+        guildId: state.session.guildId
     };
 })(Main);
 

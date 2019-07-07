@@ -40,5 +40,14 @@ namespace Coffers.Public.Infrastructure.Authorization
             return await _context.Gamers
                 .FirstOrDefaultAsync(gamer => gamer.Id == userId, cancellationToken);
         }
+
+        public async Task Save(Gamer gamer)
+        {
+            var entry = _context.Entry(gamer);
+            if (entry.State == EntityState.Detached)
+                _context.Gamers.Add(gamer);
+
+            await _context.SaveChangesAsync();
+        }
     }
 }

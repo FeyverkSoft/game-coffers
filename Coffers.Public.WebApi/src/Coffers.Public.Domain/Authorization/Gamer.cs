@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Coffers.Types.Gamer;
 
 namespace Coffers.Public.Domain.Authorization
@@ -29,7 +30,16 @@ namespace Coffers.Public.Domain.Authorization
         /// Пароль для авторизации
         /// </summary>
         public String Password { get; internal set; }
+        /// <summary>
+        /// ID гильдии пользователя
+        /// </summary>
+        public Guid GuildId { get; set; }
 
         internal Gamer() { }
+
+        public void SetPassword(String hash)
+        {
+            Password = hash;
+        }
     }
 }

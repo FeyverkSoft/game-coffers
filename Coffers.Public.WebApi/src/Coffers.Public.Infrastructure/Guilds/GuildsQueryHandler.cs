@@ -29,6 +29,7 @@ namespace Coffers.Public.Infrastructure.Guilds
                 .Select(res => new GuildView
                 {
                     Id = res.Id,
+                    Name = res.Name,
                     RecruitmentStatus = res.RecruitmentStatus,
                     Status = res.Status,
                     UpdateDate = res.UpdateDate,

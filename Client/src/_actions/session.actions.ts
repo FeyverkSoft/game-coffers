@@ -1,6 +1,5 @@
 import { history } from '../_helpers';
-import { authService } from "../_services";
-import { SessionInfo } from '../_services/entity';
+import { authService, SessionInfo } from "../_services";
 import { alertInstance, SessionActionsType } from '.';
 
 export class SessionActions {
@@ -21,6 +20,7 @@ export class SessionActions {
                 .catch(
                     ex => {
                         dispatch(failure());
+                        this.clearLocalSession();
                         dispatch(alertInstance.error(ex));
                     });
         }

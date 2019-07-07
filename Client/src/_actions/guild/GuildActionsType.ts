@@ -1,0 +1,5 @@
+export enum GuildActionsType {
+    PROC_GET_GUILD = 'PROC_GET_GUILD',
+    SUCC_GET_GUILD = 'SUCC_GET_GUILD',
+    FAILED_GET_GUILD = 'FAILED_GET_GUILD',
+}

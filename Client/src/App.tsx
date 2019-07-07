@@ -23,7 +23,6 @@ class MyApp extends React.Component<any, any> {
             // очищаем сообщения при изменении локации
             if (alerts && alerts.messages && alerts.messages.length != 0)
                 dispatch(alertInstance.clear());
-
         });
     }
 
@@ -42,10 +41,10 @@ class MyApp extends React.Component<any, any> {
                     <div className="body">
                         <TryCatch>
                             <Switch>
-                                <Route path='/demo' component={DemoController} />
+                                <PrivateRoute path='/demo' component={DemoController} />
                                 <Route path='/auth' component={AuthController} />
                                 <PrivateRoute path='/logout' component={LogOutController} />
-                                <Route path="/" component={MainController} />
+                                <PrivateRoute path="/" component={MainController} />
                                 <Route component={NotFoundController} />
                             </Switch>
                         </TryCatch>

@@ -2,7 +2,7 @@ export class Config {
     static Debug: boolean = true;
     
     public static GetUrl(): string {
-        return localStorage.getItem('apiUrl') || (window.config || {}).ApiUrl || 'http://localhost:8080';
+        return localStorage.getItem('Coffer_apiUrl') || (window.config || {}).ApiUrl || 'http://localhost:58201';
     }
 
     public static BuildUrl(url: string, params: any = null): string {

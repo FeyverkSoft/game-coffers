@@ -31,13 +31,13 @@ export function getResponse<T=any>(response: Response): Promise<T> {
 export const catchHandle = (ex: any): Promise<any> => Promise.reject(ex.message || ex.code || ex);
 
 export const errorHandle = (data: any): Promise<any> => {
-    if (data && data.error) {
-        if (data.error.code) {
-            let error: string = Lang(data.error.code).format(data.error.detail || '');
-            if (data.error.code == 'UNAUTHORIZED') {
+    if (data && data.types || data.traceId) {
+        if (data.type|| data.traceId) {
+            let error: string = Lang(data.type).format(data.errors || data.title || '');
+            if (data.type == 'forbidden') {
                 try {
                     store.dispatch(sessionInstance.clearLocalSession(true));
-                    return Promise.reject(data.error.code);
+                    return Promise.reject(data.type);
                 }
                 catch (ex) {
                     console.debug(ex);
@@ -46,7 +46,7 @@ export const errorHandle = (data: any): Promise<any> => {
             }
             return Promise.reject(error);
         }
-        return Promise.reject(data.error.detail);
+        return Promise.reject(data.errors);
     }
     return Promise.resolve();
 }

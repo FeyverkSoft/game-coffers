@@ -54,6 +54,9 @@ namespace Coffers.Public.Infrastructure.Authorization
                     .IsRequired();
                 b.Property(o => o.Password)
                     .HasColumnName("Password");
+                b.Property(o => o.GuildId)
+                    .HasColumnName("GuildId")
+                    .IsRequired();
 
                 b.Property(o => o.Roles)
                     .HasConversion(

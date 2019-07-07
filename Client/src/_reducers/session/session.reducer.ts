@@ -1,6 +1,6 @@
 import { SessionActionsType } from "../../_actions";
-import { SessionInfo } from "../../_services/entity";
 import { IAction } from "../../core";
+import { SessionInfo } from "../../_services";
 
 let localStorageSession: string | null = localStorage.getItem('session');
 let sessionInfo: string | undefined;

@@ -3,7 +3,7 @@ const locString: any = {
         NOT_FOUND: 'Resource {0} not found;',
         NOT_IMPLEMENTED: 'Action or function {0} not implemented',
         INTERNAL_SERVER_ERROR: 'Internal server error {0}',
-        UNAUTHORIZED: 'Unauthorized. {0}',
+        FORBIDDEN: 'Unauthorized. {0}',
         INCORRECT_PASSWORD: 'incorrect username or password. {0}',
         POINT_NOT_FOUND: 'Point {0} not found',
         INVALID_ARGUMENT: 'invalid argument {0}',
@@ -13,12 +13,12 @@ const locString: any = {
         NOT_FOUND: 'Ресурс {0} не найден;',
         NOT_IMPLEMENTED: 'Метод или функционал {0} не реализован',
         INTERNAL_SERVER_ERROR: 'Произошла внутреняя ошибка сервера: {0}',
-        UNAUTHORIZED: 'Доступ запрещён. {0}',
+        FORBIDDEN: 'Доступ запрещён. {0}',
         INCORRECT_PASSWORD: 'Введён не верный логин и/или пароль. {0}',
         POINT_NOT_FOUND: 'Точка {0} не найдена',
         INVALID_ARGUMENT: 'Передан недопустимый аргумент {0}',
         RESOURCE_NOT_FOUND: 'Ресурс {0} не найден;',
-        MAIN_PAGE: 'Казна гильдии',
+        MAIN_PAGE: 'Казна гильдии: {0}',
         MAIN_PAGE_MAIN_INFO: 'Базовая информация',
         MAIN_PAGE_CHARACTERS_COUNT: 'Чаров в гильдии по списку:',
         MAIN_PAGE_FACT_CHARACTERS_COUNT: 'По факту чаров в гильдии:',
@@ -79,7 +79,7 @@ export const LangF = function (value: string, ...arg: (string | number)[]) {
 export const Lang = function (value: string, count?: number | undefined): string {
     let res: any;
     if (value)
-        res = getTranslate(value) || value;
+        res = getTranslate(value.toUpperCase()) || value;
     else
         res = getTranslate(CurrentLang()) || value;
 

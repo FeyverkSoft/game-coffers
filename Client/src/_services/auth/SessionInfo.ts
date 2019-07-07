@@ -1,8 +1,8 @@
 export class SessionInfo {
     sessionId: string;
-    userId: string;
-    initDate: Date;
+    guildId: string;
     holding: boolean;
+    roles: string[];
     constructor(data: any = { holding: false }) {
         let obj;
         if (typeof (data) == typeof ('')) {
@@ -12,9 +12,9 @@ export class SessionInfo {
         }
         obj = obj || data || {};
         this.sessionId = obj.token || obj.sessionId;
-        this.userId = obj.ownerId || obj.userId;
-        this.initDate = new Date(obj.initDate || new Date());
         this.holding = obj.holding || false;
+        this.roles = obj.roles;
+        this.guildId = obj.guildId;
     }
 
     isActive(): boolean {

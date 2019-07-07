@@ -1,4 +1,4 @@
-import { getGuid } from "../../../_helpers";
+import { getGuid } from "../../_helpers";
 
 export class Alert {
     id: string;

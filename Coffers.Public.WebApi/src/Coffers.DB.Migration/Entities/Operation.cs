@@ -42,7 +42,7 @@ namespace Coffers.DB.Migrations.Entities
         /// <summary>
         /// Основание для проведения операции
         /// </summary>
-        public Guid DocumentId { get; set; }
+        public Guid? DocumentId { get; set; }
 
         /// <summary>
         /// Описание операции
@@ -66,7 +66,7 @@ namespace Coffers.DB.Migrations.Entities
         /// </summary>
         Loan,
         /// <summary>
-        /// Обмен
+        /// Обмен между своими персонажами
         /// </summary>
         Exchange,
         /// <summary>
@@ -80,6 +80,7 @@ namespace Coffers.DB.Migrations.Entities
         /// <summary>
         /// Иное
         /// </summary>
-        Other
+        Other,
+
     }
 }

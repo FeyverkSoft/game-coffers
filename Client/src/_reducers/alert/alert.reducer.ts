@@ -1,6 +1,6 @@
 ﻿import { AlertActionsType } from '../../_actions';
-import { Alert } from '../../_services/entity';
 import { IAction } from '../../core';
+import { Alert } from '../../_services/alert/Alert';
 const count = 5;//количество отображаемых сообщений
 
 export class AlertState {

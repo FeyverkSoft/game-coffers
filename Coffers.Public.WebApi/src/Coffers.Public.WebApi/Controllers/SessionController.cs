@@ -34,7 +34,7 @@ namespace Coffers.Public.WebApi.Controllers
         {
             var gamer = await _authorizationRepository.FindGamer(binding.Login, cancellationToken);
             if (gamer == null || String.IsNullOrEmpty(gamer.Password))
-                throw new ApiException(HttpStatusCode.NotFound, "not_found", "");
+                throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.Forbidden, "");
 
             var crypt = new SHA256Managed();
             var hash = new StringBuilder();
@@ -45,7 +45,7 @@ namespace Coffers.Public.WebApi.Controllers
             }
 
             if (!hash.ToString().Equals(gamer.Password, StringComparison.InvariantCultureIgnoreCase))
-                throw new ApiException(HttpStatusCode.Unauthorized, "not_found", "");
+                throw new ApiException(HttpStatusCode.Unauthorized, ErrorCodes.Forbidden, "");
 
             var sessionId = Guid.NewGuid();
             var ipAddress = HttpContext.Request.Headers["X-Original-For"].ToString() ??
@@ -56,7 +56,39 @@ namespace Coffers.Public.WebApi.Controllers
             return Ok(new TokenView
             {
                 Token = sessionId,
+                GuildId = gamer.GuildId,
+                Roles = gamer.Roles
             });
+        }
+
+        /// <summary>
+        /// Задаёт логин и пароль пользователю, если у него его нет
+        /// Сделать потом автогенеририруемый с отправкой на почту.
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpPut("{userId}/password")]
+        [ProducesResponseType(typeof(TokenView), 200)]
+        public async Task<IActionResult> PutPassword([FromRoute] Guid userId, [FromBody] PasswordBinding binding, CancellationToken cancellationToken)
+        {
+#warning Придумать что-то лучше...
+            var gamer = await _authorizationRepository.FindGamer(binding.Login, cancellationToken);
+            if (gamer == null || gamer.Id != userId || !String.IsNullOrEmpty(gamer.Password))
+                throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.Forbidden, "");
+
+            var crypt = new SHA256Managed();
+            var hash = new StringBuilder();
+            var crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(binding.Login + binding.Password + gamer.Id));
+            foreach (var theByte in crypto)
+            {
+                hash.Append(theByte.ToString("x2"));
+            }
+
+            gamer.SetPassword(hash.ToString());
+            await _authorizationRepository.Save(gamer);
+
+            return Ok();
         }
     }
 }
