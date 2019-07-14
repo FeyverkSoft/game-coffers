@@ -25,7 +25,6 @@ namespace Coffers.DB.Migrations.Migrations
                 columns: table => new
                 {
                     Id = table.Column<byte[]>(nullable: false),
-                    CreateDate = table.Column<DateTime>(nullable: false),
                     LoanTax = table.Column<decimal>(nullable: false, defaultValue: 0m),
                     ExpiredLoanTax = table.Column<decimal>(nullable: false, defaultValue: 0m),
                     Tax = table.Column<string>(maxLength: 4096, nullable: false, defaultValue: "{}")
@@ -45,7 +44,7 @@ namespace Coffers.DB.Migrations.Migrations
                     Amount = table.Column<decimal>(nullable: false, defaultValue: 0m),
                     AccountId = table.Column<byte[]>(nullable: true),
                     Type = table.Column<string>(maxLength: 32, nullable: false),
-                    DocumentId = table.Column<byte[]>(nullable: false),
+                    DocumentId = table.Column<byte[]>(nullable: true),
                     Description = table.Column<string>(maxLength: 512, nullable: true)
                 },
                 constraints: table =>
@@ -64,6 +63,7 @@ namespace Coffers.DB.Migrations.Migrations
                 columns: table => new
                 {
                     Id = table.Column<byte[]>(nullable: false),
+                    CreateDate = table.Column<DateTime>(nullable: false),
                     LeaderTariffId = table.Column<byte[]>(nullable: true),
                     OfficerTariffId = table.Column<byte[]>(nullable: true),
                     VeteranTariffId = table.Column<byte[]>(nullable: true),
@@ -150,7 +150,8 @@ namespace Coffers.DB.Migrations.Migrations
                     Status = table.Column<string>(maxLength: 32, nullable: false),
                     DateOfBirth = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)),
                     Login = table.Column<string>(maxLength: 64, nullable: false),
-                    Password = table.Column<string>(maxLength: 128, nullable: true)
+                    Password = table.Column<string>(maxLength: 128, nullable: true),
+                    Roles = table.Column<string>(maxLength: 512, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -174,9 +175,9 @@ namespace Coffers.DB.Migrations.Migrations
                 columns: table => new
                 {
                     Id = table.Column<byte[]>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    ClassName = table.Column<string>(nullable: true),
-                    Status = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(maxLength: 64, nullable: false),
+                    ClassName = table.Column<string>(maxLength: 64, nullable: false),
+                    Status = table.Column<string>(maxLength: 32, nullable: false),
                     GamerId = table.Column<byte[]>(nullable: true)
                 },
                 constraints: table =>
@@ -223,6 +224,7 @@ namespace Coffers.DB.Migrations.Migrations
                     BorrowDate = table.Column<DateTime>(nullable: false),
                     ExpiredDate = table.Column<DateTime>(nullable: false),
                     Amount = table.Column<decimal>(nullable: false, defaultValue: 0m),
+                    RedemptionAmount = table.Column<decimal>(nullable: false, defaultValue: 0m),
                     TaxAmount = table.Column<decimal>(nullable: false, defaultValue: 0m),
                     PenaltyAmount = table.Column<decimal>(nullable: false, defaultValue: 0m),
                     LoanStatus = table.Column<string>(maxLength: 32, nullable: false)
@@ -250,6 +252,8 @@ namespace Coffers.DB.Migrations.Migrations
                 {
                     Id = table.Column<byte[]>(nullable: false),
                     GamerId = table.Column<byte[]>(nullable: true),
+                    Amount = table.Column<decimal>(nullable: false, defaultValue: 0m),
+                    RedemptionAmount = table.Column<decimal>(nullable: false, defaultValue: 0m),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     PenaltyStatus = table.Column<string>(maxLength: 32, nullable: false),
                     Description = table.Column<string>(maxLength: 2048, nullable: true)
@@ -259,6 +263,27 @@ namespace Coffers.DB.Migrations.Migrations
                     table.PrimaryKey("PK_Penalty", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Penalty_Gamer_GamerId",
+                        column: x => x.GamerId,
+                        principalTable: "Gamer",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Session",
+                columns: table => new
+                {
+                    SessionId = table.Column<byte[]>(nullable: false),
+                    GamerId = table.Column<byte[]>(nullable: true),
+                    CreateDate = table.Column<DateTime>(nullable: false),
+                    ExpireDate = table.Column<DateTime>(nullable: false),
+                    Ip = table.Column<string>(maxLength: 128, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Session", x => x.SessionId);
+                    table.ForeignKey(
+                        name: "FK_Session_Gamer_GamerId",
                         column: x => x.GamerId,
                         principalTable: "Gamer",
                         principalColumn: "Id",
@@ -275,6 +300,12 @@ namespace Coffers.DB.Migrations.Migrations
                 name: "IX_Character_GamerId",
                 table: "Character",
                 column: "GamerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Character_Id",
+                table: "Character",
+                column: "Id",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Gamer_DefaultAccountId",
@@ -389,6 +420,17 @@ namespace Coffers.DB.Migrations.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Session_GamerId",
+                table: "Session",
+                column: "GamerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Session_SessionId",
+                table: "Session",
+                column: "SessionId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Tariff_Id",
                 table: "Tariff",
                 column: "Id",
@@ -411,6 +453,9 @@ namespace Coffers.DB.Migrations.Migrations
 
             migrationBuilder.DropTable(
                 name: "Penalty");
+
+            migrationBuilder.DropTable(
+                name: "Session");
 
             migrationBuilder.DropTable(
                 name: "Gamer");

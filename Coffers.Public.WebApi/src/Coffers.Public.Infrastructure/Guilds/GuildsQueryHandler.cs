@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Coffers.Public.Domain.Guilds;
 using Coffers.Public.Infrastructure.Helpers;
 using Coffers.Public.Queries.Guilds;
+using Coffers.Types.Gamer;
 using Microsoft.EntityFrameworkCore;
 using Query.Core;
 
@@ -24,8 +25,11 @@ namespace Coffers.Public.Infrastructure.Guilds
         public async Task<GuildView> Handle(GuildQuery query, CancellationToken cancellationToken)
         {
             return await _context.Guilds
-                .Where(guild => guild.Id == query.Id && guild.Gamers.Any(g => g.Id == query.UserId))
+                .AsNoTracking()
+                .Where(guild => guild.Id == query.Id)
                 .Include(x => x.Tariff)
+                .Include(g => g.Gamers)
+                .ThenInclude(c => c.Characters)
                 .Select(res => new GuildView
                 {
                     Id = res.Id,
@@ -41,7 +45,10 @@ namespace Coffers.Public.Infrastructure.Guilds
                         Leader = TariffViewBuilder(res.Tariff != null ? res.Tariff.LeaderTariff : null),
                         Veteran = TariffViewBuilder(res.Tariff != null ? res.Tariff.VeteranTariff : null),
                         Soldier = TariffViewBuilder(res.Tariff != null ? res.Tariff.SoldierTariff : null)
-                    }
+                    },
+                    GamersCount = res.Gamers.Count(g => !new[] { GamerStatus.Left, GamerStatus.Banned }.Contains(g.Status)),
+                    CharactersCount = res.Gamers.Where(g => !new[] { GamerStatus.Left, GamerStatus.Banned }.Contains(g.Status))
+                        .SelectMany(x => x.Characters).Count(c => c.Status == CharStatus.Active)
                 })
                 .FirstOrDefaultAsync(cancellationToken);
         }
@@ -58,6 +65,7 @@ namespace Coffers.Public.Infrastructure.Guilds
         public async Task<ICollection<GuildView>> Handle(GuildsQuery query, CancellationToken cancellationToken)
         {
             return await _context.Guilds
+                .AsNoTracking()
                 .Select(res => new GuildView
                 {
                     Id = res.Id,

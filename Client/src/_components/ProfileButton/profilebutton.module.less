@@ -5,15 +5,17 @@
     padding: 0 .5rem;
 
     .profile-button {
+        .flex();
         border-radius: 0.25rem 0.2rem 0.25rem 0.2rem;
         background: lighten(@bgColor, 10%);
         padding: .25rem;
         cursor: pointer;
-        font: normal normal normal 24px/1 "Material Design Icons";
+        align-items: center;
 
         &::before {
             content: "\F004";
             display: block;
+            font: normal normal normal 24px/1 "Material Design Icons";
         }
 
         &:hover {

@@ -1,4 +1,5 @@
 ﻿using System;
+using Coffers.Types.Gamer;
 
 namespace Coffers.DB.Migrations.Entities
 {
@@ -15,6 +16,14 @@ namespace Coffers.DB.Migrations.Entities
         public Gamer Gamer { get; set; }
 
         /// <summary>
+        /// Сумма штрафа
+        /// </summary>
+        public Decimal Amount { get; set; }
+        /// <summary>
+        /// Уже было выплаченно в пользу штрафа
+        /// </summary>
+        public Decimal RedemptionAmount { get; set; }
+        /// <summary>
         /// Дата создания
         /// </summary>
         public DateTime CreateDate { get; set; }
@@ -28,12 +37,5 @@ namespace Coffers.DB.Migrations.Entities
         /// Причина
         /// </summary>
         public String Description { get; set; }
-    }
-
-    internal enum PenaltyStatus
-    {
-        Active,
-        InActive,
-        Canceled
     }
 }

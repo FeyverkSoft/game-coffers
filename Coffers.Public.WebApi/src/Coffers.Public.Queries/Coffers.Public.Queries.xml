@@ -4,6 +4,46 @@
         <name>Coffers.Public.Queries</name>
     </assembly>
     <members>
+        <member name="T:Coffers.Public.Queries.Gamers.BaseGamerInfoView">
+            <summary>
+            Basic gamer information.
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Gamers.BaseGamerInfoView.UserId">
+            <summary>
+            User id
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Gamers.BaseGamerInfoView.Name">
+            <summary>
+            User name
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Gamers.BaseGamerInfoView.Balance">
+            <summary>
+            User Current balance
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Gamers.BaseGamerInfoView.ActiveLoanAmount">
+            <summary>
+            Amount of active loans
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Gamers.BaseGamerInfoView.ActivePenaltyAmount">
+            <summary>
+            Amount of active penalty
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Gamers.BaseGamerInfoView.Rank">
+            <summary>
+            Gamer guild rank
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Gamers.BaseGamerInfoView.CharCount">
+            <summary>
+            Characters count
+            </summary>
+        </member>
         <member name="T:Coffers.Public.Queries.Guilds.GuildQuery">
             <summary>
             Возвращает гильдию с подробной информацией по её ID и id пользователя состоящего в ней
@@ -12,11 +52,6 @@
         <member name="P:Coffers.Public.Queries.Guilds.GuildQuery.Id">
             <summary>
             ID гильдии
-            </summary>
-        </member>
-        <member name="P:Coffers.Public.Queries.Guilds.GuildQuery.UserId">
-            <summary>
-            Идентификатор пользователя, для контроля того что он состоит в этой гильдии
             </summary>
         </member>
         <member name="T:Coffers.Public.Queries.Guilds.GuildsQuery">
@@ -52,6 +87,21 @@
         <member name="P:Coffers.Public.Queries.Guilds.GuildView.RecruitmentStatus">
             <summary>
             Статус набора в гильдию
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Guilds.GuildView.GamersCount">
+            <summary>
+            Игроков на текущий момент в гильдии
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Guilds.GuildView.CharactersCount">
+            <summary>
+            Персонажей в гильдии на текущий момент
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Guilds.GuildView.Tariffs">
+            <summary>
+            Список тарифов гильдии
             </summary>
         </member>
         <member name="P:Coffers.Public.Queries.Guilds.TariffsView.Leader">

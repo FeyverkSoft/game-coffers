@@ -5,3 +5,5 @@ export * from './SessionActionsType.ts';
 export * from './guild/GuildActionsType.ts';
 export * from './AlertActionsType.ts';
 export * from './guild/guild.actions.ts';
+export * from './gamer/GamerActionsType.ts';
+export * from './gamer/gamer.actions.ts';

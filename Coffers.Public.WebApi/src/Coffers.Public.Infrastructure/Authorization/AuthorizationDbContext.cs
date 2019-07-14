@@ -36,6 +36,10 @@ namespace Coffers.Public.Infrastructure.Authorization
                 b.Property(o => o.Ip)
                     .HasMaxLength(128);
 
+                b.HasOne(g => g.Gamer)
+                    .WithMany()
+                    .HasPrincipalKey(_ => _.Id);
+
             });
 
             modelBuilder.Entity<Gamer>(b =>

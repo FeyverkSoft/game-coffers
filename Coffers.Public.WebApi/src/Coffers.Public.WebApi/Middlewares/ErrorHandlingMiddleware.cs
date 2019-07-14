@@ -33,10 +33,28 @@ namespace Coffers.Public.WebApi.Middlewares
             {
                 await _next(context);
             }
+            catch (ApiException apiException)
+            {
+                var logger = _loggerFactory.CreateLogger("System");
+                logger.LogError(apiException, apiException.Message);
+                var actionContext = new ActionContext(context, context.GetRouteData() ?? EmptyRouteData, EmptyActionDescriptor);
+                var resp = new ProblemDetails
+                {
+                    Type = apiException.Code ?? ErrorCodes.InternalServerError,
+                    Status = apiException.GetHttpStatusCode(),
+                    Detail = apiException.Message,
+                };
+                resp.Extensions.Add("traceId", context.TraceIdentifier);
+
+                await _executor.ExecuteAsync(actionContext, new ObjectResult(resp)
+                {
+                    StatusCode = apiException.GetHttpStatusCode()
+                });
+            }
             catch (Exception exc)
             {
                 var logger = _loggerFactory.CreateLogger("System");
-                logger.LogCritical(exc, exc.Message);
+                logger.LogError(exc, exc.Message);
                 var actionContext = new ActionContext(context, context.GetRouteData() ?? EmptyRouteData, EmptyActionDescriptor);
                 var resp = new ProblemDetails
                 {

@@ -67,10 +67,20 @@ namespace Coffers.Public.Domain.Guilds
             UpdateDate = DateTime.UtcNow;
             GuildAccount = new Account();
         }
-
+        public void AddGamer(String login)
+        {
+            foreach (var gamer in Gamers)
+            {
+                if (gamer.Login.Equals(login, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    gamer.Status = GamerStatus.Active;
+                    gamer.Rank = GamerRank.Beginner;
+                }
+            }
+        }
         public void AddGamer(Guid id, String name, String login, DateTime dateOfBirth, GamerStatus gamerStatus, GamerRank rank)
         {
-            if (Gamers.Any(g => g.Id == id && !g.Login.Equals(login)))
+            if (Gamers.Any(g => g.Id == id && !g.Login.Equals(login, StringComparison.InvariantCultureIgnoreCase)))
                 throw new DuplicateNameException("Gamer already exists");
             Gamers.Add(new Gamer(id, name, login, dateOfBirth, gamerStatus, rank));
         }

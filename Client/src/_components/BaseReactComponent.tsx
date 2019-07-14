@@ -13,6 +13,14 @@ export class BaseReactComp<TProps = {}, TState = {}> extends React.Component<TPr
             this.setState(obj);
         }
     }
+    
+    onInput = <T extends {} = any>(val: T, valid: boolean, path: string): void => {
+        if (path) {
+            let obj = getObject(this.state || {}, path , val);
+            this.setState(obj);
+        }
+    }
+
     isValidForm = <T extends any = any>(form: T): boolean => {
         for (let propertyName in form) {
             if (!form[propertyName].isValid && (form[propertyName].isValid != undefined && form[propertyName].value != undefined))

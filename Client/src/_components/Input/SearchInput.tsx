@@ -12,6 +12,7 @@ export class SearchInput extends BaseInput<SearchInputProps> {
                 <input className={style['search-input']}
                     placeholder={Lang('search')}>
                 </input>
+                <span className={style['bar']} />
             </div>
         );
     }

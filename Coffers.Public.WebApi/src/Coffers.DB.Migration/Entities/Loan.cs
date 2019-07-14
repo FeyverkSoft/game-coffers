@@ -1,4 +1,5 @@
 ﻿using System;
+using Coffers.Types.Gamer;
 
 namespace Coffers.DB.Migrations.Entities
 {
@@ -53,6 +54,11 @@ namespace Coffers.DB.Migrations.Entities
         public Decimal Amount { get; set; }
 
         /// <summary>
+        /// Уже было выплаченно от займа
+        /// </summary>
+        public Decimal RedemptionAmount { get; set; }
+
+        /// <summary>
         /// Сумма комиссии 
         /// </summary>
         public Decimal TaxAmount { get; set; }
@@ -65,11 +71,4 @@ namespace Coffers.DB.Migrations.Entities
         public LoanStatus LoanStatus { get; set; }
     }
 
-    internal enum LoanStatus
-    {
-        Active,
-        Paid,
-        Expired,
-        Canceled
-    }
 }

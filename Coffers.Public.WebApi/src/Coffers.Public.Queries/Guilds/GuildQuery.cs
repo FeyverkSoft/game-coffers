@@ -13,10 +13,6 @@ namespace Coffers.Public.Queries.Guilds
         /// ID гильдии
         /// </summary>
         public Guid Id { get; set; }
-        /// <summary>
-        /// Идентификатор пользователя, для контроля того что он состоит в этой гильдии
-        /// </summary>
-        public Guid UserId { get; set; }
     }
     /// <summary>
     /// Возвращает список гильдий

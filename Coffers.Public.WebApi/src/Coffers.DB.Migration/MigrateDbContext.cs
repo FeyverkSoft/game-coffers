@@ -187,6 +187,29 @@ namespace Coffers.DB.Migrations
 
             });
 
+            modelBuilder.Entity<Character>(b =>
+            {
+                b.ToTable(nameof(Character));
+
+                b.HasIndex(g => g.Id)
+                    .IsUnique();
+                b.HasKey(g => g.Id);
+                b.Property(g => g.Id)
+                    .HasColumnName("Id")
+                    .IsRequired();
+
+                b.Property(g => g.ClassName)
+                    .HasMaxLength(64)
+                    .IsRequired();
+                b.Property(g => g.Name)
+                    .HasMaxLength(64)
+                    .IsRequired();
+
+                b.Property(g => g.Status)
+                    .HasMaxLength(32)
+                    .HasConversion<String>();
+            });
+
             modelBuilder.Entity<Loan>(b =>
             {
                 b.ToTable(nameof(Loan));
@@ -206,7 +229,10 @@ namespace Coffers.DB.Migrations
                 b.Property(l => l.ExpiredDate)
                     .IsRequired();
 
-                b.Property(l => l.Amount)
+                b.Property(p => p.Amount)
+                    .HasDefaultValue(0)
+                    .IsRequired();
+                b.Property(p => p.RedemptionAmount)
                     .HasDefaultValue(0)
                     .IsRequired();
                 b.Property(l => l.LoanStatus)
@@ -243,6 +269,12 @@ namespace Coffers.DB.Migrations
                     .IsRequired();
 
                 b.Property(p => p.CreateDate)
+                    .IsRequired();
+                b.Property(p => p.Amount)
+                    .HasDefaultValue(0)
+                    .IsRequired();
+                b.Property(p => p.RedemptionAmount)
+                    .HasDefaultValue(0)
                     .IsRequired();
                 b.Property(p => p.Description)
                     .HasMaxLength(2048);
@@ -348,6 +380,10 @@ namespace Coffers.DB.Migrations
                     .IsRequired();
                 b.Property(o => o.ExpireDate)
                     .IsRequired();
+
+                b.HasOne(g => g.Gamer)
+                    .WithMany()
+                    .HasPrincipalKey(_ => _.Id);
 
                 b.Property(o => o.Ip)
                     .HasMaxLength(128);

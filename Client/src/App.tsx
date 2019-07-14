@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { Router, Route, Switch, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { PrivateNavLink, PrivateRoute, Alerts, OnlyPublicNavLink, Space, BaseInput, SearchInput, ProfileButton } from './_components';
-import { Lang } from './_services';
+import { PrivateNavLink, PrivateRoute, Alerts, OnlyPublicNavLink, Space, ProfileButton, Private } from './_components';
 import { IStore, history, TryCatch } from './_helpers';
 import { Logo, Header } from './_components';
 import {
@@ -36,7 +35,9 @@ class MyApp extends React.Component<any, any> {
                             <Logo />
                         </Link>
                         <Space />
-                        <ProfileButton />
+                        <Private>
+                            <ProfileButton />
+                        </Private>
                     </Header>
                     <div className="body">
                         <TryCatch>

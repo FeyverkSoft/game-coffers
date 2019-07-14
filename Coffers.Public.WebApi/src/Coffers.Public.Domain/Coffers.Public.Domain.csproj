@@ -14,5 +14,8 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\newtonsoft.json\11.0.2\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Superpower">
+      <HintPath>..\..\..\..\..\Users\petr-\.nuget\packages\superpower\2.0.0\lib\netstandard1.0\Superpower.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

@@ -34,7 +34,7 @@ export const errorHandle = (data: any): Promise<any> => {
     if (data && data.types || data.traceId) {
         if (data.type|| data.traceId) {
             let error: string = Lang(data.type).format(data.errors || data.title || '');
-            if (data.type == 'forbidden') {
+            if (data.type == 'unauthorized') {
                 try {
                     store.dispatch(sessionInstance.clearLocalSession(true));
                     return Promise.reject(data.type);

@@ -1,4 +1,5 @@
 ﻿using System;
+using Coffers.Types.Gamer;
 
 namespace Coffers.DB.Migrations.Entities
 {
@@ -23,12 +24,5 @@ namespace Coffers.DB.Migrations.Entities
         /// Статус персонажа
         /// </summary>
         public CharStatus Status { get; set; }
-    }
-
-    internal enum CharStatus
-    {
-        Deleted,
-        Active,
-        Left
     }
 }

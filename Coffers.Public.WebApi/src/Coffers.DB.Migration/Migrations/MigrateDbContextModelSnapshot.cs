@@ -44,20 +44,30 @@ namespace Coffers.DB.Migrations.Migrations
                 {
                     b.Property<byte[]>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
+                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)))
+                        .HasColumnName("Id");
 
-                    b.Property<string>("ClassName");
+                    b.Property<string>("ClassName")
+                        .IsRequired()
+                        .HasMaxLength(64);
 
                     b.Property<byte[]>("GamerId")
                         .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(64);
 
-                    b.Property<int>("Status");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(32);
 
                     b.HasKey("Id");
 
                     b.HasIndex("GamerId");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
 
                     b.ToTable("Character");
                 });
@@ -261,6 +271,10 @@ namespace Coffers.DB.Migrations.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(0m);
 
+                    b.Property<decimal>("RedemptionAmount")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(0m);
+
                     b.Property<byte[]>("TariffId")
                         .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
 
@@ -302,7 +316,6 @@ namespace Coffers.DB.Migrations.Migrations
                         .HasMaxLength(512);
 
                     b.Property<byte[]>("DocumentId")
-                        .IsRequired()
                         .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
 
                     b.Property<DateTime>("OperationDate");
@@ -328,6 +341,10 @@ namespace Coffers.DB.Migrations.Migrations
                         .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)))
                         .HasColumnName("Id");
 
+                    b.Property<decimal>("Amount")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(0m);
+
                     b.Property<DateTime>("CreateDate");
 
                     b.Property<string>("Description")
@@ -339,6 +356,10 @@ namespace Coffers.DB.Migrations.Migrations
                     b.Property<string>("PenaltyStatus")
                         .IsRequired()
                         .HasMaxLength(32);
+
+                    b.Property<decimal>("RedemptionAmount")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(0m);
 
                     b.HasKey("Id");
 
@@ -362,13 +383,14 @@ namespace Coffers.DB.Migrations.Migrations
                     b.Property<DateTime>("ExpireDate");
 
                     b.Property<byte[]>("GamerId")
-                        .IsRequired()
                         .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
 
                     b.Property<string>("Ip")
                         .HasMaxLength(128);
 
                     b.HasKey("SessionId");
+
+                    b.HasIndex("GamerId");
 
                     b.HasIndex("SessionId")
                         .IsUnique();
@@ -486,6 +508,13 @@ namespace Coffers.DB.Migrations.Migrations
                 {
                     b.HasOne("Coffers.DB.Migrations.Entities.Gamer", "Gamer")
                         .WithMany("Penalties")
+                        .HasForeignKey("GamerId");
+                });
+
+            modelBuilder.Entity("Coffers.DB.Migrations.Entities.Session", b =>
+                {
+                    b.HasOne("Coffers.DB.Migrations.Entities.Gamer", "Gamer")
+                        .WithMany()
                         .HasForeignKey("GamerId");
                 });
 #pragma warning restore 612, 618

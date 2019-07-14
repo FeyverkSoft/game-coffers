@@ -18,13 +18,20 @@ export class guildService {
                 'Authorization': 'Bearer ' + session.sessionId
             }
         };
-        return fetch(Config.BuildUrl(`/Guilds/${guildId}`), requestOptions)
+        return await fetch(Config.BuildUrl(`/Guilds/${guildId}`), requestOptions)
             .then<BaseResponse & GuildInfo>(getResponse)
             .then(data => {
                 if (data && data.type || data.traceId) {
                     return errorHandle(data);
                 }
-                return new GuildInfo(data.id, data.name, data.status, data.recruitmentStatus, data.tariffs);
+                return new GuildInfo(data.id, data.name, data.status, data.recruitmentStatus,
+                    data.charactersCount, data.gamersCount, {
+                        Soldier: data.tariffs.soldier,
+                        Beginner: data.tariffs.beginner,
+                        Officer: data.tariffs.officer,
+                        Veteran: data.tariffs.veteran,
+                        Leader: data.tariffs.leader
+                    });
             })
             .catch(catchHandle);
     }

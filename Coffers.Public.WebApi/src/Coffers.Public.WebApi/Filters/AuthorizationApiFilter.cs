@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Coffers.Public.WebApi.Filters
 {
-    public class AuthorizationApiFilter : IAsyncAuthorizationFilter
+    public class AuthorizationApiFilter : IAuthorizationFilter
     {
-        public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
+        public void OnAuthorization(AuthorizationFilterContext context)
         {
             if (context.Filters.All(f => f.GetType() != typeof(AuthorizeFilter)) ||
                 context.Filters.Any(f => f.GetType() == typeof(AllowAnonymousFilter)))

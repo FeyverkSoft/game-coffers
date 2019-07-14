@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
 using Coffers.Public.Domain.Authorization;
+using Coffers.Public.WebApi.Exceptions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -26,7 +28,6 @@ namespace Coffers.Public.WebApi.Authorization
             _authorizationRepository = authorizationRepository;
         }
 
-
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
             string authorization = Request.Headers["Authorization"];
@@ -35,18 +36,18 @@ namespace Coffers.Public.WebApi.Authorization
                 return AuthenticateResult.NoResult();
 
             if (!authorization.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
-                return AuthenticateResult.NoResult();
+                throw new ApiException(HttpStatusCode.Unauthorized, ErrorCodes.Unauthorized, "Session not found");
 
             if (!Guid.TryParse(authorization.Substring("Bearer ".Length).Trim(), out var sessionId))
-                return AuthenticateResult.Fail("Session not found");
+                throw new ApiException(HttpStatusCode.Unauthorized, ErrorCodes.Unauthorized, "Session not found");
 
             var session = await _authorizationRepository.Get(sessionId, CancellationToken.None);
 
             if (session == null)
-                return AuthenticateResult.Fail("Session not found");
+                throw new ApiException(HttpStatusCode.Unauthorized, ErrorCodes.Unauthorized, "Session not found");
 
             if (session.IsExpired)
-                return AuthenticateResult.Fail("Session expired");
+                throw new ApiException(HttpStatusCode.Unauthorized, ErrorCodes.Unauthorized, "Session expired");
 
             session.ExtendSession(60 * 26);
 
@@ -55,7 +56,11 @@ namespace Coffers.Public.WebApi.Authorization
             IEnumerable<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, session.SessionId.ToString(), ClaimValueTypes.String),
-                new Claim(ClaimType.UserId, session.GamerId.ToString(), ClaimValueTypes.String),
+                new Claim(ClaimType.UserId, session.Gamer.Id.ToString(), ClaimValueTypes.String),
+                new Claim(ClaimType.GuildId, session.Gamer.GuildId.ToString(), ClaimValueTypes.String),
+
+#warning //костыль для определения что это админ сервера
+                new Claim(ClaimType.Admin, (session.Gamer.Login=="Feyverk").ToString(), ClaimValueTypes.Boolean),
             };
 
             var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, "Token"));

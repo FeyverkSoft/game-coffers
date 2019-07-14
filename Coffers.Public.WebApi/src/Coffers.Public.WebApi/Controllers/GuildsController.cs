@@ -9,6 +9,7 @@ using Coffers.Public.Queries.Guilds;
 using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Exceptions;
 using Coffers.Public.WebApi.Models.Guild;
+using Coffers.Types.Gamer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Query.Core;
@@ -94,11 +95,13 @@ namespace Coffers.Public.WebApi.Controllers
         [ProducesResponseType(404)]
         public async Task<IActionResult> Get([FromRoute] Guid id, CancellationToken cancellationToken)
         {
+            if (!HttpContext.IsAdmin() && id != HttpContext.GuildId())
+                throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");
+
             var guild = await _queryProcessor.Process<GuildQuery, GuildView>(
                 new GuildQuery
                 {
-                    Id = id,
-                    UserId = HttpContext.GetUserId()
+                    Id = id
                 }, cancellationToken);
 
             if (guild == null)
@@ -117,21 +120,33 @@ namespace Coffers.Public.WebApi.Controllers
         [PermissionRequired("admin", "officer", "leader")]
         [HttpPost("{id}/Gamers")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> Create([FromRoute]Guid id,
+        public async Task<IActionResult> AddNewGamer([FromRoute]Guid id,
             [FromBody] GamerCreateBinding binding,
             CancellationToken cancellationToken)
         {
-            var guild = await _guildRepository.Get(id, HttpContext.GetUserId(), cancellationToken);
+            if (!HttpContext.IsAdmin() && id != HttpContext.GuildId())
+                throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");
+
+            var guild = await _guildRepository.Get(id, cancellationToken);
 
             if (guild == null)
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.GuildNotFound, "Guild not found");
 
             await _guildRepository.LoadGamers(guild, cancellationToken);
 
-            if (guild.Gamers.Any(g => g.Id == binding.Id && !g.Login.Equals(binding.Login)))
+            if (guild.Gamers.Any(g =>
+                g.Login.Equals(binding.Login, StringComparison.InvariantCultureIgnoreCase) &&
+                !new[] { GamerStatus.Banned, GamerStatus.Left }.Contains(g.Status))
+            )
                 throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.GamerAlreadyExists, "Gamer already exists");
 
-            guild.AddGamer(binding.Id, binding.Name, binding.Login, binding.DateOfBirth, binding.Status, binding.Rank);
+            if (guild.Gamers.Any(g =>
+                g.Login.Equals(binding.Login, StringComparison.InvariantCultureIgnoreCase) &&
+                new[] { GamerStatus.Banned, GamerStatus.Left }.Contains(g.Status))
+            )
+                guild.AddGamer(binding.Login);
+            else
+                guild.AddGamer(binding.Id, binding.Name, binding.Login, binding.DateOfBirth, binding.Status, binding.Rank);
 
             await _guildRepository.Save(guild);
 
@@ -152,7 +167,10 @@ namespace Coffers.Public.WebApi.Controllers
             [FromBody] UpdateTariffBinding binding,
             CancellationToken cancellationToken)
         {
-            var guild = await _guildRepository.Get(id, HttpContext.GetUserId(), cancellationToken);
+            if (!HttpContext.IsAdmin() && id != HttpContext.GuildId())
+                throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");
+
+            var guild = await _guildRepository.Get(id, cancellationToken);
 
             if (guild == null)
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.GuildNotFound, "Guild not found");

@@ -23,3 +23,5 @@ export * from './ProfileButton/ProfileButton';
 export * from './Header/Header';
 export * from './Breadcrumbs/Breadcrumbs';
 export * from './Page/Page';
+export * from './MainView/TariffView';
+export * from './MainView/UserView';

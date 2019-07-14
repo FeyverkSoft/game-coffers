@@ -20,6 +20,7 @@ export class Item {
 
 interface IMaterialSelectProps extends React.Props<any> {
     style?: React.CSSProperties;
+    type: 'white' | 'default' | 'error';
     value?: number | string;
     path?: string;
     items?: Array<Item>;
@@ -74,7 +75,7 @@ export class MaterialSelect extends React.Component<IMaterialSelectProps, any> {
         if ($this.props.label)
             label = <label>{$this.props.label}</label>;
         return (
-            <div className={`${style['select-wrapper']} ${this.props.className || ''}`}
+            <div className={`${style['select-wrapper']} ${this.props.className || ''} ${style[this.props.type]}`}
                 style={$this.props.style}>
                 {label}
                 <select

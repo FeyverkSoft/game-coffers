@@ -54,6 +54,41 @@
         }
     }
 
+    .sub-children {
+        position: absolute;
+        display: block;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        padding: .25rem .75rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        user-select: none;
+        text-align: center;
+        font-size: @14px;
+        color: @white;
+        border-radius: 0 .75rem 0 .75rem;
+        box-shadow: @box-shadow-1;
+        background-color: fade(@defaultColor, 80%);
+        
+        &.success {
+            background-color: fade(@successColor, 80%);
+        }
+
+        &.important {
+            background-color: fade(@importantColor, 80%);
+        }
+
+        &.default {
+            background-color: fade(@defaultColor, 80%);
+        }
+
+        &.error {
+            background-color: fade(@errorColor, 80%);
+        }
+    }
+
     &.titled {
         padding-top: 2rem;
     }

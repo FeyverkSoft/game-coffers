@@ -1,21 +1,22 @@
 import * as React from 'react';
 import { connect, DispatchProp } from 'react-redux';
-import { Lang, GuildInfo, LangF } from '../_services';
-import { Crumbs, BaseReactComp, Form, Input, Button, СanvasBlock, Page, MaterialSelect, Grid, Col2, Col1, NamedValue } from '../_components';
+import { Lang, GuildInfo, LangF, ITariffs, DLang, IGamerInfo, GamerRank } from '../_services';
+import {
+    Crumbs, BaseReactComp, Form, Input, Button, СanvasBlock, Page, MaterialSelect, Grid,
+    Col2, Col1, NamedValue, TariffView, UserView
+} from '../_components';
 
 import { guildInstance } from '../_actions';
 import { IStore } from '../_helpers';
 
-interface GuildInfos {
-    charCount: number;
-    inFactCharCount: number;
-    tax: number;
-}
 interface IMainProps extends DispatchProp<any> {
     isLoading?: boolean;
+    userLoading?: boolean;
+    user: IGamerInfo;
+    tariffs: ITariffs;
     guildId?: string;
     guildInfo: GuildInfo;
-
+    userRank: GamerRank;
 }
 
 class Main extends BaseReactComp<IMainProps, any> {
@@ -27,7 +28,6 @@ class Main extends BaseReactComp<IMainProps, any> {
 
     pageActions = (): React.ReactNode | string => {
         return <div>
-            <MaterialSelect></MaterialSelect>
         </div>;
     }
 
@@ -37,62 +37,53 @@ class Main extends BaseReactComp<IMainProps, any> {
     }
 
     baseInfo = () => {
-        return <Grid
-            direction="horizontal"
-        >
-            <Col2>
-                <СanvasBlock
-                    title={Lang("MAIN_PAGE_MAIN_INFO")}
-                    type="important"
+        const { guildInfo } = this.props;
+        return (
+            <СanvasBlock
+                title={Lang("MAIN_PAGE_MAIN_INFO")}
+                type="important"
+                isLoading={this.props.isLoading}
+            >
+                <Grid
+                    direction="horizontal"
                 >
-                    {/*  <Grid
-                        direction="vertical"
-                    >
+                    <Col2>
                         <Col1>
                             <NamedValue name={Lang("MAIN_PAGE_CHARACTERS_COUNT")}>
-                                {this.props.guildInfo.charCount || 0}
+                                {guildInfo.charactersCount || 0}
                             </NamedValue>
                         </Col1>
                         <Col1>
-                            <NamedValue name={Lang("MAIN_PAGE_FACT_CHARACTERS_COUNT")}>
-                                {this.props.guildInfo.inFactCharCount || 0}
+                            <NamedValue name={Lang("MAIN_PAGE_GAMERS_COUNT")}>
+                                {guildInfo.gamersCount || 0}
                             </NamedValue>
                         </Col1>
                         <Col1>
-                            <NamedValue name={Lang("MAIN_PAGE_TAX")}>
-                                {this.props.guildInfo.inFactCharCount || 0}
+                            <NamedValue name={Lang("MAIN_RECRUITMENTSTATUS")}>
+                                {DLang('RECRUITMENTSTATUS', guildInfo.recruitmentStatus)}
                             </NamedValue>
                         </Col1>
-                    </Grid>
-                </СanvasBlock>
-            </Col2>
-            <Col2>
-                <СanvasBlock
-                    title={Lang("MAIN_PAGE_ADV_INFO")}
-                    type="success"
-                >
-                    <Grid
-                        direction="vertical"
-                    >
+                    </Col2>
+                    <Col2>
                         <Col1>
-                            <NamedValue name={Lang("MAIN_PAGE_ADV_INFO_BALANCE")}>
-                                {this.props.guildInfo.tax || 0}
+                            <NamedValue name={Lang("MAIN_PAGE_GUILD_BALANCE")}>
+                                {guildInfo.charactersCount || 0}
                             </NamedValue>
                         </Col1>
                         <Col1>
-                            <NamedValue name={Lang("MAIN_PAGE_ADV_INFO_SALES")}>
-                                {this.props.guildInfo.tax || 0}
+                            <NamedValue name={Lang("MAIN_PAGE_GUILD_LOANS")}>
+                                {guildInfo.gamersCount || 0}
                             </NamedValue>
                         </Col1>
                         <Col1>
-                            <NamedValue name={Lang("MAIN_PAGE_ADV_INFO_SPENT")}>
-                                {this.props.guildInfo.tax || 0}
+                            <NamedValue name={Lang("MAIN_PAGE_EXPECTED_TAX")}>
+                                {0}
                             </NamedValue>
                         </Col1>
-                    </Grid>*/}
-                </СanvasBlock>
-            </Col2>
-        </Grid>;
+                    </Col2>
+                </Grid>
+            </СanvasBlock>
+        );
     }
 
     charactersGrid = () => {
@@ -109,17 +100,39 @@ class Main extends BaseReactComp<IMainProps, any> {
             breadcrumbs={[new Crumbs("./", LangF("MAIN_PAGE", this.props.guildInfo.name))]}
             pageActions={this.pageActions()}
         >
-            {this.baseInfo()}
+            <Grid
+                direction="horizontal"
+            >
+                <Col2> {this.baseInfo()} </Col2>
+                <Col2>
+                    <TariffView
+                        tariff={this.props.tariffs}
+                        currentRole={this.props.userRank}
+                        isLoading={this.props.isLoading}
+                    />
+                </Col2>
+                <Col2>
+                    <UserView
+                        user={this.props.user}
+                        isLoading={this.props.isLoading}
+                        tax={this.props.tariffs[this.props.userRank].tax}
+                    />
+                </Col2>
+            </Grid>
             {this.charactersGrid()}
         </Page>
     }
 }
 
 const connectedMain = connect<{}, {}, {}, IStore>((state: IStore) => {
-    const { guild } = state.guild;
+    const { guild, tariffs } = state.guild;
+    const { currentGamer } = state.gamers;
     return {
         isLoading: guild.holding,
         guildInfo: guild,
+        userRank: currentGamer.rank,
+        user: currentGamer,
+        tariffs: tariffs,
         guildId: state.session.guildId
     };
 })(Main);

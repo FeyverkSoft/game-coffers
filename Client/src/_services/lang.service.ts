@@ -19,15 +19,37 @@ const locString: any = {
         INVALID_ARGUMENT: 'Передан недопустимый аргумент {0}',
         RESOURCE_NOT_FOUND: 'Ресурс {0} не найден;',
         MAIN_PAGE: 'Казна гильдии: {0}',
-        MAIN_PAGE_MAIN_INFO: 'Базовая информация',
-        MAIN_PAGE_CHARACTERS_COUNT: 'Чаров в гильдии по списку:',
-        MAIN_PAGE_FACT_CHARACTERS_COUNT: 'По факту чаров в гильдии:',
-        MAIN_PAGE_TAX: 'Налог за 1 чара:',
+        MAIN_PAGE_MAIN_INFO: 'Сводка',
+        MAIN_PAGE_CHARACTERS_COUNT: 'Чаров в гильдии:',
+        MAIN_PAGE_GAMERS_COUNT: 'Игроков в гильдии:',
         MAIN_PAGE_ADV_INFO: 'Баланс за период',
         MAIN_PAGE_ADV_INFO_BALANCE: "Баланс ги на данный момент:",
         MAIN_PAGE_ADV_INFO_SALES: "Продано со склада гильдии:",
         MAIN_PAGE_ADV_INFO_SPENT: "Потрачено на нужды гильдии:",
-        MAIN_PAGE_CHARACTERS_GRID: "Список персонажей"
+        MAIN_PAGE_CHARACTERS_GRID: "Список персонажей",
+        TARIFF_TITLE: 'Тариф',
+        TARIFF_TAX: 'Налог за 1 чара:',
+        TARIFF_LOAN_TAX: 'Стоимость займа в день',
+        TARIFF_LOAN_EXPTAX: 'Стоимость просрочки займа',
+        TARIFF_ROLE_LEADER: 'ГМ',
+        TARIFF_ROLE_OFFICER: 'Офицер',
+        TARIFF_ROLE_VETERAN: 'Ветеран',
+        TARIFF_ROLE_SOLDIER: 'Солдат',
+        TARIFF_ROLE_BEGINNER: 'Новобранец',
+        MAIN_RECRUITMENTSTATUS: 'Набор:',
+        PAGE_AUTH: "Авторизация",
+        AUTHORIZE_FORM: "Введите логин и пароль",
+        USER_PENALTY_AMOUNT: "ШТРАФ: {0}",
+        USER_BALANCE: 'Ваш баланс',
+        USER_TITLE: "Вы",
+        USER_TAX_AMOUNT: 'Сумма налога с учётом скидки',
+        USER_LOAN_AMOUNT: 'Сумма активных займов',
+
+        RECRUITMENTSTATUS: {
+            Open: 'Открыт',
+            Close: 'Закрыт',
+            Internal: 'По приглашению'
+        }
     }
 };
 
@@ -74,6 +96,17 @@ function getTranslate(value: string): string {
 
 export const LangF = function (value: string, ...arg: (string | number)[]) {
     return Lang(value).format(...arg);
+}
+
+export const DLang = function (value: string, key?: string): string {
+    if (!key)
+        return '';
+    let res: any;
+    if (value)
+        res = getTranslate(value.toUpperCase()) || value;
+    else
+        res = getTranslate(CurrentLang()) || value;
+    return res[key] || '';
 }
 
 export const Lang = function (value: string, count?: number | undefined): string {

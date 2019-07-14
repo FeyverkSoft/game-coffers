@@ -23,3 +23,5 @@ export * from './ProfileButton/ProfileButton.tsx';
 export * from './Header/Header.tsx';
 export * from './Breadcrumbs/Breadcrumbs.tsx';
 export * from './Page/Page.tsx';
+export * from './MainView/TariffView.tsx';
+export * from './MainView/UserView.tsx';

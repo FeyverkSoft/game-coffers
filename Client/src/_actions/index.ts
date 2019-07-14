@@ -5,3 +5,5 @@ export * from './SessionActionsType';
 export * from './guild/GuildActionsType';
 export * from './AlertActionsType';
 export * from './guild/guild.actions';
+export * from './gamer/GamerActionsType';
+export * from './gamer/gamer.actions';

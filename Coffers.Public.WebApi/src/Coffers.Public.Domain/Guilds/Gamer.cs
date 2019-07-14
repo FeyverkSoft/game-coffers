@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Coffers.Types.Gamer;
 
 namespace Coffers.Public.Domain.Guilds
@@ -31,11 +32,6 @@ namespace Coffers.Public.Domain.Guilds
         public DateTime UpdateDate { get; internal set; }
 
         /// <summary>
-        /// Дата когда игрок удалился из гильдии
-        /// </summary>
-        public DateTime DeletedDate { get; internal set; }
-
-        /// <summary>
         /// Имя игрока
         /// </summary>
         public String Name { get; internal set; }
@@ -59,7 +55,10 @@ namespace Coffers.Public.Domain.Guilds
         /// Логин для авторизации
         /// </summary>
         public String Login { get; internal set; }
-
+        /// <summary>
+        /// Список чаров игрока
+        /// </summary>
+        public List<Character> Characters { get; set; }
         internal Gamer() { }
 
         public Gamer(Guid id, String name, String login, DateTime dateOfBirth, GamerStatus gamerStatus, GamerRank rank)

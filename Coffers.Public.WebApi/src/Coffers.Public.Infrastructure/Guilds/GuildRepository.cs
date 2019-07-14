@@ -22,13 +22,11 @@ namespace Coffers.Public.Infrastructure.Guilds
                 .FirstOrDefaultAsync(guild => guild.Id == id, cancellationToken);
         }
 
-        public async Task<Guild> Get(Guid id, Guid userId, CancellationToken cancellationToken)
+        public async Task<Guild> Get(Guid id, CancellationToken cancellationToken)
         {
             return await _context.Guilds
                 .Include(x => x.Gamers)
-                .FirstOrDefaultAsync(guild => guild.Id == id &&
-                                              guild.Gamers.Any(x => x.Id == userId),
-                    cancellationToken);
+                .FirstOrDefaultAsync(guild => guild.Id == id, cancellationToken);
         }
 
         /// <summary>

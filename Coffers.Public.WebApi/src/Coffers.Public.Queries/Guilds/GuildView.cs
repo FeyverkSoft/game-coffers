@@ -35,6 +35,19 @@ namespace Coffers.Public.Queries.Guilds
         /// </summary>
         public RecruitmentStatus RecruitmentStatus { get; set; }
 
+        /// <summary>
+        /// Игроков на текущий момент в гильдии
+        /// </summary>
+        public Int32 GamersCount { get; set; }
+
+        /// <summary>
+        /// Персонажей в гильдии на текущий момент
+        /// </summary>
+        public Int32 CharactersCount { get; set; }
+
+        /// <summary>
+        /// Список тарифов гильдии
+        /// </summary>
         public TariffsView Tariffs { get; set; }
     }
 

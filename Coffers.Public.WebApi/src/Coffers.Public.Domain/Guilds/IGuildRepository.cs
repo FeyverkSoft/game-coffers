@@ -8,7 +8,7 @@ namespace Coffers.Public.Domain.Guilds
     {
         Task<Guild> UnsafeGet(Guid id, CancellationToken cancellationToken);
 
-        Task<Guild> Get(Guid id, Guid userId, CancellationToken cancellationToken);
+        Task<Guild> Get(Guid id, CancellationToken cancellationToken);
         /// <summary>
         /// Подгружает список игроков в объект гильдии
         /// </summary>

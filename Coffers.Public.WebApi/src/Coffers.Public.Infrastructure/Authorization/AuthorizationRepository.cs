@@ -18,6 +18,7 @@ namespace Coffers.Public.Infrastructure.Authorization
         public async Task<Session> Get(Guid id, CancellationToken cancellationToken)
         {
             return await _context.Sessions
+                .Include(_ => _.Gamer)
                 .FirstOrDefaultAsync(session => session.SessionId == id, cancellationToken);
         }
         public async Task Save(Session session)

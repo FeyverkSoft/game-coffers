@@ -97,6 +97,7 @@ namespace Coffers.Public.WebApi
             services.RegQueryProcessor(registry =>
             {
                 registry.Register<GuildsQueryHandler>();
+                registry.Register<GamerQueryHandler>();
             });
 
 

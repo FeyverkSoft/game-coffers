@@ -4,5 +4,20 @@
         <name>Coffers.Types</name>
     </assembly>
     <members>
+        <member name="F:Coffers.Types.Guilds.RecruitmentStatus.Open">
+            <summary>
+            Набор открыт
+            </summary>
+        </member>
+        <member name="F:Coffers.Types.Guilds.RecruitmentStatus.Close">
+            <summary>
+            Набор закрыт
+            </summary>
+        </member>
+        <member name="F:Coffers.Types.Guilds.RecruitmentStatus.Internal">
+            <summary>
+            Набор только по приглошению
+            </summary>
+        </member>
     </members>
 </doc>

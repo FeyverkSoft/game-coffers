@@ -1,5 +1,6 @@
 ﻿using System;
 using Coffers.Public.Domain.Guilds;
+using Coffers.Types.Gamer;
 using Microsoft.EntityFrameworkCore;
 
 namespace Coffers.Public.Infrastructure.Guilds
@@ -74,7 +75,6 @@ namespace Coffers.Public.Infrastructure.Guilds
                 b.Property(g => g.CreateDate)
                     .IsRequired();
                 b.Property(g => g.UpdateDate);
-                b.Property(g => g.DeletedDate);
 
                 b.Property(g => g.DateOfBirth)
                     .HasDefaultValue(new DateTime(1900, 1, 1))
@@ -94,6 +94,10 @@ namespace Coffers.Public.Infrastructure.Guilds
 
                 b.HasOne(g => g.DefaultAccount)
                     .WithMany()
+                    .HasPrincipalKey(_ => _.Id);
+
+                b.HasMany(g => g.Characters)
+                    .WithOne()
                     .HasPrincipalKey(_ => _.Id);
 
 
@@ -170,6 +174,23 @@ namespace Coffers.Public.Infrastructure.Guilds
                     .WithMany()
                     .HasPrincipalKey(_ => _.Id);
 
+            });
+
+            modelBuilder.Entity<Character>(b =>
+            {
+                b.ToTable(nameof(Character));
+
+                b.HasIndex(gt => gt.Id)
+                    .IsUnique();
+                b.HasKey(gt => gt.Id);
+                b.Property(gt => gt.Id)
+                    .HasColumnName("Id")
+                    .IsRequired();
+
+                b.Property(t => t.Status)
+                    .HasDefaultValue(CharStatus.Active)
+                    .HasConversion<String>()
+                    .IsRequired();
             });
 
         }

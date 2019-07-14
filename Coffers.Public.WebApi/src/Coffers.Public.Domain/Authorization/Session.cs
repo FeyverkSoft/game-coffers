@@ -11,6 +11,7 @@ namespace Coffers.Public.Domain.Authorization
         /// <summary>
         /// Игрок которому принадлежит сессия
         /// </summary>
+        public Gamer Gamer { get; private set; }
         public Guid GamerId { get; private set; }
         /// <summary>
         /// Дата создания сессии
@@ -21,7 +22,7 @@ namespace Coffers.Public.Domain.Authorization
         /// </summary>
         public DateTime ExpireDate { get; private set; }
         /// <summary>
-        /// IP адресс с которого была получена сессиия
+        /// IP адрес с которого была получена сессиия
         /// </summary>
         public String Ip { get; private set; }
 

@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Coffers.DB.Migrations.Migrations
 {
     [DbContext(typeof(MigrateDbContext))]
-    [Migration("20190706190514_MoveCreateDate")]
-    partial class MoveCreateDate
+    [Migration("20190713163537_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -46,20 +46,30 @@ namespace Coffers.DB.Migrations.Migrations
                 {
                     b.Property<byte[]>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
+                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)))
+                        .HasColumnName("Id");
 
-                    b.Property<string>("ClassName");
+                    b.Property<string>("ClassName")
+                        .IsRequired()
+                        .HasMaxLength(64);
 
                     b.Property<byte[]>("GamerId")
                         .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(64);
 
-                    b.Property<int>("Status");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(32);
 
                     b.HasKey("Id");
 
                     b.HasIndex("GamerId");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
 
                     b.ToTable("Character");
                 });
@@ -98,6 +108,9 @@ namespace Coffers.DB.Migrations.Migrations
                     b.Property<string>("Rank")
                         .IsRequired()
                         .HasMaxLength(32);
+
+                    b.Property<string>("Roles")
+                        .HasMaxLength(512);
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -260,6 +273,10 @@ namespace Coffers.DB.Migrations.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(0m);
 
+                    b.Property<decimal>("RedemptionAmount")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(0m);
+
                     b.Property<byte[]>("TariffId")
                         .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
 
@@ -301,7 +318,6 @@ namespace Coffers.DB.Migrations.Migrations
                         .HasMaxLength(512);
 
                     b.Property<byte[]>("DocumentId")
-                        .IsRequired()
                         .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
 
                     b.Property<DateTime>("OperationDate");
@@ -327,6 +343,10 @@ namespace Coffers.DB.Migrations.Migrations
                         .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)))
                         .HasColumnName("Id");
 
+                    b.Property<decimal>("Amount")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(0m);
+
                     b.Property<DateTime>("CreateDate");
 
                     b.Property<string>("Description")
@@ -339,6 +359,10 @@ namespace Coffers.DB.Migrations.Migrations
                         .IsRequired()
                         .HasMaxLength(32);
 
+                    b.Property<decimal>("RedemptionAmount")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(0m);
+
                     b.HasKey("Id");
 
                     b.HasIndex("GamerId");
@@ -347,6 +371,33 @@ namespace Coffers.DB.Migrations.Migrations
                         .IsUnique();
 
                     b.ToTable("Penalty");
+                });
+
+            modelBuilder.Entity("Coffers.DB.Migrations.Entities.Session", b =>
+                {
+                    b.Property<byte[]>("SessionId")
+                        .ValueGeneratedOnAdd()
+                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)))
+                        .HasColumnName("SessionId");
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<DateTime>("ExpireDate");
+
+                    b.Property<byte[]>("GamerId")
+                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
+
+                    b.Property<string>("Ip")
+                        .HasMaxLength(128);
+
+                    b.HasKey("SessionId");
+
+                    b.HasIndex("GamerId");
+
+                    b.HasIndex("SessionId")
+                        .IsUnique();
+
+                    b.ToTable("Session");
                 });
 
             modelBuilder.Entity("Coffers.DB.Migrations.Entities.Tariff", b =>
@@ -459,6 +510,13 @@ namespace Coffers.DB.Migrations.Migrations
                 {
                     b.HasOne("Coffers.DB.Migrations.Entities.Gamer", "Gamer")
                         .WithMany("Penalties")
+                        .HasForeignKey("GamerId");
+                });
+
+            modelBuilder.Entity("Coffers.DB.Migrations.Entities.Session", b =>
+                {
+                    b.HasOne("Coffers.DB.Migrations.Entities.Gamer", "Gamer")
+                        .WithMany()
                         .HasForeignKey("GamerId");
                 });
 #pragma warning restore 612, 618
