@@ -46,6 +46,11 @@ namespace Coffers.Public.Queries.Guilds
         public Int32 CharactersCount { get; set; }
 
         /// <summary>
+        /// Баланс гильдии
+        /// </summary>
+        public Decimal Balance { get; set; }
+
+        /// <summary>
         /// Список тарифов гильдии
         /// </summary>
         public TariffsView Tariffs { get; set; }

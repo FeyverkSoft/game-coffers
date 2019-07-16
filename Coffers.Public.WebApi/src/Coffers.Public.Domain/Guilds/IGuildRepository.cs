@@ -6,8 +6,6 @@ namespace Coffers.Public.Domain.Guilds
 {
     public interface IGuildRepository
     {
-        Task<Guild> UnsafeGet(Guid id, CancellationToken cancellationToken);
-
         Task<Guild> Get(Guid id, CancellationToken cancellationToken);
         /// <summary>
         /// Подгружает список игроков в объект гильдии

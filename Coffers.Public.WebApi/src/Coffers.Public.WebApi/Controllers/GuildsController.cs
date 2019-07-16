@@ -42,8 +42,10 @@ namespace Coffers.Public.WebApi.Controllers
         [ProducesResponseType(201)]
         public async Task<IActionResult> Create(GuildCreateBinding binding, CancellationToken cancellationToken)
         {
-#warning //:TODO По идее этот метод надо вынести в отдельное API, но пока что.... Да и хостинг не поддерживает такое, а 2 сайта брать, нет... Сорян..
-            var existGuild = await _guildRepository.UnsafeGet(binding.Id, cancellationToken);
+            if (!HttpContext.IsAdmin())
+                throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");
+
+            var existGuild = await _guildRepository.Get(binding.Id, cancellationToken);
 
             if (existGuild != null)
             {
@@ -102,6 +104,33 @@ namespace Coffers.Public.WebApi.Controllers
                 new GuildQuery
                 {
                     Id = id
+                }, cancellationToken);
+
+            if (guild == null)
+                throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.GuildNotFound, "Guild not found");
+
+            return Ok(guild);
+        }
+
+        /// <summary>
+        /// This method get Guild balance info
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet("{id}/balance")]
+        [ProducesResponseType(typeof(GuildView), 200)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> GetBalance([FromRoute] Guid id, CancellationToken cancellationToken)
+        {
+            if (!HttpContext.IsAdmin() && id != HttpContext.GuildId())
+                throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");
+
+            var guild = await _queryProcessor.Process<GuildBalanceQuery, GuildBalanceView>(
+                new GuildBalanceQuery
+                {
+                    GuildId = id
                 }, cancellationToken);
 
             if (guild == null)

@@ -16,12 +16,6 @@ namespace Coffers.Public.Infrastructure.Guilds
             _context = context;
         }
 
-        public async Task<Guild> UnsafeGet(Guid id, CancellationToken cancellationToken)
-        {
-            return await _context.Guilds
-                .FirstOrDefaultAsync(guild => guild.Id == id, cancellationToken);
-        }
-
         public async Task<Guild> Get(Guid id, CancellationToken cancellationToken)
         {
             return await _context.Guilds

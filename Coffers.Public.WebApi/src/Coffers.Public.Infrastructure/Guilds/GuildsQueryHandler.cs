@@ -13,7 +13,9 @@ using Query.Core;
 namespace Coffers.Public.Infrastructure.Guilds
 {
     public class GuildsQueryHandler : IQueryHandler<GuildQuery, GuildView>,
-        IQueryHandler<GuildsQuery, ICollection<GuildView>>
+        IQueryHandler<GuildsQuery, ICollection<GuildView>>,
+        IQueryHandler<GuildBalanceQuery, GuildBalanceView>
+
     {
         private readonly GuildsDbContext _context;
 
@@ -48,7 +50,9 @@ namespace Coffers.Public.Infrastructure.Guilds
                     },
                     GamersCount = res.Gamers.Count(g => !new[] { GamerStatus.Left, GamerStatus.Banned }.Contains(g.Status)),
                     CharactersCount = res.Gamers.Where(g => !new[] { GamerStatus.Left, GamerStatus.Banned }.Contains(g.Status))
-                        .SelectMany(x => x.Characters).Count(c => c.Status == CharStatus.Active)
+                        .SelectMany(x => x.Characters).Count(c => c.Status == CharStatus.Active),
+                    Balance = res.GuildAccount.Balance
+
                 })
                 .FirstOrDefaultAsync(cancellationToken);
         }
@@ -75,6 +79,21 @@ namespace Coffers.Public.Infrastructure.Guilds
                     CreateDate = res.CreateDate
                 })
                 .ToListAsync(cancellationToken);
+        }
+
+        public Task<GuildBalanceView> Handle(GuildBalanceQuery query, CancellationToken cancellationToken)
+        {
+            var q = _context.Guilds
+                  .AsNoTracking()
+                  .Where(guild => guild.Id == query.GuildId)
+                  .Include(g => g.GuildAccount)
+                  .Include(x => x.Tariff)
+                  .Include(g => g.Gamers)
+                  .ThenInclude(c => c.Characters)
+                  .Include(g => g.Gamers)
+                  .ThenInclude(c => c.Loans);
+
+            throw new NotImplementedException();
         }
     }
 }

@@ -100,6 +100,10 @@ namespace Coffers.Public.Infrastructure.Guilds
                     .WithOne()
                     .HasPrincipalKey(_ => _.Id);
 
+                b.HasMany(g => g.Loans)
+                    .WithOne()
+                    .HasPrincipalKey(_ => _.Id);
+
 
             });
             modelBuilder.Entity<Account>(b =>

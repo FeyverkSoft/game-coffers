@@ -59,6 +59,12 @@ namespace Coffers.Public.Domain.Guilds
         /// Список чаров игрока
         /// </summary>
         public List<Character> Characters { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICollection<Loan> Loans { get; set; }
+
         internal Gamer() { }
 
         public Gamer(Guid id, String name, String login, DateTime dateOfBirth, GamerStatus gamerStatus, GamerRank rank)
