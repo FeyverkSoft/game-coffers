@@ -65,7 +65,6 @@ namespace Coffers.Public.WebApi.Models.Guild
             RuleFor(r => r.Rank)
                 .NotNull()
                 .NotEmpty();
-
         }
     }
 }

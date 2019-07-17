@@ -9,6 +9,12 @@ namespace Coffers.Public.Domain.Gamers
         /// Идентификатор штрафа
         /// </summary>
         public Guid Id { get; set; }
+
+        /// <summary>
+        /// Дата создания
+        /// </summary>
+        public DateTime CreateDate { get; set; }
+
         /// <summary>
         /// Сумма штрафа
         /// </summary>
@@ -16,10 +22,15 @@ namespace Coffers.Public.Domain.Gamers
         /// <summary>
         /// Уже было выплаченно в пользу штрафа
         /// </summary>
-        public Decimal RedemptionAmount { get; set; }
+        public Decimal RepaymentAmount { get; set; }
         /// <summary>
         /// Статус штрафа
         /// </summary>
         public PenaltyStatus PenaltyStatus { get; set; }
+
+        /// <summary>
+        /// Причина
+        /// </summary>
+        public String Description { get; set; }
     }
 }

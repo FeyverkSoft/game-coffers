@@ -20,8 +20,16 @@ namespace Coffers.Public.Domain.Gamers
         /// <summary>
         /// Уже было выплаченно в пользу займа
         /// </summary>
-        public Decimal RedemptionAmount { get; set; }
+        public Decimal RepaymentAmount { get; set; }
+        /// <summary>
+        /// Сумма комиссии 
+        /// </summary>
+        public Decimal TaxAmount { get; set; }
 
+        /// <summary>
+        /// Сумма штрафа 
+        /// </summary>
+        public Decimal PenaltyAmount { get; set; }
 
         public LoanStatus LoanStatus { get; set; }
     }

@@ -56,7 +56,7 @@ namespace Coffers.DB.Migrations.Entities
         /// <summary>
         /// Уже было выплаченно от займа
         /// </summary>
-        public Decimal RedemptionAmount { get; set; }
+        public Decimal RepaymentAmount { get; set; }
 
         /// <summary>
         /// Сумма комиссии 

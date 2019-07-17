@@ -4,7 +4,9 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Coffers.Helpers;
 using Coffers.Public.Domain.Guilds;
+using Coffers.Public.Queries.Gamers;
 using Coffers.Public.Queries.Guilds;
 using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Exceptions;
@@ -120,7 +122,7 @@ namespace Coffers.Public.WebApi.Controllers
         /// <returns></returns>
         [Authorize]
         [HttpGet("{id}/balance")]
-        [ProducesResponseType(typeof(GuildView), 200)]
+        [ProducesResponseType(typeof(GuildBalanceView), 200)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetBalance([FromRoute] Guid id, CancellationToken cancellationToken)
         {
@@ -223,6 +225,34 @@ namespace Coffers.Public.WebApi.Controllers
             await _guildRepository.Save(guild);
 
             return Ok();
+        }
+
+        /// <summary>
+        /// This method return gamer list
+        /// </summary>
+        /// <param name="binding"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet("{id}/gamers")]
+        [ProducesResponseType(200, Type = typeof(ICollection<GamersListView>))]
+        public async Task<IActionResult> GetGamers([FromRoute]Guid id,
+            [FromQuery] GetGamersBinding binding,
+            CancellationToken cancellationToken)
+        {
+            if (!HttpContext.IsAdmin() && id != HttpContext.GuildId())
+                throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");
+
+            return Ok(await _queryProcessor.Process<GetGamersQuery, ICollection<GamersListView>>(
+                new GetGamersQuery
+                {
+                    GuildId = id,
+                    DateFrom = binding.DateFrom?.Trunc(DateTruncType.Day),
+                    DateTo = binding.DateTo?.Trunc(DateTruncType.Day),
+                    GamerStatuses = binding.GamerStatuses
+                }, cancellationToken
+                ));
+
         }
     }
 }

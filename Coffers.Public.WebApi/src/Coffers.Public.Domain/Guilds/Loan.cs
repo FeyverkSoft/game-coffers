@@ -20,7 +20,7 @@ namespace Coffers.Public.Domain.Guilds
         /// <summary>
         /// Уже было выплаченно в пользу займа
         /// </summary>
-        public Decimal RedemptionAmount { get; set; }
+        public Decimal RepaymentAmount { get; set; }
 
 
         public LoanStatus LoanStatus { get; set; }

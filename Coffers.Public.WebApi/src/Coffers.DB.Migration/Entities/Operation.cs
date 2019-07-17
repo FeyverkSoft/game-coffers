@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using Coffers.Types.Account;
 
 namespace Coffers.DB.Migrations.Entities
 {
@@ -48,39 +47,6 @@ namespace Coffers.DB.Migrations.Entities
         /// Описание операции
         /// </summary>
         public String Description { get; set; }
-
-    }
-
-    internal enum OperationType
-    {
-        /// <summary>
-        /// Налог
-        /// </summary>
-        Tax,
-        /// <summary>
-        /// Штраф
-        /// </summary>
-        Penalty,
-        /// <summary>
-        /// Займ
-        /// </summary>
-        Loan,
-        /// <summary>
-        /// Обмен между своими персонажами
-        /// </summary>
-        Exchange,
-        /// <summary>
-        /// Награда
-        /// </summary>
-        Reward,
-        /// <summary>
-        /// ЗП
-        /// </summary>
-        Salary,
-        /// <summary>
-        /// Иное
-        /// </summary>
-        Other,
 
     }
 }

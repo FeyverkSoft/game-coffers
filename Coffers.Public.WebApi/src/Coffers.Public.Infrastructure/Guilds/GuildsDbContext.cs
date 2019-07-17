@@ -1,6 +1,7 @@
 ﻿using System;
 using Coffers.Public.Domain.Guilds;
 using Coffers.Types.Gamer;
+using Coffers.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace Coffers.Public.Infrastructure.Guilds
@@ -120,6 +121,11 @@ namespace Coffers.Public.Infrastructure.Guilds
                 b.Property(a => a.Balance)
                     .HasDefaultValue(0)
                     .IsRequired();
+
+                b.HasMany(g => g.Operations)
+                    .WithOne()
+                    .HasPrincipalKey(_ => _.Id);
+
                 b.Property(a => a.ConcurrencyTokens)
                     .IsConcurrencyToken()
                     .IsRequired();
@@ -144,7 +150,10 @@ namespace Coffers.Public.Infrastructure.Guilds
                     .IsRequired();
                 b.Property(t => t.Tax)
                     .HasMaxLength(4096)
-                    .HasDefaultValue("{}")
+                    .HasConversion(
+                        _ => _ == null ? null : _.ToJson(),
+                        _ => _ == null ? new Decimal[] { } : _.ParseJson<Decimal[]>()
+                    )
                     .IsRequired();
             });
 

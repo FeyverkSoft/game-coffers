@@ -273,7 +273,7 @@ namespace Coffers.DB.Migrations.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(0m);
 
-                    b.Property<decimal>("RedemptionAmount")
+                    b.Property<decimal>("RepaymentAmount")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(0m);
 
@@ -359,7 +359,7 @@ namespace Coffers.DB.Migrations.Migrations
                         .IsRequired()
                         .HasMaxLength(32);
 
-                    b.Property<decimal>("RedemptionAmount")
+                    b.Property<decimal>("RepaymentAmount")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(0m);
 

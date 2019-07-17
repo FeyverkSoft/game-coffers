@@ -26,12 +26,27 @@
         </member>
         <member name="P:Coffers.Public.Queries.Gamers.BaseGamerInfoView.ActiveLoanAmount">
             <summary>
-            Amount of active loans
+            Сумма активных займов, включая комиссию,налог и штраф за просрочку
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Gamers.BaseGamerInfoView.ActiveExpLoanAmount">
+            <summary>
+            Сумма штрафов по займам
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Gamers.BaseGamerInfoView.ActiveLoanTaxAmount">
+            <summary>
+            Сумма комисси по активным займам
             </summary>
         </member>
         <member name="P:Coffers.Public.Queries.Gamers.BaseGamerInfoView.ActivePenaltyAmount">
             <summary>
             Amount of active penalty
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Gamers.BaseGamerInfoView.RepaymentLoanAmount">
+            <summary>
+            Сумма выплаченная в пользу займов
             </summary>
         </member>
         <member name="P:Coffers.Public.Queries.Gamers.BaseGamerInfoView.Rank">
@@ -42,6 +57,121 @@
         <member name="P:Coffers.Public.Queries.Gamers.BaseGamerInfoView.CharCount">
             <summary>
             Characters count
+            </summary>
+        </member>
+        <member name="T:Coffers.Public.Queries.Gamers.GamersListView">
+            <summary>
+            base gamers info
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Gamers.GamersListView.Id">
+            <summary>
+            User id
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Gamers.GamersListView.Characters">
+            <summary>
+            Characters list
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Gamers.GamersListView.Balance">
+            <summary>
+            User balance
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Gamers.GamersListView.Penalties">
+            <summary>
+            Список штрафов
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Gamers.GamersListView.Rank">
+            <summary>
+            Rank
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Gamers.GamersListView.Status">
+            <summary>
+            Статус игрока
+            </summary>
+        </member>
+        <member name="T:Coffers.Public.Queries.Gamers.GetGamersQuery">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Gamers.GetGamersQuery.GuildId">
+            <summary>
+            Guild id
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Gamers.GetGamersQuery.DateFrom">
+            <summary>
+            Date to
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Gamers.GetGamersQuery.DateTo">
+            <summary>
+            Date from
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Gamers.GetGamersQuery.GamerStatuses">
+            <summary>
+            Gamer statuses list
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Gamers.PenaltyView.Date">
+            <summary>
+            Дата
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Gamers.PenaltyView.Amount">
+            <summary>
+            Сумма
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Gamers.PenaltyView.Description">
+            <summary>
+            Причина
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Gamers.PenaltyView.PenaltyStatus">
+            <summary>
+            Статус штрафа
+            </summary>
+        </member>
+        <member name="T:Coffers.Public.Queries.Guilds.GuildBalanceQuery">
+            <summary>
+            запрос на получение актуальных балансов гильдии
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Guilds.GuildBalanceQuery.GuildId">
+            <summary>
+            Идентификатор гильдии
+            </summary>
+        </member>
+        <member name="T:Coffers.Public.Queries.Guilds.GuildBalanceView">
+            <summary>
+            Информация о балансе гильдии
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Guilds.GuildBalanceView.Balance">
+            <summary>
+            Баланс гильдии на момент запроса
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Guilds.GuildBalanceView.ExpectedTaxAmount">
+            <summary>
+            Ожидаемая сумма налога, на конец месяца
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Guilds.GuildBalanceView.TaxAmount">
+            <summary>
+            Уплаченная сумма налогов на текущий момент
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Guilds.GuildBalanceView.ActiveLoansAmount">
+            <summary>
+            Сумма активных займов
             </summary>
         </member>
         <member name="T:Coffers.Public.Queries.Guilds.GuildQuery">
@@ -97,6 +227,11 @@
         <member name="P:Coffers.Public.Queries.Guilds.GuildView.CharactersCount">
             <summary>
             Персонажей в гильдии на текущий момент
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Guilds.GuildView.Balance">
+            <summary>
+            Баланс гильдии
             </summary>
         </member>
         <member name="P:Coffers.Public.Queries.Guilds.GuildView.Tariffs">

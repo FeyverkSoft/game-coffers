@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using Coffers.Types.Gamer;
 
 namespace Coffers.Public.Domain.Authorization
@@ -34,6 +33,8 @@ namespace Coffers.Public.Domain.Authorization
         /// ID гильдии пользователя
         /// </summary>
         public Guid GuildId { get; set; }
+
+        public GamerRank Rank { get; set; }
 
         internal Gamer() { }
 

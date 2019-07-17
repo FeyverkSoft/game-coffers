@@ -1,4 +1,5 @@
 ﻿using System;
+using Coffers.Types.Gamer;
 
 namespace Coffers.Public.Domain.Authorization
 {
@@ -27,6 +28,7 @@ namespace Coffers.Public.Domain.Authorization
         public String Ip { get; private set; }
 
         public Boolean IsExpired => ExpireDate <= DateTime.UtcNow;
+
         public void ExtendSession(Int32 lifetime)
         {
             ExpireDate = DateTime.UtcNow.AddMinutes(lifetime);

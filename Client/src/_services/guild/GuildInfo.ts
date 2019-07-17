@@ -20,8 +20,9 @@ export interface IGuild {
     id: string;
     name: string;
     status: GuildStatus;
-    gamersCount: Number;
-    charactersCount: Number;
+    gamersCount: number;
+    charactersCount: number;
+    balance: number;
     recruitmentStatus: RecruitmentStatus;
 }
 
@@ -30,12 +31,13 @@ export class GuildInfo implements IGuild {
     name: string;
     status: GuildStatus;
     recruitmentStatus: RecruitmentStatus;
-    gamersCount: Number;
-    charactersCount: Number;
+    gamersCount: number;
+    balance: number;
+    charactersCount: number;
     tariffs: ITariffs;
     constructor(id: string, name: string, status: GuildStatus,
-        recruitmentStatus: RecruitmentStatus, charactersCount: Number,
-        gamersCount: Number, tariffs: ITariffs) {
+        recruitmentStatus: RecruitmentStatus, charactersCount: number,
+        gamersCount: number, balance:number, tariffs: ITariffs) {
         this.id = id;
         this.name = name;
         this.status = status;
@@ -43,5 +45,6 @@ export class GuildInfo implements IGuild {
         this.tariffs = tariffs;
         this.charactersCount = charactersCount;
         this.gamersCount = gamersCount;
+        this.balance = balance;
     }
 }

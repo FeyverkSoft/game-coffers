@@ -9,6 +9,7 @@
     <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.16" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Coffers.Helpers\Coffers.Helpers.csproj" />
     <ProjectReference Include="..\Coffers.Public.Domain\Coffers.Public.Domain.csproj" />
     <ProjectReference Include="..\Coffers.Public.Queries\Coffers.Public.Queries.csproj" />
   </ItemGroup>

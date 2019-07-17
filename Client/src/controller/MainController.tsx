@@ -3,7 +3,7 @@ import { connect, DispatchProp } from 'react-redux';
 import { Lang, GuildInfo, LangF, ITariffs, DLang, IGamerInfo, GamerRank } from '../_services';
 import {
     Crumbs, BaseReactComp, Form, Input, Button, СanvasBlock, Page, MaterialSelect, Grid,
-    Col2, Col1, NamedValue, TariffView, UserView
+    Col2, Col1, NamedValue, TariffView, UserView, MainView, BalanceView
 } from '../_components';
 
 import { guildInstance } from '../_actions';
@@ -36,56 +36,6 @@ class Main extends BaseReactComp<IMainProps, any> {
             this.props.dispatch(guildInstance.GetGuild({ guildId: this.props.guildId }))
     }
 
-    baseInfo = () => {
-        const { guildInfo } = this.props;
-        return (
-            <СanvasBlock
-                title={Lang("MAIN_PAGE_MAIN_INFO")}
-                type="important"
-                isLoading={this.props.isLoading}
-            >
-                <Grid
-                    direction="horizontal"
-                >
-                    <Col2>
-                        <Col1>
-                            <NamedValue name={Lang("MAIN_PAGE_CHARACTERS_COUNT")}>
-                                {guildInfo.charactersCount || 0}
-                            </NamedValue>
-                        </Col1>
-                        <Col1>
-                            <NamedValue name={Lang("MAIN_PAGE_GAMERS_COUNT")}>
-                                {guildInfo.gamersCount || 0}
-                            </NamedValue>
-                        </Col1>
-                        <Col1>
-                            <NamedValue name={Lang("MAIN_RECRUITMENTSTATUS")}>
-                                {DLang('RECRUITMENTSTATUS', guildInfo.recruitmentStatus)}
-                            </NamedValue>
-                        </Col1>
-                    </Col2>
-                    <Col2>
-                        <Col1>
-                            <NamedValue name={Lang("MAIN_PAGE_GUILD_BALANCE")}>
-                                {guildInfo.charactersCount || 0}
-                            </NamedValue>
-                        </Col1>
-                        <Col1>
-                            <NamedValue name={Lang("MAIN_PAGE_GUILD_LOANS")}>
-                                {guildInfo.gamersCount || 0}
-                            </NamedValue>
-                        </Col1>
-                        <Col1>
-                            <NamedValue name={Lang("MAIN_PAGE_EXPECTED_TAX")}>
-                                {0}
-                            </NamedValue>
-                        </Col1>
-                    </Col2>
-                </Grid>
-            </СanvasBlock>
-        );
-    }
-
     charactersGrid = () => {
         return <СanvasBlock
             title={Lang("MAIN_PAGE_CHARACTERS_GRID")}
@@ -103,7 +53,16 @@ class Main extends BaseReactComp<IMainProps, any> {
             <Grid
                 direction="horizontal"
             >
-                <Col2> {this.baseInfo()} </Col2>
+                <Col2>
+                    <MainView
+                        guildInfo={this.props.guildInfo}
+                    />
+                </Col2>
+                <Col2>
+                    <BalanceView
+                        guildInfo={this.props.guildInfo}
+                    />
+                </Col2>
                 <Col2>
                     <TariffView
                         tariff={this.props.tariffs}

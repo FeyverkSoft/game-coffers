@@ -55,7 +55,7 @@ namespace Coffers.DB.Migrations.Entities
         /// <summary>
         /// Дата когда игрок удалился из гильдии
         /// </summary>
-        public DateTime DeletedDate { get; set; }
+        public DateTime? DeletedDate { get; set; }
 
         /// <summary>
         /// Имя игрока
@@ -91,6 +91,5 @@ namespace Coffers.DB.Migrations.Entities
         /// Права доступа игрока, JSON строка
         /// </summary>
         public String Roles { get; set; }
-
     }
 }

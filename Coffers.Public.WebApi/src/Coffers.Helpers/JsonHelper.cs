@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Coffers.Public.Infrastructure.Helpers
+namespace Coffers.Helpers
 {
-    internal static class JsonHelper
+    public static class JsonHelper
     {
         public static String ToJson(this Object obj)
         {
@@ -52,6 +52,18 @@ namespace Coffers.Public.Infrastructure.Helpers
                 NullValueHandling = NullValueHandling.Ignore
             };
             return serializer.Deserialize<T>(new JsonTextReader(new StringReader(json)));
+        }
+
+        public static T TryParseJson<T>(this String json)
+        {
+            try
+            {
+                return json.ParseJson<T>();
+            }
+            catch
+            {
+                return default;
+            }
         }
 
         public static Object TryParseJson(this String json, Type type)

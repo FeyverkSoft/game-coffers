@@ -17,6 +17,13 @@ namespace Coffers.Public.Domain.Gamers
         /// </summary>
         public Guid GuildId { get; internal set; }
 
+        public DateTime CreateDate { get; internal set; }
+
+        /// <summary>
+        /// Дата когда игрок удалился из гильдии
+        /// </summary>
+        public DateTime? DeletedDate { get; internal set; }
+
         /// <summary>
         /// Счёт игрока по умолчанию
         /// </summary>
@@ -88,6 +95,10 @@ namespace Coffers.Public.Domain.Gamers
             {
                 Status = status;
                 UpdateDate = DateTime.UtcNow;
+                if (status == GamerStatus.Banned || status == GamerStatus.Left)
+                    DeletedDate = DateTime.UtcNow;
+                else
+                    DeletedDate = null;
             }
         }
 
@@ -102,6 +113,11 @@ namespace Coffers.Public.Domain.Gamers
             {
                 ch.Status = CharStatus.Deleted;
             }
+        }
+
+        public void SetRank(GamerRank bindingRank)
+        {
+            Rank = bindingRank;
         }
     }
 }

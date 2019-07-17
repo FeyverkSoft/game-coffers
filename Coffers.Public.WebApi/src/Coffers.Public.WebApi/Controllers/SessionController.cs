@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
@@ -9,6 +11,7 @@ using Coffers.Public.WebApi.Exceptions;
 using Coffers.Public.WebApi.Models.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Coffers.Public.WebApi.Controllers
 {
@@ -52,12 +55,15 @@ namespace Coffers.Public.WebApi.Controllers
                             HttpContext.Request.Headers["X-Forwarded-For"].ToString() ??
                             HttpContext.Request.Headers["X-Real-IP"].ToString();
             await _authorizationRepository.Save(new Session(sessionId, gamer.Id, 60 * 26, ipAddress));
-
+            var roles = new List<String>();
+            if (gamer.Roles != null)
+                roles.AddRange(gamer.Roles);
+            roles.Add(gamer.Rank.ToString().ToLower());
             return Ok(new TokenView
             {
                 Token = sessionId,
                 GuildId = gamer.GuildId,
-                Roles = gamer.Roles
+                Roles = roles.Distinct((x,y)=>x.Equals(y, StringComparison.InvariantCultureIgnoreCase)).ToArray()
             });
         }
 

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using Coffers.Public.Domain.Helpers;
 using Coffers.Types.Gamer;
 using Coffers.Types.Guilds;
 
@@ -91,7 +90,7 @@ namespace Coffers.Public.Domain.Guilds
             Tariff = new GuildTariff
             {
                 Id = Guid.NewGuid(),
-                BeginnerTariff = new Tariff(beginnerTariffLoanTax, beginnerTariffExpiredLoanTax, beginnerTariffTax.ToJson()),
+                BeginnerTariff = new Tariff(beginnerTariffLoanTax, beginnerTariffExpiredLoanTax, beginnerTariffTax),
                 OfficerTariff = Tariff?.OfficerTariff,
                 LeaderTariff = Tariff?.LeaderTariff,
                 VeteranTariff = Tariff?.VeteranTariff,
@@ -106,7 +105,7 @@ namespace Coffers.Public.Domain.Guilds
             {
                 Id = Guid.NewGuid(),
                 BeginnerTariff = Tariff?.BeginnerTariff,
-                OfficerTariff = new Tariff(officerTariffLoanTax, officerTariffExpiredLoanTax, officerTariffTax.ToJson()),
+                OfficerTariff = new Tariff(officerTariffLoanTax, officerTariffExpiredLoanTax, officerTariffTax),
                 LeaderTariff = Tariff?.LeaderTariff,
                 VeteranTariff = Tariff?.VeteranTariff,
                 SoldierTariff = Tariff?.SoldierTariff
@@ -121,7 +120,7 @@ namespace Coffers.Public.Domain.Guilds
                 Id = Guid.NewGuid(),
                 BeginnerTariff = Tariff?.BeginnerTariff,
                 OfficerTariff = Tariff?.OfficerTariff,
-                LeaderTariff = new Tariff(leaderTariffLoanTax, leaderTariffExpiredLoanTax, leaderTariffTax.ToJson()),
+                LeaderTariff = new Tariff(leaderTariffLoanTax, leaderTariffExpiredLoanTax, leaderTariffTax),
                 VeteranTariff = Tariff?.VeteranTariff,
                 SoldierTariff = Tariff?.SoldierTariff
             };
@@ -136,7 +135,7 @@ namespace Coffers.Public.Domain.Guilds
                 BeginnerTariff = Tariff?.BeginnerTariff,
                 OfficerTariff = Tariff?.OfficerTariff,
                 LeaderTariff = Tariff?.LeaderTariff,
-                VeteranTariff = new Tariff(veteranTariffLoanTax, veteranTariffExpiredLoanTax, veteranTariffTax.ToJson()),
+                VeteranTariff = new Tariff(veteranTariffLoanTax, veteranTariffExpiredLoanTax, veteranTariffTax),
                 SoldierTariff = Tariff?.SoldierTariff
             };
         }
@@ -151,7 +150,7 @@ namespace Coffers.Public.Domain.Guilds
                 OfficerTariff = Tariff?.OfficerTariff,
                 LeaderTariff = Tariff?.LeaderTariff,
                 VeteranTariff = Tariff?.VeteranTariff,
-                SoldierTariff = new Tariff(soldierTariffLoanTax, soldierTariffExpiredLoanTax, soldierTariffTax.ToJson())
+                SoldierTariff = new Tariff(soldierTariffLoanTax, soldierTariffExpiredLoanTax, soldierTariffTax)
             };
         }
     }

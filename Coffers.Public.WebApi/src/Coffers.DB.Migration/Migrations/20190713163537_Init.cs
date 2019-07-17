@@ -144,7 +144,7 @@ namespace Coffers.DB.Migrations.Migrations
                     DefaultAccountId = table.Column<byte[]>(nullable: true),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     UpdateDate = table.Column<DateTime>(nullable: false),
-                    DeletedDate = table.Column<DateTime>(nullable: false),
+                    DeletedDate = table.Column<DateTime>(nullable: true),
                     Name = table.Column<string>(maxLength: 64, nullable: true),
                     Rank = table.Column<string>(maxLength: 32, nullable: false),
                     Status = table.Column<string>(maxLength: 32, nullable: false),
@@ -224,7 +224,7 @@ namespace Coffers.DB.Migrations.Migrations
                     BorrowDate = table.Column<DateTime>(nullable: false),
                     ExpiredDate = table.Column<DateTime>(nullable: false),
                     Amount = table.Column<decimal>(nullable: false, defaultValue: 0m),
-                    RedemptionAmount = table.Column<decimal>(nullable: false, defaultValue: 0m),
+                    RepaymentAmount = table.Column<decimal>(nullable: false, defaultValue: 0m),
                     TaxAmount = table.Column<decimal>(nullable: false, defaultValue: 0m),
                     PenaltyAmount = table.Column<decimal>(nullable: false, defaultValue: 0m),
                     LoanStatus = table.Column<string>(maxLength: 32, nullable: false)
@@ -253,7 +253,7 @@ namespace Coffers.DB.Migrations.Migrations
                     Id = table.Column<byte[]>(nullable: false),
                     GamerId = table.Column<byte[]>(nullable: true),
                     Amount = table.Column<decimal>(nullable: false, defaultValue: 0m),
-                    RedemptionAmount = table.Column<decimal>(nullable: false, defaultValue: 0m),
+                    RepaymentAmount = table.Column<decimal>(nullable: false, defaultValue: 0m),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     PenaltyStatus = table.Column<string>(maxLength: 32, nullable: false),
                     Description = table.Column<string>(maxLength: 2048, nullable: true)

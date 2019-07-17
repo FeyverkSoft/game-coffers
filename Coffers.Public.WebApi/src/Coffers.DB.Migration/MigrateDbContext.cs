@@ -141,7 +141,8 @@ namespace Coffers.DB.Migrations
                 b.Property(g => g.CreateDate)
                     .IsRequired();
                 b.Property(g => g.UpdateDate);
-                b.Property(g => g.DeletedDate);
+                b.Property(g => g.DeletedDate)
+                    .IsRequired(false);
 
                 b.Property(g => g.DateOfBirth)
                     .HasDefaultValue(new DateTime(1900, 1, 1))
@@ -232,7 +233,7 @@ namespace Coffers.DB.Migrations
                 b.Property(p => p.Amount)
                     .HasDefaultValue(0)
                     .IsRequired();
-                b.Property(p => p.RedemptionAmount)
+                b.Property(p => p.RepaymentAmount)
                     .HasDefaultValue(0)
                     .IsRequired();
                 b.Property(l => l.LoanStatus)
@@ -273,7 +274,7 @@ namespace Coffers.DB.Migrations
                 b.Property(p => p.Amount)
                     .HasDefaultValue(0)
                     .IsRequired();
-                b.Property(p => p.RedemptionAmount)
+                b.Property(p => p.RepaymentAmount)
                     .HasDefaultValue(0)
                     .IsRequired();
                 b.Property(p => p.Description)

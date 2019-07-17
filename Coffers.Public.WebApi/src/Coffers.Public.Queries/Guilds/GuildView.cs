@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Coffers.Types.Guilds;
 
 namespace Coffers.Public.Queries.Guilds
@@ -94,6 +95,6 @@ namespace Coffers.Public.Queries.Guilds
         /// Налог с 1го персонажа.
         /// Список. 1 персонаж, 2 персонажа, 3 итд.
         /// </summary>
-        public Decimal[] Tax { get; set; }
+        public ICollection<Decimal> Tax { get; set; }
     }
 }

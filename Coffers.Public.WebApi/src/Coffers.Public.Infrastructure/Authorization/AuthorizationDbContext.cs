@@ -1,6 +1,6 @@
 ﻿using System;
+using Coffers.Helpers;
 using Coffers.Public.Domain.Authorization;
-using Coffers.Public.Infrastructure.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace Coffers.Public.Infrastructure.Authorization
@@ -61,6 +61,10 @@ namespace Coffers.Public.Infrastructure.Authorization
                 b.Property(o => o.GuildId)
                     .HasColumnName("GuildId")
                     .IsRequired();
+
+                b.Property(g => g.Rank)
+                    .HasConversion<String>()
+                    .HasMaxLength(32);
 
                 b.Property(o => o.Roles)
                     .HasConversion(

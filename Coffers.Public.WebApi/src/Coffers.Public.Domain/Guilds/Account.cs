@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Coffers.Public.Domain.Guilds
 {
@@ -18,6 +19,11 @@ namespace Coffers.Public.Domain.Guilds
         /// Токен конкуренции, предназначен для разруливания согласованности данных, при ассинхроных запросаз
         /// </summary>
         public Guid ConcurrencyTokens { get; set; }
+
+        /// <summary>
+        /// Список операций произведенных над счётом
+        /// </summary>
+        public List<Operation> Operations { get; set; }
 
         public Account()
         {

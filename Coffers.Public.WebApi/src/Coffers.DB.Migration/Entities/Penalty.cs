@@ -22,7 +22,7 @@ namespace Coffers.DB.Migrations.Entities
         /// <summary>
         /// Уже было выплаченно в пользу штрафа
         /// </summary>
-        public Decimal RedemptionAmount { get; set; }
+        public Decimal RepaymentAmount { get; set; }
         /// <summary>
         /// Дата создания
         /// </summary>

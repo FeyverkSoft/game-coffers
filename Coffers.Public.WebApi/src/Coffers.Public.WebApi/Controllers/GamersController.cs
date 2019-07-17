@@ -74,7 +74,7 @@ namespace Coffers.Public.WebApi.Controllers
         [HttpDelete("{gamerId}/characters")]
         [PermissionRequired("admin", "officer", "leader")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> AddCharacter(Guid gamerId, DeleteCharacterBinding binding, CancellationToken cancellationToken)
+        public async Task<IActionResult> DeleteCharacter(Guid gamerId, DeleteCharacterBinding binding, CancellationToken cancellationToken)
         {
             var gamer = await _gamerRepository.Get(gamerId, cancellationToken);
 
@@ -87,6 +87,52 @@ namespace Coffers.Public.WebApi.Controllers
             await _gamerRepository.Load(gamer, cancellationToken);
 
             gamer.DeleteCharacter(binding.Name);
+
+            await _gamerRepository.Save(gamer);
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// This method changed gamer status
+        /// </summary>
+        [HttpPatch("{gamerId}/status")]
+        [PermissionRequired("admin", "officer", "leader")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> SetStatus(Guid gamerId, PatchGamerStatusBinding binding, CancellationToken cancellationToken)
+        {
+            var gamer = await _gamerRepository.Get(gamerId, cancellationToken);
+
+            if (!HttpContext.IsAdmin() && gamer.GuildId != HttpContext.GuildId())
+                throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");
+
+            if (gamer == null)
+                throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.GamerNotFound, $"Gamer {gamerId} not found");
+
+            gamer.SetStatus(binding.Status);
+
+            await _gamerRepository.Save(gamer);
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// This method changed gamer rank
+        /// </summary>
+        [HttpPatch("{gamerId}/rank")]
+        [PermissionRequired("admin", "officer", "leader")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> SetRole(Guid gamerId, PatchGamerRankBinding binding, CancellationToken cancellationToken)
+        {
+            var gamer = await _gamerRepository.Get(gamerId, cancellationToken);
+
+            if (!HttpContext.IsAdmin() && gamer.GuildId != HttpContext.GuildId())
+                throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");
+
+            if (gamer == null)
+                throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.GamerNotFound, $"Gamer {gamerId} not found");
+
+            gamer.SetRank(binding.Rank);
 
             await _gamerRepository.Save(gamer);
 

@@ -25,3 +25,5 @@ export * from './Breadcrumbs/Breadcrumbs.tsx';
 export * from './Page/Page.tsx';
 export * from './MainView/TariffView.tsx';
 export * from './MainView/UserView.tsx';
+export * from './MainView/MainView.tsx';
+export * from './MainView/BalanceView.tsx';

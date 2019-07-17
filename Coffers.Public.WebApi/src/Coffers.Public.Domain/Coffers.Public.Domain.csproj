@@ -9,6 +9,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Coffers.Helpers\Coffers.Helpers.csproj" />
     <ProjectReference Include="..\Coffers.Types\Coffers.Types.csproj" />
   </ItemGroup>
   <ItemGroup>

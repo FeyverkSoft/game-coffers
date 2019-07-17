@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Coffers.Public.Domain.Authorization;
-using Coffers.Public.Domain.Gamers;
 using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Exceptions;
 using Microsoft.AspNetCore.Mvc;
@@ -29,25 +28,32 @@ namespace Coffers.Public.WebApi.Filters
         {
             if (context.HttpContext.Request.Method.Equals(HttpMethod.Options.Method))
                 return;
+            if (context.HttpContext.IsAdmin())
+                return;
 
             var userId = context.HttpContext.GetUserId();
 
             var gamer = await _authorizationRepository.GetGamer(userId, CancellationToken.None);
 
-           /* if (user.IsGod)
-                return;*/
-           if (!_roles.Any())
-               return;
+            /* if (user.IsGod)
+                 return;*/
+            if (!_roles.Any())
+                return;
 
-           if (gamer.Roles != null)
-           {
-               if (_roles.Any(role => gamer.Roles.Contains(role)))
-               {
-                   return;
-               }
-           }
+            if (gamer.Roles != null)
+            {
+                if (_roles.Any(role => gamer.Roles.Contains(role)))
+                {
+                    return;
+                }
+            }
 
-           context.Result = new ObjectResult(new ProblemDetails
+            if (_roles.Any(role => gamer.Rank.ToString().Equals(role, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                return;
+            }
+
+            context.Result = new ObjectResult(new ProblemDetails
             {
                 Type = ErrorCodes.Forbidden,
                 Detail = "access denied",

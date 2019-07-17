@@ -21,13 +21,25 @@ namespace Coffers.Public.Queries.Gamers
         /// </summary>
         public Decimal Balance { get; set; }
         /// <summary>
-        /// Amount of active loans
+        /// Сумма активных займов, включая комиссию,налог и штраф за просрочку
         /// </summary>
         public Decimal ActiveLoanAmount { get; set; }
+        /// <summary>
+        /// Сумма штрафов по займам
+        /// </summary>
+        public Decimal ActiveExpLoanAmount { get; set; }
+        /// <summary>
+        /// Сумма комисси по активным займам
+        /// </summary>
+        public Decimal ActiveLoanTaxAmount { get; set; }
         /// <summary>
         /// Amount of active penalty
         /// </summary>
         public Decimal ActivePenaltyAmount { get; set; }
+        /// <summary>
+        /// Сумма выплаченная в пользу займов
+        /// </summary>
+        public Decimal RepaymentLoanAmount { get; set; }
         /// <summary>
         /// Gamer guild rank
         /// </summary>

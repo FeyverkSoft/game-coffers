@@ -19,13 +19,13 @@ export class guildService {
             }
         };
         return await fetch(Config.BuildUrl(`/Guilds/${guildId}`), requestOptions)
-            .then<BaseResponse & GuildInfo>(getResponse)
+            .then<BaseResponse & any>(getResponse)
             .then(data => {
                 if (data && data.type || data.traceId) {
                     return errorHandle(data);
                 }
                 return new GuildInfo(data.id, data.name, data.status, data.recruitmentStatus,
-                    data.charactersCount, data.gamersCount, {
+                    data.charactersCount, data.balance,  data.gamersCount, {
                         Soldier: data.tariffs.soldier,
                         Beginner: data.tariffs.beginner,
                         Officer: data.tariffs.officer,

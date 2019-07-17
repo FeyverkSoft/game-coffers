@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 
 namespace Coffers.Public.Domain.Guilds
 {
@@ -49,11 +50,11 @@ namespace Coffers.Public.Domain.Guilds
 
         public Decimal ExpiredLoanTax { get; set; }
 
-        public String Tax { get; set; }
+        public IList<Decimal> Tax { get; set; }
 
         internal Tariff() { }
 
-        public Tariff(Decimal loanTax, Decimal expiredLoanTax, String tax)
+        public Tariff(Decimal loanTax, Decimal expiredLoanTax, IList<Decimal> tax)
         {
             Id = Guid.NewGuid();
             LoanTax = loanTax;
