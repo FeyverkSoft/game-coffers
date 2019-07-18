@@ -27,3 +27,4 @@ export * from './MainView/TariffView';
 export * from './MainView/UserView';
 export * from './MainView/MainView';
 export * from './MainView/BalanceView';
+export * from './MainView/GamerRowView';

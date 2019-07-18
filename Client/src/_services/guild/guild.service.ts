@@ -1,5 +1,5 @@
 import { getResponse, catchHandle, errorHandle } from '../../_helpers';
-import { BaseResponse, GuildInfo, GuildBalanceReport } from '..';
+import { BaseResponse, GuildInfo, GuildBalanceReport, IGamersListView, GamersListView } from '..';
 import { Config } from '../../core';
 import { authService } from '..';
 
@@ -25,7 +25,10 @@ export class guildService {
                     return errorHandle(data);
                 }
                 return new GuildInfo(data.id, data.name, data.status, data.recruitmentStatus,
-                    data.charactersCount, data.balance, data.gamersCount, {
+                    Number(data.charactersCount),
+                    Number(data.balance),
+                    Number(data.gamersCount),
+                    {
                         Soldier: data.tariffs.soldier,
                         Beginner: data.tariffs.beginner,
                         Officer: data.tariffs.officer,
@@ -54,7 +57,11 @@ export class guildService {
                 if (data && data.type || data.traceId) {
                     return errorHandle(data);
                 }
-                return new GuildBalanceReport(data.balance, data.expectedTaxAmount, data.taxAmount, data.activeLoansAmount);
+                return new GuildBalanceReport(
+                    Number(data.balance),
+                    Number(data.expectedTaxAmount),
+                    Number(data.taxAmount),
+                    Number(data.activeLoansAmount));
             })
             .catch(catchHandle);
     }
@@ -62,7 +69,7 @@ export class guildService {
     /**
      * Возвращает список игроков в гильдии удовлетворяющих условию
      */
-    static async GetGamers(guildId: string): Promise<Array<any>> {
+    static async GetGamers(guildId: string): Promise<Array<IGamersListView>> {
         let session = authService.getCurrentSession();
         const requestOptions: RequestInit = {
             method: 'GET',
@@ -77,7 +84,15 @@ export class guildService {
                 if (data && data.type || data.traceId) {
                     return errorHandle(data);
                 }
-                return new GuildBalanceReport(data.balance, data.expectedTaxAmount, data.taxAmount, data.activeLoansAmount);
+                return data.map((g: IGamersListView) => new GamersListView(
+                    g.id,
+                    g.characters,
+                    Number(g.balance),
+                    g.penalties,
+                    g.loans,
+                    g.rank,
+                    g.status
+                ));
             })
             .catch(catchHandle);
     }

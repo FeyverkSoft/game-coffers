@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { connect, DispatchProp } from 'react-redux';
-import { Lang, GuildInfo, LangF, ITariffs, DLang, IGamerInfo, GamerRank, GuildBalanceReport } from '../_services';
+import { Lang, GuildInfo, LangF, ITariffs, DLang, IGamerInfo, GamerRank, GuildBalanceReport, IGamersListView } from '../_services';
 import {
     Crumbs, BaseReactComp, Form, Input, Button, СanvasBlock, Page, MaterialSelect, Grid,
-    Col2, Col1, NamedValue, TariffView, UserView, MainView, BalanceView
+    Col2, Col1, NamedValue, TariffView, UserView, MainView, BalanceView, GamerRowView
 } from '../_components';
 
 import { guildInstance } from '../_actions';
@@ -17,6 +17,7 @@ interface IMainProps extends DispatchProp<any> {
     tariffs: ITariffs;
     guildId?: string;
     guildInfo: GuildInfo;
+    gamers: Array<IGamersListView>;
     balance: GuildBalanceReport & IHolded;
     userRank: GamerRank;
 }
@@ -38,13 +39,21 @@ class Main extends BaseReactComp<IMainProps, any> {
             this.props.dispatch(guildInstance.GetGuild({ guildId: this.props.guildId }))
         if (this.props.guildId)
             this.props.dispatch(guildInstance.GetGuildBalanceReport({ guildId: this.props.guildId }))
+        if (this.props.guildId)
+            this.props.dispatch(guildInstance.GetGamers({ guildId: this.props.guildId }))
     }
 
     charactersGrid = () => {
+        const { gamers } = this.props;
         return <СanvasBlock
             title={Lang("MAIN_PAGE_CHARACTERS_GRID")}
             type="success"
         >
+            {
+                gamers.map(g => {
+                    return <GamerRowView key={g.id} gamer={g} />;
+                })
+            }
         </СanvasBlock>;
     }
 
@@ -60,6 +69,7 @@ class Main extends BaseReactComp<IMainProps, any> {
                 <Col2>
                     <MainView
                         guildInfo={this.props.guildInfo}
+                        isLoading={this.props.isLoading}
                     />
                 </Col2>
                 <Col2>
@@ -88,7 +98,7 @@ class Main extends BaseReactComp<IMainProps, any> {
 }
 
 const connectedMain = connect<{}, {}, {}, IStore>((state: IStore) => {
-    const { guild, tariffs, reports } = state.guild;
+    const { guild, tariffs, reports, gamersList } = state.guild;
     const { currentGamer } = state.gamers;
     return {
         isLoading: guild.holding,
@@ -97,7 +107,8 @@ const connectedMain = connect<{}, {}, {}, IStore>((state: IStore) => {
         user: currentGamer,
         tariffs: tariffs,
         guildId: state.session.guildId,
-        balance: reports.balanceReport
+        balance: reports.balanceReport,
+        gamers: gamersList
     };
 })(Main);
 

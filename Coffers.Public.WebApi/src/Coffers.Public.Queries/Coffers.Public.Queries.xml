@@ -84,6 +84,11 @@
             Список штрафов
             </summary>
         </member>
+        <member name="P:Coffers.Public.Queries.Gamers.GamersListView.Loans">
+            <summary>
+            Список займов
+            </summary>
+        </member>
         <member name="P:Coffers.Public.Queries.Gamers.GamersListView.Rank">
             <summary>
             Rank
@@ -117,6 +122,31 @@
         <member name="P:Coffers.Public.Queries.Gamers.GetGamersQuery.GamerStatuses">
             <summary>
             Gamer statuses list
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Gamers.LoanView.Id">
+            <summary>
+            Идентификатор займа
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Gamers.LoanView.Amount">
+            <summary>
+            Сумма займа
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Gamers.LoanView.ExpiredDate">
+            <summary>
+            Дата стухания займа
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Gamers.LoanView.Date">
+            <summary>
+            Дата когда был взят займ
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Gamers.LoanView.LoanStatus">
+            <summary>
+            Статус займа
             </summary>
         </member>
         <member name="P:Coffers.Public.Queries.Gamers.PenaltyView.Date">

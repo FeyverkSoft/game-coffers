@@ -27,3 +27,4 @@ export * from './MainView/TariffView.tsx';
 export * from './MainView/UserView.tsx';
 export * from './MainView/MainView.tsx';
 export * from './MainView/BalanceView.tsx';
+export * from './MainView/GamerRowView.tsx';

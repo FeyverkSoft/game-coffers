@@ -15,6 +15,9 @@ export class IGamerStore {
                 balance: currentGamer.balance || 0,
                 activeLoanAmount: currentGamer.activeLoanAmount || 0,
                 activePenaltyAmount: currentGamer.activePenaltyAmount || 0,
+                activeExpLoanAmount: currentGamer.activeExpLoanAmount || 0,
+                activeLoanTaxAmount: currentGamer.activeLoanTaxAmount || 0,
+                repaymentLoanAmount: currentGamer.repaymentLoanAmount || 0,
                 charCount: currentGamer.charCount || 0,
             };
         else {
@@ -25,6 +28,9 @@ export class IGamerStore {
                 balance: 0,
                 activeLoanAmount: 0,
                 activePenaltyAmount: 0,
+                activeExpLoanAmount: 0,
+                activeLoanTaxAmount: 0,
+                repaymentLoanAmount: 0,
                 charCount: 0,
             };
         }

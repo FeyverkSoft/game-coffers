@@ -52,9 +52,11 @@ namespace Coffers.Public.Infrastructure.Gamers
                 b.HasMany(g => g.Characters)
                     .WithOne()
                     .HasPrincipalKey(_ => _.Id);
+
                 b.HasMany(g => g.Loans)
                     .WithOne()
                     .HasPrincipalKey(_ => _.Id);
+
                 b.HasMany(g => g.Penalties)
                     .WithOne()
                     .HasPrincipalKey(_ => _.Id);

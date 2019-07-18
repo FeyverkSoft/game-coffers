@@ -13,14 +13,13 @@ export class BalanceView extends BaseReactComp<IBalanceViewProps> {
 
     render() {
         const { balance } = this.props;
-
         return (<СanvasBlock
-            title={Lang("MAIN_PAGE_MAIN_INFO")}
+            title={Lang("MAIN_PAGE_MAIN_BALANCE")}
             type="important"
             isLoading={this.props.balance.holding}
         >
             <Grid
-                direction="horizontal"
+                direction="vertical"
             >
                 <Col1>
                     <NamedValue name={Lang("MAIN_PAGE_GUILD_BALANCE")}>

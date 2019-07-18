@@ -5,6 +5,7 @@ export * from "./guild/PenaltyStatus.ts";
 export * from "./guild/LoanStatus.ts";
 export * from './guild/GuildInfo.ts';
 export * from './guild/GuildBalanceReport.ts';
+export * from './guild/GamersListView.ts';
 export * from './auth/SessionInfo.ts';
 export * from './gamer/IGamerInfo.ts';
 export * from './auth/auth.service.ts';

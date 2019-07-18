@@ -1,5 +1,5 @@
 
-import { guildService, GuildInfo, GuildBalanceReport, GamerStatus } from '../../_services';
+import { guildService, GuildInfo, GuildBalanceReport, GamerStatus, IGamersListView } from '../../_services';
 import { GuildActionsType } from './GuildActionsType';
 import { alertInstance, ICallback } from '..';
 
@@ -77,7 +77,7 @@ export class GuildActions {
     GetGamers(filter: GetGuildGamersProps): Function {
         return (dispatch: Function) => {
             dispatch(request());
-            guildService.GetGuildBalanceReport(filter.guildId)
+            guildService.GetGamers(filter.guildId)
                 .then(
                     data => {
                         dispatch(success(data));
@@ -92,9 +92,9 @@ export class GuildActions {
                         filter.onFailure(ex);
                     });
         }
-        function request() { return { type: GuildActionsType.PROC_GET_BALANCE_REPORT } }
-        function success(GemersList: GuildBalanceReport) { return { type: GuildActionsType.SUCC_GET_BALANCE_REPORT, GemersList } }
-        function failure() { return { type: GuildActionsType.FAILED_GET_BALANCE_REPORT } }
+        function request() { return { type: GuildActionsType.PROC_GET_GUILD_GAMERS } }
+        function success(GamersList: Array<IGamersListView>) { return { type: GuildActionsType.SUCC_GET_GUILD_GAMERS, GamersList } }
+        function failure() { return { type: GuildActionsType.FAILED_GET_GUILD_GAMERS } }
     }
 }
 

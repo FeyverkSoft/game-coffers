@@ -68,7 +68,6 @@ namespace Coffers.Public.Infrastructure.Gamers
              .Include(g => g.Characters)
              .Include(g => g.Loans)
              .Include(g => g.Penalties);
-
             return await q.Select(g => new GamersListView
             {
                 Id = g.Id,
@@ -89,7 +88,7 @@ namespace Coffers.Public.Infrastructure.Gamers
                     {
                         Amount = l.Amount,
                         Date = l.CreateDate,
-                        LoanStatus = l.ExpiredDate < DateTime.UtcNow && !new[] { LoanStatus.Paid, LoanStatus.Canceled, LoanStatus.Expired }.Contains(l.LoanStatus) ? LoanStatus.Expired : l.LoanStatus,
+                        LoanStatus = l.LoanStatus,
                         ExpiredDate = l.ExpiredDate,
                         Id = l.Id
                     }).ToList(),

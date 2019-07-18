@@ -20,7 +20,7 @@ export class MainView extends BaseReactComp<IMainViewProps> {
             isLoading={this.props.isLoading}
         >
             <Grid
-                direction="horizontal"
+                direction="vertical"
             >
                 <Col1>
                     <NamedValue name={Lang("MAIN_PAGE_CHARACTERS_COUNT")}>

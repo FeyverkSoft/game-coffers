@@ -5,6 +5,7 @@ export * from "./guild/PenaltyStatus";
 export * from "./guild/LoanStatus";
 export * from './guild/GuildInfo';
 export * from './guild/GuildBalanceReport';
+export * from './guild/GamersListView';
 export * from './auth/SessionInfo';
 export * from './gamer/IGamerInfo';
 export * from './auth/auth.service';

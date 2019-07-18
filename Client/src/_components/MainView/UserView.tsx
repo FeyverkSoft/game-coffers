@@ -21,7 +21,8 @@ export class UserView extends BaseReactComp<IUserViewProps> {
 
     render() {
         const { user } = this.props;
-        let tax = this.props.tax[user.charCount] || this.props.tax[this.props.tax.length - 1] || 0;
+        let index: number = user.charCount - 1;
+        let tax = this.props.tax[index >= 0 ? index : 0] || this.props.tax[this.props.tax.length - 1] || 0;
         return (<СanvasBlock
             isLoading={this.props.isLoading}
             title={Lang("USER_TITLE")}
