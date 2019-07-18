@@ -21,6 +21,7 @@ namespace Coffers.Public.WebApi.Controllers
     {
         private readonly IGamerRepository _gamerRepository;
         private readonly IQueryProcessor _queryProcessor;
+        private readonly LoanFactory _loanFactory;
 
         public GamersController(IGamerRepository gamerRepository, IQueryProcessor queryProcessor)
         {
@@ -133,6 +134,42 @@ namespace Coffers.Public.WebApi.Controllers
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.GamerNotFound, $"Gamer {gamerId} not found");
 
             gamer.SetRank(binding.Rank);
+
+            await _gamerRepository.Save(gamer);
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Добавить игроку новый займ
+        /// </summary>
+        [HttpPut("{gamerId}/loan")]
+        [PermissionRequired("admin", "officer", "leader")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> PutLoan(Guid gamerId, PutLoanBinding binding, CancellationToken cancellationToken)
+        {
+            var gamer = await _gamerRepository.Get(gamerId, cancellationToken);
+
+            var loan = _loanFactory.Build(binding.Id, gamer.GuildId, binding.Amount, binding.Description, binding.BorrowDate, binding.ExpiredDate);
+
+            gamer.AddLoan(loan);
+
+            await _gamerRepository.Save(gamer);
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// ДОбавить игроку новый штраф
+        /// </summary>
+        [HttpPut("{gamerId}/penalty")]
+        [PermissionRequired("admin", "officer", "leader")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> PutPenalty(Guid gamerId, PutPenaltyBinding binding, CancellationToken cancellationToken)
+        {
+            var gamer = await _gamerRepository.Get(gamerId, cancellationToken);
+
+            gamer.AddPenalty(binding.Id, binding.Amount, binding.Description);
 
             await _gamerRepository.Save(gamer);
 

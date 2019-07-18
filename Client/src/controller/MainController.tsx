@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { connect, DispatchProp } from 'react-redux';
-import { Lang, GuildInfo, LangF, ITariffs, DLang, IGamerInfo, GamerRank, GuildBalanceReport, IGamersListView } from '../_services';
+import { Lang, GuildInfo, LangF, ITariffs, IGamerInfo, GamerRank, GuildBalanceReport, IGamersListView, IGuild } from '../_services';
 import {
-    Crumbs, BaseReactComp, Form, Input, Button, СanvasBlock, Page, MaterialSelect, Grid,
-    Col2, Col1, NamedValue, TariffView, UserView, MainView, BalanceView, GamerRowView
+    Crumbs, BaseReactComp, СanvasBlock, Page, Grid,
+    Col2, TariffView, UserView, MainView, BalanceView, GamerRowView
 } from '../_components';
 
-import { guildInstance } from '../_actions';
+import { guildInstance, gamerInstance } from '../_actions';
 import { IStore } from '../_helpers';
 import { IHolded } from '../core';
 
-interface IMainProps extends DispatchProp<any> {
+interface IMainProps {
     isLoading?: boolean;
     userLoading?: boolean;
     user: IGamerInfo;
@@ -22,8 +22,8 @@ interface IMainProps extends DispatchProp<any> {
     userRank: GamerRank;
 }
 
-class Main extends BaseReactComp<IMainProps, any> {
-    constructor(props: IMainProps) {
+class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
+    constructor(props: IMainProps & DispatchProp<any>) {
         super(props);
         this.state = {
         };
@@ -40,7 +40,7 @@ class Main extends BaseReactComp<IMainProps, any> {
         if (this.props.guildId)
             this.props.dispatch(guildInstance.GetGuildBalanceReport({ guildId: this.props.guildId }))
         if (this.props.guildId)
-            this.props.dispatch(guildInstance.GetGamers({ guildId: this.props.guildId }))
+            this.props.dispatch(gamerInstance.GetGamers({ guildId: this.props.guildId }))
     }
 
     charactersGrid = () => {
@@ -97,18 +97,18 @@ class Main extends BaseReactComp<IMainProps, any> {
     }
 }
 
-const connectedMain = connect<{}, {}, {}, IStore>((state: IStore) => {
-    const { guild, tariffs, reports, gamersList } = state.guild;
-    const { currentGamer } = state.gamers;
+const connectedMain = connect<{}, {}, {}, IStore>((state: IStore): IMainProps => {
+    const { guild, tariffs, reports } = state.guild;
+    const { currentGamer, gamersList } = state.gamers;
     return {
         isLoading: guild.holding,
-        guildInfo: guild,
+        guildInfo: guild as GuildInfo,
         userRank: currentGamer.rank,
         user: currentGamer,
         tariffs: tariffs,
         guildId: state.session.guildId,
         balance: reports.balanceReport,
-        gamers: gamersList
+        gamers: Object.keys(gamersList).map(k => gamersList[k])
     };
 })(Main);
 

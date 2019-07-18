@@ -119,5 +119,25 @@ namespace Coffers.Public.Domain.Gamers
         {
             Rank = bindingRank;
         }
+
+        public void AddPenalty(Guid id, Decimal amount, String description)
+        {
+            if (Penalties == null)
+                Penalties = new List<Penalty>();
+
+            if (Penalties.Any(x => x.Id == Id && x.Amount == amount)) 
+                return;
+            Penalties.Add(new Penalty(id, amount, description));
+        }
+
+        public void AddLoan(Loan loan)
+        {
+            if (Loans == null)
+                Loans = new List<Loan>();
+
+            if (Penalties.Any(x => x.Id == loan.Id && x.Amount == loan.Amount))
+                return;
+            Loans.Add(loan);
+        }
     }
 }

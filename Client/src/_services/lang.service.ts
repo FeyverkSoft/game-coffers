@@ -36,11 +36,31 @@ const locString: any = {
         TARIFF_TAX: 'Налог за 1 чара:',
         TARIFF_LOAN_TAX: 'Стоимость займа в день',
         TARIFF_LOAN_EXPTAX: 'Стоимость просрочки займа',
-        TARIFF_ROLE_LEADER: 'ГМ',
-        TARIFF_ROLE_OFFICER: 'Офицер',
-        TARIFF_ROLE_VETERAN: 'Ветеран',
-        TARIFF_ROLE_SOLDIER: 'Солдат',
-        TARIFF_ROLE_BEGINNER: 'Новобранец',
+        USER_ROLE: {
+            Leader: 'ГМ',
+            Officer: 'Офицер',
+            Veteran: 'Ветеран',
+            Soldier: 'Солдат',
+            Beginner: 'Новобранец',
+        },
+        USER_STATUS: {
+            Afk: 'Афк',
+            Banned: 'Забанен',
+            Active: 'Активный',
+            Left: 'Ушёл',
+            New: 'Новичёк',
+        },
+        LOAN_STATUS: {
+            Active: 'Активный',
+            Paid: 'Выплачен',
+            Expired: 'Стух',
+            Canceled: 'Отменён'
+        },
+        PENALTY_STATUS: {
+            Active: 'Активный',
+            InActive: 'Уплачен',
+            Canceled: 'Отменён'
+        },
         MAIN_RECRUITMENTSTATUS: 'Набор:',
         PAGE_AUTH: "Авторизация",
         AUTHORIZE_FORM: "Введите логин и пароль",
@@ -49,7 +69,6 @@ const locString: any = {
         USER_TITLE: "Вы",
         USER_TAX_AMOUNT: 'Сумма налога с учётом скидки',
         USER_LOAN_AMOUNT: 'Сумма активных займов',
-
         RECRUITMENTSTATUS: {
             Open: 'Открыт',
             Close: 'Закрыт',

@@ -66,36 +66,4 @@ export class guildService {
             .catch(catchHandle);
     }
 
-    /**
-     * Возвращает список игроков в гильдии удовлетворяющих условию
-     */
-    static async GetGamers(guildId: string): Promise<Array<IGamersListView>> {
-        let session = authService.getCurrentSession();
-        const requestOptions: RequestInit = {
-            method: 'GET',
-            cache: 'no-cache',
-            headers: {
-                'Authorization': 'Bearer ' + session.sessionId
-            }
-        };
-        return await fetch(Config.BuildUrl(`/Guilds/${guildId}/gamers`), requestOptions)
-            .then<BaseResponse & any>(getResponse)
-            .then(data => {
-                if (data && data.type || data.traceId) {
-                    return errorHandle(data);
-                }
-                return data.map((g: IGamersListView) => new GamersListView(
-                    g.id,
-                    g.characters,
-                    Number(g.balance),
-                    g.penalties,
-                    g.loans,
-                    g.rank,
-                    g.status
-                ));
-            })
-            .catch(catchHandle);
-    }
-
-
 }

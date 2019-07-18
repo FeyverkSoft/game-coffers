@@ -1,6 +1,6 @@
 import * as React from "react";
-import { СanvasBlock, Grid, Col1, NamedValue } from "..";
-import { Lang, DLang, GuildBalanceReport, LangF, GamersListView } from "../../_services";
+import style from "./gamerrowview.module.less"
+import { Lang, DLang, LangF, GamersListView } from "../../_services";
 import { BaseReactComp } from "../BaseReactComponent";
 import { IHolded } from "../../core";
 
@@ -14,29 +14,29 @@ export class GamerRowView extends BaseReactComp<IGamerRowViewProps> {
     render() {
         const { gamer } = this.props;
         return (
-            <Grid
-                direction="vertical"
+            <div
                 key={gamer.id}
+                className={`${style['user-card']} ${style[gamer.status.toLowerCase()]}`}
             >
-                <Col1>
+                <div className={style['user-status']}>
+                    {DLang('USER_STATUS', gamer.status)}
+                </div>
+                <div>
                     {gamer.characters}
-                </Col1>
-                <Col1>
-                    {gamer.status}
-                </Col1>
-                <Col1>
-                    {Lang(`TARIFF_ROLE_${gamer.rank}`)}
-                </Col1>
-                <Col1>
+                </div>
+                <div>
+                    {DLang('USER_ROLE', gamer.rank)}
+                </div>
+                <div>
                     {gamer.penalties}
-                </Col1>
-                <Col1>
+                </div>
+                <div>
                     {gamer.balance}
-                </Col1>
-                <Col1>
+                </div>
+                <div>
                     {gamer.loans}
-                </Col1>
-            </Grid>
+                </div>
+            </div>
         );
     }
 }

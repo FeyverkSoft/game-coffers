@@ -10,8 +10,7 @@ export class IGuildStore {
     guild: IGuild & IHolded;
     tariffs: ITariffs;
     reports: IReports;
-    gamersList: Array<IGamersListView>;
-    constructor(guild?: IGuild | IHolded & any, tariffs?: ITariffs | IHolded & any, gamersList?: Array<IGamersListView>) {
+    constructor(guild?: IGuild | IHolded & any, tariffs?: ITariffs | IHolded & any) {
         if (guild)
             this.guild = {
                 id: guild.id || '',
@@ -77,10 +76,7 @@ export class IGuildStore {
                 taxAmount: 0
             }
         };
-        if (gamersList)
-            this.gamersList = gamersList;
-        else
-            this.gamersList = [];
+
     }
 }
 
@@ -108,16 +104,6 @@ export function guild(state: IGuildStore = new IGuildStore(), action: IAction<Gu
         case GuildActionsType.FAILED_GET_BALANCE_REPORT:
             clonedState.reports.balanceReport.holding = false;
             return clonedState;
-
-        case GuildActionsType.PROC_GET_GUILD_GAMERS:
-            return state;
-
-        case GuildActionsType.SUCC_GET_GUILD_GAMERS:
-            clonedState.gamersList = action.GamersList;
-            return clonedState;
-
-        case GuildActionsType.FAILED_GET_GUILD_GAMERS:
-            return state;
 
         default:
             return state

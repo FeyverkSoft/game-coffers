@@ -1,7 +1,7 @@
 import * as React from "react";
 import style from "./tarifview.module.less"
 import { СanvasBlock, Grid, Col1, NamedValue } from "..";
-import { Lang, ITariffs, GamerRank } from "../../_services";
+import { Lang, ITariffs, GamerRank, DLang } from "../../_services";
 import { MaterialSelect, Item } from "../Input/SelectList";
 import { BaseReactComp } from "../BaseReactComponent";
 
@@ -28,7 +28,7 @@ export class TariffView extends BaseReactComp<ITarifViewProps, ITarifViewState> 
 
     renderRoleList = () => {
         const { tariff, currentRole } = this.props;
-        const roles = Object.keys(tariff).map(t => new Item(t, Lang(`TARIFF_ROLE_${t}`)));
+        const roles = Object.keys(tariff).map(t => new Item(t,  DLang('USER_ROLE', t)));
         var role = this.state.currentRole || currentRole || roles[0].key;
         if (role != this.state.currentRole)
             this.setState({ currentRole: role });

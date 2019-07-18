@@ -5,15 +5,16 @@ namespace Coffers.Public.Domain.Gamers
 {
     public sealed class Penalty
     {
+
         /// <summary>
         /// Идентификатор штрафа
         /// </summary>
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Дата создания
+        /// Игрок
         /// </summary>
-        public DateTime CreateDate { get; set; }
+        public Gamer Gamer { get; set; }
 
         /// <summary>
         /// Сумма штрафа
@@ -24,6 +25,11 @@ namespace Coffers.Public.Domain.Gamers
         /// </summary>
         public Decimal RepaymentAmount { get; set; }
         /// <summary>
+        /// Дата создания
+        /// </summary>
+        public DateTime CreateDate { get; set; }
+
+        /// <summary>
         /// Статус штрафа
         /// </summary>
         public PenaltyStatus PenaltyStatus { get; set; }
@@ -32,5 +38,14 @@ namespace Coffers.Public.Domain.Gamers
         /// Причина
         /// </summary>
         public String Description { get; set; }
+
+        public Penalty(Guid id, Decimal amount, String description)
+        {
+            Id = Guid.Empty == id ? throw new ArgumentException(nameof(id)) : id;
+            Amount = amount < 0 ? throw new ArgumentException(nameof(amount)) : amount;
+            PenaltyStatus = PenaltyStatus.Active;
+            CreateDate = DateTime.UtcNow;
+            Description = description;
+        }
     }
 }
