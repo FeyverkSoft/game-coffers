@@ -1,11 +1,15 @@
 import { GuildActionsType } from "../../_actions";
-import { IAction, IHolded } from "../../core";
-import { ITariffs, IGuild } from "../../_services";
+import { IAction, IHolded, Dictionary } from "../../core";
+import { ITariffs, IGuild, GuildBalanceReport } from "../../_services";
 import clonedeep from 'lodash.clonedeep';
 
+export interface IReports {
+    balanceReport: GuildBalanceReport & IHolded;
+}
 export class IGuildStore {
     guild: IGuild & IHolded;
     tariffs: ITariffs;
+    reports: IReports;
     constructor(guild?: IGuild | IHolded & any, tariffs?: ITariffs | IHolded & any) {
         if (guild)
             this.guild = {
@@ -63,6 +67,15 @@ export class IGuildStore {
                 }
             };
         }
+        this.reports = {
+            balanceReport: {
+                holding: false,
+                balance: 0,
+                expectedTaxAmount: 0,
+                activeLoansAmount: 0,
+                taxAmount: 0
+            }
+        };
     }
 }
 
@@ -78,6 +91,18 @@ export function guild(state: IGuildStore = new IGuildStore(), action: IAction<Gu
 
         case GuildActionsType.FAILED_GET_GUILD:
             return new IGuildStore({ ...clonedState.guild, holding: false }, { ...clonedState.tariffs, holding: false });
+
+        case GuildActionsType.PROC_GET_BALANCE_REPORT:
+            clonedState.reports.balanceReport.holding = true;
+            return clonedState;
+
+        case GuildActionsType.SUCC_GET_BALANCE_REPORT:
+            clonedState.reports.balanceReport = { ...clonedState.reports.balanceReport, holding: false, ...action.BalanceInfo };
+            return clonedState;
+
+        case GuildActionsType.FAILED_GET_BALANCE_REPORT:
+            clonedState.reports.balanceReport.holding = false;
+            return clonedState;
 
         default:
             return state

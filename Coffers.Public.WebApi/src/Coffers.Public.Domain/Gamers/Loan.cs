@@ -17,6 +17,16 @@ namespace Coffers.Public.Domain.Gamers
         /// Сумма займа
         /// </summary>
         public Decimal Amount { get; set; }
+
+        /// <summary>
+        /// Дата стухания займа
+        /// </summary>
+        public DateTime ExpiredDate { get; set; }
+
+        /// <summary>
+        /// Дата создания займа
+        /// </summary>
+        public DateTime CreateDate { get; set; }
         /// <summary>
         /// Уже было выплаченно в пользу займа
         /// </summary>

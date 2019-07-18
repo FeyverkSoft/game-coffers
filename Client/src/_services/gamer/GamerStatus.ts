@@ -1,0 +1,1 @@
+export type GamerStatus = 'Afk' | 'Banned' | 'Active' | 'Left' | 'New';

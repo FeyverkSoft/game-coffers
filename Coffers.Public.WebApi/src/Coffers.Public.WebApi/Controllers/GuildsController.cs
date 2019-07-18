@@ -235,8 +235,8 @@ namespace Coffers.Public.WebApi.Controllers
         /// <returns></returns>
         [Authorize]
         [HttpGet("{id}/gamers")]
-        [ProducesResponseType(200, Type = typeof(ICollection<GamersListView>))]
-        public async Task<IActionResult> GetGamers([FromRoute]Guid id,
+        [ProducesResponseType(typeof(ICollection<GamersListView>), 200)]
+        public async Task<ActionResult<GamersListView>> GetGamers([FromRoute]Guid id,
             [FromQuery] GetGamersBinding binding,
             CancellationToken cancellationToken)
         {

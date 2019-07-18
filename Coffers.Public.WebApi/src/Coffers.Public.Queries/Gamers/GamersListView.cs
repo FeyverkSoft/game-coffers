@@ -30,6 +30,11 @@ namespace Coffers.Public.Queries.Gamers
         public List<PenaltyView> Penalties { get; set; }
 
         /// <summary>
+        /// Список займов
+        /// </summary>
+        public List<LoanView> Loans { get; set; }
+
+        /// <summary>
         /// Rank
         /// </summary>
         public GamerRank Rank { get; set; }

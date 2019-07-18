@@ -30,6 +30,7 @@ const locString: any = {
         MAIN_PAGE_GUILD_BALANCE: 'Баланс',
         MAIN_PAGE_GUILD_LOANS: 'Активных займов на: ',
         MAIN_PAGE_EXPECTED_TAX: 'Ожидаемый налог: ',
+        MAIN_PAGE_EXPECTED_TAX_FORMAT: "{0} из {1}",
         TARIFF_TITLE: 'Тариф',
         TARIFF_TAX: 'Налог за 1 чара:',
         TARIFF_LOAN_TAX: 'Стоимость займа в день',

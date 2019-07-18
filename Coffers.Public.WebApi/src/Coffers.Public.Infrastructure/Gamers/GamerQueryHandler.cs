@@ -83,7 +83,16 @@ namespace Coffers.Public.Infrastructure.Gamers
                         Date = p.CreateDate,
                         Description = p.Description,
                         PenaltyStatus = p.PenaltyStatus
-                    }).ToList()
+                    }).ToList(),
+                Loans = g.Loans.Where(l => l.CreateDate >= dateFrom)
+                    .Select(l => new LoanView
+                    {
+                        Amount = l.Amount,
+                        Date = l.CreateDate,
+                        LoanStatus = l.ExpiredDate < DateTime.UtcNow && !new[] { LoanStatus.Paid, LoanStatus.Canceled, LoanStatus.Expired }.Contains(l.LoanStatus) ? LoanStatus.Expired : l.LoanStatus,
+                        ExpiredDate = l.ExpiredDate,
+                        Id = l.Id
+                    }).ToList(),
             })
                 .ToListAsync(cancellationToken);
         }

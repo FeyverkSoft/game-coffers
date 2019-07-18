@@ -1,4 +1,4 @@
-export type GamerRank = 'Leader' | 'Officer' | 'Veteran' | 'Soldier' | 'Beginner';
+import { GamerRank } from "./GamerRank";
 
 export interface IGamerInfo {
     userId: String;
@@ -6,8 +6,12 @@ export interface IGamerInfo {
     balance: number;
     activeLoanAmount: number;
     activePenaltyAmount: number;
+    activeExpLoanAmount: number;
+    activeLoanTaxAmount: number;
+    repaymentLoanAmount: number;
     rank: GamerRank;
     charCount: number;
+
 }
 
 export class GamerInfo implements IGamerInfo {
@@ -16,16 +20,23 @@ export class GamerInfo implements IGamerInfo {
     balance: number;
     activeLoanAmount: number;
     activePenaltyAmount: number;
+    activeExpLoanAmount: number;
+    activeLoanTaxAmount: number;
+    repaymentLoanAmount: number;
     rank: GamerRank;
     charCount: number;
 
     constructor(userId: String, name: String, balance: number, activeLoanAmount: number,
-        activePenaltyAmount: number, rank: GamerRank, charCount: number) {
+        activePenaltyAmount: number, activeExpLoanAmount: number, activeLoanTaxAmount: number,
+        repaymentLoanAmount: number, rank: GamerRank, charCount: number) {
         this.userId = userId;
         this.name = name;
         this.balance = balance;
         this.activeLoanAmount = activeLoanAmount;
         this.activePenaltyAmount = activePenaltyAmount;
+        this.activeExpLoanAmount = activeExpLoanAmount;
+        this.activeLoanTaxAmount = activeLoanTaxAmount;
+        this.repaymentLoanAmount = repaymentLoanAmount;
         this.rank = rank;
         this.charCount = charCount;
     }

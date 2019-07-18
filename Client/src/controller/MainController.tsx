@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect, DispatchProp } from 'react-redux';
-import { Lang, GuildInfo, LangF, ITariffs, DLang, IGamerInfo, GamerRank } from '../_services';
+import { Lang, GuildInfo, LangF, ITariffs, DLang, IGamerInfo, GamerRank, GuildBalanceReport } from '../_services';
 import {
     Crumbs, BaseReactComp, Form, Input, Button, СanvasBlock, Page, MaterialSelect, Grid,
     Col2, Col1, NamedValue, TariffView, UserView, MainView, BalanceView
@@ -8,6 +8,7 @@ import {
 
 import { guildInstance } from '../_actions';
 import { IStore } from '../_helpers';
+import { IHolded } from '../core';
 
 interface IMainProps extends DispatchProp<any> {
     isLoading?: boolean;
@@ -16,6 +17,7 @@ interface IMainProps extends DispatchProp<any> {
     tariffs: ITariffs;
     guildId?: string;
     guildInfo: GuildInfo;
+    balance: GuildBalanceReport & IHolded;
     userRank: GamerRank;
 }
 
@@ -34,6 +36,8 @@ class Main extends BaseReactComp<IMainProps, any> {
     componentDidMount() {
         if (this.props.guildInfo.id == '' && this.props.guildId)
             this.props.dispatch(guildInstance.GetGuild({ guildId: this.props.guildId }))
+        if (this.props.guildId)
+            this.props.dispatch(guildInstance.GetGuildBalanceReport({ guildId: this.props.guildId }))
     }
 
     charactersGrid = () => {
@@ -60,7 +64,7 @@ class Main extends BaseReactComp<IMainProps, any> {
                 </Col2>
                 <Col2>
                     <BalanceView
-                        guildInfo={this.props.guildInfo}
+                        balance={this.props.balance}
                     />
                 </Col2>
                 <Col2>
@@ -84,7 +88,7 @@ class Main extends BaseReactComp<IMainProps, any> {
 }
 
 const connectedMain = connect<{}, {}, {}, IStore>((state: IStore) => {
-    const { guild, tariffs } = state.guild;
+    const { guild, tariffs, reports } = state.guild;
     const { currentGamer } = state.gamers;
     return {
         isLoading: guild.holding,
@@ -92,7 +96,8 @@ const connectedMain = connect<{}, {}, {}, IStore>((state: IStore) => {
         userRank: currentGamer.rank,
         user: currentGamer,
         tariffs: tariffs,
-        guildId: state.session.guildId
+        guildId: state.session.guildId,
+        balance: reports.balanceReport
     };
 })(Main);
 
