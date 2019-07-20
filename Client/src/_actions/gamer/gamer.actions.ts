@@ -18,7 +18,69 @@ interface SetStatusProps extends ICallback<any> {
     status: GamerStatus;
 }
 
+interface AddCharProps extends ICallback<any> {
+    gamerId: string;
+    name: string;
+    className: string;
+}
+
+interface DeleteCharProps extends ICallback<any> {
+    gamerId: string;
+    name: string;
+}
 export class GamerActions {
+    /**
+     * Метод добавляет игроку нового персонажа
+     */
+    AddCharacters(props: AddCharProps): Function {
+        return (dispatch: Function) => {
+            dispatch(request(props.gamerId));
+            gamerService.AddNewChar(props.gamerId, props.name, props.className)
+                .then(
+                    data => {
+                        dispatch(success(props.gamerId, props.name));
+                        if (props.onSuccess)
+                            props.onSuccess(data);
+                    })
+                .catch(
+                    ex => {
+                        dispatch(failure(props.gamerId));
+                        dispatch(alertInstance.error(ex));
+                        if (props.onFailure)
+                            props.onFailure(ex);
+                    });
+        }
+        function request(gamerId: string) { return { type: GamerActionsType.PROC_ADD_NEW_CHARS, gamerId } }
+        function success(gamerId: string, name: string) { return { type: GamerActionsType.SUCC_ADD_NEW_CHARS, gamerId, name } }
+        function failure(gamerId: string) { return { type: GamerActionsType.FAILED_ADD_NEW_CHARS, gamerId } }
+    }
+
+    /**
+     * Метод удаляет у игрока персонажа
+     */
+    DeleteCharacters(props: DeleteCharProps): Function {
+        return (dispatch: Function) => {
+            dispatch(request(props.gamerId));
+            gamerService.DeleteChar(props.gamerId, props.name)
+                .then(
+                    data => {
+                        dispatch(success(props.gamerId, props.name));
+                        if (props.onSuccess)
+                            props.onSuccess(data);
+                    })
+                .catch(
+                    ex => {
+                        dispatch(failure(props.gamerId));
+                        dispatch(alertInstance.error(ex));
+                        if (props.onFailure)
+                            props.onFailure(ex);
+                    });
+        }
+        function request(gamerId: string) { return { type: GamerActionsType.PROC_DELETE_CHARS, gamerId } }
+        function success(gamerId: string, name: string) { return { type: GamerActionsType.SUCC_DELETE_CHARS, gamerId, name } }
+        function failure(gamerId: string) { return { type: GamerActionsType.FAILED_DELETE_CHARS, gamerId } }
+
+    }
     /**
      * Возвращает информацию о текущем игроке
      */

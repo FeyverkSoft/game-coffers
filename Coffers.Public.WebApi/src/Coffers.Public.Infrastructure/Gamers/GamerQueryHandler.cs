@@ -72,12 +72,13 @@ namespace Coffers.Public.Infrastructure.Gamers
             {
                 Id = g.Id,
                 Balance = g.DefaultAccount.Balance,
-                Characters = String.Join(", ", g.Characters.Where(c => c.Status == CharStatus.Active).Select(x => x.Name)),
+                Characters =  g.Characters.Where(c => c.Status == CharStatus.Active).Select(x => x.Name).ToList(),
                 Rank = g.Rank,
                 Status = g.Status,
                 Penalties = g.Penalties.Where(p => p.CreateDate >= dateFrom)
                     .Select(p => new PenaltyView
                     {
+                        Id = p.Id,
                         Amount = p.Amount,
                         Date = p.CreateDate,
                         Description = p.Description,

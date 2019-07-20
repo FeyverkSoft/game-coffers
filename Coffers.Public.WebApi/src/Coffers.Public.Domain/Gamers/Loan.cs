@@ -8,6 +8,7 @@ namespace Coffers.Public.Domain.Gamers
     /// </summary>
     public sealed class Loan
     {
+
         /// <summary>
         /// Идентификатор займа
         /// </summary>
@@ -29,6 +30,11 @@ namespace Coffers.Public.Domain.Gamers
         /// Дата создания займа
         /// </summary>
         public DateTime CreateDate { get; internal set; }
+
+        /// <summary>
+        /// Дата обновления записи
+        /// </summary>
+        public DateTime UpdateDate { get; internal set; }
         /// <summary>
         /// Уже было выплаченно в пользу займа
         /// </summary>
@@ -43,7 +49,32 @@ namespace Coffers.Public.Domain.Gamers
         /// </summary>
         public Decimal PenaltyAmount { get; internal set; }
 
+        /// <summary>
+        /// Дата займа
+        /// </summary>
+        public DateTime BorrowDate { get; internal set; }
+        /// <summary>
+        /// Необязательное описание, для чего был взят займ
+        /// </summary>
+        public String Description { get; internal set; }
+
         public LoanStatus LoanStatus { get; internal set; }
+
+
+        public Loan(Guid id, Guid tariffId, Decimal amount, Decimal taxAmount,
+            String description, DateTime borrowDate, DateTime expiredDate)
+        {
+            CreateDate = DateTime.UtcNow;
+            UpdateDate = DateTime.UtcNow;
+            LoanStatus = LoanStatus.Active;
+            Id = id;
+            TariffId = tariffId;
+            Amount = amount;
+            TaxAmount = taxAmount;
+            Description = description;
+            BorrowDate = borrowDate;
+            ExpiredDate = expiredDate;
+        }
     }
 
 

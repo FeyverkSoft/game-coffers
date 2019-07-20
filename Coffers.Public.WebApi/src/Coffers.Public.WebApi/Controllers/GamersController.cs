@@ -23,10 +23,12 @@ namespace Coffers.Public.WebApi.Controllers
         private readonly IQueryProcessor _queryProcessor;
         private readonly LoanFactory _loanFactory;
 
-        public GamersController(IGamerRepository gamerRepository, IQueryProcessor queryProcessor)
+        public GamersController(IGamerRepository gamerRepository, IQueryProcessor queryProcessor,
+            LoanFactory loanFactory)
         {
             _gamerRepository = gamerRepository;
             _queryProcessor = queryProcessor;
+            _loanFactory = loanFactory;
         }
 
         /// <summary>
@@ -66,7 +68,7 @@ namespace Coffers.Public.WebApi.Controllers
 
             await _gamerRepository.Save(gamer);
 
-            return Ok();
+            return Ok(new { });
         }
 
         /// <summary>
@@ -91,7 +93,7 @@ namespace Coffers.Public.WebApi.Controllers
 
             await _gamerRepository.Save(gamer);
 
-            return Ok();
+            return Ok(new { });
         }
 
         /// <summary>
@@ -114,7 +116,7 @@ namespace Coffers.Public.WebApi.Controllers
 
             await _gamerRepository.Save(gamer);
 
-            return Ok();
+            return Ok(new { });
         }
 
         /// <summary>
@@ -137,7 +139,7 @@ namespace Coffers.Public.WebApi.Controllers
 
             await _gamerRepository.Save(gamer);
 
-            return Ok();
+            return Ok(new { });
         }
 
         /// <summary>
@@ -150,13 +152,14 @@ namespace Coffers.Public.WebApi.Controllers
         {
             var gamer = await _gamerRepository.Get(gamerId, cancellationToken);
 
-            var loan = _loanFactory.Build(binding.Id, gamer.GuildId, binding.Amount, binding.Description, binding.BorrowDate, binding.ExpiredDate);
+            var loan = await _loanFactory.Build(binding.Id, gamer.GuildId, gamer.Rank, binding.Amount,
+                binding.Description, binding.BorrowDate, binding.ExpiredDate);
 
             gamer.AddLoan(loan);
 
             await _gamerRepository.Save(gamer);
 
-            return Ok();
+            return Ok(new { });
         }
 
         /// <summary>
@@ -173,7 +176,7 @@ namespace Coffers.Public.WebApi.Controllers
 
             await _gamerRepository.Save(gamer);
 
-            return Ok();
+            return Ok(new { });
         }
     }
 }

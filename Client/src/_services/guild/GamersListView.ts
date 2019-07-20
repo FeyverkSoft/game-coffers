@@ -5,7 +5,7 @@ import { LoanStatus } from "./LoanStatus";
 
 export interface IGamersListView {
     id: string;
-    characters: string;
+    characters: Array<string>;
     balance: number;
     penalties: Array<IPenaltyView>;
     loans: Array<ILoanView>;
@@ -14,6 +14,7 @@ export interface IGamersListView {
 }
 
 export interface IPenaltyView {
+    id: string;
     date: Date;
     amount: number;
     description: string;
@@ -31,14 +32,14 @@ export interface ILoanView {
 
 export class GamersListView implements IGamersListView {
     id: string;
-    characters: string;
+    characters: Array<string>;
     balance: number;
     penalties: Array<IPenaltyView>;
     loans: Array<ILoanView>;
     rank: GamerRank;
     status: GamerStatus;
     constructor(id: string,
-        characters: string,
+        characters: Array<string>,
         balance: number,
         penalties: Array<IPenaltyView>,
         loans: Array<ILoanView>,

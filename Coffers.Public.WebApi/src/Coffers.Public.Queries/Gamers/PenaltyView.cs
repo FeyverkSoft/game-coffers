@@ -21,6 +21,9 @@ namespace Coffers.Public.Queries.Gamers
         /// Статус штрафа
         /// </summary>
         public PenaltyStatus PenaltyStatus { get; set; }
-
+        /// <summary>
+        /// Penalty unique id
+        /// </summary>
+        public Guid Id { get; set; }
     }
 }

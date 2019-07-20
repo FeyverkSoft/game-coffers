@@ -6,6 +6,61 @@ import { GamerStatus } from './GamerStatus';
 import { GamerRank } from './GamerRank';
 
 export class gamerService {
+    /**
+     * Добавить нового персонажа игроку
+     * @param gamerId 
+     * @param name 
+     * @param className 
+     */
+    static async AddNewChar(gamerId: string, name: string, className: string): Promise<void> {
+        let session = authService.getCurrentSession();
+        const requestOptions: RequestInit = {
+            method: 'PUT',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+                'Authorization': 'Bearer ' + session.sessionId
+            },
+            body: JSON.stringify({ name: name, className: className })
+        };
+        return await fetch(Config.BuildUrl(`/Gamers/${gamerId}/characters`), requestOptions)
+            .then<BaseResponse>(getResponse)
+            .then(data => {
+                if (data && data.type || data.traceId) {
+                    return errorHandle(data);
+                }
+            })
+            .catch(catchHandle);
+    }
+
+    /**
+     * Удалить персонажа у игрока
+     * @param gamerId 
+     * @param name 
+     * @param className 
+     */
+    static async DeleteChar(gamerId: string, name: string): Promise<void> {
+        let session = authService.getCurrentSession();
+        const requestOptions: RequestInit = {
+            method: 'DELETE',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+                'Authorization': 'Bearer ' + session.sessionId
+            },
+            body: JSON.stringify({ name: name })
+        };
+        return await fetch(Config.BuildUrl(`/Gamers/${gamerId}/characters`), requestOptions)
+            .then<BaseResponse>(getResponse)
+            .then(data => {
+                if (data && data.type || data.traceId) {
+                    return errorHandle(data);
+                }
+            })
+            .catch(catchHandle);
+    }
 
     /**
      * Получить информацию об игроке текущем владельце сессии
@@ -16,6 +71,8 @@ export class gamerService {
             method: 'GET',
             cache: 'no-cache',
             headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
                 'Authorization': 'Bearer ' + session.sessionId
             }
         };
@@ -41,6 +98,8 @@ export class gamerService {
             method: 'GET',
             cache: 'no-cache',
             headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
                 'Authorization': 'Bearer ' + session.sessionId
             }
         };
@@ -73,6 +132,8 @@ export class gamerService {
             method: 'PATCH',
             cache: 'no-cache',
             headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
                 'Authorization': 'Bearer ' + session.sessionId
             },
             body: JSON.stringify({ status: status })
@@ -96,6 +157,8 @@ export class gamerService {
             method: 'PATCH',
             cache: 'no-cache',
             headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
                 'Authorization': 'Bearer ' + session.sessionId
             },
             body: JSON.stringify({ rank: rank })

@@ -23,7 +23,7 @@ namespace Coffers.Public.WebApi.Controllers
         {
             return Ok(new VersionView
             {
-                Version = typeof(RuntimeEnvironment).GetTypeInfo().Assembly.GetCustomAttribute<AssemblyFileVersionAttribute>().Version
+                Version = typeof(VersionController).Assembly.GetCustomAttribute<AssemblyFileVersionAttribute>().Version
             });
         }
     }

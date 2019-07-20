@@ -3,12 +3,14 @@ import { connect, DispatchProp } from 'react-redux';
 import { Lang, GuildInfo, LangF, ITariffs, IGamerInfo, GamerRank, GuildBalanceReport, IGamersListView, IGuild } from '../_services';
 import {
     Crumbs, BaseReactComp, СanvasBlock, Page, Grid,
-    Col2, TariffView, UserView, MainView, BalanceView, GamerRowView
+    Col2, TariffView, UserView, MainView, BalanceView, GamerRowView, Dialog, Button, Form, Col1, Input, Private
 } from '../_components';
 
 import { guildInstance, gamerInstance } from '../_actions';
 import { IStore } from '../_helpers';
 import { IHolded } from '../core';
+import { AddUserDialog } from '../_components/Dialogs/AddUserDialog';
+import { AddCharDialog } from '../_components/Dialogs/AddCharDialog';
 
 interface IMainProps {
     isLoading?: boolean;
@@ -26,6 +28,13 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
     constructor(props: IMainProps & DispatchProp<any>) {
         super(props);
         this.state = {
+            addNewUser: {
+                isDisplayed: false,
+            },
+            addChar: {
+                isDisplayed: false,
+                userId: ''
+            }
         };
     }
 
@@ -43,18 +52,50 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
             this.props.dispatch(gamerInstance.GetGamers({ guildId: this.props.guildId }))
     }
 
+    onAddChar = (userId: string) => {
+        this.setState({ addChar: { isDisplayed: true, userId: userId } })
+    }
+
+    onDeleteChar = (userId: string, char: string) => {
+        if (userId)
+            this.props.dispatch(gamerInstance.DeleteCharacters({
+                gamerId: userId,
+                name: char
+            }));
+    }
+
+    addUserRenderer = () => {
+        return (<AddUserDialog
+            isDisplayed={this.state.addNewUser.isDisplayed}
+            onClose={() => this.setState({ addNewUser: { false: false } })}
+            guildId={this.props.guildId || ''}
+        ></AddUserDialog>)
+    }
+
     charactersGrid = () => {
         const { gamers } = this.props;
         return <СanvasBlock
             title={Lang("MAIN_PAGE_CHARACTERS_GRID")}
             type="success"
+            subChildren={<Private roles={['admin', 'officer']}>
+                <Button
+                    type={'default'}
+                    onClick={() => this.setState({ addNewUser: { isDisplayed: true } })}
+                    isSmall={true}
+                >{Lang('ADD_NEW_USER')}</Button>
+            </Private>}
         >
             {
                 gamers.map(g => {
-                    return <GamerRowView key={g.id} gamer={g} />;
+                    return <GamerRowView
+                        key={g.id}
+                        gamer={g}
+                        onAddChar={this.onAddChar}
+                        onDeleteChar={this.onDeleteChar}
+                    />;
                 })
             }
-        </СanvasBlock>;
+        </ СanvasBlock>;
     }
 
     render() {
@@ -92,7 +133,15 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                     />
                 </Col2>
             </Grid>
+            <Private roles={['admin', 'officer']}>
+                {this.addUserRenderer()}
+            </Private>
             {this.charactersGrid()}
+            <AddCharDialog
+                userId={this.state.addChar.userId}
+                isDisplayed={this.state.addChar.isDisplayed}
+                onClose={() => this.setState({ addChar: { isDisplayed: false } })}
+            ></AddCharDialog>
         </Page>
     }
 }

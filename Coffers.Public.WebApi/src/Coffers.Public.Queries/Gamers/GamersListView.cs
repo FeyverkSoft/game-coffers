@@ -17,7 +17,7 @@ namespace Coffers.Public.Queries.Gamers
         /// <summary>
         /// Characters list
         /// </summary>
-        public String Characters { get; set; }
+        public ICollection<String> Characters { get; set; }
 
         /// <summary>
         /// User balance

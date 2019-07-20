@@ -1,17 +1,50 @@
 
-import { guildService, GuildInfo, GuildBalanceReport, GamerStatus, IGamersListView } from '../../_services';
+import { guildService, GuildInfo, GuildBalanceReport, GamerStatus, IGamersListView, GamerStatusList, GamerRank } from '../../_services';
 import { GuildActionsType } from './GuildActionsType';
 import { alertInstance, ICallback } from '..';
+import { gamerInstance } from '../gamer/gamer.actions';
 
 interface GetGuildProps extends ICallback<any> {
     guildId: string;
 }
-
+interface AddUserProps extends ICallback<any> {
+    guildId: string;
+    id: string;
+    name: string,
+    rank: GamerRank,
+    status: GamerStatus,
+    dateOfBirth: Date,
+    login: string
+}
 interface GetGuildBalanceProps extends ICallback<any> {
     guildId: string;
 }
 
 export class GuildActions {
+
+    /**
+     * Метод регистрирует нового пользователя в гильдии
+     * костыльный метод
+     * @param props 
+     */
+    AddUser(props: AddUserProps): Function {
+        return (dispatch: Function) => {
+            guildService.AddUser(props.guildId, props.id, props.name,
+                props.rank, props.status, props.dateOfBirth, props.login)
+                .then(
+                    data => {
+                        if (props.onSuccess)
+                            props.onSuccess(data);
+                        dispatch(gamerInstance.GetGamers({ guildId: props.guildId }));
+                    })
+                .catch(
+                    ex => {
+                        dispatch(alertInstance.error(ex));
+                        if (props.onFailure)
+                            props.onFailure(ex);
+                    });
+        }
+    }
     /**
      * Возвращает информацию о гильдии по её ID
      */

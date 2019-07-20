@@ -181,7 +181,7 @@ namespace Coffers.Public.WebApi.Controllers
 
             await _guildRepository.Save(guild);
 
-            return Ok();
+            return Ok(new { });
         }
 
         /// <summary>
@@ -224,7 +224,7 @@ namespace Coffers.Public.WebApi.Controllers
 
             await _guildRepository.Save(guild);
 
-            return Ok();
+            return Ok(new { });
         }
 
         /// <summary>

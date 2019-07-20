@@ -12,11 +12,6 @@ namespace Coffers.Public.Domain.Gamers
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Игрок
-        /// </summary>
-        public Gamer Gamer { get; set; }
-
-        /// <summary>
         /// Сумма штрафа
         /// </summary>
         public Decimal Amount { get; set; }

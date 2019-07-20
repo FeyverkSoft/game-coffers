@@ -1,5 +1,6 @@
 @import "../../../assets/_variables.less"; // variables to override above
->.breadcrumbs {
+
+.breadcrumbs {
     .flex();
     flex: 1 1 100%;
     color: @bgColor;
@@ -8,16 +9,17 @@
     text-align: left;
     justify-content: flex-start;
     font-size: @12px;
-    padding: @14px;
     text-transform: uppercase;
     @media screen and (max-width: @mobile-L) {
         font-size: @10px;
     }
-    a {
+    .a {
         color: currentColor;
         text-decoration: none;
+        &:visited,
         &:hover {
             color: @mainFontColor;
         }
+        
     }
 }

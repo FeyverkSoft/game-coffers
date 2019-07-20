@@ -2,7 +2,7 @@ import * as React from "react";
 import style from "./form.module.less";
 
 interface IFormProps extends React.Props<any> {
-    onSubmit(e?: React.FormEvent<HTMLFormElement>): any,
+    onSubmit?(e?: React.FormEvent<HTMLFormElement>): any,
     className?: string;
     direction?: 'vertical' | 'horizontal';
     [id: string]: any;

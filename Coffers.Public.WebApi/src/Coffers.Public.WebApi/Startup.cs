@@ -89,7 +89,7 @@ namespace Coffers.Public.WebApi
                 options.UseMySQL(Configuration.GetConnectionString("Coffers"));
             });
 
-
+            services.AddScoped<LoanFactory>();
             services.AddScoped<IGuildRepository, GuildRepository>();
             services.AddScoped<IAuthorizationRepository, AuthorizationRepository>();
             services.AddScoped<IGamerRepository, GamerRepository>();

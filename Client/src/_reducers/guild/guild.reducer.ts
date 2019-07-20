@@ -85,13 +85,18 @@ export function guild(state: IGuildStore = new IGuildStore(), action: IAction<Gu
     var clonedState = clonedeep(state);
     switch (action.type) {
         case GuildActionsType.PROC_GET_GUILD:
-            return new IGuildStore({ ...clonedState.guild, holding: true }, { ...clonedState.tariffs, holding: true });
+            clonedState.guild.holding = true;
+            return clonedState;
 
         case GuildActionsType.SUCC_GET_GUILD:
-            return new IGuildStore(action.guildInfo, action.guildInfo.tariffs);
+            clonedState.guild.holding = false;
+            clonedState.guild = { ...clonedState.guild, ...action.guildInfo };
+            clonedState.tariffs = action.guildInfo.tariffs;
+            return clonedState;
 
         case GuildActionsType.FAILED_GET_GUILD:
-            return new IGuildStore({ ...clonedState.guild, holding: false }, { ...clonedState.tariffs, holding: false });
+            clonedState.guild.holding = false;
+            return clonedState;
 
         case GuildActionsType.PROC_GET_BALANCE_REPORT:
             clonedState.reports.balanceReport.holding = true;

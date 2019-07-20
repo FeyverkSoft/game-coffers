@@ -25,12 +25,12 @@ export const Breadcrumbs = ({ ...props }) => {
     return (
         <div className={style["breadcrumbs"]}>
             <IF value={props.items}>
-                <Link to='/'>></Link>
+                <Link to='/' className={style['a']}>></Link>
             </IF>
             <IF value={props.items}>
                 {
                     props.items.map((x: Crumbs) => {
-                        return <Link to={x.to} key={x.Key}>&nbsp;{x.name ? x.name : x.to}&nbsp;></Link>
+                        return <Link className={style['a']} to={x.to} key={x.Key}>&nbsp;{x.name ? x.name : x.to}&nbsp;></Link>
                     })
                 }
             </IF>

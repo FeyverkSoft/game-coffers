@@ -1,6 +1,201 @@
 @import "../../../assets/_variables.less"; // variables to override above
 
 .user-card {
+    .flex();
+    width: 100%;
+    box-shadow: @box-shadow-0;
+    align-items: center;
+
+    .add {
+        cursor: pointer;
+        color: @defaultColor;
+        padding: .25rem;
+
+        &:hover {
+            color: lighten(@defaultColor, @hover);
+        }
+
+        &:before {
+            display: block;
+            font: normal normal normal 24px/1 "Material Design Icons";
+            font-size: 1rem;
+            content: "\F417"
+        }
+    }
+
+    .main {
+        .flex();
+        padding: 1rem;
+        flex: 3 1 auto;
+        flex-direction: column;
+
+        .title {
+            text-transform: lowercase;
+            font-size: .8rem;
+            color: fade(@black, 80%);
+            padding-bottom: .25rem;
+        }
+
+        .char-list {
+            .flex();
+            padding-left: .25rem;
+            font-weight: 400;
+
+            .char_name {
+                .flex();
+                position: relative;
+                padding-right: .2rem;
+
+                &:hover {
+                    .delete {
+                        display: block;
+                    }
+                }
+
+                .delete {
+                    cursor: pointer;
+                    position: absolute;
+                    color: @defaultColor;
+                    padding: 0.25rem 0;
+                    right: 0;
+                    display: none;
+
+                    &:hover {
+                        color: lighten(@defaultColor, @hover);
+                    }
+
+                    &:before {
+                        display: block;
+                        font: normal normal normal 24px/1 "Material Design Icons";
+                        font-size: 1rem;
+                        content: "\F1C0"
+                    }
+                }
+            }
+        }
+
+
+    }
+
+    .user-status {
+        .flex();
+        flex-direction: column;
+        flex: 1 1 auto;
+
+        .title {
+            text-transform: lowercase;
+            font-size: .8rem;
+            color: fade(@black, 80%);
+            padding-bottom: .25rem;
+        }
+
+        .content {
+            text-transform: uppercase;
+            font-weight: 400;
+            padding-left: .25rem;
+            min-width: 6rem;
+        }
+    }
+
+    .rank {
+        .flex();
+        flex-direction: column;
+        flex: 1 1 auto;
+
+        .title {
+            text-transform: lowercase;
+            font-size: .8rem;
+            color: fade(@black, 80%);
+            padding-bottom: .25rem;
+        }
+
+        .content {
+            text-transform: uppercase;
+            font-weight: 400;
+            padding-left: .25rem;
+            min-width: 4rem;
+        }
+    }
+
+    .balance {
+        .flex();
+        flex-direction: column;
+        flex: 1 1 auto;
+
+        .title {
+            text-transform: lowercase;
+            font-size: .8rem;
+            color: fade(@black, 80%);
+            padding-bottom: .25rem;
+        }
+
+        .content {
+            text-transform: uppercase;
+            font-weight: 400;
+            padding-left: .25rem;
+            min-width: 4rem;
+
+            &.red {
+                font-weight: 800;
+                color: @importantColor;
+            }
+        }
+    }
+
+    .penalties {
+        .flex();
+        flex-direction: column;
+        flex: 1 1 auto;
+
+        .title {
+            text-transform: lowercase;
+            font-size: .8rem;
+            color: fade(@black, 80%);
+            padding-bottom: .25rem;
+        }
+
+        .content {
+            text-transform: uppercase;
+            font-weight: 400;
+            padding-left: .25rem;
+        }
+    }
+
+    .loans {
+        .flex();
+        flex-direction: column;
+        flex: 1 1 auto;
+
+        .title {
+            text-transform: lowercase;
+            font-size: .8rem;
+            color: fade(@black, 80%);
+            padding-bottom: .25rem;
+        }
+
+        .content {
+            text-transform: uppercase;
+            padding-left: .25rem;
+
+            .loan {
+                &.active {
+                    font-weight: 400;
+                }
+
+                &.canceled,
+                &.paid {
+                    text-decoration: line-through;
+                    color: fade(@black, 80%);
+                }
+
+                &.expired {
+                    font-weight: 800;
+                    color: @importantColor;
+                }
+            }
+        }
+    }
+
     &.afk {}
 
     &.banned {}

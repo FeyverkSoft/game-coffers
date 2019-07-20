@@ -62,6 +62,12 @@ namespace Coffers.Public.Domain.Gamers
 
         internal Gamer() { }
 
+        /// <summary>
+        /// Данный метод добавляет нового персонажа игроку, если такого не было
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="className"></param>
+        /// <exception cref="ArgumentException">Character {name} already exists</exception>
         public void AddCharacters(String name, String className)
         {
             if (Characters == null)
@@ -89,6 +95,10 @@ namespace Coffers.Public.Domain.Gamers
             UpdateDate = DateTime.UtcNow;
         }
 
+        /// <summary>
+        /// Устанавливает игроку новый статус
+        /// </summary>
+        /// <param name="status"></param>
         public void SetStatus(GamerStatus status)
         {
             if (Status != status)
@@ -102,6 +112,10 @@ namespace Coffers.Public.Domain.Gamers
             }
         }
 
+        /// <summary>
+        /// "Удаляет" персонажа у игрока, по факту только скрывает :)
+        /// </summary>
+        /// <param name="name"></param>
         public void DeleteCharacter(String name)
         {
             if (Characters == null)
@@ -120,6 +134,12 @@ namespace Coffers.Public.Domain.Gamers
             Rank = bindingRank;
         }
 
+        /// <summary>
+        /// Добавляет ноый штраф игроку, с указаными параметрами
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="amount"></param>
+        /// <param name="description"></param>
         public void AddPenalty(Guid id, Decimal amount, String description)
         {
             if (Penalties == null)
@@ -130,6 +150,10 @@ namespace Coffers.Public.Domain.Gamers
             Penalties.Add(new Penalty(id, amount, description));
         }
 
+        /// <summary>
+        /// Добавляет игроку новый займ
+        /// </summary>
+        /// <param name="loan"></param>
         public void AddLoan(Loan loan)
         {
             if (Loans == null)

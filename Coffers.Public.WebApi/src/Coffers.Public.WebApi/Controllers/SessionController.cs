@@ -59,6 +59,9 @@ namespace Coffers.Public.WebApi.Controllers
             if (gamer.Roles != null)
                 roles.AddRange(gamer.Roles);
             roles.Add(gamer.Rank.ToString().ToLower());
+#warning костыль роли admin
+            if(gamer.Login.Equals("Feyverk"))
+                roles.Add("Admin");
             return Ok(new TokenView
             {
                 Token = sessionId,

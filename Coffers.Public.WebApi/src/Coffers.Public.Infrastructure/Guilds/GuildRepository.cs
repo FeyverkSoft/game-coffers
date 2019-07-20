@@ -19,8 +19,14 @@ namespace Coffers.Public.Infrastructure.Guilds
         public async Task<Guild> Get(Guid id, CancellationToken cancellationToken, Boolean asNonTr = false)
         {
             if (asNonTr)
-                return await _context.Guilds.Include(x => x.Gamers)
+                return await _context.Guilds
                     .AsNoTracking()
+                    .Include(x => x.Gamers)
+                    .Include(g=>g.Tariff).ThenInclude(t=>t.BeginnerTariff)
+                    .Include(g => g.Tariff).ThenInclude(t => t.SoldierTariff)
+                    .Include(g => g.Tariff).ThenInclude(t => t.VeteranTariff)
+                    .Include(g => g.Tariff).ThenInclude(t => t.OfficerTariff)
+                    .Include(g => g.Tariff).ThenInclude(t => t.LeaderTariff)
                     .FirstOrDefaultAsync(guild => guild.Id == id, cancellationToken);
 
             return await _context.Guilds.Include(x => x.Gamers)

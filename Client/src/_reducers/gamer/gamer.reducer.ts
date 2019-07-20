@@ -47,22 +47,27 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<G
     var clonedState = clonedeep(state);
     switch (action.type) {
         case GamerActionsType.PROC_GET_CURRENT_GAMER:
-            return new IGamerStore({ ...clonedState.currentGamer, holding: true });
+            clonedState.currentGamer.holding = true;
+            return clonedState;
 
         case GamerActionsType.SUCC_GET_CURRENT_GAMER:
-            return new IGamerStore(action.currentGamer);
+            clonedState.currentGamer = action.currentGamer;
+            return clonedState;
 
         case GamerActionsType.FAILED_GET_CURRENT_GAMER:
-            return new IGamerStore({ ...clonedState.currentGamer, holding: false });
+            clonedState.currentGamer.holding = false;
+            return clonedState;
 
 
         case GamerActionsType.PROC_GET_GUILD_GAMERS:
             return state;
 
         case GamerActionsType.SUCC_GET_GUILD_GAMERS:
-            action.GamersList.array.forEach((gamer: IGamersListView) => {
+            action.GamersList.forEach((gamer: IGamersListView) => {
+                if (clonedState.gamersList == undefined)
+                    clonedState.gamersList = {};
                 clonedState.gamersList[gamer.id] = gamer;
-            });;
+            });
             return clonedState;
 
         case GamerActionsType.FAILED_GET_GUILD_GAMERS:
@@ -76,12 +81,13 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<G
             }
         case GamerActionsType.SUCC_SET_GAMER_STATUS:
             if (clonedState.gamersList[action.gamerId]) {
+                clonedState.gamersList[action.gamerId].holding = false;
                 clonedState.gamersList[action.gamerId].rank = action.status;
                 return clonedState;
             }
         case GamerActionsType.FAILED_SET_GAMER_STATUS:
             if (clonedState.gamersList[action.gamerId]) {
-                clonedState.gamersList[action.gamerId].holding = true;
+                clonedState.gamersList[action.gamerId].holding = false;
                 return clonedState;
             }
 
@@ -94,12 +100,53 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<G
             }
         case GamerActionsType.SUCC_SET_GAMER_RANK:
             if (clonedState.gamersList[action.gamerId]) {
+                clonedState.gamersList[action.gamerId].holding = false;
                 clonedState.gamersList[action.gamerId].rank = action.rank;
                 return clonedState;
             }
         case GamerActionsType.FAILED_SET_GAMER_RANK:
             if (clonedState.gamersList[action.gamerId]) {
+                clonedState.gamersList[action.gamerId].holding = false;
+                return clonedState;
+            }
+
+
+        case GamerActionsType.PROC_ADD_NEW_CHARS:
+            if (clonedState.gamersList[action.gamerId]) {
                 clonedState.gamersList[action.gamerId].holding = true;
+                return clonedState;
+            }
+        case GamerActionsType.SUCC_ADD_NEW_CHARS:
+            if (clonedState.gamersList[action.gamerId]) {
+                if (clonedState.gamersList[action.gamerId].characters == undefined)
+                    clonedState.gamersList[action.gamerId].characters = [];
+                clonedState.gamersList[action.gamerId].holding = false;
+                clonedState.gamersList[action.gamerId].characters.push(action.name);
+                return clonedState;
+            }
+        case GamerActionsType.FAILED_ADD_NEW_CHARS:
+            if (clonedState.gamersList[action.gamerId]) {
+                clonedState.gamersList[action.gamerId].holding = false;
+                return clonedState;
+            }
+
+
+        case GamerActionsType.PROC_DELETE_CHARS:
+            if (clonedState.gamersList[action.gamerId]) {
+                clonedState.gamersList[action.gamerId].holding = true;
+                return clonedState;
+            }
+        case GamerActionsType.SUCC_DELETE_CHARS:
+            if (clonedState.gamersList[action.gamerId]) {
+                if (clonedState.gamersList[action.gamerId].characters == undefined)
+                    clonedState.gamersList[action.gamerId].characters = [];
+                clonedState.gamersList[action.gamerId].holding = false;
+                clonedState.gamersList[action.gamerId].characters = clonedState.gamersList[action.gamerId].characters.filter(c => c != action.name);
+                return clonedState;
+            }
+        case GamerActionsType.FAILED_DELETE_CHARS:
+            if (clonedState.gamersList[action.gamerId]) {
+                clonedState.gamersList[action.gamerId].holding = false;
                 return clonedState;
             }
         default:
