@@ -3,6 +3,8 @@ import style from "./gamerrowview.module.less"
 import { Lang, DLang, LangF, GamersListView } from "../../_services";
 import { BaseReactComp } from "../BaseReactComponent";
 import { IHolded } from "../../core";
+import { Spinner } from "../Spinner/Spinner";
+import { IF } from "../../_helpers";
 
 interface IGamerRowViewProps extends React.Props<any> {
     gamer: GamersListView & IHolded;
@@ -20,6 +22,9 @@ export class GamerRowView extends BaseReactComp<IGamerRowViewProps> {
                 key={gamer.id}
                 className={`${style['user-card']} ${style[gamer.status.toLowerCase()]}`}
             >
+                <IF value={gamer.holding}>
+                    <Spinner />
+                </IF>
                 <div className={style['main']}>
                     <div className={style['title']}>
                         {Lang('USER_CHAR_LIST')}

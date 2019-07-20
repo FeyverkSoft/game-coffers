@@ -125,7 +125,7 @@ class _AddUserDialog extends BaseReactComp<IProps, any> {
 
                     <Col1>
                         {<Button
-                            isLoading={this.props.isLoading}
+                            isLoading={this.state.isLoad}
                             isSubmit={true}
                             disabled={!this.isValidForm(this.state)}
                             style={{ marginTop: "1rem" }}
