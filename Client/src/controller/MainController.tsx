@@ -77,7 +77,7 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
         return <СanvasBlock
             title={Lang("MAIN_PAGE_CHARACTERS_GRID")}
             type="success"
-            subChildren={<Private roles={['admin', 'officer']}>
+            subChildren={<Private roles={['admin', 'leader', 'officer']}>
                 <Button
                     type={'default'}
                     onClick={() => this.setState({ addNewUser: { isDisplayed: true } })}
@@ -133,7 +133,7 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                     />
                 </Col2>
             </Grid>
-            <Private roles={['admin', 'officer']}>
+            <Private roles={['admin', 'leader', 'officer']}>
                 {this.addUserRenderer()}
             </Private>
             {this.charactersGrid()}

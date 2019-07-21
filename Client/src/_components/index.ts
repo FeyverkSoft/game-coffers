@@ -9,6 +9,7 @@ export * from './Button/Button';
 export * from './Input/BaseInput';
 export * from './Input/Input';
 export * from './Input/SelectList';
+export * from './Input/EditableList';
 export * from './NamedValue/NamedValue';
 export * from './Input/SearchInput';
 export * from './Dialog/Dialog';

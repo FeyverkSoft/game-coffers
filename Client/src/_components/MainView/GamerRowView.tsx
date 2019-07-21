@@ -1,10 +1,11 @@
 import * as React from "react";
 import style from "./gamerrowview.module.less"
-import { Lang, DLang, LangF, GamersListView } from "../../_services";
+import { Lang, DLang, LangF, GamersListView, GamerRankList, GamerStatusList } from "../../_services";
 import { BaseReactComp } from "../BaseReactComponent";
 import { IHolded } from "../../core";
 import { Spinner } from "../Spinner/Spinner";
 import { IF } from "../../_helpers";
+import { Private, EditableList, Item } from "..";
 
 interface IGamerRowViewProps extends React.Props<any> {
     gamer: GamersListView & IHolded;
@@ -32,14 +33,18 @@ export class GamerRowView extends BaseReactComp<IGamerRowViewProps> {
                     <div className={style['char-list']}>
                         {gamer.characters.map(c => <div key={c} className={style['char_name']}>
                             {c}
-                            <div
-                                className={style['delete']}
-                                onClick={() => this.props.onDeleteChar(gamer.id, c)}
-                            ></div>
+                            <Private roles={['admin', 'leader', 'officer']}>
+                                <div
+                                    className={style['delete']}
+                                    onClick={() => this.props.onDeleteChar(gamer.id, c)}
+                                />
+                            </Private>
                         </div>)}
-                        <span className={style['add']}
-                            onClick={() => this.props.onAddChar(gamer.id)}
-                        />
+                        <Private roles={['admin', 'leader', 'officer']}>
+                            <span className={style['add']}
+                                onClick={() => this.props.onAddChar(gamer.id)}
+                            />
+                        </Private>
                     </div>
                 </div>
                 <div className={style['user-status']}>
@@ -47,7 +52,12 @@ export class GamerRowView extends BaseReactComp<IGamerRowViewProps> {
                         {Lang('USER_ROW_STATUS')}
                     </div>
                     <div className={style['content']}>
-                        {DLang('USER_STATUS', gamer.status)}
+                        <EditableList
+                            roles={['admin', 'leader', 'officer']}
+                            items={GamerStatusList.map(t => new Item(t, DLang('USER_STATUS', t)))}
+                            value={gamer.status}
+                            onSave={() => { }}
+                        />
                     </div>
                 </div>
                 <div className={style['rank']}>
@@ -55,7 +65,12 @@ export class GamerRowView extends BaseReactComp<IGamerRowViewProps> {
                         {Lang('USER_ROW_RANK')}
                     </div>
                     <div className={style['content']}>
-                        {DLang('USER_ROLE', gamer.rank)}
+                   <EditableList
+                         roles={['admin', 'leader', 'officer']}
+                        items={GamerRankList.map(t => new Item(t, DLang('USER_ROLE', t)))}
+                        value={gamer.rank}
+                        onSave={() => { }}
+                    />
                     </div>
                 </div>
 

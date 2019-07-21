@@ -9,6 +9,7 @@ export * from './Button/Button.tsx';
 export * from './Input/BaseInput.tsx';
 export * from './Input/Input.tsx';
 export * from './Input/SelectList.tsx';
+export * from './Input/EditableList.tsx';
 export * from './NamedValue/NamedValue.tsx';
 export * from './Input/SearchInput.tsx';
 export * from './Alert/Alert.tsx';

@@ -27,7 +27,7 @@
     .main {
         .flex();
         padding: 1rem;
-        flex: 3 1 auto;
+        flex: 3 1;
         flex-direction: column;
 
         .title {
@@ -81,7 +81,7 @@
     .user-status {
         .flex();
         flex-direction: column;
-        flex: 1 1 auto;
+        flex: 1 1;
 
         .title {
             text-transform: lowercase;
@@ -101,7 +101,7 @@
     .rank {
         .flex();
         flex-direction: column;
-        flex: 1 1 auto;
+        flex: 1 1;
 
         .title {
             text-transform: lowercase;
@@ -121,7 +121,7 @@
     .balance {
         .flex();
         flex-direction: column;
-        flex: 1 1 auto;
+        flex: 1 1;
 
         .title {
             text-transform: lowercase;
@@ -146,7 +146,7 @@
     .penalties {
         .flex();
         flex-direction: column;
-        flex: 1 1 auto;
+        flex: 1 1;
 
         .title {
             text-transform: lowercase;
@@ -165,7 +165,7 @@
     .loans {
         .flex();
         flex-direction: column;
-        flex: 1 1 auto;
+        flex: 1 1;
 
         .title {
             text-transform: lowercase;
@@ -197,13 +197,21 @@
         }
     }
 
-    &.afk {}
+    &.afk {
+        background-color: fade(@successColor, 10%);
+    }
 
-    &.banned {}
+    &.banned {
+        background-color: fade(@importantColor, 20%);
+    }
 
     &.active {}
 
-    &.left {}
+    &.left {
+        background-color: fade(@black, 20%);
+    }
 
-    &.new {}
+    &.new {
+        background-color: fade(@successColor, 20%);
+    }
 }

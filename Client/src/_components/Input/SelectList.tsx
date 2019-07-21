@@ -1,6 +1,6 @@
 import * as React from 'react';
 import style from "./input.module.less";
-import { BaseInput, SmallSpinner } from '..';
+import { SmallSpinner } from '..';
 import { IF, getGuid } from '../../_helpers';
 
 export class Item {
@@ -97,5 +97,4 @@ export class MaterialSelect extends React.Component<IMaterialSelectProps, any> {
             </div>
         )
     }
-
 }
