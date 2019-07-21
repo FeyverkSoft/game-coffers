@@ -43,11 +43,11 @@ export class EditableList extends React.Component<IEditableListProps, any> {
     }
 
     onEdit = () => {
-        this.props.onSave(this.state.value);
         this.setState({ edited: true });
     }
 
     onSave = () => {
+        this.props.onSave(this.state.value);
         this.setState({ edited: false });
     }
 
@@ -56,7 +56,7 @@ export class EditableList extends React.Component<IEditableListProps, any> {
         return (
             <div className={style['editable-list']}>
                 <IF value={!this.state.edited}>
-                    {this.props.items.filter(x => x.value == this.props.value)[0].name}
+                    {this.props.items.filter(x => String(x.value).toLowerCase() == this.props.value.toLowerCase())[0].name}
                     <Private roles={['admin', 'leader', 'officer']}>
                         <span className={style['edit-icon']} onClick={() => this.onEdit()} />
                     </Private>

@@ -82,7 +82,7 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<G
         case GamerActionsType.SUCC_SET_GAMER_STATUS:
             if (clonedState.gamersList[action.gamerId]) {
                 clonedState.gamersList[action.gamerId].holding = false;
-                clonedState.gamersList[action.gamerId].rank = action.status;
+                clonedState.gamersList[action.gamerId].status = action.status;
                 return clonedState;
             }
         case GamerActionsType.FAILED_SET_GAMER_STATUS:
@@ -90,7 +90,6 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<G
                 clonedState.gamersList[action.gamerId].holding = false;
                 return clonedState;
             }
-
 
 
         case GamerActionsType.PROC_SET_GAMER_RANK:

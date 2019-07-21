@@ -150,9 +150,9 @@ export class GamerActions {
                             status.onFailure(ex);
                     });
         }
-        function request(gamerId: string) { return { type: GamerActionsType.PROC_GET_GUILD_GAMERS, gamerId } }
-        function success(gamerId: string, status: GamerStatus) { return { type: GamerActionsType.SUCC_GET_GUILD_GAMERS, gamerId, status } }
-        function failure(gamerId: string) { return { type: GamerActionsType.FAILED_GET_GUILD_GAMERS, gamerId } }
+        function request(gamerId: string) { return { type: GamerActionsType.PROC_SET_GAMER_STATUS, gamerId } }
+        function success(gamerId: string, status: GamerStatus) { return { type: GamerActionsType.SUCC_SET_GAMER_STATUS, gamerId, status } }
+        function failure(gamerId: string) { return { type: GamerActionsType.FAILED_SET_GAMER_STATUS, gamerId } }
     }
 
     /**
@@ -176,9 +176,9 @@ export class GamerActions {
                             rank.onFailure(ex);
                     });
         }
-        function request(gamerId: string) { return { type: GamerActionsType.PROC_GET_GUILD_GAMERS, gamerId } }
-        function success(gamerId: string, rank: GamerRank) { return { type: GamerActionsType.SUCC_GET_GUILD_GAMERS, gamerId, rank } }
-        function failure(gamerId: string) { return { type: GamerActionsType.FAILED_GET_GUILD_GAMERS, gamerId } }
+        function request(gamerId: string) { return { type: GamerActionsType.PROC_SET_GAMER_RANK, gamerId } }
+        function success(gamerId: string, rank: GamerRank) { return { type: GamerActionsType.SUCC_SET_GAMER_RANK, gamerId, rank } }
+        function failure(gamerId: string) { return { type: GamerActionsType.FAILED_SET_GAMER_RANK, gamerId } }
     }
 }
 

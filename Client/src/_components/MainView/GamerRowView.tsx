@@ -114,7 +114,6 @@ export class GamerRowView extends BaseReactComp<IGamerRowViewProps> {
                     </div>
                 </div>
                 <div>
-                    
                 </div>
             </div>
         );
