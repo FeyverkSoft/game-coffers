@@ -1,5 +1,5 @@
 
-import { gamerService, GamerInfo, IGamersListView, GamerStatus, GamerRank } from '../../_services';
+import { gamerService, GamerInfo, IGamersListView, GamerStatus, GamerRank, ILoanView, IPenaltyView } from '../../_services';
 import { GamerActionsType } from './GamerActionsType';
 import { alertInstance, ICallback } from '..';
 
@@ -28,6 +28,23 @@ interface DeleteCharProps extends ICallback<any> {
     gamerId: string;
     name: string;
 }
+
+interface AddLoanProps extends ICallback<any> {
+    gamerId: string;
+    id: string,
+    description: string,
+    borrowDate: Date,
+    expiredDate: Date,
+    amount: number
+}
+
+interface AddPenaltyProps extends ICallback<any> {
+    gamerId: string;
+    id: string,
+    description: string,
+    amount: number
+}
+
 export class GamerActions {
     /**
      * Метод добавляет игроку нового персонажа
@@ -179,6 +196,71 @@ export class GamerActions {
         function request(gamerId: string) { return { type: GamerActionsType.PROC_SET_GAMER_RANK, gamerId } }
         function success(gamerId: string, rank: GamerRank) { return { type: GamerActionsType.SUCC_SET_GAMER_RANK, gamerId, rank } }
         function failure(gamerId: string) { return { type: GamerActionsType.FAILED_SET_GAMER_RANK, gamerId } }
+    }
+
+    /**
+     * This method add gamers loan
+     */
+    AddLoan(loan: AddLoanProps): Function {
+        return (dispatch: Function) => {
+            dispatch(request(loan.gamerId));
+            gamerService.AddLoan(loan.gamerId, loan.id, loan.amount, loan.description, loan.borrowDate, loan.expiredDate)
+                .then(
+                    data => {
+                        dispatch(success(loan.gamerId, {
+                            id: loan.id,
+                            date: loan.borrowDate,
+                            expiredDate: loan.expiredDate,
+                            amount: loan.amount,
+                            description: loan.description,
+                            loanStatus: 'Active'
+                        }));
+                        if (loan.onSuccess)
+                            loan.onSuccess(data);
+                    })
+                .catch(
+                    ex => {
+                        dispatch(failure(loan.gamerId));
+                        dispatch(alertInstance.error(ex));
+                        if (loan.onFailure)
+                            loan.onFailure(ex);
+                    });
+        }
+        function request(gamerId: string) { return { type: GamerActionsType.PROC_ADD_GAMER_LOAN, gamerId } }
+        function success(gamerId: string, loan: ILoanView) { return { type: GamerActionsType.SUCC_ADD_GAMER_LOAN, gamerId, loan } }
+        function failure(gamerId: string) { return { type: GamerActionsType.FAILED_ADD_GAMER_LOAN, gamerId } }
+    }
+
+    /**
+     * This method add gamers Penalty
+     */
+    AddPenalty(penalty: AddPenaltyProps): Function {
+        return (dispatch: Function) => {
+            dispatch(request(penalty.gamerId));
+            gamerService.AddPenalty(penalty.gamerId, penalty.id, penalty.amount, penalty.description)
+                .then(
+                    data => {
+                        dispatch(success(penalty.gamerId, {
+                            id: penalty.id,
+                            date: new Date(),
+                            amount: penalty.amount,
+                            description: penalty.description,
+                            penaltyStatus: 'Active'
+                        }));
+                        if (penalty.onSuccess)
+                            penalty.onSuccess(data);
+                    })
+                .catch(
+                    ex => {
+                        dispatch(failure(penalty.gamerId));
+                        dispatch(alertInstance.error(ex));
+                        if (penalty.onFailure)
+                            penalty.onFailure(ex);
+                    });
+        }
+        function request(gamerId: string) { return { type: GamerActionsType.PROC_ADD_GAMER_PENALTY, gamerId } }
+        function success(gamerId: string, penalty: IPenaltyView) { return { type: GamerActionsType.SUCC_ADD_GAMER_PENALTY, gamerId, penalty } }
+        function failure(gamerId: string) { return { type: GamerActionsType.FAILED_ADD_GAMER_PENALTY, gamerId } }
     }
 }
 

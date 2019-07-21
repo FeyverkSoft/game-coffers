@@ -67,12 +67,12 @@ export class GamerRowView extends BaseReactComp<IGamerRowViewProps> {
                         {Lang('USER_ROW_RANK')}
                     </div>
                     <div className={style['content']}>
-                   <EditableList
-                         roles={['admin', 'leader', 'officer']}
-                        items={GamerRankList.map(t => new Item(t, DLang('USER_ROLE', t)))}
-                        value={gamer.rank}
-                        onSave={(value) => this.props.onRankChange(gamer.id, value as GamerRank)}
-                    />
+                        <EditableList
+                            roles={['admin', 'leader', 'officer']}
+                            items={GamerRankList.map(t => new Item(t, DLang('USER_ROLE', t)))}
+                            value={gamer.rank}
+                            onSave={(value) => this.props.onRankChange(gamer.id, value as GamerRank)}
+                        />
                     </div>
                 </div>
 
@@ -82,7 +82,10 @@ export class GamerRowView extends BaseReactComp<IGamerRowViewProps> {
                     </div>
                     <div className={style['content']}>
                         {gamer.penalties.map(p => (
-                            <div key={p.id} title={p.description}>
+                            <div key={p.id}
+                                title={p.description}
+                                className={`${style['penalty']} ${p.penaltyStatus.toLowerCase()}`}
+                            >
                                 {p.amount}
                             </div>
                         ))}

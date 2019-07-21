@@ -148,6 +148,46 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<G
                 clonedState.gamersList[action.gamerId].holding = false;
                 return clonedState;
             }
+
+
+        case GamerActionsType.PROC_ADD_GAMER_LOAN:
+            if (clonedState.gamersList[action.gamerId]) {
+                clonedState.gamersList[action.gamerId].holding = true;
+                return clonedState;
+            }
+        case GamerActionsType.SUCC_ADD_GAMER_LOAN:
+            if (clonedState.gamersList[action.gamerId]) {
+                if (clonedState.gamersList[action.gamerId].loans == undefined)
+                    clonedState.gamersList[action.gamerId].loans = [];
+                clonedState.gamersList[action.gamerId].holding = false;
+                clonedState.gamersList[action.gamerId].loans.push(action.loan);
+                return clonedState;
+            }
+        case GamerActionsType.FAILED_ADD_GAMER_LOAN:
+            if (clonedState.gamersList[action.gamerId]) {
+                clonedState.gamersList[action.gamerId].holding = false;
+                return clonedState;
+            }
+
+
+        case GamerActionsType.PROC_ADD_GAMER_PENALTY:
+            if (clonedState.gamersList[action.gamerId]) {
+                clonedState.gamersList[action.gamerId].holding = true;
+                return clonedState;
+            }
+        case GamerActionsType.SUCC_ADD_GAMER_PENALTY:
+            if (clonedState.gamersList[action.gamerId]) {
+                if (clonedState.gamersList[action.gamerId].penalties == undefined)
+                    clonedState.gamersList[action.gamerId].penalties = [];
+                clonedState.gamersList[action.gamerId].holding = false;
+                clonedState.gamersList[action.gamerId].penalties.push(action.penalty);
+                return clonedState;
+            }
+        case GamerActionsType.FAILED_ADD_GAMER_PENALTY:
+            if (clonedState.gamersList[action.gamerId]) {
+                clonedState.gamersList[action.gamerId].holding = false;
+                return clonedState;
+            }
         default:
             return state
     }

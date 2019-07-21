@@ -58,7 +58,7 @@ const locString: any = {
             Banned: 'Забанен',
             Active: 'Активный',
             Left: 'Ушёл',
-            New: 'Новичёк',
+            New: 'Новичок',
         },
         LOAN_STATUS: {
             Active: 'Активный',

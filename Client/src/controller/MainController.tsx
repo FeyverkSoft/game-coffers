@@ -94,13 +94,15 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
             title={Lang("MAIN_PAGE_CHARACTERS_GRID")}
             type="success"
             subType='none'
-            subChildren={<Private roles={['admin', 'leader', 'officer']}>
-                <Button
-                    type={'default'}
-                    onClick={() => this.setState({ addNewUser: { isDisplayed: true } })}
-                    isSmall={true}
-                >{Lang('ADD_NEW_USER')}</Button>
-            </Private>}
+            subChildren={
+                <Private roles={['admin', 'leader', 'officer']}>
+                    <Button
+                        type={'default'}
+                        onClick={() => this.setState({ addNewUser: { isDisplayed: true } })}
+                        isSmall={true}
+                    >{Lang('ADD_NEW_USER')}</Button>
+                </Private>
+            }
         >
             {
                 gamers.map(g => {

@@ -2,14 +2,18 @@
 
 .user-card {
     .flex();
-    position: relative;
-    width: 100%;
-    box-shadow: @box-shadow-0;
-    align-items: center;
+    position     : relative;
+    width        : 100%;
+    border-bottom: 1px fade(@black, 50%) solid;
+    align-items  : center;
+
+    &:last-child {
+        border-bottom: none;
+    }
 
     .add {
-        cursor: pointer;
-        color: @defaultColor;
+        cursor : pointer;
+        color  : @defaultColor;
         padding: .25rem;
 
         &:focus,
@@ -18,34 +22,34 @@
         }
 
         &:before {
-            display: block;
-            font: normal normal normal 24px/1 "Material Design Icons";
+            display  : block;
+            font     : normal normal normal 24px/1 "Material Design Icons";
             font-size: 1rem;
-            content: "\F417"
+            content  : "\F417"
         }
     }
 
     .main {
         .flex();
-        padding: 1rem;
-        flex: 3 1;
+        padding       : 1rem;
+        flex          : 3 1;
         flex-direction: column;
 
         .title {
             text-transform: lowercase;
-            font-size: .8rem;
-            color: fade(@black, 80%);
+            font-size     : .8rem;
+            font-weight   : 500;
+            color         : fade(@black, 80%);
             padding-bottom: .25rem;
         }
 
         .char-list {
             .flex();
             padding-left: .25rem;
-            font-weight: 400;
 
             .char_name {
                 .flex();
-                position: relative;
+                position     : relative;
                 padding-right: .2rem;
 
                 &:focus,
@@ -56,93 +60,92 @@
                 }
 
                 .delete {
-                    cursor: pointer;
+                    cursor  : pointer;
                     position: absolute;
-                    color: @defaultColor;
-                    padding: 0.25rem 0;
-                    right: 0;
-                    display: none;
+                    color   : @defaultColor;
+                    padding : 0.25rem 0;
+                    right   : 0;
+                    display : none;
 
                     &:focus,
                     &:hover {
                         display: block;
-                        color: lighten(@defaultColor, @hover);
+                        color  : lighten(@defaultColor, @hover);
                     }
 
                     &:before {
-                        display: block;
-                        font: normal normal normal 24px/1 "Material Design Icons";
+                        display  : block;
+                        font     : normal normal normal 24px/1 "Material Design Icons";
                         font-size: 1rem;
-                        content: "\F1C0"
+                        content  : "\F1C0"
                     }
                 }
             }
         }
-
-
     }
 
     .user-status {
         .flex();
         flex-direction: column;
-        flex: 1 1;
+        flex          : 1 1;
 
         .title {
             text-transform: lowercase;
-            font-size: .8rem;
-            color: fade(@black, 80%);
+            font-size     : .8rem;
+            font-weight   : 500;
+            color         : fade(@black, 80%);
             padding-bottom: .25rem;
         }
 
         .content {
             text-transform: uppercase;
-            font-weight: 400;
-            padding-left: .25rem;
-            min-width: 6rem;
+            padding-left  : .25rem;
+            min-width     : 6rem;
         }
     }
 
     .rank {
         .flex();
         flex-direction: column;
-        flex: 1 1;
+        flex          : 1 1;
 
         .title {
             text-transform: lowercase;
-            font-size: .8rem;
-            color: fade(@black, 80%);
+            font-weight   : 500;
+            font-size     : .8rem;
+            color         : fade(@black, 80%);
             padding-bottom: .25rem;
         }
 
         .content {
             text-transform: uppercase;
-            font-weight: 400;
-            padding-left: .25rem;
-            min-width: 4rem;
+            font-size     : 1rem;
+            padding-left  : .25rem;
+            min-width     : 4rem;
         }
     }
 
     .balance {
         .flex();
         flex-direction: column;
-        flex: 1 1;
+        flex          : 1 1;
 
         .title {
             text-transform: lowercase;
-            font-size: .8rem;
-            color: fade(@black, 80%);
+            font-size     : .8rem;
+            font-weight   : 500;
+            color         : fade(@black, 80%);
             padding-bottom: .25rem;
         }
 
         .content {
             text-transform: uppercase;
-            font-weight: 400;
-            padding-left: .25rem;
-            min-width: 4rem;
+            padding-left  : .25rem;
+            min-width     : 4rem;
 
             &.red {
                 font-weight: 800;
-                color: @importantColor;
+                color      : @importantColor;
             }
         }
     }
@@ -150,37 +153,53 @@
     .penalties {
         .flex();
         flex-direction: column;
-        flex: 1 1;
+        flex          : 1 1;
 
         .title {
             text-transform: lowercase;
-            font-size: .8rem;
-            color: fade(@black, 80%);
+            font-size     : .8rem;
+            color         : fade(@black, 80%);
             padding-bottom: .25rem;
         }
 
         .content {
             text-transform: uppercase;
-            font-weight: 400;
-            padding-left: .25rem;
+            font-weight   : 400;
+            padding-left  : .25rem;
+
+            .penalty {
+                &.active {
+                    color: @importantColor;
+                }
+
+                .inactive {
+                    text-decoration: line-through;
+                    color          : fade(@black, 80%);
+                }
+
+                .canceled {
+                    text-decoration: line-through;
+                    color          : fade(@black, 40%);
+                }
+            }
         }
     }
 
     .loans {
         .flex();
         flex-direction: column;
-        flex: 1 1;
+        flex          : 1 1;
 
         .title {
             text-transform: lowercase;
-            font-size: .8rem;
-            color: fade(@black, 80%);
+            font-size     : .8rem;
+            color         : fade(@black, 80%);
             padding-bottom: .25rem;
         }
 
         .content {
             text-transform: uppercase;
-            padding-left: .25rem;
+            padding-left  : .25rem;
 
             .loan {
                 &.active {
@@ -190,12 +209,12 @@
                 &.canceled,
                 &.paid {
                     text-decoration: line-through;
-                    color: fade(@black, 80%);
+                    color          : fade(@black, 80%);
                 }
 
                 &.expired {
                     font-weight: 800;
-                    color: @importantColor;
+                    color      : @importantColor;
                 }
             }
         }

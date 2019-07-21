@@ -63,6 +63,7 @@ export class EditableList extends React.Component<IEditableListProps, any> {
                 </IF>
                 <IF value={this.state.edited}>
                     <select
+                        className={style['select']}
                         onChange={$this.onChange}
                         value={$this.state.value}>
                         {

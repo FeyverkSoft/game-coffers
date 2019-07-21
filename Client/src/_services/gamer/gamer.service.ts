@@ -6,6 +6,67 @@ import { GamerStatus } from './GamerStatus';
 import { GamerRank } from './GamerRank';
 
 export class gamerService {
+
+    /**
+     * Добавить игроку новый штраф
+     * @param gamerId 
+     * @param id 
+     * @param amount 
+     * @param description 
+     */
+    static async AddPenalty(gamerId: string, id: string, amount: number, description: string): Promise<void> {
+        let session = authService.getCurrentSession();
+        const requestOptions: RequestInit = {
+            method: 'PUT',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+                'Authorization': 'Bearer ' + session.sessionId
+            },
+            body: JSON.stringify({ id, amount, description })
+        };
+        return await fetch(Config.BuildUrl(`/Gamers/${gamerId}/penalty`), requestOptions)
+            .then<BaseResponse>(getResponse)
+            .then(data => {
+                if (data && data.type || data.traceId) {
+                    return errorHandle(data);
+                }
+            })
+            .catch(catchHandle);
+    }
+
+    /**
+     * Добавить игроку новый займ
+     * @param gamerId 
+     * @param id 
+     * @param amount 
+     * @param description 
+     * @param borrowDate 
+     * @param expiredDate 
+     */
+    static async AddLoan(gamerId: string, id: string, amount: number, description: string, borrowDate: Date, expiredDate: Date): Promise<void> {
+        let session = authService.getCurrentSession();
+        const requestOptions: RequestInit = {
+            method: 'PUT',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+                'Authorization': 'Bearer ' + session.sessionId
+            },
+            body: JSON.stringify({ id, amount, description, borrowDate, expiredDate })
+        };
+        return await fetch(Config.BuildUrl(`/Gamers/${gamerId}/loan`), requestOptions)
+            .then<BaseResponse>(getResponse)
+            .then(data => {
+                if (data && data.type || data.traceId) {
+                    return errorHandle(data);
+                }
+            })
+            .catch(catchHandle);
+    }
+
     /**
      * Добавить нового персонажа игроку
      * @param gamerId 
