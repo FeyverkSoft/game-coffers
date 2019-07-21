@@ -1,6 +1,6 @@
 import * as React from "react";
 import style from "./gamerrowview.module.less"
-import { Lang, DLang, LangF, GamersListView, GamerRankList, GamerStatusList } from "../../_services";
+import { Lang, DLang, LangF, GamersListView, GamerRankList, GamerRank, GamerStatusList, GamerStatus } from "../../_services";
 import { BaseReactComp } from "../BaseReactComponent";
 import { IHolded } from "../../core";
 import { Spinner } from "../Spinner/Spinner";
@@ -11,6 +11,8 @@ interface IGamerRowViewProps extends React.Props<any> {
     gamer: GamersListView & IHolded;
     onAddChar(userId: string): void;
     onDeleteChar(userId: string, char: string): void;
+    onRankChange(userId: string, rank: GamerRank): void;
+    onStatusChange(userId: string, status: GamerStatus): void;
     [id: string]: any;
 }
 /// Плашка с информацией о пользователе
@@ -56,7 +58,7 @@ export class GamerRowView extends BaseReactComp<IGamerRowViewProps> {
                             roles={['admin', 'leader', 'officer']}
                             items={GamerStatusList.map(t => new Item(t, DLang('USER_STATUS', t)))}
                             value={gamer.status}
-                            onSave={() => { }}
+                            onSave={(value) => this.props.onStatusChange(gamer.id, value as GamerStatus)}
                         />
                     </div>
                 </div>
@@ -69,7 +71,7 @@ export class GamerRowView extends BaseReactComp<IGamerRowViewProps> {
                          roles={['admin', 'leader', 'officer']}
                         items={GamerRankList.map(t => new Item(t, DLang('USER_ROLE', t)))}
                         value={gamer.rank}
-                        onSave={() => { }}
+                        onSave={(value) => this.props.onRankChange(gamer.id, value as GamerRank)}
                     />
                     </div>
                 </div>

@@ -8,7 +8,7 @@ interface IСanvasProps extends React.Props<any> {
     title?: string;
     subChildren?: React.ReactNode;
     type: 'error' | 'default' | 'important' | 'success';
-    subType?: 'error' | 'default' | 'important' | 'success';
+    subType?: 'error' | 'default' | 'important' | 'success' | 'none';
 }
 
 ///Холст

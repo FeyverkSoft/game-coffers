@@ -71,7 +71,7 @@
         border-radius: 0 .75rem 0 .75rem;
         box-shadow: @box-shadow-1;
         background-color: fade(@defaultColor, 80%);
-        
+
         &.success {
             background-color: fade(@successColor, 80%);
         }
@@ -86,6 +86,11 @@
 
         &.error {
             background-color: fade(@errorColor, 80%);
+        }
+
+        &.none {
+            background-color: transparent;
+            box-shadow: none;
         }
     }
 

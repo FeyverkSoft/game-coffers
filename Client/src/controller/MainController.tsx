@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect, DispatchProp } from 'react-redux';
-import { Lang, GuildInfo, LangF, ITariffs, IGamerInfo, GamerRank, GuildBalanceReport, IGamersListView, IGuild } from '../_services';
+import { Lang, GuildInfo, LangF, ITariffs, IGamerInfo, GamerRank, GuildBalanceReport, IGamersListView, IGuild, GamerStatus } from '../_services';
 import {
     Crumbs, BaseReactComp, СanvasBlock, Page, Grid,
     Col2, TariffView, UserView, MainView, BalanceView, GamerRowView, Dialog, Button, Form, Col1, Input, Private
@@ -64,6 +64,22 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
             }));
     }
 
+    onSetRank = (userId: string, rank: GamerRank) => {
+        if (userId)
+            this.props.dispatch(gamerInstance.SetRank({
+                gamerId: userId,
+                rank: rank
+            }));
+    }
+
+    onSetStatus = (userId: string, status: GamerStatus) => {
+        if (userId)
+            this.props.dispatch(gamerInstance.SetStatus({
+                gamerId: userId,
+                status: status
+            }));
+    }
+
     addUserRenderer = () => {
         return (<AddUserDialog
             isDisplayed={this.state.addNewUser.isDisplayed}
@@ -77,6 +93,7 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
         return <СanvasBlock
             title={Lang("MAIN_PAGE_CHARACTERS_GRID")}
             type="success"
+            subType='none'
             subChildren={<Private roles={['admin', 'leader', 'officer']}>
                 <Button
                     type={'default'}
@@ -92,6 +109,8 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                         gamer={g}
                         onAddChar={this.onAddChar}
                         onDeleteChar={this.onDeleteChar}
+                        onRankChange={this.onSetRank}
+                        onStatusChange={this.onSetStatus}
                     />;
                 })
             }

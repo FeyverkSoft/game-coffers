@@ -12,6 +12,7 @@
         color: @defaultColor;
         padding: .25rem;
 
+        &:focus,
         &:hover {
             color: lighten(@defaultColor, @hover);
         }
@@ -47,6 +48,7 @@
                 position: relative;
                 padding-right: .2rem;
 
+                &:focus,
                 &:hover {
                     .delete {
                         display: block;
@@ -61,7 +63,9 @@
                     right: 0;
                     display: none;
 
+                    &:focus,
                     &:hover {
+                        display: block;
                         color: lighten(@defaultColor, @hover);
                     }
 

@@ -222,6 +222,7 @@
                 background: @defaultColor;
             }
         }
+
         &.white {
 
             &:focus~label,
@@ -234,6 +235,7 @@
                 background: @white;
             }
         }
+
         &.error {
 
             &:focus~label,
@@ -281,6 +283,55 @@
 
         &:after {
             right: 50%
+        }
+    }
+}
+
+.editable-list {
+    .flex();
+
+    &:focus,
+    &:hover {
+        .edit-icon {
+            display: block;
+        }
+    }
+
+    .edit-icon {
+        cursor: pointer;
+        color: @defaultColor;
+        display: none;
+        padding: 0.15rem 0;
+
+        &:hover,
+        &:focus {
+            display: block;
+            color: lighten(@defaultColor, @hover);
+        }
+
+        &::before {
+            font: normal normal normal 24px/1 "Material Design Icons";
+            content: "\F3EB";
+            display: block;
+            font-size: 1rem;
+        }
+    }
+
+    .save-icon {
+        cursor: pointer;
+        color: @defaultColor;
+        padding: 0.15rem 0;
+
+        &:hover,
+        &:focus {
+            color: lighten(@defaultColor, @hover);
+        }
+
+        &::before {
+            font: normal normal normal 24px/1 "Material Design Icons";
+            content: "\F193";
+            display: block;
+            font-size: 1rem;
         }
     }
 }
