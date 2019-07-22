@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Coffers.Public.Domain.Gamers;
+using Coffers.Public.Domain.Operations;
 using Coffers.Public.Queries.Gamers;
 using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Exceptions;
@@ -22,13 +23,14 @@ namespace Coffers.Public.WebApi.Controllers
         private readonly IGamerRepository _gamerRepository;
         private readonly IQueryProcessor _queryProcessor;
         private readonly LoanFactory _loanFactory;
-
+        private readonly OperationService _operationFactory;
         public GamersController(IGamerRepository gamerRepository, IQueryProcessor queryProcessor,
-            LoanFactory loanFactory)
+            LoanFactory loanFactory, OperationService operationFactory)
         {
             _gamerRepository = gamerRepository;
             _queryProcessor = queryProcessor;
             _loanFactory = loanFactory;
+            _operationFactory = operationFactory;
         }
 
         /// <summary>
@@ -145,12 +147,15 @@ namespace Coffers.Public.WebApi.Controllers
         /// <summary>
         /// Добавить игроку новый займ
         /// </summary>
-        [HttpPut("{gamerId}/loan")]
+        [HttpPut("{gamerId}/loans")]
         [PermissionRequired("admin", "officer", "leader")]
         [ProducesResponseType(200)]
         public async Task<IActionResult> PutLoan(Guid gamerId, PutLoanBinding binding, CancellationToken cancellationToken)
         {
             var gamer = await _gamerRepository.Get(gamerId, cancellationToken);
+
+            if (!HttpContext.IsAdmin() && gamer.GuildId != HttpContext.GuildId())
+                throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");
 
             var loan = await _loanFactory.Build(binding.Id, gamer.GuildId, gamer.Rank, binding.Amount,
                 binding.Description, binding.BorrowDate, binding.ExpiredDate);
@@ -159,21 +164,66 @@ namespace Coffers.Public.WebApi.Controllers
 
             await _gamerRepository.Save(gamer);
 
+            await _operatonFactory.Loan(gamer.GuildId, loan.Balance.Id, loan.Amount);
+
             return Ok(new { });
         }
 
         /// <summary>
-        /// ДОбавить игроку новый штраф
+        /// Добавить игроку новый штраф
         /// </summary>
-        [HttpPut("{gamerId}/penalty")]
+        [HttpPut("{gamerId}/penalties")]
         [PermissionRequired("admin", "officer", "leader")]
         [ProducesResponseType(200)]
         public async Task<IActionResult> PutPenalty(Guid gamerId, PutPenaltyBinding binding, CancellationToken cancellationToken)
         {
             var gamer = await _gamerRepository.Get(gamerId, cancellationToken);
 
+            if (!HttpContext.IsAdmin() && gamer.GuildId != HttpContext.GuildId())
+                throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");
+
             gamer.AddPenalty(binding.Id, binding.Amount, binding.Description);
 
+            await _gamerRepository.Save(gamer);
+
+            return Ok(new { });
+        }
+
+        /// <summary>
+        /// Отменить ещё не оплаченный  штраф
+        /// </summary>
+        [HttpDelete("{gamerId}/penalties/{penaltyId}")]
+        [PermissionRequired("admin", "officer", "leader")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> CancelPenalty(Guid gamerId, DeletePenaltyBinding binding, CancellationToken cancellationToken)
+        {
+            var gamer = await _gamerRepository.Get(gamerId, cancellationToken);
+
+            if (!HttpContext.IsAdmin() && gamer.GuildId != HttpContext.GuildId())
+                throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");
+
+            gamer.CancelPenalty(binding.Id);
+
+            await _gamerRepository.Save(gamer);
+
+            return Ok(new { });
+        }
+
+        /// <summary>
+        /// Отменить ещё не оплаченный  займ
+        /// </summary>
+        [HttpDelete("{gamerId}/loans/{penaltyId}")]
+        [PermissionRequired("admin", "officer", "leader")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> CancelLoan(Guid gamerId, DeleteLoanBinding binding, CancellationToken cancellationToken)
+        {
+            var gamer = await _gamerRepository.Get(gamerId, cancellationToken);
+
+            if (!HttpContext.IsAdmin() && gamer.GuildId != HttpContext.GuildId())
+                throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");
+
+            gamer.CancelLoan(binding.Id);
+            await _operatonFactory.CancelLoan(binding.Id);
             await _gamerRepository.Save(gamer);
 
             return Ok(new { });

@@ -122,8 +122,12 @@ namespace Coffers.Public.Infrastructure.Guilds
                     .HasDefaultValue(0)
                     .IsRequired();
 
-                b.HasMany(g => g.Operations)
-                    .WithOne()
+                b.HasMany(g => g.FromOperations)
+                    .WithOne(_=>_.FromAccount)
+                    .HasPrincipalKey(_ => _.Id);
+
+                b.HasMany(g => g.ToOperations)
+                    .WithOne(_=>_.ToAccount)
                     .HasPrincipalKey(_ => _.Id);
 
                 b.Property(a => a.ConcurrencyTokens)

@@ -54,7 +54,7 @@ class _AddPenaltyDialog extends BaseReactComp<IProps, IState> {
                 },
                 onSuccess: () => {
                     this.setState({ isLoad: false });
-                    this.props.onClose();
+                    this.onClose();
                 }
             }))
     }
@@ -64,7 +64,7 @@ class _AddPenaltyDialog extends BaseReactComp<IProps, IState> {
         return (
             <Dialog
                 isDisplayed={this.props.isDisplayed}
-                title={Lang('NEW_CHAR_MODAL')}
+                title={Lang('NEW_PENALTY_MODAL')}
                 onCancel={() => this.onClose()}
             >
                 <Form
@@ -73,20 +73,20 @@ class _AddPenaltyDialog extends BaseReactComp<IProps, IState> {
                 >
                     <Col1>
                         <Input
-                            label={Lang('LOAN_AMOUNT')}
+                            label={Lang('PENALTY_AMOUNT')}
                             onChange={this.onInputVal}
                             isRequired={true}
                             path='amount'
+                            type='number'
                             value={amount.value}
                             isRequiredMessage={Lang('IsRequired')}
                         />
                     </Col1>
                     <Col1>
                         <Input
-                            label={Lang('LOAN_DESCRIPTION')}
+                            label={Lang('PENALTY_DESCRIPTION')}
                             onChange={this.onInputVal}
                             isRequired={true}
-                            type='number'
                             path='description'
                             value={description.value}
                             isRequiredMessage={Lang('IsRequired')}

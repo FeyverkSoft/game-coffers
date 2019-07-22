@@ -66,7 +66,7 @@ class _AddUserDialog extends BaseReactComp<IProps, IState> {
                 },
                 onSuccess: () => {
                     this.setState({ isLoad: false });
-                    this.props.onClose();
+                    this.onClose();
                 }
             }))
     }
@@ -110,7 +110,8 @@ class _AddUserDialog extends BaseReactComp<IProps, IState> {
                             isRequiredMessage={Lang('IsRequired')}
                             isRequired={true}
                             path='dateOfBirth'
-                            value={dateOfBirth.value.toString()}
+                            //type='date'
+                            value={dateOfBirth.value.toISOString()}
                         />
                     </Col1>
                     <Col1>

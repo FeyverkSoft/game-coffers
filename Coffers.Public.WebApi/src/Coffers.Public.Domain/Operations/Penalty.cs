@@ -1,24 +1,20 @@
 ﻿using System;
 using Coffers.Types.Gamer;
 
-namespace Coffers.DB.Migrations.Entities
+namespace Coffers.Public.Domain.Operations
 {
-    internal sealed class Penalty
+    public sealed class Penalty
     {
+
         /// <summary>
         /// Идентификатор штрафа
         /// </summary>
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Игрок
+        /// Сумма займа
         /// </summary>
-        public Gamer Gamer { get; set; }
-
-        /// <summary>
-        /// Сумма штрафа
-        /// </summary>
-        public Decimal Amount { get; set; }
+        public decimal Amount { get; internal set; }
 
         /// <summary>
         /// Номер счёта для штрафа
@@ -40,5 +36,14 @@ namespace Coffers.DB.Migrations.Entities
         /// </summary>
         public String Description { get; set; }
 
+        public Penalty(Guid id, Decimal amount, String description)
+        {
+            Id = Guid.Empty == id ? throw new ArgumentException(nameof(id)) : id;
+            Account = new Account();
+            PenaltyStatus = PenaltyStatus.Active;
+            CreateDate = DateTime.UtcNow;
+            Description = description;
+            Amount = amount < 0? throw new ArgumentException(nameof(amount)) : amount;
+        }
     }
 }

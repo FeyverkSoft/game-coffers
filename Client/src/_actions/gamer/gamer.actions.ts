@@ -45,6 +45,15 @@ interface AddPenaltyProps extends ICallback<any> {
     amount: number
 }
 
+interface CancelLoanProps extends ICallback<any> {
+    gamerId: string;
+    id: string,
+}
+interface CancelPenaltyProps extends ICallback<any> {
+    gamerId: string;
+    id: string,
+}
+
 export class GamerActions {
     /**
      * Метод добавляет игроку нового персонажа
@@ -96,8 +105,8 @@ export class GamerActions {
         function request(gamerId: string) { return { type: GamerActionsType.PROC_DELETE_CHARS, gamerId } }
         function success(gamerId: string, name: string) { return { type: GamerActionsType.SUCC_DELETE_CHARS, gamerId, name } }
         function failure(gamerId: string) { return { type: GamerActionsType.FAILED_DELETE_CHARS, gamerId } }
-
     }
+
     /**
      * Возвращает информацию о текущем игроке
      */
@@ -261,6 +270,58 @@ export class GamerActions {
         function request(gamerId: string) { return { type: GamerActionsType.PROC_ADD_GAMER_PENALTY, gamerId } }
         function success(gamerId: string, penalty: IPenaltyView) { return { type: GamerActionsType.SUCC_ADD_GAMER_PENALTY, gamerId, penalty } }
         function failure(gamerId: string) { return { type: GamerActionsType.FAILED_ADD_GAMER_PENALTY, gamerId } }
+    }
+
+    /**
+     * отменяет займ если это возможно
+     */
+    CancelLoan(props: CancelLoanProps): Function {
+        return (dispatch: Function) => {
+            dispatch(request(props.gamerId));
+            gamerService.CancelLoan(props.gamerId, props.id)
+                .then(
+                    data => {
+                        dispatch(success(props.gamerId, props.id));
+                        if (props.onSuccess)
+                            props.onSuccess(data);
+                    })
+                .catch(
+                    ex => {
+                        dispatch(failure(props.gamerId));
+                        dispatch(alertInstance.error(ex));
+                        if (props.onFailure)
+                            props.onFailure(ex);
+                    });
+        }
+        function request(gamerId: string) { return { type: GamerActionsType.PROC_DELETE_CHARS, gamerId } }
+        function success(gamerId: string, loanId: string) { return { type: GamerActionsType.SUCC_DELETE_CHARS, gamerId, loanId } }
+        function failure(gamerId: string) { return { type: GamerActionsType.FAILED_DELETE_CHARS, gamerId } }
+    }
+
+    /**
+     * отменяет штраф если это возможно
+     */
+    CancelPenalty(props: CancelPenaltyProps): Function {
+        return (dispatch: Function) => {
+            dispatch(request(props.gamerId));
+            gamerService.DeleteChar(props.gamerId, props.id)
+                .then(
+                    data => {
+                        dispatch(success(props.gamerId, props.id));
+                        if (props.onSuccess)
+                            props.onSuccess(data);
+                    })
+                .catch(
+                    ex => {
+                        dispatch(failure(props.gamerId));
+                        dispatch(alertInstance.error(ex));
+                        if (props.onFailure)
+                            props.onFailure(ex);
+                    });
+        }
+        function request(gamerId: string) { return { type: GamerActionsType.PROC_DELETE_CHARS, gamerId } }
+        function success(gamerId: string, penaltyId: string) { return { type: GamerActionsType.SUCC_DELETE_CHARS, gamerId, penaltyId } }
+        function failure(gamerId: string) { return { type: GamerActionsType.FAILED_DELETE_CHARS, gamerId } }
     }
 }
 

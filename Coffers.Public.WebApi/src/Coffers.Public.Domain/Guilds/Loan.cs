@@ -16,11 +16,12 @@ namespace Coffers.Public.Domain.Guilds
         /// <summary>
         /// Сумма займа
         /// </summary>
-        public Decimal Amount { get; set; }
+        public decimal Amount { get; internal set; }
+
         /// <summary>
-        /// Уже было выплаченно в пользу займа
+        /// Номер счёта по займу
         /// </summary>
-        public Decimal RepaymentAmount { get; set; }
+        public Account Account { get; set; }
 
 
         public LoanStatus LoanStatus { get; set; }

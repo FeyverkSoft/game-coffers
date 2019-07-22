@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Coffers.Public.Domain.Guilds
+namespace Coffers.Public.Domain.Operations
 {
     public sealed class Account
     {
@@ -20,15 +20,7 @@ namespace Coffers.Public.Domain.Guilds
         /// </summary>
         public Guid ConcurrencyTokens { get; set; }
 
-        /// <summary>
-        /// Список исходящих операций произведенных над счётом
-        /// </summary>
-        public List<Operation> FromOperations { get; set; }
-
-        /// <summary>
-        /// Список входящих операций произведенных над счётом
-        /// </summary>
-        public List<Operation> ToOperations { get; set; }
+        public IEnumerable<Operation> Operations { get; set; }
 
         public Account()
         {

@@ -1,14 +1,13 @@
 ﻿using System;
 using Coffers.Types.Gamer;
 
-namespace Coffers.Public.Domain.Gamers
+namespace Coffers.Public.Domain.Operations
 {
     /// <summary>
     /// Сущность хранит займ игрока
     /// </summary>
     public sealed class Loan
     {
-
         /// <summary>
         /// Идентификатор займа
         /// </summary>
@@ -17,9 +16,12 @@ namespace Coffers.Public.Domain.Gamers
         /// <summary>
         /// Сумма займа
         /// </summary>
-        public Decimal Amount { get; internal set; }
+        public decimal Amount { get; internal set; }
 
-        public Account Balance { get; internal set; }
+        /// <summary>
+        /// Номер счёта по займу
+        /// </summary>
+        public Account Account { get; set; }
 
         public Guid TariffId { get; internal set; }
 
@@ -67,8 +69,8 @@ namespace Coffers.Public.Domain.Gamers
             UpdateDate = DateTime.UtcNow;
             LoanStatus = LoanStatus.Active;
             Id = id;
-            Balance = new Account();
             TariffId = tariffId;
+            Account = new Account();
             Amount = amount;
             TaxAmount = taxAmount;
             Description = description;

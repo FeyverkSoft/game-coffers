@@ -1,7 +1,7 @@
 ﻿using System;
 using Coffers.Types.Account;
 
-namespace Coffers.Public.Domain.Guilds
+namespace Coffers.Public.Domain.Operations
 {
     /// <summary>
     /// Операция над счетами
@@ -12,6 +12,12 @@ namespace Coffers.Public.Domain.Guilds
         /// Идентификатор операци
         /// </summary>
         public Guid Id { get; set; }
+
+        /// <summary>
+        /// Дата создания записи
+        /// </summary>
+        public DateTime CreateDate { get; set; }
+
         /// <summary>
         /// Дата проведения операции
         /// </summary>
@@ -21,10 +27,6 @@ namespace Coffers.Public.Domain.Guilds
         /// Сумма операции
         /// </summary>
         public Decimal Amount { get; set; }
-        /// <summary>
-        /// Тип операции
-        /// </summary>
-        public OperationType Type { get; set; }
 
         /// <summary>
         /// Счёт с которого списываются бабки
@@ -35,5 +37,16 @@ namespace Coffers.Public.Domain.Guilds
         /// Счёт на который зачисляются бабки
         /// </summary>
         public Account ToAccount { get; set; }
+
+        /// <summary>
+        /// Тип операции
+        /// </summary>
+        public OperationType Type { get; set; }
+
+        /// <summary>
+        /// Описание операции
+        /// </summary>
+        public String Description { get; set; }
+
     }
 }

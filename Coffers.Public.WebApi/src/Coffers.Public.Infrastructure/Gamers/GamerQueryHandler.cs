@@ -34,7 +34,7 @@ namespace Coffers.Public.Infrastructure.Gamers
                     Rank = g.Rank,
                     CharCount = g.Characters.Count(c => c.Status == CharStatus.Active),
                     ActiveLoanAmount = g.Loans.Where(l => l.LoanStatus == LoanStatus.Active)
-                        .Sum(l => (l.Amount + l.PenaltyAmount + l.TaxAmount)),
+                        .Sum(l => (l.Amount)),
                     ActiveExpLoanAmount = g.Loans.Where(l => l.LoanStatus == LoanStatus.Active)
                         .Sum(l => l.PenaltyAmount),
                     ActiveLoanTaxAmount = g.Loans.Where(l => l.LoanStatus == LoanStatus.Active)
@@ -42,7 +42,7 @@ namespace Coffers.Public.Infrastructure.Gamers
                     RepaymentLoanAmount = g.Loans.Where(l => l.LoanStatus == LoanStatus.Active)
                         .Sum(l => l.TaxAmount),
                     ActivePenaltyAmount = g.Penalties.Where(p => p.PenaltyStatus == PenaltyStatus.Active)
-                        .Sum(p => p.Amount - p.RepaymentAmount),
+                        .Sum(p => p.Amount),
                 })
                 .FirstOrDefaultAsync(cancellationToken);
         }

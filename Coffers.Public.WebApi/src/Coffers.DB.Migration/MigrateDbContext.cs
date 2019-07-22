@@ -229,11 +229,7 @@ namespace Coffers.DB.Migrations
                 b.Property(l => l.UpdateDate);
                 b.Property(l => l.ExpiredDate)
                     .IsRequired();
-
-                b.Property(p => p.Amount)
-                    .HasDefaultValue(0)
-                    .IsRequired();
-                b.Property(p => p.RepaymentAmount)
+                b.Property(o => o.Amount)
                     .HasDefaultValue(0)
                     .IsRequired();
                 b.Property(l => l.LoanStatus)
@@ -248,6 +244,10 @@ namespace Coffers.DB.Migrations
                     .IsRequired();
                 b.Property(l => l.Description)
                     .HasMaxLength(512);
+
+                b.HasOne(g => g.Account)
+                    .WithMany()
+                    .HasPrincipalKey(_ => _.Id);
 
                 b.HasOne(l => l.Gamer)
                     .WithMany(_ => _.Loans)
@@ -271,10 +271,7 @@ namespace Coffers.DB.Migrations
 
                 b.Property(p => p.CreateDate)
                     .IsRequired();
-                b.Property(p => p.Amount)
-                    .HasDefaultValue(0)
-                    .IsRequired();
-                b.Property(p => p.RepaymentAmount)
+                b.Property(o => o.Amount)
                     .HasDefaultValue(0)
                     .IsRequired();
                 b.Property(p => p.Description)
@@ -282,6 +279,10 @@ namespace Coffers.DB.Migrations
                 b.Property(p => p.PenaltyStatus)
                     .HasConversion<String>()
                     .HasMaxLength(32);
+
+                b.HasOne(g => g.Account)
+                    .WithMany()
+                    .HasPrincipalKey(_ => _.Id);
 
                 b.HasOne(p => p.Gamer)
                     .WithMany(_ => _.Penalties)
@@ -330,8 +331,11 @@ namespace Coffers.DB.Migrations
                     .IsConcurrencyToken()
                     .IsRequired();
 
-                b.HasMany(a => a.Operations)
-                    .WithOne(_ => _.Account)
+                b.HasMany(a => a.FromOperations)
+                    .WithOne(_ => _.FromAccount)
+                    .HasPrincipalKey(_ => _.Id);
+                b.HasMany(a => a.ToOperations)
+                    .WithOne(_ => _.ToAccount)
                     .HasPrincipalKey(_ => _.Id);
             });
 
@@ -360,8 +364,12 @@ namespace Coffers.DB.Migrations
                     .HasConversion<String>()
                     .HasMaxLength(32);
 
-                b.HasOne(o => o.Account)
-                    .WithMany(_ => _.Operations)
+                b.HasOne(o => o.FromAccount)
+                    .WithMany(_ => _.FromOperations)
+                    .HasPrincipalKey(_ => _.Id);
+
+                b.HasOne(o => o.ToAccount)
+                    .WithMany(_ => _.ToOperations)
                     .HasPrincipalKey(_ => _.Id);
             });
 

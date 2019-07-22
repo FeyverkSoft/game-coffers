@@ -29,9 +29,14 @@ namespace Coffers.DB.Migrations.Entities
         public Decimal Amount { get; set; }
 
         /// <summary>
-        /// Счёт с которым проводится операция
+        /// Счёт с которого списываются бабки
         /// </summary>
-        public Account Account { get; set; }
+        public Account FromAccount { get; set; }
+
+        /// <summary>
+        /// Счёт на который зачисляются бабки
+        /// </summary>
+        public Account ToAccount { get; set; }
 
         /// <summary>
         /// Тип операции

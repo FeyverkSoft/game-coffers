@@ -22,6 +22,7 @@ export class Input extends BaseInput<InputProps, IBaseInputState> {
                     onBlur={this.onBlur}
                     id={this.props.path}
                     type={this.props.type}
+                    value={(this.state.value || '').toString()}
                 >
                 </input>
                 <IF value={this.props.label}>

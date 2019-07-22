@@ -11,6 +11,8 @@ import { IStore } from '../_helpers';
 import { IHolded } from '../core';
 import { AddUserDialog } from '../_components/Dialogs/AddUserDialog';
 import { AddCharDialog } from '../_components/Dialogs/AddCharDialog';
+import { AddLoanDialog } from '../_components/Dialogs/AddLoanDialog';
+import { AddPenaltyDialog } from '../_components/Dialogs/AddPenaltyDialog';
 
 interface IMainProps {
     isLoading?: boolean;
@@ -34,26 +36,36 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
             addChar: {
                 isDisplayed: false,
                 userId: ''
-            }
+            },
+            addLoan: {
+                isDisplayed: false,
+                userId: ''
+            },
+            addPenalty: {
+                isDisplayed: false,
+                userId: ''
+            },
         };
     }
 
-    pageActions = (): React.ReactNode | string => {
-        return <div>
-        </div>;
-    }
-
     componentDidMount() {
-        if (this.props.guildInfo.id == '' && this.props.guildId)
+        if (this.props.guildInfo.id == '' && this.props.guildId) {
             this.props.dispatch(guildInstance.GetGuild({ guildId: this.props.guildId }))
-        if (this.props.guildId)
             this.props.dispatch(guildInstance.GetGuildBalanceReport({ guildId: this.props.guildId }))
-        if (this.props.guildId)
             this.props.dispatch(gamerInstance.GetGamers({ guildId: this.props.guildId }))
+        }
     }
 
     onAddChar = (userId: string) => {
         this.setState({ addChar: { isDisplayed: true, userId: userId } })
+    }
+
+    onAddLoan = (userId: string) => {
+        this.setState({ addLoan: { isDisplayed: true, userId: userId } })
+    }
+
+    onAddPenalty = (userId: string) => {
+        this.setState({ addPenalty: { isDisplayed: true, userId: userId } })
     }
 
     onDeleteChar = (userId: string, char: string) => {
@@ -80,13 +92,6 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
             }));
     }
 
-    addUserRenderer = () => {
-        return (<AddUserDialog
-            isDisplayed={this.state.addNewUser.isDisplayed}
-            onClose={() => this.setState({ addNewUser: { false: false } })}
-            guildId={this.props.guildId || ''}
-        ></AddUserDialog>)
-    }
 
     charactersGrid = () => {
         const { gamers } = this.props;
@@ -102,8 +107,7 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                         isSmall={true}
                     >{Lang('ADD_NEW_USER')}</Button>
                 </Private>
-            }
-        >
+            }>
             {
                 gamers.map(g => {
                     return <GamerRowView
@@ -113,6 +117,8 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                         onDeleteChar={this.onDeleteChar}
                         onRankChange={this.onSetRank}
                         onStatusChange={this.onSetStatus}
+                        onAddLoan={this.onAddLoan}
+                        onAddPenalty={this.onAddPenalty}
                     />;
                 })
             }
@@ -120,50 +126,63 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
     }
 
     render() {
-        return <Page
-            title={LangF("MAIN_PAGE", this.props.guildInfo.name)}
-            breadcrumbs={[new Crumbs("./", LangF("MAIN_PAGE", this.props.guildInfo.name))]}
-            pageActions={this.pageActions()}
-        >
-            <Grid
-                direction="horizontal"
+        return (
+            <Page
+                title={LangF("MAIN_PAGE", this.props.guildInfo.name)}
+                breadcrumbs={[new Crumbs("./", LangF("MAIN_PAGE", this.props.guildInfo.name))]}
             >
-                <Col2>
-                    <MainView
-                        guildInfo={this.props.guildInfo}
-                        isLoading={this.props.isLoading}
-                    />
-                </Col2>
-                <Col2>
-                    <BalanceView
-                        balance={this.props.balance}
-                    />
-                </Col2>
-                <Col2>
-                    <TariffView
-                        tariff={this.props.tariffs}
-                        currentRole={this.props.userRank}
-                        isLoading={this.props.isLoading}
-                    />
-                </Col2>
-                <Col2>
-                    <UserView
-                        user={this.props.user}
-                        isLoading={this.props.isLoading}
-                        tax={this.props.tariffs[this.props.userRank].tax}
-                    />
-                </Col2>
-            </Grid>
-            <Private roles={['admin', 'leader', 'officer']}>
-                {this.addUserRenderer()}
-            </Private>
-            {this.charactersGrid()}
-            <AddCharDialog
-                userId={this.state.addChar.userId}
-                isDisplayed={this.state.addChar.isDisplayed}
-                onClose={() => this.setState({ addChar: { isDisplayed: false } })}
-            ></AddCharDialog>
-        </Page>
+                <Grid
+                    direction="horizontal"
+                >
+                    <Col2>
+                        <MainView
+                            guildInfo={this.props.guildInfo}
+                            isLoading={this.props.isLoading}
+                        />
+                    </Col2>
+                    <Col2>
+                        <BalanceView
+                            balance={this.props.balance}
+                        />
+                    </Col2>
+                    <Col2>
+                        <TariffView
+                            tariff={this.props.tariffs}
+                            currentRole={this.props.userRank}
+                            isLoading={this.props.isLoading}
+                        />
+                    </Col2>
+                    <Col2>
+                        <UserView
+                            user={this.props.user}
+                            isLoading={this.props.isLoading}
+                            tax={this.props.tariffs[this.props.userRank].tax}
+                        />
+                    </Col2>
+                </Grid>
+                {this.charactersGrid()}
+                <AddUserDialog
+                    isDisplayed={this.state.addNewUser.isDisplayed}
+                    onClose={() => this.setState({ addNewUser: { false: false } })}
+                    guildId={this.props.guildId || ''}
+                />
+                <AddCharDialog
+                    userId={this.state.addChar.userId}
+                    isDisplayed={this.state.addChar.isDisplayed}
+                    onClose={() => this.setState({ addChar: { isDisplayed: false } })}
+                />
+                <AddLoanDialog
+                    userId={this.state.addLoan.userId}
+                    isDisplayed={this.state.addLoan.isDisplayed}
+                    onClose={() => this.setState({ addLoan: { isDisplayed: false } })}
+                />
+                <AddPenaltyDialog
+                    userId={this.state.addPenalty.userId}
+                    isDisplayed={this.state.addPenalty.isDisplayed}
+                    onClose={() => this.setState({ addPenalty: { isDisplayed: false } })}
+                />
+            </Page>
+        );
     }
 }
 

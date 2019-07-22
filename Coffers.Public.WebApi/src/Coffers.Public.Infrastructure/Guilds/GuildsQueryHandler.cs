@@ -91,7 +91,7 @@ namespace Coffers.Public.Infrastructure.Guilds
                 .AsNoTracking()
                 .Where(guild => guild.Id == query.GuildId)
                 .Include(g => g.GuildAccount)
-                .ThenInclude(ga => ga.Operations)
+                .ThenInclude(ga => ga.ToOperations)
                 .Include(g => g.Gamers)
                 .ThenInclude(gm => gm.Characters)
                 .Include(g => g.Gamers)
@@ -105,14 +105,14 @@ namespace Coffers.Public.Infrastructure.Guilds
                 Balance = g.GuildAccount.Balance,
                 ActiveLoansAmount = g.Gamers.Sum(gm => gm.Loans
                     .Where(l => !skipLoanStat.Contains(l.LoanStatus))
-                    .Sum(l => l.Amount - l.RepaymentAmount)),
+                    .Sum(l => l.Amount)),
                 ExpectedTaxAmount = g.Gamers
                     .Select(gm => new
                     {
                         Rank = gm.Rank,
                         Characters = gm.Characters.Count(c => !skipChStat.Contains(c.Status)),
                     }).ToList(),
-                TaxAmount = g.GuildAccount.Operations.Where(o => o.Type == OperationType.Tax && o.OperationDate >= DateTime.UtcNow.Trunc(DateTruncType.Month))
+                TaxAmount = g.GuildAccount.ToOperations.Where(o => o.Type == OperationType.Tax && o.OperationDate >= DateTime.UtcNow.Trunc(DateTruncType.Month))
                     .Sum(o => o.Amount)
             })
             .FirstOrDefaultAsync(cancellationToken);

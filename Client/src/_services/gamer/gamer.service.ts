@@ -26,7 +26,7 @@ export class gamerService {
             },
             body: JSON.stringify({ id, amount, description })
         };
-        return await fetch(Config.BuildUrl(`/Gamers/${gamerId}/penalty`), requestOptions)
+        return await fetch(Config.BuildUrl(`/Gamers/${gamerId}/penalties`), requestOptions)
             .then<BaseResponse>(getResponse)
             .then(data => {
                 if (data && data.type || data.traceId) {
@@ -57,7 +57,7 @@ export class gamerService {
             },
             body: JSON.stringify({ id, amount, description, borrowDate, expiredDate })
         };
-        return await fetch(Config.BuildUrl(`/Gamers/${gamerId}/loan`), requestOptions)
+        return await fetch(Config.BuildUrl(`/Gamers/${gamerId}/loans`), requestOptions)
             .then<BaseResponse>(getResponse)
             .then(data => {
                 if (data && data.type || data.traceId) {
@@ -225,6 +225,66 @@ export class gamerService {
             body: JSON.stringify({ rank: rank })
         };
         return await fetch(Config.BuildUrl(`/Gamers/${gamerId}/rank`), requestOptions)
+            .then<BaseResponse>(getResponse)
+            .then(data => {
+                if (data && data.type || data.traceId) {
+                    return errorHandle(data);
+                }
+            })
+            .catch(catchHandle);
+    }
+
+    /**
+     * Отменить ещё не штраф займ у игрока
+     * @param gamerId 
+     * @param id 
+     * @param amount 
+     * @param description 
+     */
+    static async CancelPenalty(gamerId: string, id: string): Promise<void> {
+        let session = authService.getCurrentSession();
+        const requestOptions: RequestInit = {
+            method: 'DELETE',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+                'Authorization': 'Bearer ' + session.sessionId
+            },
+            body: JSON.stringify({ id })
+        };
+        return await fetch(Config.BuildUrl(`/Gamers/${gamerId}/penalties`), requestOptions)
+            .then<BaseResponse>(getResponse)
+            .then(data => {
+                if (data && data.type || data.traceId) {
+                    return errorHandle(data);
+                }
+            })
+            .catch(catchHandle);
+    }
+
+    /**
+     * Отменить ещё не оплаченный займ у игрока
+     * @param gamerId 
+     * @param id 
+     * @param amount 
+     * @param description 
+     * @param borrowDate 
+     * @param expiredDate 
+     */
+    static async CancelLoan(gamerId: string, id: string): Promise<void> {
+        let session = authService.getCurrentSession();
+        const requestOptions: RequestInit = {
+            method: 'DELETE',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+                'Authorization': 'Bearer ' + session.sessionId
+            },
+            body: JSON.stringify({ id })
+        };
+        return await fetch(Config.BuildUrl(`/Gamers/${gamerId}/loans`), requestOptions)
             .then<BaseResponse>(getResponse)
             .then(data => {
                 if (data && data.type || data.traceId) {

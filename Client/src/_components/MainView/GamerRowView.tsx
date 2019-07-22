@@ -10,6 +10,8 @@ import { Private, EditableList, Item } from "..";
 interface IGamerRowViewProps extends React.Props<any> {
     gamer: GamersListView & IHolded;
     onAddChar(userId: string): void;
+    onAddLoan(userId: string): void;
+    onAddPenalty(userId: string): void;
     onDeleteChar(userId: string, char: string): void;
     onRankChange(userId: string, rank: GamerRank): void;
     onStatusChange(userId: string, status: GamerStatus): void;
@@ -81,14 +83,22 @@ export class GamerRowView extends BaseReactComp<IGamerRowViewProps> {
                         {Lang('USER_ROW_PENALTIES')}
                     </div>
                     <div className={style['content']}>
-                        {gamer.penalties.map(p => (
-                            <div key={p.id}
-                                title={p.description}
-                                className={`${style['penalty']} ${p.penaltyStatus.toLowerCase()}`}
-                            >
-                                {p.amount}
-                            </div>
-                        ))}
+                        {Object.keys(gamer.penalties).map(_ => {
+                            const p = gamer.penalties[_];
+                            return (
+                                <div key={p.id}
+                                    title={p.description}
+                                    className={`${style['penalty']} ${p.penaltyStatus.toLowerCase()}`}
+                                >
+                                    {p.amount}
+                                </div>
+                            )
+                        })}
+                        <Private roles={['admin', 'leader', 'officer']}>
+                            <span className={style['add']}
+                                onClick={() => this.props.onAddPenalty(gamer.id)}
+                            />
+                        </Private>
                     </div>
                 </div>
 
@@ -106,14 +116,22 @@ export class GamerRowView extends BaseReactComp<IGamerRowViewProps> {
                         {Lang('USER_ROW_LOANS')}
                     </div>
                     <div className={style['content']}>
-                        {gamer.loans.map(l => (
-                            <div key={l.id}
-                                className={`${style['loan']} ${style[l.loanStatus.toLowerCase()]}`}
-                                title={l.expiredDate.toString()}
-                            >
-                                {l.amount}
-                            </div>
-                        ))}
+                        {Object.keys(gamer.loans).map(_ => {
+                            const l = gamer.loans[_];
+                            return (
+                                <div key={l.id}
+                                    className={`${style['loan']} ${style[l.loanStatus.toLowerCase()]}`}
+                                    title={l.expiredDate.toString()}
+                                >
+                                    {l.amount}
+                                </div>
+                            )
+                        })}
+                        <Private roles={['admin', 'leader', 'officer']}>
+                            <span className={style['add']}
+                                onClick={() => this.props.onAddLoan(gamer.id)}
+                            />
+                        </Private>
                     </div>
                 </div>
                 <div>

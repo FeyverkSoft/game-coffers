@@ -49,7 +49,7 @@ class _AddCharDialog extends BaseReactComp<IProps, IState> {
                 },
                 onSuccess: () => {
                     this.setState({ isLoad: false });
-                    this.props.onClose();
+                    this.onClose();
                 }
             }))
     }

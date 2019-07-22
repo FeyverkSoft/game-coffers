@@ -46,6 +46,9 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<G
     IGamerStore {
     var clonedState = clonedeep(state);
     switch (action.type) {
+        /**
+         * Секция получения ионформации о текущем игроке сессии
+         */
         case GamerActionsType.PROC_GET_CURRENT_GAMER:
             clonedState.currentGamer.holding = true;
             return clonedState;
@@ -59,6 +62,9 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<G
             return clonedState;
 
 
+        /**
+         * Секция получения информации о списке игроков в гильдии
+         */
         case GamerActionsType.PROC_GET_GUILD_GAMERS:
             return state;
 
@@ -74,6 +80,9 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<G
             return state;
 
 
+        /**
+         * Секция обработчика установки статуса игроку
+         */
         case GamerActionsType.PROC_SET_GAMER_STATUS:
             if (clonedState.gamersList[action.gamerId]) {
                 clonedState.gamersList[action.gamerId].holding = true;
@@ -92,6 +101,9 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<G
             }
 
 
+        /**
+         * Секция обработчика установки ранга игроку
+         */
         case GamerActionsType.PROC_SET_GAMER_RANK:
             if (clonedState.gamersList[action.gamerId]) {
                 clonedState.gamersList[action.gamerId].holding = true;
@@ -110,6 +122,9 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<G
             }
 
 
+        /**
+         * Секция обработчика события добавляения игроку нового персонажа
+         */
         case GamerActionsType.PROC_ADD_NEW_CHARS:
             if (clonedState.gamersList[action.gamerId]) {
                 clonedState.gamersList[action.gamerId].holding = true;
@@ -130,6 +145,9 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<G
             }
 
 
+        /**
+         * Секция обработчик события удаления персонажа у игрока
+         */
         case GamerActionsType.PROC_DELETE_CHARS:
             if (clonedState.gamersList[action.gamerId]) {
                 clonedState.gamersList[action.gamerId].holding = true;
@@ -150,6 +168,9 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<G
             }
 
 
+        /***
+         * Секция обработчика события добавляения нового ЗАЙМА игроку
+         */
         case GamerActionsType.PROC_ADD_GAMER_LOAN:
             if (clonedState.gamersList[action.gamerId]) {
                 clonedState.gamersList[action.gamerId].holding = true;
@@ -158,9 +179,9 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<G
         case GamerActionsType.SUCC_ADD_GAMER_LOAN:
             if (clonedState.gamersList[action.gamerId]) {
                 if (clonedState.gamersList[action.gamerId].loans == undefined)
-                    clonedState.gamersList[action.gamerId].loans = [];
+                    clonedState.gamersList[action.gamerId].loans = {};
                 clonedState.gamersList[action.gamerId].holding = false;
-                clonedState.gamersList[action.gamerId].loans.push(action.loan);
+                clonedState.gamersList[action.gamerId].loans[action.loan.id] = action.loan;
                 return clonedState;
             }
         case GamerActionsType.FAILED_ADD_GAMER_LOAN:
@@ -170,6 +191,9 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<G
             }
 
 
+        /***
+        * Секция обработчика события добавляения нового ШТРАФА игроку
+        */
         case GamerActionsType.PROC_ADD_GAMER_PENALTY:
             if (clonedState.gamersList[action.gamerId]) {
                 clonedState.gamersList[action.gamerId].holding = true;
@@ -178,9 +202,9 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<G
         case GamerActionsType.SUCC_ADD_GAMER_PENALTY:
             if (clonedState.gamersList[action.gamerId]) {
                 if (clonedState.gamersList[action.gamerId].penalties == undefined)
-                    clonedState.gamersList[action.gamerId].penalties = [];
+                    clonedState.gamersList[action.gamerId].penalties = {};
                 clonedState.gamersList[action.gamerId].holding = false;
-                clonedState.gamersList[action.gamerId].penalties.push(action.penalty);
+                clonedState.gamersList[action.gamerId].penalties[action.penalty.id] = action.penalty;
                 return clonedState;
             }
         case GamerActionsType.FAILED_ADD_GAMER_PENALTY:
@@ -188,6 +212,53 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<G
                 clonedState.gamersList[action.gamerId].holding = false;
                 return clonedState;
             }
+
+
+        /***
+         * Секция обработчика события отмена займа у игрока
+         */
+        case GamerActionsType.PROC_CANCEL_GAMER_LOAN:
+            if (clonedState.gamersList[action.gamerId]) {
+                clonedState.gamersList[action.gamerId].holding = true;
+                return clonedState;
+            }
+        case GamerActionsType.SUCC_CANCEL_GAMER_LOAN:
+            if (clonedState.gamersList[action.gamerId]) {
+                if (clonedState.gamersList[action.gamerId].loans == undefined)
+                    clonedState.gamersList[action.gamerId].loans = {};
+                clonedState.gamersList[action.gamerId].holding = false;
+                clonedState.gamersList[action.gamerId].loans[action.loanId].loanStatus = 'Canceled';
+                return clonedState;
+            }
+        case GamerActionsType.FAILED_CANCEL_GAMER_LOAN:
+            if (clonedState.gamersList[action.gamerId]) {
+                clonedState.gamersList[action.gamerId].holding = false;
+                return clonedState;
+            }
+
+
+        /**
+        * Секция обработчика события отмена штрафа у игрока
+        */
+        case GamerActionsType.PROC_CANCEL_GAMER_PENALTY:
+            if (clonedState.gamersList[action.gamerId]) {
+                clonedState.gamersList[action.gamerId].holding = true;
+                return clonedState;
+            }
+        case GamerActionsType.SUCC_CANCEL_GAMER_PENALTY:
+            if (clonedState.gamersList[action.gamerId]) {
+                if (clonedState.gamersList[action.gamerId].penalties == undefined)
+                    clonedState.gamersList[action.gamerId].penalties = {};
+                clonedState.gamersList[action.gamerId].holding = false;
+                clonedState.gamersList[action.gamerId].penalties[action.penaltyId].penaltyStatus = 'Canceled';
+                return clonedState;
+            }
+        case GamerActionsType.FAILED_CANCEL_GAMER_PENALTY:
+            if (clonedState.gamersList[action.gamerId]) {
+                clonedState.gamersList[action.gamerId].holding = false;
+                return clonedState;
+            }
+
         default:
             return state
     }

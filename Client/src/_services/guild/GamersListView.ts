@@ -2,13 +2,14 @@ import { GamerStatus } from "../gamer/GamerStatus";
 import { GamerRank } from "../gamer/GamerRank";
 import { PenaltyStatus } from "./PenaltyStatus";
 import { LoanStatus } from "./LoanStatus";
+import { Dictionary } from "../../core";
 
 export interface IGamersListView {
     id: string;
     characters: Array<string>;
     balance: number;
-    penalties: Array<IPenaltyView>;
-    loans: Array<ILoanView>;
+    penalties: Dictionary<IPenaltyView>;
+    loans: Dictionary<ILoanView>;
     rank: GamerRank;
     status: GamerStatus;
 }
@@ -34,15 +35,15 @@ export class GamersListView implements IGamersListView {
     id: string;
     characters: Array<string>;
     balance: number;
-    penalties: Array<IPenaltyView>;
-    loans: Array<ILoanView>;
+    penalties: Dictionary<IPenaltyView>;
+    loans: Dictionary<ILoanView>;
     rank: GamerRank;
     status: GamerStatus;
     constructor(id: string,
         characters: Array<string>,
         balance: number,
-        penalties: Array<IPenaltyView>,
-        loans: Array<ILoanView>,
+        penalties: Dictionary<IPenaltyView>,
+        loans: Dictionary<ILoanView>,
         rank: GamerRank,
         status: GamerStatus
     ) {

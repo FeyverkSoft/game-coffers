@@ -53,17 +53,17 @@ class _AddLoanDialog extends BaseReactComp<IProps, IState> {
         if (this.props.userId)
             this.props.dispatch(gamerInstance.AddLoan({
                 gamerId: this.props.userId,
-                id: this.props.id,
-                description: this.props.description.value,
-                amount: this.props.amount.value,
-                borrowDate: this.props.borrowDate.value,
-                expiredDate: this.props.expiredDate.value,
+                id: this.state.id,
+                description: this.state.description.value || '',
+                amount: this.state.amount.value || 0,
+                borrowDate: this.state.borrowDate.value,
+                expiredDate: this.state.expiredDate.value,
                 onFailure: () => {
                     this.setState({ isLoad: false });
                 },
                 onSuccess: () => {
                     this.setState({ isLoad: false });
-                    this.props.onClose();
+                    this.onClose();
                 }
             }))
     }
@@ -97,7 +97,8 @@ class _AddLoanDialog extends BaseReactComp<IProps, IState> {
                             onChange={this.onInputVal}
                             isRequired={true}
                             path='borrowDate'
-                            value={borrowDate.value.toString()}
+                            //type='date'
+                            value={borrowDate.value.toISOString()}
                             isRequiredMessage={Lang('IsRequired')}
                         />
                     </Col1>
@@ -107,7 +108,8 @@ class _AddLoanDialog extends BaseReactComp<IProps, IState> {
                             onChange={this.onInputVal}
                             isRequired={true}
                             path='expiredDate'
-                            value={expiredDate.value.toString()}
+                            //type='date'
+                            value={expiredDate.value.toISOString()}
                             isRequiredMessage={Lang('IsRequired')}
                         />
                     </Col1>

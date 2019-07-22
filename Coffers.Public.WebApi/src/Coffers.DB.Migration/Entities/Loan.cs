@@ -54,9 +54,9 @@ namespace Coffers.DB.Migrations.Entities
         public Decimal Amount { get; set; }
 
         /// <summary>
-        /// Уже было выплаченно от займа
+        /// Номер счёта по займу
         /// </summary>
-        public Decimal RepaymentAmount { get; set; }
+        public Account Account { get; set; }
 
         /// <summary>
         /// Сумма комиссии 

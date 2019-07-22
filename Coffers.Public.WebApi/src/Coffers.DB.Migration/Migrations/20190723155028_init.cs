@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Coffers.DB.Migrations.Migrations
 {
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -42,7 +42,8 @@ namespace Coffers.DB.Migrations.Migrations
                     CreateDate = table.Column<DateTime>(nullable: false),
                     OperationDate = table.Column<DateTime>(nullable: false),
                     Amount = table.Column<decimal>(nullable: false, defaultValue: 0m),
-                    AccountId = table.Column<byte[]>(nullable: true),
+                    FromAccountId = table.Column<byte[]>(nullable: true),
+                    ToAccountId = table.Column<byte[]>(nullable: true),
                     Type = table.Column<string>(maxLength: 32, nullable: false),
                     DocumentId = table.Column<byte[]>(nullable: true),
                     Description = table.Column<string>(maxLength: 512, nullable: true)
@@ -51,8 +52,14 @@ namespace Coffers.DB.Migrations.Migrations
                 {
                     table.PrimaryKey("PK_Operation", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Operation_Account_AccountId",
-                        column: x => x.AccountId,
+                        name: "FK_Operation_Account_FromAccountId",
+                        column: x => x.FromAccountId,
+                        principalTable: "Account",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Operation_Account_ToAccountId",
+                        column: x => x.ToAccountId,
                         principalTable: "Account",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -224,7 +231,7 @@ namespace Coffers.DB.Migrations.Migrations
                     BorrowDate = table.Column<DateTime>(nullable: false),
                     ExpiredDate = table.Column<DateTime>(nullable: false),
                     Amount = table.Column<decimal>(nullable: false, defaultValue: 0m),
-                    RepaymentAmount = table.Column<decimal>(nullable: false, defaultValue: 0m),
+                    AccountId = table.Column<byte[]>(nullable: true),
                     TaxAmount = table.Column<decimal>(nullable: false, defaultValue: 0m),
                     PenaltyAmount = table.Column<decimal>(nullable: false, defaultValue: 0m),
                     LoanStatus = table.Column<string>(maxLength: 32, nullable: false)
@@ -232,6 +239,12 @@ namespace Coffers.DB.Migrations.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Loan", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Loan_Account_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "Account",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Loan_Gamer_GamerId",
                         column: x => x.GamerId,
@@ -253,7 +266,7 @@ namespace Coffers.DB.Migrations.Migrations
                     Id = table.Column<byte[]>(nullable: false),
                     GamerId = table.Column<byte[]>(nullable: true),
                     Amount = table.Column<decimal>(nullable: false, defaultValue: 0m),
-                    RepaymentAmount = table.Column<decimal>(nullable: false, defaultValue: 0m),
+                    AccountId = table.Column<byte[]>(nullable: true),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     PenaltyStatus = table.Column<string>(maxLength: 32, nullable: false),
                     Description = table.Column<string>(maxLength: 2048, nullable: true)
@@ -261,6 +274,12 @@ namespace Coffers.DB.Migrations.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Penalty", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Penalty_Account_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "Account",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Penalty_Gamer_GamerId",
                         column: x => x.GamerId,
@@ -382,6 +401,11 @@ namespace Coffers.DB.Migrations.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Loan_AccountId",
+                table: "Loan",
+                column: "AccountId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Loan_GamerId",
                 table: "Loan",
                 column: "GamerId");
@@ -398,15 +422,25 @@ namespace Coffers.DB.Migrations.Migrations
                 column: "TariffId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Operation_AccountId",
+                name: "IX_Operation_FromAccountId",
                 table: "Operation",
-                column: "AccountId");
+                column: "FromAccountId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Operation_Id",
                 table: "Operation",
                 column: "Id",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Operation_ToAccountId",
+                table: "Operation",
+                column: "ToAccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Penalty_AccountId",
+                table: "Penalty",
+                column: "AccountId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Penalty_GamerId",

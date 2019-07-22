@@ -139,9 +139,8 @@
         }
 
         .content {
-            text-transform: uppercase;
-            padding-left  : .25rem;
-            min-width     : 4rem;
+            padding-left: .25rem;
+            min-width   : 4rem;
 
             &.red {
                 font-weight: 800;
@@ -163,7 +162,8 @@
         }
 
         .content {
-            text-transform: uppercase;
+            .flex();
+            flex-direction: row;
             font-weight   : 400;
             padding-left  : .25rem;
 
@@ -198,7 +198,8 @@
         }
 
         .content {
-            text-transform: uppercase;
+            .flex();
+            flex-direction: row;
             padding-left  : .25rem;
 
             .loan {
@@ -222,19 +223,39 @@
 
     &.afk {
         background-color: fade(@successColor, 10%);
+
+        &:hover {
+            background-color: fade(@successColor, 5%);
+        }
     }
 
     &.banned {
         background-color: fade(@importantColor, 20%);
+
+        &:hover {
+            background-color: fade(@importantColor, 10%);
+        }
     }
 
-    &.active {}
+    &.active {
+        &:hover {
+            background-color: fade(@black, 2%);
+        }
+    }
 
     &.left {
         background-color: fade(@black, 20%);
+
+        &:hover {
+            background-color: fade(@black, 10%);
+        }
     }
 
     &.new {
         background-color: fade(@successColor, 20%);
+
+        &:hover {
+            background-color: fade(@successColor, 10%);
+        }
     }
 }

@@ -19,9 +19,14 @@ namespace Coffers.DB.Migrations.Entities
         public Decimal Balance { get; set; }
 
         /// <summary>
-        /// Список операций произведенных над счётом
+        /// Список изходящих операций произведенных над счётом
         /// </summary>
-        public List<Operation> Operations { get; set; }
+        public List<Operation> FromOperations { get; set; }
+
+        /// <summary>
+        /// Список входящих операций произведенных над счётом
+        /// </summary>
+        public List<Operation> ToOperations { get; set; }
 
         /// <summary>
         /// Токен конкуренции, предназначен для разруливания согласованности данных, при ассинхроных запросаз

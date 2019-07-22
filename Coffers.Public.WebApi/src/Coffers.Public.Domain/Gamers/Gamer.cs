@@ -159,9 +159,45 @@ namespace Coffers.Public.Domain.Gamers
             if (Loans == null)
                 Loans = new List<Loan>();
 
-            if (Penalties.Any(x => x.Id == loan.Id && x.Amount == loan.Amount))
+            if (Loans.Any(x => x.Id == loan.Id && x.Amount == loan.Amount))
                 return;
+            
             Loans.Add(loan);
+        }
+
+        /// <summary>
+        /// Метод отменяет ещё не оплаченный штраф у игрока
+        /// </summary>
+        /// <param name="id"></param>
+        public void CancelPenalty(Guid id)
+        {
+            if (Penalties == null)
+                Penalties = new List<Penalty>();
+            var p = Penalties.FirstOrDefault(_ => _.Id == id );
+
+            if(p == null)
+                throw new KeyNotFoundException(id.ToString());
+
+            if (p.PenaltyStatus == PenaltyStatus.Active)
+                p.PenaltyStatus = PenaltyStatus.Canceled;
+        }
+
+        /// <summary>
+        /// Метод отменяет ещё неоплаченный займ у игрока
+        /// </summary>
+        /// <param name="id"></param>
+        public void CancelLoan(Guid id)
+        {
+            if (Loans == null)
+                Loans = new List<Loan>();
+
+            var l = Loans.FirstOrDefault(_ => _.Id == id);
+
+            if (l == null)
+                throw new KeyNotFoundException(id.ToString());
+
+            if (l.LoanStatus != LoanStatus.Paid)
+                l.LoanStatus = LoanStatus.Canceled;
         }
     }
 }

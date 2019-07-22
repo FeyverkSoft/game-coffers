@@ -21,7 +21,7 @@ namespace Coffers.Public.Domain.Gamers
         public async Task<Loan> Build(Guid id, Guid guildId, GamerRank rank, Decimal amount,
             String description, DateTime borrowDate, DateTime expiredDate)
         {
-            var guild = await _guildRepository.Get(guildId, CancellationToken.None, true);
+            var guild = await _guildRepository.Get(guildId, CancellationToken.None, false);
             Tariff t = null;
             switch (rank)
             {
@@ -43,7 +43,6 @@ namespace Coffers.Public.Domain.Gamers
                 default:
                     throw new ArgumentOutOfRangeException(nameof(rank), rank, null);
             }
-
             return new Loan(id, t.Id, amount, amount * (t.LoanTax / 100), description, borrowDate, expiredDate);
         }
     }

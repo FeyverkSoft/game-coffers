@@ -12,13 +12,15 @@ namespace Coffers.Public.Domain.Gamers
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Сумма штрафа
+        /// Сумма займа
         /// </summary>
-        public Decimal Amount { get; set; }
+        public decimal Amount { get; internal set; }
+
         /// <summary>
-        /// Уже было выплаченно в пользу штрафа
+        /// Номер счёта для штрафа
         /// </summary>
-        public Decimal RepaymentAmount { get; set; }
+        public Account Account { get; set; }
+
         /// <summary>
         /// Дата создания
         /// </summary>
@@ -37,10 +39,11 @@ namespace Coffers.Public.Domain.Gamers
         public Penalty(Guid id, Decimal amount, String description)
         {
             Id = Guid.Empty == id ? throw new ArgumentException(nameof(id)) : id;
-            Amount = amount < 0 ? throw new ArgumentException(nameof(amount)) : amount;
+            Account = new Account();
             PenaltyStatus = PenaltyStatus.Active;
             CreateDate = DateTime.UtcNow;
             Description = description;
+            Amount = amount < 0? throw new ArgumentException(nameof(amount)) : amount;
         }
     }
 }
