@@ -5,7 +5,7 @@ export interface BaseReactCompState {
     invalid?: Dictionary<boolean>;
 }
 
-export interface IStatedField<T extends {} = any> {
+export interface IStatedField<T extends {} | undefined = any> {
     invalid?: boolean;
     value: T;
 }

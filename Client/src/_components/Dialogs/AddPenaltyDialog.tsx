@@ -15,7 +15,7 @@ interface IProps extends React.Props<any> {
 interface IState {
     id: string;
     amount: IStatedField<number>;
-    description: IStatedField<string>;
+    description: IStatedField<string | undefined>;
     isLoad: boolean;
 }
 
@@ -26,7 +26,7 @@ class _AddPenaltyDialog extends BaseReactComp<IProps, IState> {
         this.state = {
             id: getGuid(),
             amount: { value: 0 },
-            description: { value: '' },
+            description: { value: undefined },
             isLoad: false
         }
     }
@@ -35,7 +35,7 @@ class _AddPenaltyDialog extends BaseReactComp<IProps, IState> {
         this.setState({
             id: getGuid(),
             amount: { value: 0 },
-            description: { value: '' },
+            description: { value: undefined },
             isLoad: false
         })
         this.props.onClose();
@@ -47,7 +47,7 @@ class _AddPenaltyDialog extends BaseReactComp<IProps, IState> {
             this.props.dispatch(gamerInstance.AddPenalty({
                 gamerId: this.props.userId,
                 amount: this.state.amount.value,
-                description: this.state.description.value,
+                description: this.state.description.value || '',
                 id: this.state.id,
                 onFailure: () => {
                     this.setState({ isLoad: false });

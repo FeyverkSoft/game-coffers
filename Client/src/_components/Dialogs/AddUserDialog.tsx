@@ -1,7 +1,7 @@
 import * as React from "react";
-import { BaseReactComp } from "../BaseReactComponent";
+import { BaseReactComp, IStatedField } from "../BaseReactComponent";
 import { Dialog, Form, Col1, Input, Button, DateTimeInput, MaterialSelect } from "..";
-import { Lang, GamerRankList, DLang, GamerStatusList } from "../../_services";
+import { Lang, GamerRankList, DLang, GamerStatusList, GamerRank, GamerStatus } from "../../_services";
 import { Item } from "../Input/SelectList";
 import { guildInstance } from "../../_actions";
 import { getGuid } from "../../_helpers";
@@ -13,17 +13,26 @@ interface IProps extends React.Props<any> {
     onClose: Function;
     [id: string]: any;
 }
-class _AddUserDialog extends BaseReactComp<IProps, any> {
+interface IState {
+    id: string;
+    name: IStatedField<string | undefined>;
+    rank: GamerRank;
+    status: GamerStatus;
+    dateOfBirth: IStatedField<Date>;
+    login: IStatedField<string | undefined>;
+    isLoad: boolean;
+}
+class _AddUserDialog extends BaseReactComp<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
         this.state = {
             id: getGuid(),
-            name: {},
-            rank: {},
-            status: {},
-            dateOfBirth: {},
-            login: {},
+            name: { value: undefined },
+            rank: 'Beginner',
+            status: 'Active',
+            dateOfBirth: { value: new Date() },
+            login: { value: undefined },
             isLoad: false
         }
     }
@@ -31,11 +40,11 @@ class _AddUserDialog extends BaseReactComp<IProps, any> {
     onClose = () => {
         this.setState({
             id: getGuid(),
-            name: {},
-            rank: {},
-            status: {},
-            dateOfBirth: {},
-            login: {},
+            name: { value: undefined },
+            rank: 'Beginner',
+            status: 'Active',
+            dateOfBirth: { value: new Date() },
+            login: { value: undefined },
             isLoad: false
         })
         this.props.onClose();
@@ -47,11 +56,11 @@ class _AddUserDialog extends BaseReactComp<IProps, any> {
             this.props.dispatch(guildInstance.AddUser({
                 guildId: this.props.guildId,
                 id: this.state.id,
-                name: this.state.name.value,
+                name: this.state.name.value || '',
                 rank: this.state.rank,
                 status: this.state.status,
                 dateOfBirth: this.state.dateOfBirth.value,
-                login: this.state.login.value,
+                login: this.state.login.value || '',
                 onFailure: () => {
                     this.setState({ isLoad: false });
                 },
@@ -101,7 +110,7 @@ class _AddUserDialog extends BaseReactComp<IProps, any> {
                             isRequiredMessage={Lang('IsRequired')}
                             isRequired={true}
                             path='dateOfBirth'
-                            value={dateOfBirth.value}
+                            value={dateOfBirth.value.toString()}
                         />
                     </Col1>
                     <Col1>

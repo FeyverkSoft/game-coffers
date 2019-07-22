@@ -1,5 +1,5 @@
 import * as React from "react";
-import { BaseReactComp } from "../BaseReactComponent";
+import { BaseReactComp, IStatedField } from "../BaseReactComponent";
 import { Dialog, Form, Col1, Input, Button } from "..";
 import { Lang } from "../../_services";
 import { gamerInstance } from "../../_actions";
@@ -11,21 +11,27 @@ interface IProps extends React.Props<any> {
     onClose: Function;
     [id: string]: any;
 }
-class _AddCharDialog extends BaseReactComp<IProps, any> {
+
+interface IState {
+    name: IStatedField<string | undefined>;
+    className: IStatedField<string | undefined>;
+    isLoad: boolean;
+}
+class _AddCharDialog extends BaseReactComp<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
         this.state = {
-            name: {},
-            className: {},
+            name: { value: undefined },
+            className: { value: undefined },
             isLoad: false
         }
     }
 
     onClose = () => {
         this.setState({
-            name: {},
-            className: {},
+            name: { value: undefined },
+            className: { value: undefined },
             isLoad: false
         })
         this.props.onClose();
@@ -36,8 +42,8 @@ class _AddCharDialog extends BaseReactComp<IProps, any> {
         if (this.props.userId)
             this.props.dispatch(gamerInstance.AddCharacters({
                 gamerId: this.props.userId,
-                name: this.state.name.value,
-                className: this.state.className.value,
+                name: this.state.name.value || '',
+                className: this.state.className.value || '',
                 onFailure: () => {
                     this.setState({ isLoad: false });
                 },
