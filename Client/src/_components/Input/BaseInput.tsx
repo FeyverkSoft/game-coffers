@@ -3,6 +3,7 @@ import React from "react";
 export interface IBaseInputProps extends React.Props<any> {
     timeout?: number;
     path?: string;
+    type?: 'checkbox' | 'hidden' | 'password' | 'text' | 'number' | 'email' | 'datetime' | 'date' | 'url';
     ignoreInvalidValue?: boolean;
     onChange?: Function;
     value?: string | number;

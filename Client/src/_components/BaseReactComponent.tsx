@@ -5,6 +5,11 @@ export interface BaseReactCompState {
     invalid?: Dictionary<boolean>;
 }
 
+export interface IStatedField<T extends {} = any> {
+    invalid?: boolean;
+    value: T;
+}
+
 export class BaseReactComp<TProps = {}, TState = {}> extends React.Component<TProps, TState> {
     onInputVal = <T extends {} = any>(val: T, valid: boolean, path: string): void => {
         if (path) {
@@ -13,10 +18,10 @@ export class BaseReactComp<TProps = {}, TState = {}> extends React.Component<TPr
             this.setState(obj);
         }
     }
-    
+
     onInput = <T extends {} = any>(val: T, valid: boolean, path: string): void => {
         if (path) {
-            let obj = getObject(this.state || {}, path , val);
+            let obj = getObject(this.state || {}, path, val);
             this.setState(obj);
         }
     }
@@ -51,6 +56,6 @@ export class BaseReactStateComp<TProps = {}, TState = {}> extends React.Componen
     }
 
     isInValid = (): boolean => {
-        return  (!!this.state.invalid) && Object.keys(this.state.invalid).length > 0;
+        return (!!this.state.invalid) && Object.keys(this.state.invalid).length > 0;
     }
 }

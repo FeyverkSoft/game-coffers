@@ -1,9 +1,10 @@
 import * as React from "react";
-import { BaseReactComp } from "../BaseReactComponent";
+import { BaseReactComp, IStatedField } from "../BaseReactComponent";
 import { Dialog, Form, Col1, Input, Button } from "..";
 import { Lang } from "../../_services";
 import { gamerInstance } from "../../_actions";
 import { connect } from "react-redux";
+import { getGuid } from "../../_helpers";
 
 interface IProps extends React.Props<any> {
     isDisplayed: boolean;
@@ -11,21 +12,30 @@ interface IProps extends React.Props<any> {
     onClose: Function;
     [id: string]: any;
 }
-class _AddPenaltyDialog extends BaseReactComp<IProps, any> {
+interface IState {
+    id: string;
+    amount: IStatedField<number>;
+    description: IStatedField<string>;
+    isLoad: boolean;
+}
+
+class _AddPenaltyDialog extends BaseReactComp<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
         this.state = {
-            name: {},
-            className: {},
+            id: getGuid(),
+            amount: { value: 0 },
+            description: { value: '' },
             isLoad: false
         }
     }
 
     onClose = () => {
         this.setState({
-            name: {},
-            className: {},
+            id: getGuid(),
+            amount: { value: 0 },
+            description: { value: '' },
             isLoad: false
         })
         this.props.onClose();
@@ -36,8 +46,9 @@ class _AddPenaltyDialog extends BaseReactComp<IProps, any> {
         if (this.props.userId)
             this.props.dispatch(gamerInstance.AddPenalty({
                 gamerId: this.props.userId,
-                name: this.state.name.value,
-                className: this.state.className.value,
+                amount: this.state.amount.value,
+                description: this.state.description.value,
+                id: this.state.id,
                 onFailure: () => {
                     this.setState({ isLoad: false });
                 },
@@ -49,7 +60,7 @@ class _AddPenaltyDialog extends BaseReactComp<IProps, any> {
     }
 
     render() {
-        const { name, className } = this.state;
+        const { amount, description } = this.state;
         return (
             <Dialog
                 isDisplayed={this.props.isDisplayed}
@@ -62,21 +73,22 @@ class _AddPenaltyDialog extends BaseReactComp<IProps, any> {
                 >
                     <Col1>
                         <Input
-                            label={Lang('NAME')}
+                            label={Lang('LOAN_AMOUNT')}
                             onChange={this.onInputVal}
                             isRequired={true}
-                            path='name'
-                            value={name.value}
+                            path='amount'
+                            value={amount.value}
                             isRequiredMessage={Lang('IsRequired')}
                         />
                     </Col1>
                     <Col1>
                         <Input
-                            label={Lang('CLASS_NAME')}
+                            label={Lang('LOAN_DESCRIPTION')}
                             onChange={this.onInputVal}
                             isRequired={true}
-                            path='className'
-                            value={className.value}
+                            type='number'
+                            path='description'
+                            value={description.value}
                             isRequiredMessage={Lang('IsRequired')}
                         />
                     </Col1>
