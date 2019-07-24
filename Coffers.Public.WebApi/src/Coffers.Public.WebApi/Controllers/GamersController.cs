@@ -164,7 +164,7 @@ namespace Coffers.Public.WebApi.Controllers
 
             await _gamerRepository.Save(gamer);
 
-            await _operatonFactory.Loan(gamer.GuildId, loan.Balance.Id, loan.Amount);
+            await _operationFactory.PutLoan(gamer.GuildId, loan.Id, loan.Balance.Id, loan.Amount, loan.TaxAmount);
 
             return Ok(new { });
         }
@@ -223,7 +223,7 @@ namespace Coffers.Public.WebApi.Controllers
                 throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");
 
             gamer.CancelLoan(binding.Id);
-            await _operatonFactory.CancelLoan(binding.Id);
+            await _operationFactory.CancelLoan(binding.Id);
             await _gamerRepository.Save(gamer);
 
             return Ok(new { });
