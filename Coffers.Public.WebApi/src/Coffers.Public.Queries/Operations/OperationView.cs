@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Coffers.Public.Domain.Operations
+namespace Coffers.Public.Queries.Operations
 {
-    public interface IOperatioRepository
+    public sealed class OperationView
     {
     }
 }

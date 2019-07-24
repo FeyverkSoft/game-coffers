@@ -16,7 +16,7 @@ namespace Coffers.Public.Domain.Operations
         /// <summary>
         /// Дата создания записи
         /// </summary>
-        public DateTime CreateDate { get; set; }
+        public DateTime CreateDate { get; private set; }
 
         /// <summary>
         /// Дата проведения операции
@@ -47,6 +47,16 @@ namespace Coffers.Public.Domain.Operations
         /// Описание операции
         /// </summary>
         public String Description { get; set; }
+
+        /// <summary>
+        /// Основание для проведения операции
+        /// </summary>
+        public Guid? DocumentId { get; set; }
+
+        public Operation()
+        {
+            CreateDate = DateTime.UtcNow;
+        }
 
     }
 }

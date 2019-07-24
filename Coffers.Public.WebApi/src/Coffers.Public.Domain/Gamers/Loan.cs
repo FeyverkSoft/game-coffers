@@ -19,7 +19,7 @@ namespace Coffers.Public.Domain.Gamers
         /// </summary>
         public Decimal Amount { get; internal set; }
 
-        public Account Balance { get; internal set; }
+        public Account Account { get; internal set; }
 
         public Guid TariffId { get; internal set; }
 
@@ -67,7 +67,7 @@ namespace Coffers.Public.Domain.Gamers
             UpdateDate = DateTime.UtcNow;
             LoanStatus = LoanStatus.Active;
             Id = id;
-            Balance = new Account();
+            Account = new Account();
             TariffId = tariffId;
             Amount = amount;
             TaxAmount = taxAmount;

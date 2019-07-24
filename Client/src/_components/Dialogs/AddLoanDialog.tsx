@@ -98,7 +98,7 @@ class _AddLoanDialog extends BaseReactComp<IProps, IState> {
                             isRequired={true}
                             path='borrowDate'
                             //type='date'
-                            value={borrowDate.value.toISOString()}
+                            value={borrowDate.value.toISOString ? borrowDate.value.toISOString() : borrowDate.value.toString()}
                             isRequiredMessage={Lang('IsRequired')}
                         />
                     </Col1>
@@ -109,7 +109,7 @@ class _AddLoanDialog extends BaseReactComp<IProps, IState> {
                             isRequired={true}
                             path='expiredDate'
                             //type='date'
-                            value={expiredDate.value.toISOString()}
+                            value={expiredDate.value.toISOString ? expiredDate.value.toISOString() : expiredDate.value.toString()}
                             isRequiredMessage={Lang('IsRequired')}
                         />
                     </Col1>

@@ -12,6 +12,8 @@ import { IHolded } from '../core';
 import { AddUserDialog } from '../_components/Dialogs/AddUserDialog';
 import { AddCharDialog } from '../_components/Dialogs/AddCharDialog';
 import { AddLoanDialog } from '../_components/Dialogs/AddLoanDialog';
+import { ShowLoanDialog } from '../_components/Dialogs/LoanDialog';
+import { ShowPenaltyDialog } from '../_components/Dialogs/PenaltyDialog';
 import { AddPenaltyDialog } from '../_components/Dialogs/AddPenaltyDialog';
 
 interface IMainProps {
@@ -44,6 +46,14 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
             addPenalty: {
                 isDisplayed: false,
                 userId: ''
+            },
+            showLoanInfo: {
+                isDisplayed: false,
+                loanId: ''
+            },
+            showPenaltyInfo: {
+                isDisplayed: false,
+                penaltyId: ''
             },
         };
     }
@@ -92,6 +102,13 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
             }));
     }
 
+    showLoanInfo = (loanId: string, gamerid: string) => {
+        this.setState({ showLoanInfo: { isDisplayed: true, loanId: loanId, gamerid } })
+    }
+
+    showPenaltyInfo = (penaltyId: string, gamerid: string) => {
+        this.setState({ showPenaltyInfo: { isDisplayed: true, penaltyId: penaltyId, gamerid } })
+    }
 
     charactersGrid = () => {
         const { gamers } = this.props;
@@ -119,6 +136,8 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                         onStatusChange={this.onSetStatus}
                         onAddLoan={this.onAddLoan}
                         onAddPenalty={this.onAddPenalty}
+                        showLoanInfo={this.showLoanInfo}
+                        showPenaltyInfo={this.showPenaltyInfo}
                     />;
                 })
             }
@@ -180,6 +199,18 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                     userId={this.state.addPenalty.userId}
                     isDisplayed={this.state.addPenalty.isDisplayed}
                     onClose={() => this.setState({ addPenalty: { isDisplayed: false } })}
+                />
+                <ShowLoanDialog
+                    loanId={this.state.showLoanInfo.loanId}
+                    gamerid={this.state.showLoanInfo.gamerid}
+                    isDisplayed={this.state.showLoanInfo.isDisplayed}
+                    onClose={() => this.setState({ showLoanInfo: { isDisplayed: false } })}
+                />
+                <ShowPenaltyDialog
+                    penaltyId={this.state.showPenaltyInfo.penaltyId}
+                    gamerid={this.state.showPenaltyInfo.gamerid}
+                    isDisplayed={this.state.showPenaltyInfo.isDisplayed}
+                    onClose={() => this.setState({ showPenaltyInfo: { isDisplayed: false } })}
                 />
             </Page>
         );

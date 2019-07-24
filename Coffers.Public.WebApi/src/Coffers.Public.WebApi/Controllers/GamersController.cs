@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Coffers.Public.Domain.Gamers;
+using Coffers.Public.Domain.Guilds;
 using Coffers.Public.Domain.Operations;
 using Coffers.Public.Queries.Gamers;
 using Coffers.Public.WebApi.Authorization;
@@ -21,16 +23,20 @@ namespace Coffers.Public.WebApi.Controllers
     public class GamersController : ControllerBase
     {
         private readonly IGamerRepository _gamerRepository;
+        private readonly IGuildRepository _guildRepository;
         private readonly IQueryProcessor _queryProcessor;
         private readonly LoanFactory _loanFactory;
-        private readonly OperationService _operationFactory;
+        private readonly OperationService _operationService;
+
         public GamersController(IGamerRepository gamerRepository, IQueryProcessor queryProcessor,
-            LoanFactory loanFactory, OperationService operationFactory)
+            IGuildRepository guildRepository,
+            LoanFactory loanFactory, OperationService operationService)
         {
             _gamerRepository = gamerRepository;
+            _guildRepository = guildRepository;
             _queryProcessor = queryProcessor;
             _loanFactory = loanFactory;
-            _operationFactory = operationFactory;
+            _operationService = operationService;
         }
 
         /// <summary>
@@ -58,7 +64,7 @@ namespace Coffers.Public.WebApi.Controllers
         {
             var gamer = await _gamerRepository.Get(gamerId, cancellationToken);
 
-            if (!HttpContext.IsAdmin() && gamer.GuildId != HttpContext.GuildId())
+            if (gamer == null || !HttpContext.IsAdmin() && gamer.GuildId != HttpContext.GuildId())
                 throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");
 
             if (gamer == null)
@@ -83,7 +89,7 @@ namespace Coffers.Public.WebApi.Controllers
         {
             var gamer = await _gamerRepository.Get(gamerId, cancellationToken);
 
-            if (!HttpContext.IsAdmin() && gamer.GuildId != HttpContext.GuildId())
+            if (gamer == null || !HttpContext.IsAdmin() && gamer.GuildId != HttpContext.GuildId())
                 throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");
 
             if (gamer == null)
@@ -108,7 +114,7 @@ namespace Coffers.Public.WebApi.Controllers
         {
             var gamer = await _gamerRepository.Get(gamerId, cancellationToken);
 
-            if (!HttpContext.IsAdmin() && gamer.GuildId != HttpContext.GuildId())
+            if (gamer == null || !HttpContext.IsAdmin() && gamer.GuildId != HttpContext.GuildId())
                 throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");
 
             if (gamer == null)
@@ -131,7 +137,7 @@ namespace Coffers.Public.WebApi.Controllers
         {
             var gamer = await _gamerRepository.Get(gamerId, cancellationToken);
 
-            if (!HttpContext.IsAdmin() && gamer.GuildId != HttpContext.GuildId())
+            if (gamer == null || !HttpContext.IsAdmin() && gamer.GuildId != HttpContext.GuildId())
                 throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");
 
             if (gamer == null)
@@ -154,17 +160,24 @@ namespace Coffers.Public.WebApi.Controllers
         {
             var gamer = await _gamerRepository.Get(gamerId, cancellationToken);
 
-            if (!HttpContext.IsAdmin() && gamer.GuildId != HttpContext.GuildId())
+            if (gamer == null || !HttpContext.IsAdmin() && gamer.GuildId != HttpContext.GuildId())
                 throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");
+
+            if (gamer.Loans?.Any(_ => _.Id == binding.Id) == true)
+                return Ok(new { });
+
+            var guild = await _guildRepository.Get(gamer.GuildId, cancellationToken);
 
             var loan = await _loanFactory.Build(binding.Id, gamer.GuildId, gamer.Rank, binding.Amount,
                 binding.Description, binding.BorrowDate, binding.ExpiredDate);
 
             gamer.AddLoan(loan);
 
-            await _gamerRepository.Save(gamer);
-
-            await _operationFactory.PutLoan(gamer.GuildId, loan.Id, loan.Balance.Id, loan.Amount, loan.TaxAmount);
+            await _gamerRepository.Save(gamer).ContinueWith(async t =>
+            {
+                t.Wait(cancellationToken);
+                await _operationService.PutLoan(gamer.GuildId, loan.Account.Id, guild.GuildAccount.Id, loan.Amount, loan.TaxAmount);
+            }, cancellationToken);
 
             return Ok(new { });
         }
@@ -179,8 +192,10 @@ namespace Coffers.Public.WebApi.Controllers
         {
             var gamer = await _gamerRepository.Get(gamerId, cancellationToken);
 
-            if (!HttpContext.IsAdmin() && gamer.GuildId != HttpContext.GuildId())
+            if (gamer == null || !HttpContext.IsAdmin() && gamer.GuildId != HttpContext.GuildId())
                 throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");
+            if (gamer.Penalties?.Any(_ => _.Id == binding.Id) == true)
+                return Ok(new { });
 
             gamer.AddPenalty(binding.Id, binding.Amount, binding.Description);
 
@@ -199,8 +214,11 @@ namespace Coffers.Public.WebApi.Controllers
         {
             var gamer = await _gamerRepository.Get(gamerId, cancellationToken);
 
-            if (!HttpContext.IsAdmin() && gamer.GuildId != HttpContext.GuildId())
+            if (gamer == null || !HttpContext.IsAdmin() && gamer.GuildId != HttpContext.GuildId())
                 throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");
+
+            if (gamer.Penalties?.Any(_ => _.Id == binding.Id) == false)
+                throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.PenaltyNotFound, "");
 
             gamer.CancelPenalty(binding.Id);
 
@@ -211,6 +229,7 @@ namespace Coffers.Public.WebApi.Controllers
 
         /// <summary>
         /// Отменить ещё не оплаченный  займ
+        /// + Красное сторно займа
         /// </summary>
         [HttpDelete("{gamerId}/loans/{penaltyId}")]
         [PermissionRequired("admin", "officer", "leader")]
@@ -219,12 +238,17 @@ namespace Coffers.Public.WebApi.Controllers
         {
             var gamer = await _gamerRepository.Get(gamerId, cancellationToken);
 
-            if (!HttpContext.IsAdmin() && gamer.GuildId != HttpContext.GuildId())
+            if (gamer == null || !HttpContext.IsAdmin() && gamer.GuildId != HttpContext.GuildId())
                 throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");
 
             gamer.CancelLoan(binding.Id);
-            await _operationFactory.CancelLoan(binding.Id);
-            await _gamerRepository.Save(gamer);
+
+            await _gamerRepository.Save(gamer)
+                .ContinueWith(async c =>
+                {
+                    c.Wait(cancellationToken);
+                    await _operationService.CancelLoan(binding.Id);
+                }, cancellationToken);
 
             return Ok(new { });
         }

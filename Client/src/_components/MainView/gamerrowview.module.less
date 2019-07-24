@@ -153,6 +153,7 @@
         .flex();
         flex-direction: column;
         flex          : 1 1;
+        padding-right : .25rem;
 
         .title {
             text-transform: lowercase;
@@ -168,6 +169,11 @@
             padding-left  : .25rem;
 
             .penalty {
+                cursor: pointer;
+                &:hover {
+                    color: @defaultColor;
+                }
+
                 &.active {
                     color: @importantColor;
                 }
@@ -189,6 +195,7 @@
         .flex();
         flex-direction: column;
         flex          : 1 1;
+        padding-right : .25rem;
 
         .title {
             text-transform: lowercase;
@@ -203,6 +210,12 @@
             padding-left  : .25rem;
 
             .loan {
+                cursor: pointer;
+
+                &:hover {
+                    color: @defaultColor;
+                }
+
                 &.active {
                     font-weight: 400;
                 }

@@ -4,9 +4,11 @@ using Coffers.DB.Migrations;
 using Coffers.Public.Domain.Authorization;
 using Coffers.Public.Domain.Gamers;
 using Coffers.Public.Domain.Guilds;
+using Coffers.Public.Domain.Operations;
 using Coffers.Public.Infrastructure.Authorization;
 using Coffers.Public.Infrastructure.Gamers;
 using Coffers.Public.Infrastructure.Guilds;
+using Coffers.Public.Infrastructure.Operations;
 using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Extensions;
 using Coffers.Public.WebApi.Filters;
@@ -88,16 +90,27 @@ namespace Coffers.Public.WebApi
             {
                 options.UseMySQL(Configuration.GetConnectionString("Coffers"));
             });
+            services.AddDbContext<OperationsDbContext>(options =>
+            {
+                options.UseMySQL(Configuration.GetConnectionString("Coffers"));
+            });
 
-            services.AddScoped<LoanFactory>();
+            
             services.AddScoped<IGuildRepository, GuildRepository>();
             services.AddScoped<IAuthorizationRepository, AuthorizationRepository>();
             services.AddScoped<IGamerRepository, GamerRepository>();
+            services.AddScoped<IOperationsRepository, OperationsRepository>();
+
+
+            services.AddScoped<LoanFactory>();
+            services.AddScoped<OperationService>();
+
 
             services.RegQueryProcessor(registry =>
             {
                 registry.Register<GuildsQueryHandler>();
                 registry.Register<GamerQueryHandler>();
+                registry.Register<OperationsQueryHandler>();
             });
 
 

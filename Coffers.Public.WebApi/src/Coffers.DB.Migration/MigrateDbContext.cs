@@ -364,11 +364,11 @@ namespace Coffers.DB.Migrations
                     .HasConversion<String>()
                     .HasMaxLength(32);
 
-                b.HasOne(o => o.FromAccount)
+                b.HasOne(g => g.FromAccount)
                     .WithMany(_ => _.FromOperations)
                     .HasPrincipalKey(_ => _.Id);
 
-                b.HasOne(o => o.ToAccount)
+                b.HasOne(g => g.ToAccount)
                     .WithMany(_ => _.ToOperations)
                     .HasPrincipalKey(_ => _.Id);
             });

@@ -21,7 +21,7 @@ namespace Coffers.Public.Domain.Gamers
         public async Task<Loan> Build(Guid id, Guid guildId, GamerRank rank, Decimal amount,
             String description, DateTime borrowDate, DateTime expiredDate)
         {
-            var guild = await _guildRepository.Get(guildId, CancellationToken.None, false);
+            var guild = await _guildRepository.Get(guildId, CancellationToken.None, true);
             Tariff t = null;
             switch (rank)
             {

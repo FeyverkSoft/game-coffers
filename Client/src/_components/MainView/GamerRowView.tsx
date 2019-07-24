@@ -15,6 +15,8 @@ interface IGamerRowViewProps extends React.Props<any> {
     onDeleteChar(userId: string, char: string): void;
     onRankChange(userId: string, rank: GamerRank): void;
     onStatusChange(userId: string, status: GamerStatus): void;
+    showPenaltyInfo(penaltyId: string, gamerId: string): void;
+    showLoanInfo(loanId: string, gamerId: string): void;
     [id: string]: any;
 }
 /// Плашка с информацией о пользователе
@@ -89,6 +91,7 @@ export class GamerRowView extends BaseReactComp<IGamerRowViewProps> {
                                 <div key={p.id}
                                     title={p.description}
                                     className={`${style['penalty']} ${p.penaltyStatus.toLowerCase()}`}
+                                    onClick={() => this.props.showPenaltyInfo(p.id, gamer.id)}
                                 >
                                     {p.amount}
                                 </div>
@@ -121,7 +124,8 @@ export class GamerRowView extends BaseReactComp<IGamerRowViewProps> {
                             return (
                                 <div key={l.id}
                                     className={`${style['loan']} ${style[l.loanStatus.toLowerCase()]}`}
-                                    title={l.expiredDate.toString()}
+                                    title={`${l.expiredDate.toString()} ${l.description}`}
+                                    onClick={() => this.props.showLoanInfo(l.id, gamer.id)}
                                 >
                                     {l.amount}
                                 </div>

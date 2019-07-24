@@ -29,7 +29,7 @@ namespace Coffers.Public.Infrastructure.Guilds
                     .Include(g => g.Tariff).ThenInclude(t => t.LeaderTariff)
                     .FirstOrDefaultAsync(guild => guild.Id == id, cancellationToken);
 
-            return await _context.Guilds.Include(x => x.Gamers)
+            return await _context.Guilds.Include(x => x.GuildAccount)
                 .FirstOrDefaultAsync(guild => guild.Id == id, cancellationToken);
         }
 
