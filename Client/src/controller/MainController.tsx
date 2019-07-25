@@ -103,11 +103,11 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
     }
 
     showLoanInfo = (loanId: string, gamerid: string) => {
-        this.setState({ showLoanInfo: { isDisplayed: true, loanId: loanId, gamerid } })
+        this.setState({ showLoanInfo: { isDisplayed: true, loanId: loanId, gamerId: gamerid } })
     }
 
     showPenaltyInfo = (penaltyId: string, gamerid: string) => {
-        this.setState({ showPenaltyInfo: { isDisplayed: true, penaltyId: penaltyId, gamerid } })
+        this.setState({ showPenaltyInfo: { isDisplayed: true, penaltyId: penaltyId, gamerId: gamerid } })
     }
 
     charactersGrid = () => {
@@ -202,13 +202,13 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                 />
                 <ShowLoanDialog
                     loanId={this.state.showLoanInfo.loanId}
-                    gamerid={this.state.showLoanInfo.gamerid}
+                    gamerId={this.state.showLoanInfo.gamerId}
                     isDisplayed={this.state.showLoanInfo.isDisplayed}
                     onClose={() => this.setState({ showLoanInfo: { isDisplayed: false } })}
                 />
                 <ShowPenaltyDialog
                     penaltyId={this.state.showPenaltyInfo.penaltyId}
-                    gamerid={this.state.showPenaltyInfo.gamerid}
+                    gamerId={this.state.showPenaltyInfo.gamerId}
                     isDisplayed={this.state.showPenaltyInfo.isDisplayed}
                     onClose={() => this.setState({ showPenaltyInfo: { isDisplayed: false } })}
                 />

@@ -73,7 +73,7 @@ class _AddLoanDialog extends BaseReactComp<IProps, IState> {
         return (
             <Dialog
                 isDisplayed={this.props.isDisplayed}
-                title={Lang('NEW_CHAR_MODAL')}
+                title={Lang('NEW_LOAN_MODAL')}
                 onCancel={() => this.onClose()}
             >
                 <Form

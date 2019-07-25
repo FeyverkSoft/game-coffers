@@ -80,6 +80,10 @@ const locString: any = {
         USER_TITLE: "Вы",
         USER_TAX_AMOUNT: 'Сумма налога с учётом скидки',
         USER_LOAN_AMOUNT: 'Сумма активных займов',
+        NEW_LOAN_MODAL: 'Новый займ',
+        NEW_PENALTY_MODAL: 'Новый штраф',
+        SHOW_PENALTY_MODAL: 'Информация по штрафу',
+        SHOW_LOAN_MODAL: 'Информация по займу',
         RECRUITMENTSTATUS: {
             Open: 'Открыт',
             Close: 'Закрыт',

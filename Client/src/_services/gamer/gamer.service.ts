@@ -170,7 +170,7 @@ export class gamerService {
                 if (data && data.type || data.traceId) {
                     return errorHandle(data);
                 }
-                return data.map((g: IGamersListView) => new GamersListView(
+                return data.map((g: any) => new GamersListView(
                     g.id,
                     g.characters,
                     Number(g.balance),

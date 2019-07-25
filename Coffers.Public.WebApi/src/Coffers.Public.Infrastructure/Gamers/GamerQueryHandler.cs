@@ -89,6 +89,7 @@ namespace Coffers.Public.Infrastructure.Gamers
                     {
                         Amount = l.Amount,
                         Date = l.CreateDate,
+                        Description = l.Description,
                         LoanStatus = l.LoanStatus,
                         ExpiredDate = l.ExpiredDate,
                         Id = l.Id

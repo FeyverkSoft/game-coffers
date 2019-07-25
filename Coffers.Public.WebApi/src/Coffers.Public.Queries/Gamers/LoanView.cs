@@ -27,6 +27,11 @@ namespace Coffers.Public.Queries.Gamers
         /// </summary>
         public DateTime Date { get; set; }
 
+        /// <summary>
+        /// Описание на что будет потрачен займ
+        /// </summary>
+        public String Description { get; set; }
+
         [JsonIgnore]
         private LoanStatus _loanStatus;
         /// <summary>

@@ -144,6 +144,11 @@
             Дата когда был взят займ
             </summary>
         </member>
+        <member name="P:Coffers.Public.Queries.Gamers.LoanView.Description">
+            <summary>
+            Описание на что будет потрачен займ
+            </summary>
+        </member>
         <member name="P:Coffers.Public.Queries.Gamers.LoanView.LoanStatus">
             <summary>
             Статус займа
@@ -313,6 +318,11 @@
             <summary>
             Налог с 1го персонажа.
             Список. 1 персонаж, 2 персонажа, 3 итд.
+            </summary>
+        </member>
+        <member name="T:Coffers.Public.Queries.Operations.GetOperationsQuery">
+            <summary>
+            запрос на получение списка операций по документу
             </summary>
         </member>
     </members>

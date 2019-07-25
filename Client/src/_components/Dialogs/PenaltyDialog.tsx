@@ -36,10 +36,10 @@ class _PenaltyDialog extends BaseReactComp<IProps> {
         return (
             <Dialog
                 isDisplayed={this.props.isDisplayed}
-                title={Lang('NEW_CHAR_MODAL')}
+                title={Lang('SHOW_PENALTY_MODAL')}
                 onCancel={() => this.onClose()}
             >
-               
+
             </Dialog>
         );
     }
@@ -54,8 +54,8 @@ interface _IProps extends React.Props<any> {
 const connected_PenaltyDialog = connect<{}, {}, _IProps, IStore>((store, props): IProps => {
     return {
         isDisplayed: props.isDisplayed,
-        onClose:props.onClose,
-        penalty:store.gamers.gamersList[props.gamerId].penalties[props.penaltyId]
+        onClose: props.onClose,
+        penalty: props.isDisplayed ? store.gamers.gamersList[props.gamerId].penalties[props.penaltyId] : {} as IPenaltyView
     };
 })(_PenaltyDialog);
 
