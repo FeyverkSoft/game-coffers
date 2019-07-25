@@ -293,9 +293,9 @@ export class GamerActions {
                             props.onFailure(ex);
                     });
         }
-        function request(gamerId: string) { return { type: GamerActionsType.PROC_DELETE_CHARS, gamerId } }
-        function success(gamerId: string, loanId: string) { return { type: GamerActionsType.SUCC_DELETE_CHARS, gamerId, loanId } }
-        function failure(gamerId: string) { return { type: GamerActionsType.FAILED_DELETE_CHARS, gamerId } }
+        function request(gamerId: string) { return { type: GamerActionsType.PROC_CANCEL_GAMER_LOAN, gamerId } }
+        function success(gamerId: string, loanId: string) { return { type: GamerActionsType.SUCC_CANCEL_GAMER_LOAN, gamerId, loanId } }
+        function failure(gamerId: string) { return { type: GamerActionsType.FAILED_CANCEL_GAMER_LOAN, gamerId } }
     }
 
     /**
@@ -304,7 +304,7 @@ export class GamerActions {
     CancelPenalty(props: CancelPenaltyProps): Function {
         return (dispatch: Function) => {
             dispatch(request(props.gamerId));
-            gamerService.DeleteChar(props.gamerId, props.id)
+            gamerService.CancelPenalty(props.gamerId, props.id)
                 .then(
                     data => {
                         dispatch(success(props.gamerId, props.id));
@@ -319,9 +319,9 @@ export class GamerActions {
                             props.onFailure(ex);
                     });
         }
-        function request(gamerId: string) { return { type: GamerActionsType.PROC_DELETE_CHARS, gamerId } }
-        function success(gamerId: string, penaltyId: string) { return { type: GamerActionsType.SUCC_DELETE_CHARS, gamerId, penaltyId } }
-        function failure(gamerId: string) { return { type: GamerActionsType.FAILED_DELETE_CHARS, gamerId } }
+        function request(gamerId: string) { return { type: GamerActionsType.PROC_CANCEL_GAMER_PENALTY, gamerId } }
+        function success(gamerId: string, penaltyId: string) { return { type: GamerActionsType.SUCC_CANCEL_GAMER_PENALTY, gamerId, penaltyId } }
+        function failure(gamerId: string) { return { type: GamerActionsType.FAILED_CANCEL_GAMER_PENALTY, gamerId } }
     }
 }
 

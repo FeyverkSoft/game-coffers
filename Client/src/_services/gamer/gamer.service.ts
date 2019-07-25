@@ -251,9 +251,8 @@ export class gamerService {
                 'accept': 'application/json',
                 'Authorization': 'Bearer ' + session.sessionId
             },
-            body: JSON.stringify({ id })
         };
-        return await fetch(Config.BuildUrl(`/Gamers/${gamerId}/penalties`), requestOptions)
+        return await fetch(Config.BuildUrl(`/Gamers/${gamerId}/penalties/${id}`), requestOptions)
             .then<BaseResponse>(getResponse)
             .then(data => {
                 if (data && data.type || data.traceId) {
@@ -282,9 +281,8 @@ export class gamerService {
                 'accept': 'application/json',
                 'Authorization': 'Bearer ' + session.sessionId
             },
-            body: JSON.stringify({ id })
         };
-        return await fetch(Config.BuildUrl(`/Gamers/${gamerId}/loans`), requestOptions)
+        return await fetch(Config.BuildUrl(`/Gamers/${gamerId}/loans/${id}`), requestOptions)
             .then<BaseResponse>(getResponse)
             .then(data => {
                 if (data && data.type || data.traceId) {

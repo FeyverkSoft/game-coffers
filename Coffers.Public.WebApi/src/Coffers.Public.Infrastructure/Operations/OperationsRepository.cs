@@ -52,7 +52,7 @@ namespace Coffers.Public.Infrastructure.Operations
             return await _context.Operations
                 .Include(_ => _.FromAccount)
                 .Include(_ => _.ToAccount)
-                .Where(_ => _.Id == id && _.Type == type)
+                .Where(_ => _.DocumentId == id && _.Type == type)
                 .ToListAsync();
         }
     }

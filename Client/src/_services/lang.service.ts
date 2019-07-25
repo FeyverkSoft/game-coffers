@@ -28,7 +28,7 @@ const locString: any = {
         MAIN_PAGE_ADV_INFO_SALES: "Продано со склада гильдии:",
         MAIN_PAGE_ADV_INFO_SPENT: "Потрачено на нужды гильдии:",
         MAIN_PAGE_CHARACTERS_GRID: "Список персонажей",
-        MAIN_PAGE_GUILD_BALANCE: 'Баланс',
+        MAIN_PAGE_GUILD_BALANCE: 'Баланс ги',
         MAIN_PAGE_GUILD_LOANS: 'Активных займов на: ',
         NEW_CHAR_MODAL: 'Добавление нового чара',
         NAME: "Имя",
@@ -88,7 +88,23 @@ const locString: any = {
             Open: 'Открыт',
             Close: 'Закрыт',
             Internal: 'По приглашению'
-        }
+        },
+        MODAL_LOAN_AMOUNT: 'Сумма',
+        MODAL_LOAN_DATE: 'Дата',
+        MODAL_LOAN_EXPIREDDATE: 'Дата истечения',
+        MODAL_LOAN_DESCRIPTION: 'Описание',
+        MODAL_LOAN_STATUS: 'Статус',
+        MODAL_PENALTY_AMOUNT: 'Сумма',
+        MODAL_PENALTY_DATE: 'Дата',
+        MODAL_PENALTY_STATUS: 'Статус',
+        MODAL_PENALTY_DESCRIPTION: 'Описание',
+        ADD: 'Добавить',
+        PENALTY_AMOUNT: 'Сумма штрафа',
+        PENALTY_DESCRIPTION: 'Описание',
+        LOAN_AMOUNT: 'Сумма займа',
+        LOAN_BORROWDATE: 'Дата',
+        LOAN_EXPIREDDATE: 'Дата стухания',
+        LOAN_DESCRIPTION: 'Описание',
     }
 };
 

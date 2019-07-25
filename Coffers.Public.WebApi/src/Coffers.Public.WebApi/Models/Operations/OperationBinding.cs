@@ -6,12 +6,7 @@ namespace Coffers.Public.WebApi.Models.Operations
 {
     public class OperationBinding
     {
-        /// <summary>
-        /// User id
-        /// </summary>
-        public Guid UserId { get; set; }
-
-        public Guid OperationId { get; set; }
+        public Guid DocumentId { get; set; }
 
         public OperationType Type { get; set; }
     }
@@ -19,10 +14,8 @@ namespace Coffers.Public.WebApi.Models.Operations
     {
         public OperationBindingValidator()
         {
-            RuleFor(r => r.UserId)
-                .NotEmpty();
 
-            RuleFor(r => r.OperationId)
+            RuleFor(r => r.DocumentId)
                 .NotEmpty();
         }
     }

@@ -4,7 +4,7 @@ import { Dialog, Form, Col1, Input, Button } from "..";
 import { Lang } from "../../_services";
 import { gamerInstance } from "../../_actions";
 import { connect } from "react-redux";
-import { getGuid } from "../../_helpers";
+import { getGuid, formatDateTime } from "../../_helpers";
 
 interface IProps extends React.Props<any> {
     isDisplayed: boolean;
@@ -98,7 +98,7 @@ class _AddLoanDialog extends BaseReactComp<IProps, IState> {
                             isRequired={true}
                             path='borrowDate'
                             //type='date'
-                            value={borrowDate.value.toISOString ? borrowDate.value.toISOString() : borrowDate.value.toString()}
+                            value={formatDateTime(borrowDate.value, 'd')}
                             isRequiredMessage={Lang('IsRequired')}
                         />
                     </Col1>
@@ -109,7 +109,7 @@ class _AddLoanDialog extends BaseReactComp<IProps, IState> {
                             isRequired={true}
                             path='expiredDate'
                             //type='date'
-                            value={expiredDate.value.toISOString ? expiredDate.value.toISOString() : expiredDate.value.toString()}
+                            value={formatDateTime(expiredDate.value, 'd')}
                             isRequiredMessage={Lang('IsRequired')}
                         />
                     </Col1>

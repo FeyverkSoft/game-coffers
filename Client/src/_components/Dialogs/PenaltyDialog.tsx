@@ -1,15 +1,17 @@
 
 import * as React from "react";
 import { BaseReactComp } from "../BaseReactComponent";
-import { Dialog, Form, Col1, Input, Button } from "..";
-import { Lang, IPenaltyView } from "../../_services";
+import { Dialog, Form, Col1, Input, Button, Grid, NamedValue } from "..";
+import { Lang, IPenaltyView, DLang, IOperationView } from "../../_services";
 import { gamerInstance } from "../../_actions";
 import { connect } from "react-redux";
-import { getGuid, IStore } from "../../_helpers";
+import { getGuid, IStore, formatDateTime, IF } from "../../_helpers";
 
 interface IProps extends React.Props<any> {
     isDisplayed: boolean;
     penalty: IPenaltyView;
+    gamerId: string;
+    operations: Array<IOperationView>;
     onClose: Function;
     [id: string]: any;
 }
@@ -32,14 +34,63 @@ class _PenaltyDialog extends BaseReactComp<IProps> {
         this.props.onClose();
     }
 
+    onCancel = () => {
+        this.props.dispatch(gamerInstance.CancelPenalty({
+            id: this.props.penalty.id,
+            gamerId: this.props.gamerId,
+            onSuccess: () => this.onClose()
+        }));
+    }
+
+    footer = () => {
+        return (
+            <IF value={this.props.penalty.penaltyStatus == 'Active'}>
+                <Button
+                    type='important'
+                    onClick={() => this.onCancel()}
+                >
+                    {Lang('CANCEL')}
+                </Button>
+            </IF>
+        );
+    }
+
     render() {
+        const { penalty } = this.props;
         return (
             <Dialog
                 isDisplayed={this.props.isDisplayed}
                 title={Lang('SHOW_PENALTY_MODAL')}
                 onCancel={() => this.onClose()}
+                footer={this.footer()}
             >
-
+                <Grid
+                    direction="vertical"
+                >
+                    <Col1>
+                        <NamedValue name={Lang("MODAL_PENALTY_AMOUNT")}>
+                            {penalty.amount}
+                        </NamedValue>
+                    </Col1>
+                    <Col1>
+                        <NamedValue name={Lang("MODAL_PENALTY_DATE")}>
+                            {formatDateTime(penalty.date, 'd')}
+                        </NamedValue>
+                    </Col1>
+                    <Col1>
+                        <NamedValue name={Lang("MODAL_PENALTY_DESCRIPTION")}>
+                            {penalty.description}
+                        </NamedValue>
+                    </Col1>
+                    <Col1>
+                        <NamedValue name={Lang("MODAL_PENALTY_STATUS")}>
+                            {DLang('PENALTY_STATUS', penalty.penaltyStatus)}
+                        </NamedValue>
+                    </Col1>
+                    <Col1>
+                        {this.props.operations.map(_ => <div>{_.amount}</div>)}
+                    </Col1>
+                </Grid>
             </Dialog>
         );
     }
@@ -48,12 +99,16 @@ class _PenaltyDialog extends BaseReactComp<IProps> {
 interface _IProps extends React.Props<any> {
     isDisplayed: boolean;
     penaltyId: string;
+    gamerId: string;
     onClose: Function;
     [id: string]: any;
 }
 const connected_PenaltyDialog = connect<{}, {}, _IProps, IStore>((store, props): IProps => {
+    const op = store.operations.operations[props.penaltyId];
     return {
         isDisplayed: props.isDisplayed,
+        gamerId: props.gamerId,
+        operations: op != undefined ? op.items : [],
         onClose: props.onClose,
         penalty: props.isDisplayed ? store.gamers.gamersList[props.gamerId].penalties[props.penaltyId] : {} as IPenaltyView
     };

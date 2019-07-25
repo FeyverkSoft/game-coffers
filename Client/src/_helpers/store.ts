@@ -7,12 +7,14 @@ import logger from 'redux-logger';
 import { IGuildStore } from '../_reducers/guild/guild.reducer';
 import { IGamerStore } from '../_reducers/gamer/gamer.reducer';
 import { SessionInfo } from '../_services';
+import { IOperationsStore } from '../_reducers/operation/operations.reducer';
 
 export interface IStore extends Dictionary<any> {
     alerts: AlertState;
     gamers: IGamerStore;
     guild: IGuildStore;
     session: SessionInfo;
+    operations: IOperationsStore;
 }
 
 export const store = createStore<any, any, any, any>(

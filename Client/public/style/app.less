@@ -41,15 +41,16 @@ body {
     }
 
     .wrapper>.footer {
+        .flex();
         width: @width-100pr;
         min-height: 3em;
         color: @mainFontColor;
         contain: layout;
-        .flex();
         flex: 0 0 auto;
         background: @footerColor;
         align-items: center;
         justify-content: space-between;
+        z-index: -1;
 
         .copiright {
             .flex();

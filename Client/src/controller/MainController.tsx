@@ -6,7 +6,7 @@ import {
     Col2, TariffView, UserView, MainView, BalanceView, GamerRowView, Dialog, Button, Form, Col1, Input, Private
 } from '../_components';
 
-import { guildInstance, gamerInstance } from '../_actions';
+import { guildInstance, gamerInstance, operationsInstance } from '../_actions';
 import { IStore } from '../_helpers';
 import { IHolded } from '../core';
 import { AddUserDialog } from '../_components/Dialogs/AddUserDialog';
@@ -103,11 +103,21 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
     }
 
     showLoanInfo = (loanId: string, gamerid: string) => {
-        this.setState({ showLoanInfo: { isDisplayed: true, loanId: loanId, gamerId: gamerid } })
+        this.setState({ showLoanInfo: { isDisplayed: true, loanId: loanId, gamerId: gamerid } });
+        if (loanId)
+            this.props.dispatch(operationsInstance.GetOperations({
+                documentId: loanId,
+                type: 'Loan'
+            }));
     }
 
     showPenaltyInfo = (penaltyId: string, gamerid: string) => {
-        this.setState({ showPenaltyInfo: { isDisplayed: true, penaltyId: penaltyId, gamerId: gamerid } })
+        this.setState({ showPenaltyInfo: { isDisplayed: true, penaltyId: penaltyId, gamerId: gamerid } });
+        if (penaltyId)
+            this.props.dispatch(operationsInstance.GetOperations({
+                documentId: penaltyId,
+                type: 'Penalty'
+            }));
     }
 
     charactersGrid = () => {

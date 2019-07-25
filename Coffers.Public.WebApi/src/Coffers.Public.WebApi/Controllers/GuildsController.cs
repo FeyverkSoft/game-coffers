@@ -42,7 +42,7 @@ namespace Coffers.Public.WebApi.Controllers
         [PermissionRequired("admin")]
         [HttpPost]
         [ProducesResponseType(201)]
-        public async Task<IActionResult> Create(GuildCreateBinding binding, CancellationToken cancellationToken)
+        public async Task<IActionResult> Create([FromBody]GuildCreateBinding binding, CancellationToken cancellationToken)
         {
             if (!HttpContext.IsAdmin())
                 throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");

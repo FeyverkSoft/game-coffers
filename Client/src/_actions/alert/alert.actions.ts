@@ -1,5 +1,5 @@
-import { AlertActionsType } from ".";
-import { Alert } from "../_services/alert/Alert";
+import { AlertActionsType } from "..";
+import { Alert } from "../../_services";
 
 export class AlertActions {
     /**

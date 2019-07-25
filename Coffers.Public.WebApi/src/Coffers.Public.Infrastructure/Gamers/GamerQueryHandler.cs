@@ -26,6 +26,9 @@ namespace Coffers.Public.Infrastructure.Gamers
             return await _context.Gamers
                 .Where(g => g.Id == query.UserId)
                 .AsNoTracking()
+                .Include(_=>_.Penalties)
+                .Include(_ => _.Loans)
+                .Include(_ => _.Characters)
                 .Select(g => new BaseGamerInfoView
                 {
                     UserId = g.Id,

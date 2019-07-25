@@ -1,4 +1,5 @@
-﻿using Coffers.Public.Domain.Operations;
+﻿using System;
+using Coffers.Public.Domain.Operations;
 using Microsoft.EntityFrameworkCore;
 
 namespace Coffers.Public.Infrastructure.Operations
@@ -24,6 +25,11 @@ namespace Coffers.Public.Infrastructure.Operations
                 b.Property(g => g.Id)
                     .HasColumnName("Id")
                     .IsRequired();
+
+                b.Property(g => g.Type)
+                    .HasConversion<String>();
+
+                b.Property(g => g.DocumentId);
 
                 b.Property(g => g.CreateDate)
                     .IsRequired();

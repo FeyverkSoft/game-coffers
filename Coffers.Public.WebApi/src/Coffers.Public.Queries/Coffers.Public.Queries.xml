@@ -325,5 +325,30 @@
             запрос на получение списка операций по документу
             </summary>
         </member>
+        <member name="P:Coffers.Public.Queries.Operations.OperationView.Amount">
+            <summary>
+            Сумма операции
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Operations.OperationView.DocumentId">
+            <summary>
+            Основание для операции (первичный документ)
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Operations.OperationView.Type">
+            <summary>
+            Тип операции
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Operations.OperationView.Description">
+            <summary>
+            Описание операции
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Operations.OperationView.CreateDate">
+            <summary>
+            Дата проведения операции
+            </summary>
+        </member>
     </members>
 </doc>

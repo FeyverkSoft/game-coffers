@@ -60,7 +60,7 @@ namespace Coffers.Public.WebApi.Controllers
         [HttpPut("{gamerId}/characters")]
         [PermissionRequired("admin", "officer", "leader")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> AddCharacter(Guid gamerId, AddCharacterBinding binding, CancellationToken cancellationToken)
+        public async Task<IActionResult> AddCharacter([FromRoute]Guid gamerId, [FromBody] AddCharacterBinding binding, CancellationToken cancellationToken)
         {
             var gamer = await _gamerRepository.Get(gamerId, cancellationToken);
 
@@ -85,7 +85,7 @@ namespace Coffers.Public.WebApi.Controllers
         [HttpDelete("{gamerId}/characters")]
         [PermissionRequired("admin", "officer", "leader")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> DeleteCharacter(Guid gamerId, DeleteCharacterBinding binding, CancellationToken cancellationToken)
+        public async Task<IActionResult> DeleteCharacter([FromRoute]Guid gamerId, [FromBody] DeleteCharacterBinding binding, CancellationToken cancellationToken)
         {
             var gamer = await _gamerRepository.Get(gamerId, cancellationToken);
 
@@ -110,7 +110,7 @@ namespace Coffers.Public.WebApi.Controllers
         [HttpPatch("{gamerId}/status")]
         [PermissionRequired("admin", "officer", "leader")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> SetStatus(Guid gamerId, PatchGamerStatusBinding binding, CancellationToken cancellationToken)
+        public async Task<IActionResult> SetStatus([FromRoute]Guid gamerId, [FromBody] PatchGamerStatusBinding binding, CancellationToken cancellationToken)
         {
             var gamer = await _gamerRepository.Get(gamerId, cancellationToken);
 
@@ -133,7 +133,7 @@ namespace Coffers.Public.WebApi.Controllers
         [HttpPatch("{gamerId}/rank")]
         [PermissionRequired("admin", "officer", "leader")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> SetRole(Guid gamerId, PatchGamerRankBinding binding, CancellationToken cancellationToken)
+        public async Task<IActionResult> SetRole([FromRoute]Guid gamerId, [FromBody]PatchGamerRankBinding binding, CancellationToken cancellationToken)
         {
             var gamer = await _gamerRepository.Get(gamerId, cancellationToken);
 
@@ -156,7 +156,7 @@ namespace Coffers.Public.WebApi.Controllers
         [HttpPut("{gamerId}/loans")]
         [PermissionRequired("admin", "officer", "leader")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> PutLoan(Guid gamerId, PutLoanBinding binding, CancellationToken cancellationToken)
+        public async Task<IActionResult> PutLoan([FromRoute]Guid gamerId, [FromBody]PutLoanBinding binding, CancellationToken cancellationToken)
         {
             var gamer = await _gamerRepository.Get(gamerId, cancellationToken);
 
@@ -176,7 +176,7 @@ namespace Coffers.Public.WebApi.Controllers
             await _gamerRepository.Save(gamer).ContinueWith(async t =>
             {
                 t.Wait(cancellationToken);
-                await _operationService.PutLoan(gamer.GuildId, loan.Account.Id, guild.GuildAccount.Id, loan.Amount, loan.TaxAmount);
+                await _operationService.PutLoan(loan.Id, loan.Account.Id, guild.GuildAccount.Id, loan.Amount, loan.TaxAmount);
             }, cancellationToken);
 
             return Ok(new { });
@@ -188,7 +188,7 @@ namespace Coffers.Public.WebApi.Controllers
         [HttpPut("{gamerId}/penalties")]
         [PermissionRequired("admin", "officer", "leader")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> PutPenalty(Guid gamerId, PutPenaltyBinding binding, CancellationToken cancellationToken)
+        public async Task<IActionResult> PutPenalty([FromRoute]Guid gamerId, [FromBody] PutPenaltyBinding binding, CancellationToken cancellationToken)
         {
             var gamer = await _gamerRepository.Get(gamerId, cancellationToken);
 
@@ -210,17 +210,17 @@ namespace Coffers.Public.WebApi.Controllers
         [HttpDelete("{gamerId}/penalties/{penaltyId}")]
         [PermissionRequired("admin", "officer", "leader")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> CancelPenalty(Guid gamerId, DeletePenaltyBinding binding, CancellationToken cancellationToken)
+        public async Task<IActionResult> CancelPenalty([FromRoute]Guid gamerId, [FromRoute] Guid penaltyId, CancellationToken cancellationToken)
         {
             var gamer = await _gamerRepository.Get(gamerId, cancellationToken);
 
             if (gamer == null || !HttpContext.IsAdmin() && gamer.GuildId != HttpContext.GuildId())
                 throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");
 
-            if (gamer.Penalties?.Any(_ => _.Id == binding.Id) == false)
+            if (gamer.Penalties?.Any(_ => _.Id == penaltyId) == false)
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.PenaltyNotFound, "");
 
-            gamer.CancelPenalty(binding.Id);
+            gamer.CancelPenalty(penaltyId);
 
             await _gamerRepository.Save(gamer);
 
@@ -231,23 +231,23 @@ namespace Coffers.Public.WebApi.Controllers
         /// Отменить ещё не оплаченный  займ
         /// + Красное сторно займа
         /// </summary>
-        [HttpDelete("{gamerId}/loans/{penaltyId}")]
+        [HttpDelete("{gamerId}/loans/{loanId}")]
         [PermissionRequired("admin", "officer", "leader")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> CancelLoan(Guid gamerId, DeleteLoanBinding binding, CancellationToken cancellationToken)
+        public async Task<IActionResult> CancelLoan([FromRoute]Guid gamerId, [FromRoute]Guid loanId, CancellationToken cancellationToken)
         {
             var gamer = await _gamerRepository.Get(gamerId, cancellationToken);
 
             if (gamer == null || !HttpContext.IsAdmin() && gamer.GuildId != HttpContext.GuildId())
                 throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");
 
-            gamer.CancelLoan(binding.Id);
+            gamer.CancelLoan(loanId);
 
             await _gamerRepository.Save(gamer)
                 .ContinueWith(async c =>
                 {
                     c.Wait(cancellationToken);
-                    await _operationService.CancelLoan(binding.Id);
+                    await _operationService.CancelLoan(loanId);
                 }, cancellationToken);
 
             return Ok(new { });

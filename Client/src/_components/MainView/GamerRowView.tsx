@@ -90,7 +90,7 @@ export class GamerRowView extends BaseReactComp<IGamerRowViewProps> {
                             return (
                                 <div key={p.id}
                                     title={p.description}
-                                    className={`${style['penalty']} ${p.penaltyStatus.toLowerCase()}`}
+                                    className={`${style['penalty']} ${style[p.penaltyStatus.toLowerCase()]}`}
                                     onClick={() => this.props.showPenaltyInfo(p.id, gamer.id)}
                                 >
                                     {p.amount}

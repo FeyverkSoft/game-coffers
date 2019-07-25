@@ -123,11 +123,11 @@ namespace Coffers.Public.Infrastructure.Guilds
                     .IsRequired();
 
                 b.HasMany(g => g.FromOperations)
-                    .WithOne(_=>_.FromAccount)
+                    .WithOne(_ => _.FromAccount)
                     .HasPrincipalKey(_ => _.Id);
 
                 b.HasMany(g => g.ToOperations)
-                    .WithOne(_=>_.ToAccount)
+                    .WithOne(_ => _.ToAccount)
                     .HasPrincipalKey(_ => _.Id);
 
                 b.Property(a => a.ConcurrencyTokens)
@@ -159,6 +159,26 @@ namespace Coffers.Public.Infrastructure.Guilds
                         _ => _ == null ? new Decimal[] { } : _.ParseJson<Decimal[]>()
                     )
                     .IsRequired();
+            });
+
+            modelBuilder.Entity<Loan>(b =>
+            {
+                b.ToTable(nameof(Loan));
+
+                b.HasIndex(gt => gt.Id)
+                    .IsUnique();
+                b.HasKey(gt => gt.Id);
+                b.Property(gt => gt.Id)
+                    .HasColumnName("Id")
+                    .IsRequired();
+
+                b.Property(t => t.LoanStatus)
+                    .HasConversion<String>()
+                    .IsRequired();
+
+                b.HasOne(_ => _.Account)
+                    .WithMany()
+                    .HasPrincipalKey(_ => _.Id);
             });
 
             modelBuilder.Entity<GuildTariff>(b =>
@@ -206,6 +226,25 @@ namespace Coffers.Public.Infrastructure.Guilds
 
                 b.Property(t => t.Status)
                     .HasDefaultValue(CharStatus.Active)
+                    .HasConversion<String>()
+                    .IsRequired();
+            });
+
+            modelBuilder.Entity<Operation>(b =>
+            {
+                b.ToTable(nameof(Operation));
+
+                b.HasIndex(gt => gt.Id)
+                    .IsUnique();
+                b.HasKey(gt => gt.Id);
+                b.Property(gt => gt.Id)
+                    .HasColumnName("Id")
+                    .IsRequired();
+
+                b.Property(o => o.Type)
+                    .HasConversion<String>();
+
+                b.Property(t => t.Type)
                     .HasConversion<String>()
                     .IsRequired();
             });

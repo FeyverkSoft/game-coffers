@@ -1,16 +1,18 @@
 import * as React from "react";
 import { BaseReactComp, IStatedField } from "../BaseReactComponent";
 import { Dialog, Form, Col1, Input, Button, NamedValue } from "..";
-import { Lang, ILoanView, LangF, DLang } from "../../_services";
+import { Lang, ILoanView, LangF, DLang, IOperationView } from "../../_services";
 import { gamerInstance } from "../../_actions";
 import { connect } from "react-redux";
-import { IStore } from "../../_helpers";
+import { IStore, formatDateTime, IF } from "../../_helpers";
 import { Grid } from "../Grid/Grid";
 
 interface IProps extends React.Props<any> {
     isDisplayed: boolean;
     loan: ILoanView;
     onClose: Function;
+    operations: Array<IOperationView>;
+    gamerId: string;
     [id: string]: any;
 }
 
@@ -29,6 +31,26 @@ class _LoanDialog extends BaseReactComp<IProps> {
         this.props.onClose();
     }
 
+    onCancel = () => {
+        this.props.dispatch(gamerInstance.CancelLoan({
+            id: this.props.loan.id,
+            gamerId: this.props.gamerId,
+            onSuccess: () => this.onClose()
+        }));
+    }
+
+    footer = () => {
+        return (
+            <IF value={this.props.loan.loanStatus == 'Active'}>
+                <Button
+                    type='important'
+                    onClick={() => this.onCancel()}
+                >
+                    {Lang('CANCEL')}
+                </Button>
+            </IF>
+        );
+    }
 
     render() {
         const { loan } = this.props;
@@ -37,23 +59,24 @@ class _LoanDialog extends BaseReactComp<IProps> {
                 isDisplayed={this.props.isDisplayed}
                 title={Lang('SHOW_LOAN_MODAL')}
                 onCancel={() => this.onClose()}
+                footer={this.footer()}
             >
                 <Grid
                     direction="vertical"
                 >
                     <Col1>
-                        <NamedValue name={Lang("MODAL_OAN_AMOUNT")}>
+                        <NamedValue name={Lang("MODAL_LOAN_AMOUNT")}>
                             {loan.amount}
                         </NamedValue>
                     </Col1>
                     <Col1>
                         <NamedValue name={Lang("MODAL_LOAN_DATE")}>
-                            {loan.date}
+                            {formatDateTime(loan.date, 'd')}
                         </NamedValue>
                     </Col1>
                     <Col1>
                         <NamedValue name={Lang("MODAL_LOAN_EXPIREDDATE")}>
-                            {loan.expiredDate}
+                            {formatDateTime(loan.expiredDate, 'd')}
                         </NamedValue>
                     </Col1>
                     <Col1>
@@ -66,6 +89,9 @@ class _LoanDialog extends BaseReactComp<IProps> {
                             {DLang('LOAN_STATUS', loan.loanStatus)}
                         </NamedValue>
                     </Col1>
+                    <Col1>
+                        {this.props.operations.map(_ => <div>{_.amount}</div>)}
+                    </Col1>
                 </Grid>
             </Dialog>
         );
@@ -75,13 +101,17 @@ class _LoanDialog extends BaseReactComp<IProps> {
 interface _IProps extends React.Props<any> {
     isDisplayed: boolean;
     loanId: string;
+    gamerId: string;
     onClose: Function;
     [id: string]: any;
 }
 const connected_LoanDialog = connect<{}, {}, _IProps, IStore>((store, props): IProps => {
+    const op = store.operations.operations[props.penaltyId];
     return {
+        gamerId: props.gamerId,
         isDisplayed: props.isDisplayed,
         onClose: props.onClose,
+        operations: op != undefined ? op.items : [],
         loan: props.isDisplayed ? store.gamers.gamersList[props.gamerId].loans[props.loanId] : {} as ILoanView
     };
 })(_LoanDialog);

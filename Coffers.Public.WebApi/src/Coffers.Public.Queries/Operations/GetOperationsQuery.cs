@@ -10,8 +10,7 @@ namespace Coffers.Public.Queries.Operations
     /// </summary>
     public sealed class GetOperationsQuery : IQuery<ICollection<OperationView>>
     {
-        public Guid UserId { get; set; }
-        public Guid OperationId { get; set; }
+        public Guid DocumentId { get; set; }
         public OperationType Type { get; set; }
     }
 }

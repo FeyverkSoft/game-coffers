@@ -1,0 +1,1 @@
+export type OperationType = 'Tax' | 'Penalty' | 'Loan' | 'Exchange' | 'Reward' | 'Salary' | 'Other';

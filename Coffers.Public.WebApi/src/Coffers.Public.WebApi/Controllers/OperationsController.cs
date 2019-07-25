@@ -31,13 +31,12 @@ namespace Coffers.Public.WebApi.Controllers
         /// </summary>
         [HttpGet]
         [ProducesResponseType(typeof(ICollection<OperationView>), 200)]
-        public async Task<ActionResult<ICollection<OperationView>>> GetOperations(OperationBinding binding, CancellationToken cancellationToken)
+        public async Task<ActionResult<ICollection<OperationView>>> GetOperations([FromQuery]OperationBinding binding, CancellationToken cancellationToken)
         {
             return Ok(await _queryProcessor.Process<GetOperationsQuery, ICollection<OperationView>>(
                 new GetOperationsQuery
                 {
-                    UserId = binding.UserId,
-                    OperationId = binding.OperationId,
+                    DocumentId = binding.DocumentId,
                     Type = binding.Type
                 }, cancellationToken));
         }
