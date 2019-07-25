@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Coffers.Helpers;
 using Coffers.Public.Domain.Guilds;
 using Coffers.Types.Gamer;
 
@@ -43,7 +44,12 @@ namespace Coffers.Public.Domain.Gamers
                 default:
                     throw new ArgumentOutOfRangeException(nameof(rank), rank, null);
             }
-            return new Loan(id, t.Id, amount, amount * (t.LoanTax / 100), description, borrowDate, expiredDate);
+            return new Loan(id,
+                t.Id, amount,
+                amount * (t.LoanTax / 100),
+                description,
+                borrowDate.Trunc(DateTruncType.Day),
+                expiredDate.Trunc(DateTruncType.Day));
         }
     }
 }
