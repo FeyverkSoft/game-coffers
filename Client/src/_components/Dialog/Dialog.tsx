@@ -38,7 +38,7 @@ export class Dialog extends React.Component<IDialogProps, any> {
                     <div className={style["body"]}>
                         {this.props.children}
                     </div>
-                    <IF value={this.props.footer}>
+                    <IF value={this.props.footer != undefined}>
                         <div className={style["footer"]}>
                             {this.props.footer}
                         </div>

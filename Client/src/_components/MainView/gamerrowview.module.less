@@ -31,9 +31,10 @@
 
     .main {
         .flex();
-        padding: 1rem;
+        padding: .5rem .5rem;
         flex: 3 1;
         flex-direction: column;
+        height: 100%;
 
         .title {
             text-transform: lowercase;
@@ -46,6 +47,11 @@
         .char-list {
             .flex();
             padding-left: .25rem;
+            flex-wrap: wrap;
+
+            @media screen and (max-width: @mobile-L) {
+                justify-content: center;
+            }
 
             .char_name {
                 .flex();
@@ -86,8 +92,10 @@
 
     .user-status {
         .flex();
+        padding: .5rem .125rem;
         flex-direction: column;
         flex: 1 1;
+        height: 100%;
 
         .title {
             text-transform: lowercase;
@@ -106,8 +114,10 @@
 
     .rank {
         .flex();
+        padding: .5rem .125rem;
         flex-direction: column;
         flex: 1 1;
+        height: 100%;
 
         .title {
             text-transform: lowercase;
@@ -127,8 +137,10 @@
 
     .balance {
         .flex();
+        padding: .5rem .125rem;
         flex-direction: column;
         flex: 1 1;
+        height: 100%;
 
         .title {
             text-transform: lowercase;
@@ -151,8 +163,10 @@
 
     .penalties {
         .flex();
+        padding: .5rem .125rem;
         flex-direction: column;
         flex: 1 1;
+        height: 100%;
 
         .title {
             text-transform: lowercase;
@@ -165,6 +179,10 @@
             .flex();
             flex-direction: row;
             font-weight: 400;
+
+            @media screen and (max-width: @mobile-L) {
+                justify-content: center;
+            }
 
             .penalty {
                 cursor: pointer;
@@ -193,9 +211,11 @@
 
     .loans {
         .flex();
+        padding: .5rem 0;
         flex-direction: column;
         flex: 1 1;
         padding-right: .25rem;
+        height: 100%;
 
         .title {
             text-transform: lowercase;
@@ -207,6 +227,11 @@
         .content {
             .flex();
             flex-direction: row;
+            flex-wrap: wrap;
+
+            @media screen and (max-width: @mobile-L) {
+                justify-content: center;
+            }
 
             .loan {
                 cursor: pointer;

@@ -1,7 +1,8 @@
 import * as React from "react";
-import { BaseReactComp, IStatedField } from "../BaseReactComponent";
-import { Dialog, Form, Col1, Input, Button, NamedValue } from "..";
-import { Lang, ILoanView, LangF, DLang, IOperationView } from "../../_services";
+import style from "./dialog.module.less";
+import { BaseReactComp } from "../BaseReactComponent";
+import { Dialog, Col1, Button, NamedValue } from "..";
+import { Lang, ILoanView, DLang, IOperationView } from "../../_services";
 import { gamerInstance } from "../../_actions";
 import { connect } from "react-redux";
 import { IStore, formatDateTime, IF } from "../../_helpers";
@@ -89,8 +90,17 @@ class _LoanDialog extends BaseReactComp<IProps> {
                             {DLang('LOAN_STATUS', loan.loanStatus)}
                         </NamedValue>
                     </Col1>
-                    <Col1>
-                        {this.props.operations.map(_ => <div>{_.amount}</div>)}
+                    <Col1 className={style['operation-list']}>
+                        <NamedValue name={Lang("MODAL__OPERATIONS")}>
+                            {this.props.operations.map(_ => (
+                                <div
+                                    title={_.description}
+                                    className={style['operations']}
+                                >
+                                    {_.amount}
+                                </div>
+                            ))}
+                        </NamedValue>
                     </Col1>
                 </Grid>
             </Dialog>
@@ -106,7 +116,7 @@ interface _IProps extends React.Props<any> {
     [id: string]: any;
 }
 const connected_LoanDialog = connect<{}, {}, _IProps, IStore>((store, props): IProps => {
-    const op = store.operations.operations[props.penaltyId];
+    const op = store.operations.operations[props.loanId];
     return {
         gamerId: props.gamerId,
         isDisplayed: props.isDisplayed,

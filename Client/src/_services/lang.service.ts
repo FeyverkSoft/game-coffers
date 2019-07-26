@@ -97,7 +97,7 @@ const locString: any = {
         MODAL_PENALTY_AMOUNT: 'Сумма',
         MODAL_PENALTY_DATE: 'Дата',
         MODAL_PENALTY_STATUS: 'Статус',
-        MODAL_PENALTY_DESCRIPTION: 'Описание',
+        MODAL_PENALTY_DESCRIPTION: 'Причина',
         ADD: 'Добавить',
         PENALTY_AMOUNT: 'Сумма штрафа',
         PENALTY_DESCRIPTION: 'Описание',
@@ -105,6 +105,7 @@ const locString: any = {
         LOAN_BORROWDATE: 'Дата',
         LOAN_EXPIREDDATE: 'Дата стухания',
         LOAN_DESCRIPTION: 'Описание',
+        MODAL__OPERATIONS: 'Операции'
     }
 };
 

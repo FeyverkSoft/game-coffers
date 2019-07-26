@@ -1,7 +1,8 @@
 
 import * as React from "react";
+import style from "./dialog.module.less";
 import { BaseReactComp } from "../BaseReactComponent";
-import { Dialog, Form, Col1, Input, Button, Grid, NamedValue } from "..";
+import { Dialog, Col1, Button, Grid, NamedValue } from "..";
 import { Lang, IPenaltyView, DLang, IOperationView } from "../../_services";
 import { gamerInstance } from "../../_actions";
 import { connect } from "react-redux";
@@ -87,8 +88,17 @@ class _PenaltyDialog extends BaseReactComp<IProps> {
                             {DLang('PENALTY_STATUS', penalty.penaltyStatus)}
                         </NamedValue>
                     </Col1>
-                    <Col1>
-                        {this.props.operations.map(_ => <div>{_.amount}</div>)}
+                    <Col1 className={style['operation-list']}>
+                        <NamedValue name={Lang("MODAL__OPERATIONS")}>
+                            {this.props.operations.map(_ => (
+                                <div
+                                    title={_.description}
+                                    className={style['operations']}
+                                >
+                                    {_.amount}
+                                </div>
+                            ))}
+                        </NamedValue>
                     </Col1>
                 </Grid>
             </Dialog>
