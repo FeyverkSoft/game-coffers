@@ -179,6 +179,16 @@
             Penalty unique id
             </summary>
         </member>
+        <member name="T:Coffers.Public.Queries.Guilds.GuildAccountQuery">
+            <summary>
+            запрос на получение счёта ги
+            </summary>
+        </member>
+        <member name="P:Coffers.Public.Queries.Guilds.GuildAccountQuery.GuildId">
+            <summary>
+            Идентификатор гильдии
+            </summary>
+        </member>
         <member name="T:Coffers.Public.Queries.Guilds.GuildBalanceQuery">
             <summary>
             запрос на получение актуальных балансов гильдии

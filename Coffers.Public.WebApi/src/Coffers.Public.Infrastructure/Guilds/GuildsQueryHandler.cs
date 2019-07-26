@@ -15,7 +15,8 @@ namespace Coffers.Public.Infrastructure.Guilds
 {
     public class GuildsQueryHandler : IQueryHandler<GuildQuery, GuildView>,
         IQueryHandler<GuildsQuery, ICollection<GuildView>>,
-        IQueryHandler<GuildBalanceQuery, GuildBalanceView>
+        IQueryHandler<GuildBalanceQuery, GuildBalanceView>,
+        IQueryHandler<GuildAccountQuery, GuildAccountView>
 
     {
         private readonly GuildsDbContext _context;
@@ -171,6 +172,19 @@ namespace Coffers.Public.Infrastructure.Guilds
             if (index > tax.Count - 1)
                 return tax.Last() * count;
             return tax[index] * count;
+        }
+
+        public async Task<GuildAccountView> Handle(GuildAccountQuery query, CancellationToken cancellationToken)
+        {
+            return await _context.Guilds
+                .AsNoTracking()
+                .Where(guild => guild.Id == query.GuildId)
+                .Include(g => g.GuildAccount)
+                .Select(_ => new GuildAccountView
+                {
+                    AccountId = _.GuildAccount.Id
+                })
+                .FirstOrDefaultAsync(cancellationToken);
         }
     }
 }

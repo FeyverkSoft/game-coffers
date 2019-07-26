@@ -12,6 +12,7 @@ import {
     NotFoundController,
 } from './controller';
 import { alertInstance } from './_actions';
+import { Lang } from './_services';
 
 
 class MyApp extends React.Component<any, any> {
@@ -34,6 +35,11 @@ class MyApp extends React.Component<any, any> {
                         <Link to="./">
                             <Logo />
                         </Link>
+                        <Space />
+                        <Private>
+                            <Link to="/">{Lang('КАЗНА')}</Link>
+                            <Link to="/bd">{Lang('ДНЯХИ')}</Link>
+                        </Private>
                         <Space />
                         <Private>
                             <ProfileButton />

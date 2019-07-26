@@ -82,7 +82,11 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
         if (userId)
             this.props.dispatch(gamerInstance.DeleteCharacters({
                 gamerId: userId,
-                name: char
+                name: char,
+                onSuccess: () => {
+                    this.props.dispatch(guildInstance.GetGuildBalanceReport({ guildId: this.props.guildId || '' }));
+                    this.props.dispatch(guildInstance.GetGuild({ guildId: this.props.guildId || '' }));
+                }
             }));
     }
 
@@ -197,6 +201,7 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                 />
                 <AddCharDialog
                     userId={this.state.addChar.userId}
+                    guildId={this.state.guildId}
                     isDisplayed={this.state.addChar.isDisplayed}
                     onClose={() => this.setState({ addChar: { isDisplayed: false } })}
                 />

@@ -2,7 +2,7 @@ import * as React from "react";
 import { BaseReactComp, IStatedField } from "../BaseReactComponent";
 import { Dialog, Form, Col1, Input, Button } from "..";
 import { Lang } from "../../_services";
-import { gamerInstance } from "../../_actions";
+import { gamerInstance, guildInstance } from "../../_actions";
 import { connect } from "react-redux";
 import { getGuid, formatDateTime } from "../../_helpers";
 
@@ -63,6 +63,7 @@ class _AddLoanDialog extends BaseReactComp<IProps, IState> {
                 },
                 onSuccess: () => {
                     this.setState({ isLoad: false });
+                    this.props.dispatch(guildInstance.GetGuildBalanceReport({ guildId: this.props.guildId || '' }))
                     this.onClose();
                 }
             }))

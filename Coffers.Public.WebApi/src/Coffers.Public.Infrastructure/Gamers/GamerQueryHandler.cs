@@ -12,7 +12,9 @@ using Query.Core;
 namespace Coffers.Public.Infrastructure.Gamers
 {
     public sealed class GamerQueryHandler : IQueryHandler<GetBaseGamerInfoQuery, BaseGamerInfoView>,
-        IQueryHandler<GetGamersQuery, ICollection<GamersListView>>
+        IQueryHandler<GetGamersQuery, ICollection<GamersListView>>,
+        IQueryHandler<GetGamerInfoQuery, GamerInfoView>
+
     {
         private readonly GamerDbContext _context;
 
@@ -26,7 +28,7 @@ namespace Coffers.Public.Infrastructure.Gamers
             return await _context.Gamers
                 .Where(g => g.Id == query.UserId)
                 .AsNoTracking()
-                .Include(_=>_.Penalties)
+                .Include(_ => _.Penalties)
                 .Include(_ => _.Loans)
                 .Include(_ => _.Characters)
                 .Select(g => new BaseGamerInfoView
@@ -75,7 +77,7 @@ namespace Coffers.Public.Infrastructure.Gamers
             {
                 Id = g.Id,
                 Balance = g.DefaultAccount.Balance,
-                Characters =  g.Characters.Where(c => c.Status == CharStatus.Active).Select(x => x.Name).ToList(),
+                Characters = g.Characters.Where(c => c.Status == CharStatus.Active).Select(x => x.Name).ToList(),
                 Rank = g.Rank,
                 Status = g.Status,
                 Penalties = g.Penalties.Where(p => p.CreateDate >= dateFrom)
@@ -99,6 +101,23 @@ namespace Coffers.Public.Infrastructure.Gamers
                     }).ToList(),
             })
                 .ToListAsync(cancellationToken);
+        }
+
+        public async Task<GamerInfoView> Handle(GetGamerInfoQuery query, CancellationToken cancellationToken)
+        {
+            var q = _context.Gamers
+                .AsNoTracking()
+                .Include(_ => _.DefaultAccount)
+                .Where(g => g.Id == query.UserId);
+
+            return await q
+                .Select(_ => new GamerInfoView
+                {
+                    UserId = _.Id,
+                    AccountId = _.DefaultAccount.Id,
+                    GuildId = _.Id
+                })
+                .FirstOrDefaultAsync(cancellationToken);
         }
     }
 }

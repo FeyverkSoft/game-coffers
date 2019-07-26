@@ -9,6 +9,11 @@
             Налог
             </summary>
         </member>
+        <member name="F:Coffers.Types.Account.OperationType.Sell">
+            <summary>
+            Продажа в пользу ги
+            </summary>
+        </member>
         <member name="F:Coffers.Types.Account.OperationType.Penalty">
             <summary>
             Штраф

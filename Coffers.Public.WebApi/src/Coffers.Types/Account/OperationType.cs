@@ -7,6 +7,10 @@
         /// </summary>
         Tax,
         /// <summary>
+        /// Продажа в пользу ги
+        /// </summary>
+        Sell,
+        /// <summary>
         /// Штраф
         /// </summary>
         Penalty,

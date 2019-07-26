@@ -103,5 +103,43 @@ namespace Coffers.Public.Domain.Operations
                 ToAccount = toAccount,
             });
         }
+
+        public async Task AddRewardOperation(Guid fromAccountId, Guid toAccountId, Decimal amount, String description = "")
+        {
+            var fromAccount = await _oRepository.GetAccount(fromAccountId, default);
+            var toAccount = await _oRepository.GetAccount(toAccountId, default);
+            fromAccount.ChangeBalance(-1 * amount);
+            toAccount.ChangeBalance(amount);
+            await _oRepository.Save(new Operation
+            {
+                Id = Guid.NewGuid(),
+                DocumentId = null,
+                Amount = amount,
+                OperationDate = DateTime.UtcNow,
+                Type = OperationType.Reward,
+                Description = description,
+                FromAccount = fromAccount,
+                ToAccount = toAccount,
+            });
+        }
+
+        public async Task AddSalaryOperation(Guid fromAccountId, Guid toAccountId, Decimal amount, String description = "")
+        {
+            var fromAccount = await _oRepository.GetAccount(fromAccountId, default);
+            var toAccount = await _oRepository.GetAccount(toAccountId, default);
+            fromAccount.ChangeBalance(-1 * amount);
+            toAccount.ChangeBalance(amount);
+            await _oRepository.Save(new Operation
+            {
+                Id = Guid.NewGuid(),
+                DocumentId = null,
+                Amount = amount,
+                OperationDate = DateTime.UtcNow,
+                Type = OperationType.Salary,
+                Description = description,
+                FromAccount = fromAccount,
+                ToAccount = toAccount,
+            });
+        }
     }
 }
