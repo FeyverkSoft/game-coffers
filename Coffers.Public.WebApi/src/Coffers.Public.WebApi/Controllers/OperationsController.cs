@@ -74,14 +74,27 @@ namespace Coffers.Public.WebApi.Controllers
             switch (binding.Type)
             {
                 case OperationType.Tax:
-                 /*   await _operationService.AddTaxOperation(
-                        guildAcc.AccountId,
-                        binding.Amount,
-                        binding.Description);*/
+                    await _operationService.AddTaxOperation(
+                         gamer.AccountId,
+                         guildAcc.AccountId,
+                         binding.Amount,
+                         binding.Description);
                     break;
                 case OperationType.Penalty:
+                    await _operationService.AddPenaltyOperation(
+                        gamer.AccountId,
+                        guildAcc.AccountId,
+                        binding.PenaltyId,
+                        binding.Amount,
+                        binding.Description);
                     break;
                 case OperationType.Loan:
+                    await _operationService.AddLoanOperation(
+                        gamer.AccountId,
+                        guildAcc.AccountId,
+                        binding.LoanId,
+                        binding.Amount,
+                        binding.Description);
                     break;
                 case OperationType.Exchange:
                     if (binding.Amount < 0)
@@ -121,7 +134,6 @@ namespace Coffers.Public.WebApi.Controllers
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-
 
             return Ok(new { });
         }

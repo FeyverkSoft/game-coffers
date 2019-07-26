@@ -201,7 +201,7 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                 />
                 <AddCharDialog
                     userId={this.state.addChar.userId}
-                    guildId={this.state.guildId}
+                    guildId={this.props.guildId || ''}
                     isDisplayed={this.state.addChar.isDisplayed}
                     onClose={() => this.setState({ addChar: { isDisplayed: false } })}
                 />

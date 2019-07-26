@@ -50,8 +50,8 @@ class _AddCharDialog extends BaseReactComp<IProps, IState> {
                 },
                 onSuccess: () => {
                     this.setState({ isLoad: false });
-                    this.props.dispatch(guildInstance.GetGuild({ guildId: this.props.guildId || '' }));
-                    this.props.dispatch(guildInstance.GetGuildBalanceReport({ guildId: this.props.guildId || '' }))
+                    this.props.dispatch(guildInstance.GetGuild({ guildId: this.props.guildId }));
+                    this.props.dispatch(guildInstance.GetGuildBalanceReport({ guildId: this.props.guildId }))
                     this.onClose();
                 }
             }))
