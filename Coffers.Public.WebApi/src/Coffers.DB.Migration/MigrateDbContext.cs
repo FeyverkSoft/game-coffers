@@ -280,10 +280,6 @@ namespace Coffers.DB.Migrations
                     .HasConversion<String>()
                     .HasMaxLength(32);
 
-                b.HasOne(g => g.Account)
-                    .WithMany()
-                    .HasPrincipalKey(_ => _.Id);
-
                 b.HasOne(p => p.Gamer)
                     .WithMany(_ => _.Penalties)
                     .HasPrincipalKey(_ => _.Id);

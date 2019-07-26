@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Coffers.Types.Account;
+using Coffers.Types.Gamer;
 
 namespace Coffers.Public.Domain.Operations
 {
@@ -140,6 +142,63 @@ namespace Coffers.Public.Domain.Operations
                 FromAccount = fromAccount,
                 ToAccount = toAccount,
             });
+        }
+
+        public async Task AddTaxOperation(Guid fromAccountId, Guid toAccountId, Decimal amount, String description = "")
+        {
+            var fromAccount = await _oRepository.GetAccount(fromAccountId, default);
+            var toAccount = await _oRepository.GetAccount(toAccountId, default);
+            fromAccount.ChangeBalance(-1 * amount);
+            toAccount.ChangeBalance(amount);
+            await _oRepository.Save(new Operation
+            {
+                Id = Guid.NewGuid(),
+                DocumentId = null,
+                Amount = amount,
+                OperationDate = DateTime.UtcNow,
+                Type = OperationType.Tax,
+                Description = description,
+                FromAccount = fromAccount,
+                ToAccount = toAccount,
+            });
+        }
+
+        public async Task AddPenaltyOperation(Guid gamerAccountId, Guid guildAccountId,
+            Guid penaltyId, Decimal amount, String description)
+        {
+            var gamerAccount = await _oRepository.GetAccount(gamerAccountId, default);
+            var guildAccount = await _oRepository.GetAccount(guildAccountId, default);
+            var penalty = await _oRepository.GetPenalty(penaltyId, default);
+            var penaltyOpSum = (await _oRepository.GetOperationWithDocIdAndType(penaltyId, OperationType.Penalty)).Sum(_ => _.Amount);
+            var overSum = penaltyOpSum + amount - penalty.Amount;
+            gamerAccount.ChangeBalance(overSum >= 0 ? overSum : -1 * amount);
+            guildAccount.ChangeBalance(overSum >= 0 ? 0 : amount);
+
+            await _oRepository.Save(new Operation
+            {
+                Id = Guid.NewGuid(),
+                DocumentId = penaltyId,
+                Amount = amount,
+                OperationDate = DateTime.UtcNow,
+                Type = OperationType.Penalty,
+                Description = description,
+                FromAccount = gamerAccount,
+                ToAccount = guildAccount,
+            }).ContinueWith(async c =>
+            {
+                if (overSum >= 0)
+                {
+                    c.Wait();
+                    penalty.PenaltyStatus = PenaltyStatus.InActive;
+                    await _oRepository.SavePenalty(penalty);
+                }
+            });
+        }
+
+        public async Task AddLoanOperation(Guid fromGamerAccountId, Guid guildAccAccountId, Guid loanId,
+            Decimal amount, String description)
+        {
+            throw new NotImplementedException();
         }
     }
 }

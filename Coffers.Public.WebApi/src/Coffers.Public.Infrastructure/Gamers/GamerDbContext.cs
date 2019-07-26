@@ -129,10 +129,6 @@ namespace Coffers.Public.Infrastructure.Gamers
                 b.Property(t => t.PenaltyStatus)
                     .HasConversion<String>()
                     .IsRequired();
-
-                b.HasOne(_ => _.Account)
-                    .WithMany()
-                    .HasPrincipalKey(_ => _.Id);
             });
         }
     }

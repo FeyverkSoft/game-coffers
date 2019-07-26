@@ -29,5 +29,8 @@ namespace Coffers.Public.Domain.Operations
         /// <param name="type"></param>
         /// <returns></returns>
         Task<ICollection<Operation>> GetOperationWithDocIdAndType(Guid id, OperationType type);
+
+        Task<Penalty> GetPenalty(Guid penaltyId, CancellationToken cancellationToken);
+        Task SavePenalty(Penalty penalty);
     }
 }

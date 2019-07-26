@@ -8,6 +8,8 @@ namespace Coffers.Public.Infrastructure.Operations
     {
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Operation> Operations { get; set; }
+        public DbSet<Penalty> Penalties { get; set; }
+        public DbSet<Loan> Loans { get; set; }
 
         public OperationsDbContext(DbContextOptions<OperationsDbContext> options) : base(options) { }
 

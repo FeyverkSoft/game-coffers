@@ -17,11 +17,6 @@ namespace Coffers.Public.Domain.Gamers
         public decimal Amount { get; internal set; }
 
         /// <summary>
-        /// Номер счёта для штрафа
-        /// </summary>
-        public Account Account { get; set; }
-
-        /// <summary>
         /// Дата создания
         /// </summary>
         public DateTime CreateDate { get; set; }
@@ -39,7 +34,6 @@ namespace Coffers.Public.Domain.Gamers
         public Penalty(Guid id, Decimal amount, String description)
         {
             Id = Guid.Empty == id ? throw new ArgumentException(nameof(id)) : id;
-            Account = new Account();
             PenaltyStatus = PenaltyStatus.Active;
             CreateDate = DateTime.UtcNow;
             Description = description;

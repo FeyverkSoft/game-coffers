@@ -21,11 +21,6 @@ namespace Coffers.DB.Migrations.Entities
         public Decimal Amount { get; set; }
 
         /// <summary>
-        /// Номер счёта для штрафа
-        /// </summary>
-        public Account Account { get; set; }
-
-        /// <summary>
         /// Дата создания
         /// </summary>
         public DateTime CreateDate { get; set; }

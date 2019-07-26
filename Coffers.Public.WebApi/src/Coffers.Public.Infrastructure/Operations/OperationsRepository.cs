@@ -55,5 +55,20 @@ namespace Coffers.Public.Infrastructure.Operations
                 .Where(_ => _.DocumentId == id && _.Type == type)
                 .ToListAsync();
         }
+
+        public async Task<Penalty> GetPenalty(Guid penaltyId, CancellationToken cancellationToken)
+        {
+            return await _context.Penalties
+                .Where(_ => _.Id == penaltyId)
+                .FirstOrDefaultAsync(cancellationToken);
+        }
+
+        public async Task SavePenalty(Penalty penalty)
+        {
+            var entry = _context.Entry(penalty);
+            if (entry.State == EntityState.Detached)
+                _context.Penalties.Add(penalty);
+            await _context.SaveChangesAsync();
+        }
     }
 }
