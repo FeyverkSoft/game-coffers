@@ -1,0 +1,46 @@
+﻿version: '3.5'
+
+services:
+  coffers-webapi:
+    image: maiznpetr/coffers-api:latest
+    volumes:
+      - /docker-data/coffers/logs/webapi/:/app/logs
+    environment:
+      - ConnectionStrings:Coffers=Server=${SQL_URL:-coffers-mysql};Port=3306;Database=coffer;User ID=root;Password=${SQL_ROOT_USER_PASSWORD};
+      - ConnectionStrings:CoffersMigration=Server=${SQL_URL:-coffers-mysql};Port=3306;Database=coffer;User ID=root;Password=${SQL_ROOT_USER_PASSWORD};
+    depends_on:
+      - coffers-mysql
+      - coffers-proxy
+    restart: always
+
+  coffers-client:
+    image: maiznpetr/coffers-client:latest
+    depends_on:
+      - coffers-proxy
+
+  coffers-proxy:
+    image: nginx:1.15.10-alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./proxy/nginx.conf:/etc/nginx/nginx.conf
+      - ./proxy/default.conf:/etc/nginx/conf.d/default.conf
+      - /docker-data/coffers/logs/proxy/:/var/log/nginx
+    restart: always
+
+  coffers-mysql:
+    image: mysql:8.0.17
+#    ports:
+#       - "3306:3306"
+    volumes:
+      - /docker-data/coffers/mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${SQL_ROOT_USER_PASSWORD}
+      - MYSQL_USER=${SQL_USER}
+      - MYSQL_PASSWORD=${SQL_PASSWORD}
+#      - MYSQL_DATABASE=coffer
+    restart: always
+
+volumes:
+  coffers-data:
+    driver: local

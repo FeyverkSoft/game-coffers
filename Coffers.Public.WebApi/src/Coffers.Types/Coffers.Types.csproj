@@ -5,7 +5,10 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\Proj\Coffers\Coffers.Public.WebApi\src\Coffers.Types\Coffers.Types.xml</DocumentationFile>
+    <DocumentationFile>Coffers.Types\bin\Debug\netcoreapp2.2\Coffers.Types.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>Coffers.Types\bin\Release\netcoreapp2.2\Coffers.Types.xml</DocumentationFile>
   </PropertyGroup>
 
 </Project>

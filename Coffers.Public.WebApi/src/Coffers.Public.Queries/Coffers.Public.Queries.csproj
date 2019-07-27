@@ -7,7 +7,10 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\Proj\Coffers\Coffers.Public.WebApi\src\Coffers.Public.Queries\Coffers.Public.Queries.xml</DocumentationFile>
+    <DocumentationFile>Coffers.Public.Queries\bin\Debug\netcoreapp2.2\Coffers.Public.Queries.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>Coffers.Public.Queries\bin\Release\netcoreapp2.2\Coffers.Public.Queries.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

@@ -38,6 +38,7 @@ namespace Coffers.DB.Migrations
                     attempt++;
                     try
                     {
+
                         await context.Database.MigrateAsync(cancellationToken: stoppingToken);
 
                         _logger.LogInformation("Migrations ended...");
@@ -54,7 +55,7 @@ namespace Coffers.DB.Migrations
 
                     await Task.Delay(attempt * 1000, stoppingToken);
                 }
-                while (_retryCount < attempt);
+                while (attempt < _retryCount);
             }
 
         }

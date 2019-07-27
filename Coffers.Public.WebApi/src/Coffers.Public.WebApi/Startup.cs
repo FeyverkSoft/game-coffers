@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Net;
 using Coffers.DB.Migrations;
 using Coffers.Public.Domain.Authorization;
@@ -17,6 +18,8 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
@@ -128,9 +131,9 @@ namespace Coffers.Public.WebApi
                 .AddScheme<AuthenticationSchemeOptions, SessionAuthenticationHandler>("Token", "Token", o => { });
             #endregion
 
-            #region Регион подключения проекта миграции
+            #region пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             services.AddDbContext<MigrateDbContext>(options =>
-                options.UseMySQL(Configuration.GetConnectionString("Coffers")));
+                options.UseMySQL(Configuration.GetConnectionString("CoffersMigration")));
             services.AddHostedService<MigrateService<MigrateDbContext>>();
 
             #endregion
@@ -146,6 +149,23 @@ namespace Coffers.Public.WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
+            
+            app.Use(async (http, next) =>
+            {
+                if (http.Request.Headers.ContainsKey("ASPNETCORE-PATH-BASE"))
+                {
+                    http.Request.PathBase = new PathString(http.Request.Headers["ASPNETCORE-PATH-BASE"].First());
+                }
+                if (http.Request.Headers.ContainsKey("X-Request-Id"))
+                {
+                    http.TraceIdentifier = http.Request.Headers["X-Request-Id"].First();
+                }
+
+                // used for logging
+                http.Request.EnableRewind();
+
+                await next();
+            });
             app.UseCors(builder =>
             {
                 builder.AllowAnyOrigin();
