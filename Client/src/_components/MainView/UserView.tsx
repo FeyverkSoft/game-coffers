@@ -40,7 +40,7 @@ export class UserView extends BaseReactComp<IUserViewProps> {
                 </Col1>
                 <Col1>
                     <NamedValue name={Lang("USER_TAX_AMOUNT")}>
-                        {user.charCount * tax}
+                        {user.charCount * tax} / {user.repaymentTaxAmount}
                     </NamedValue>
                 </Col1>
                 <Col1>

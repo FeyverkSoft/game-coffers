@@ -35,6 +35,7 @@ namespace Coffers.Public.Infrastructure.Operations
                     Description = o.Description,
                     CreateDate = o.OperationDate
                 })
+                .OrderBy(_=>_.CreateDate)
                 .ToListAsync(cancellationToken);
         }
 
@@ -75,7 +76,7 @@ namespace Coffers.Public.Infrastructure.Operations
 
             result.AddRange(to);
             result.AddRange(from);
-            return result;
+            return result.OrderBy(_ => _.CreateDate).ToList();
         }
     }
 }

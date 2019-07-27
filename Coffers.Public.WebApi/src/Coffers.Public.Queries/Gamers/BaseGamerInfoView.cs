@@ -41,6 +41,10 @@ namespace Coffers.Public.Queries.Gamers
         /// </summary>
         public Decimal RepaymentLoanAmount { get; set; }
         /// <summary>
+        /// Сумма Сумма выплаченого налога
+        /// </summary>
+        public Decimal RepaymentTaxAmount { get; set; }
+        /// <summary>
         /// Gamer guild rank
         /// </summary>
         public GamerRank Rank { get; set; }

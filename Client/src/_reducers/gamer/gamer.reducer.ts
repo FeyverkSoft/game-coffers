@@ -19,6 +19,7 @@ export class IGamerStore {
                 activeExpLoanAmount: currentGamer.activeExpLoanAmount || 0,
                 activeLoanTaxAmount: currentGamer.activeLoanTaxAmount || 0,
                 repaymentLoanAmount: currentGamer.repaymentLoanAmount || 0,
+                repaymentTaxAmount: currentGamer.repaymentTaxAmount || 0,
                 charCount: currentGamer.charCount || 0,
             };
         else {
@@ -32,6 +33,7 @@ export class IGamerStore {
                 activeExpLoanAmount: 0,
                 activeLoanTaxAmount: 0,
                 repaymentLoanAmount: 0,
+                repaymentTaxAmount: 0,
                 charCount: 0,
             };
         }

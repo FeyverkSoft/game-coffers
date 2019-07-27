@@ -77,9 +77,14 @@ namespace Coffers.Public.Infrastructure.Gamers
                 b.Property(a => a.Balance)
                     .HasDefaultValue(0)
                     .IsRequired();
+
                 b.Property(a => a.ConcurrencyTokens)
                     .IsConcurrencyToken()
                     .IsRequired();
+
+                b.HasMany(g => g.FromOperations)
+                    .WithOne(_=>_.FromAccount)
+                    .HasPrincipalKey(_ => _.Id);
             });
             modelBuilder.Entity<Character>(b =>
             {
@@ -93,6 +98,21 @@ namespace Coffers.Public.Infrastructure.Gamers
                     .IsRequired();
 
                 b.Property(t => t.Status)
+                    .HasConversion<String>()
+                    .IsRequired();
+            });
+            modelBuilder.Entity<Operation>(b =>
+            {
+                b.ToTable(nameof(Operation));
+
+                b.HasIndex(gt => gt.Id)
+                    .IsUnique();
+                b.HasKey(gt => gt.Id);
+                b.Property(gt => gt.Id)
+                    .HasColumnName("Id")
+                    .IsRequired();
+
+                b.Property(t => t.Type)
                     .HasConversion<String>()
                     .IsRequired();
             });

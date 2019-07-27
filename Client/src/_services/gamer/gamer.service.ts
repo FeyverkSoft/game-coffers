@@ -143,9 +143,15 @@ export class gamerService {
                 if (data && data.type || data.traceId) {
                     return errorHandle(data);
                 }
-                return new GamerInfo(data.userId, data.name, data.balance || 0, data.activeLoanAmount || 0,
-                    data.activePenaltyAmount || 0, data.activeExpLoanAmount || 0, data.activeLoanTaxAmount || 0,
-                    data.repaymentLoanAmount || 0, data.rank, data.charCount || 0);
+                return new GamerInfo(data.userId, data.name,
+                    Number(data.balance || 0),
+                    Number(data.activeLoanAmount || 0),
+                    Number(data.activePenaltyAmount || 0),
+                    Number(data.activeExpLoanAmount || 0),
+                    Number(data.activeLoanTaxAmount || 0),
+                    Number(data.repaymentLoanAmount || 0),
+                    Number(data.repaymentTaxAmount || 0),
+                    data.rank, data.charCount || 0);
             })
             .catch(catchHandle);
     }

@@ -9,6 +9,7 @@ export interface IGamerInfo {
     activeExpLoanAmount: number;
     activeLoanTaxAmount: number;
     repaymentLoanAmount: number;
+    repaymentTaxAmount: number;
     rank: GamerRank;
     charCount: number;
 
@@ -23,12 +24,13 @@ export class GamerInfo implements IGamerInfo {
     activeExpLoanAmount: number;
     activeLoanTaxAmount: number;
     repaymentLoanAmount: number;
+    repaymentTaxAmount: number;
     rank: GamerRank;
     charCount: number;
 
     constructor(userId: String, name: String, balance: number, activeLoanAmount: number,
         activePenaltyAmount: number, activeExpLoanAmount: number, activeLoanTaxAmount: number,
-        repaymentLoanAmount: number, rank: GamerRank, charCount: number) {
+        repaymentLoanAmount: number, repaymentTaxAmount: number, rank: GamerRank, charCount: number) {
         this.userId = userId;
         this.name = name;
         this.balance = balance;
@@ -37,6 +39,7 @@ export class GamerInfo implements IGamerInfo {
         this.activeExpLoanAmount = activeExpLoanAmount;
         this.activeLoanTaxAmount = activeLoanTaxAmount;
         this.repaymentLoanAmount = repaymentLoanAmount;
+        this.repaymentTaxAmount = repaymentTaxAmount;
         this.rank = rank;
         this.charCount = charCount;
     }

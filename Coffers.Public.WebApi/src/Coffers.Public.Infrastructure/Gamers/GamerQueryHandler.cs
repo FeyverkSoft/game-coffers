@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Coffers.Helpers;
+using Coffers.Public.Infrastructure.Operations;
 using Coffers.Public.Queries.Gamers;
+using Coffers.Types.Account;
 using Coffers.Types.Gamer;
 using Microsoft.EntityFrameworkCore;
 using Query.Core;
@@ -17,7 +19,6 @@ namespace Coffers.Public.Infrastructure.Gamers
 
     {
         private readonly GamerDbContext _context;
-
         public GamerQueryHandler(GamerDbContext context)
         {
             _context = context;
@@ -31,6 +32,8 @@ namespace Coffers.Public.Infrastructure.Gamers
                 .Include(_ => _.Penalties)
                 .Include(_ => _.Loans)
                 .Include(_ => _.Characters)
+                .Include(_ => _.DefaultAccount)
+                .ThenInclude(_ => _.FromOperations)
                 .Select(g => new BaseGamerInfoView
                 {
                     UserId = g.Id,
@@ -48,6 +51,10 @@ namespace Coffers.Public.Infrastructure.Gamers
                         .Sum(l => l.TaxAmount),
                     ActivePenaltyAmount = g.Penalties.Where(p => p.PenaltyStatus == PenaltyStatus.Active)
                         .Sum(p => p.Amount),
+                    RepaymentTaxAmount = g.DefaultAccount.FromOperations
+                        .Where(_ => _.Type == OperationType.Tax
+                                  && _.CreateDate >= DateTime.UtcNow.Trunc(DateTruncType.Month))
+                        .Sum(_ => _.Amount)
                 })
                 .FirstOrDefaultAsync(cancellationToken);
         }
@@ -98,7 +105,7 @@ namespace Coffers.Public.Infrastructure.Gamers
                         LoanStatus = l.LoanStatus,
                         ExpiredDate = l.ExpiredDate,
                         Id = l.Id
-                    }).OrderBy(_=>_.Date).ToList(),
+                    }).OrderBy(_ => _.Date).ToList(),
             })
                 .ToListAsync(cancellationToken);
         }

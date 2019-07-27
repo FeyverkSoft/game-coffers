@@ -49,6 +49,11 @@
             Сумма выплаченная в пользу займов
             </summary>
         </member>
+        <member name="P:Coffers.Public.Queries.Gamers.BaseGamerInfoView.RepaymentTaxAmount">
+            <summary>
+            Сумма Сумма выплаченого налога
+            </summary>
+        </member>
         <member name="P:Coffers.Public.Queries.Gamers.BaseGamerInfoView.Rank">
             <summary>
             Gamer guild rank
