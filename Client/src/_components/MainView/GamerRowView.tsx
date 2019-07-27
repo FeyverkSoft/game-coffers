@@ -17,6 +17,7 @@ interface IGamerRowViewProps extends React.Props<any> {
     onStatusChange(userId: string, status: GamerStatus): void;
     showPenaltyInfo(penaltyId: string, gamerId: string): void;
     showLoanInfo(loanId: string, gamerId: string): void;
+    showBalanceInfo(gamerId: string): void;
     [id: string]: any;
 }
 /// Плашка с информацией о пользователе
@@ -109,7 +110,10 @@ export class GamerRowView extends BaseReactComp<IGamerRowViewProps> {
                     <div className={style['title']}>
                         {Lang('USER_ROW_BALANCE')}
                     </div>
-                    <div className={`${style['content']} ${gamer.balance < 0 ? style['red'] : ''}`}>
+                    <div
+                        className={`${style['content']} ${gamer.balance < 0 ? style['red'] : ''}`}
+                        onClick={() => this.props.showBalanceInfo(gamer.id)}
+                    >
                         {gamer.balance}
                     </div>
                 </div>

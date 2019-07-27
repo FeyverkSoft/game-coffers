@@ -1,12 +1,14 @@
 import * as React from 'react';
 import style from "./dialog.module.less";
 import { IF } from '../../_helpers';
+import { Spinner } from '../Spinner/Spinner';
 
 interface IDialogProps extends React.Props<any> {
     isDisplayed: boolean;
     onCancel?: Function;
     footer?: React.ReactNode;
     title?: React.ReactNode
+    isLoading?: boolean;
 
 }
 
@@ -36,6 +38,9 @@ export class Dialog extends React.Component<IDialogProps, any> {
                         </div>
                     </div>
                     <div className={style["body"]}>
+                        <IF value={this.props.isLoading}>
+                            <Spinner />
+                        </IF>
                         {this.props.children}
                     </div>
                     <IF value={this.props.footer != undefined}>

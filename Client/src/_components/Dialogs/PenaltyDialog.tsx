@@ -7,12 +7,13 @@ import { Lang, IPenaltyView, DLang, IOperationView } from "../../_services";
 import { gamerInstance } from "../../_actions";
 import { connect } from "react-redux";
 import { getGuid, IStore, formatDateTime, IF } from "../../_helpers";
+import { IOperation } from "../../_reducers/operation/operations.reducer";
 
 interface IProps extends React.Props<any> {
     isDisplayed: boolean;
     penalty: IPenaltyView;
     gamerId: string;
-    operations: Array<IOperationView>;
+    operations: IOperation;
     onClose: Function;
     [id: string]: any;
 }
@@ -64,6 +65,7 @@ class _PenaltyDialog extends BaseReactComp<IProps> {
                 title={Lang('SHOW_PENALTY_MODAL')}
                 onCancel={() => this.onClose()}
                 footer={this.footer()}
+                isLoading={this.props.operations.holding}
             >
                 <Grid
                     direction="vertical"
@@ -90,7 +92,7 @@ class _PenaltyDialog extends BaseReactComp<IProps> {
                     </Col1>
                     <Col1 className={style['operation-list']}>
                         <NamedValue name={Lang("MODAL__OPERATIONS")}>
-                            {this.props.operations.map(_ => (
+                            {this.props.operations.items.map(_ => (
                                 <div
                                     key={_.id}
                                     title={_.description}
@@ -115,11 +117,11 @@ interface _IProps extends React.Props<any> {
     [id: string]: any;
 }
 const connected_PenaltyDialog = connect<{}, {}, _IProps, IStore>((store, props): IProps => {
-    const op = store.operations.operations[props.penaltyId];
+    const op = store.operations.operations[props.penaltyId] || { items: [] };
     return {
         isDisplayed: props.isDisplayed,
         gamerId: props.gamerId,
-        operations: op != undefined ? op.items : [],
+        operations: op,
         onClose: props.onClose,
         penalty: props.isDisplayed ? store.gamers.gamersList[props.gamerId].penalties[props.penaltyId] : {} as IPenaltyView
     };

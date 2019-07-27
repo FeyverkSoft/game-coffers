@@ -55,9 +55,12 @@ namespace Coffers.Public.WebApi.Controllers
         /// </summary>
         [HttpGet("gamer/{userId}")]
         [ProducesResponseType(typeof(ICollection<OperationView>), 200)]
-        public async Task<ActionResult<ICollection<OperationView>>> GetOperationsByUserId([FromRoute] Guid userId,
-          [FromQuery]  DateTime dateFrom, CancellationToken cancellationToken)
+        public async Task<ActionResult<ICollection<OperationView>>> GetOperationsByUserId(
+            [FromRoute] Guid userId,
+            [FromQuery] DateTime? dateFrom,
+            CancellationToken cancellationToken)
         {
+            var date = dateFrom ?? DateTime.UtcNow.Trunc(DateTruncType.Month);
             var user = await _queryProcessor.Process<GetGamerInfoQuery, GamerInfoView>(new GetGamerInfoQuery
             {
                 UserId = userId
@@ -67,7 +70,7 @@ namespace Coffers.Public.WebApi.Controllers
                 new GetOperationsByAccQuery
                 {
                     AccountId = user.AccountId,
-                    DateFrom = dateFrom.Trunc(DateTruncType.Day)
+                    DateFrom = date.Trunc(DateTruncType.Day)
                 }, cancellationToken));
         }
 

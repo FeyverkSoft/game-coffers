@@ -106,7 +106,7 @@ const locString: any = {
         LOAN_BORROWDATE: 'Дата',
         LOAN_EXPIREDDATE: 'Дата стухания',
         LOAN_DESCRIPTION: 'Описание',
-        MODAL__OPERATIONS: 'Операции'
+        MODAL__OPERATIONS: 'Операции',
     }
 };
 

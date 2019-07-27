@@ -1,9 +1,14 @@
 import * as React from 'react';
 import { connect, DispatchProp } from 'react-redux';
-import { Lang, GuildInfo, LangF, ITariffs, IGamerInfo, GamerRank, GuildBalanceReport, IGamersListView, IGuild, GamerStatus } from '../_services';
+import {
+    Lang, GuildInfo, LangF, ITariffs, IGamerInfo,
+    GamerRank, GuildBalanceReport, IGamersListView,
+    GamerStatus
+} from '../_services';
 import {
     Crumbs, BaseReactComp, СanvasBlock, Page, Grid,
-    Col2, TariffView, UserView, MainView, BalanceView, GamerRowView, Dialog, Button, Form, Col1, Input, Private
+    Col2, TariffView, UserView, MainView,
+    BalanceView, GamerRowView, Button, Private
 } from '../_components';
 
 import { guildInstance, gamerInstance, operationsInstance } from '../_actions';
@@ -15,6 +20,7 @@ import { AddLoanDialog } from '../_components/Dialogs/AddLoanDialog';
 import { ShowLoanDialog } from '../_components/Dialogs/LoanDialog';
 import { ShowPenaltyDialog } from '../_components/Dialogs/PenaltyDialog';
 import { AddPenaltyDialog } from '../_components/Dialogs/AddPenaltyDialog';
+import { ShowUserOperationsDialog } from '../_components/Dialogs/ShowUserOperationsDialog';
 
 interface IMainProps {
     isLoading?: boolean;
@@ -54,6 +60,10 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
             showPenaltyInfo: {
                 isDisplayed: false,
                 penaltyId: ''
+            },
+            operationsDialog :{
+                isDisplayed: false,
+                gamerId: ''
             },
         };
     }
@@ -115,6 +125,14 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
             }));
     }
 
+    showBalanceInfo = (gamerid: string) => {
+        this.setState({ operationsDialog: { isDisplayed: true, gamerId: gamerid } });
+        if (gamerid)
+            this.props.dispatch(operationsInstance.GetOperationsByUserId({
+                userId: gamerid
+            }));
+    }
+
     showPenaltyInfo = (penaltyId: string, gamerid: string) => {
         this.setState({ showPenaltyInfo: { isDisplayed: true, penaltyId: penaltyId, gamerId: gamerid } });
         if (penaltyId)
@@ -152,6 +170,7 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                         onAddPenalty={this.onAddPenalty}
                         showLoanInfo={this.showLoanInfo}
                         showPenaltyInfo={this.showPenaltyInfo}
+                        showBalanceInfo={this.showBalanceInfo}
                     />;
                 })
             }
@@ -226,6 +245,11 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                     gamerId={this.state.showPenaltyInfo.gamerId}
                     isDisplayed={this.state.showPenaltyInfo.isDisplayed}
                     onClose={() => this.setState({ showPenaltyInfo: { isDisplayed: false } })}
+                />
+                <ShowUserOperationsDialog
+                    gamerId={this.state.operationsDialog.gamerId}
+                    isDisplayed={this.state.operationsDialog.isDisplayed}
+                    onClose={() => this.setState({ operationsDialog: { isDisplayed: false } })}
                 />
             </Page>
         );

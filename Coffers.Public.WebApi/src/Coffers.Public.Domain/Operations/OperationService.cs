@@ -175,7 +175,7 @@ namespace Coffers.Public.Domain.Operations
             var overSum = penaltyOpSum + amount - penalty.Amount;
 
             gamerAccount.ChangeBalance(amount - (overSum > 0 ? overSum : 0));
-            guildAccount.ChangeBalance(-1 * (amount - (overSum > 0 ? overSum : 0));
+            guildAccount.ChangeBalance(-1 * (amount - (overSum > 0 ? overSum : 0)));
 
             await _oRepository.Save(new Operation
             {
