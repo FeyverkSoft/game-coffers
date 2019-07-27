@@ -42,7 +42,7 @@ namespace Coffers.Public.Infrastructure.Operations
             CancellationToken cancellationToken)
         {
             var q = _context.Operations.AsNoTracking()
-                .Where(_=>_.CreateDate>= query.DateFrom);
+                .Where(_ => _.CreateDate >= query.DateFrom);
 
             var result = new List<OperationView>();
             var to = await q
@@ -65,7 +65,7 @@ namespace Coffers.Public.Infrastructure.Operations
                 .Select(o => new OperationView
                 {
                     Id = o.Id,
-                    Amount = o.Amount,
+                    Amount = -1 * o.Amount,
                     DocumentId = o.DocumentId,
                     Type = o.Type,
                     Description = o.Description,

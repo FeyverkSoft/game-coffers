@@ -38,6 +38,7 @@ class MyApp extends React.Component<any, any> {
                         <Space />
                         <Private>
                             <Link to="/">{Lang('КАЗНА')}</Link>
+                            <span>&nbsp; &nbsp;</span>
                             <Link to="/bd">{Lang('ДНЯХИ')}</Link>
                         </Private>
                         <Space />

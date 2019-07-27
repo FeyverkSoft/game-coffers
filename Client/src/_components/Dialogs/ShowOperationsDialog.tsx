@@ -1,4 +1,5 @@
 
+
 import * as React from "react";
 import style from "./dialog.module.less";
 import { BaseReactComp } from "../BaseReactComponent";
@@ -79,4 +80,4 @@ const connected_ShowUserOperations = connect<{}, {}, _IProps, IStore>((store, pr
     };
 })(_UerOperationsDialog);
 
-export { connected_ShowUserOperations as ShowUserOperationsDialog }; 
+export { connected_ShowUserOperations as ShowOperationsDialog }; 

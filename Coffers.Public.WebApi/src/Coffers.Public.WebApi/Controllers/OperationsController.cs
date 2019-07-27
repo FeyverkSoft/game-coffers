@@ -48,7 +48,29 @@ namespace Coffers.Public.WebApi.Controllers
                 }, cancellationToken));
         }
 
+        /// <summary>
+        /// This method Returns all operations by guild.
+        /// </summary>
+        [HttpGet("guild/{guildId}")]
+        [ProducesResponseType(typeof(ICollection<OperationView>), 200)]
+        public async Task<ActionResult<ICollection<OperationView>>> GetGuildOperations(
+            [FromRoute] Guid guildId,
+            [FromQuery] DateTime? dateFrom,
+            CancellationToken cancellationToken)
+        {
+            var date = dateFrom ?? DateTime.UtcNow.Trunc(DateTruncType.Month);
+            var guildAcc = await _queryProcessor.Process<GuildAccountQuery, GuildAccountView>(new GuildAccountQuery
+            {
+                GuildId = guildId
+            }, cancellationToken);
 
+            return Ok(await _queryProcessor.Process<GetOperationsByAccQuery, ICollection<OperationView>>(
+                new GetOperationsByAccQuery
+                {
+                    AccountId = guildAcc.AccountId,
+                    DateFrom = date.Trunc(DateTruncType.Day)
+                }, cancellationToken));
+        }
 
         /// <summary>
         /// This method Returns all operations by document id.

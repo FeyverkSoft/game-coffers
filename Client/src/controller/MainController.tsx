@@ -20,7 +20,7 @@ import { AddLoanDialog } from '../_components/Dialogs/AddLoanDialog';
 import { ShowLoanDialog } from '../_components/Dialogs/LoanDialog';
 import { ShowPenaltyDialog } from '../_components/Dialogs/PenaltyDialog';
 import { AddPenaltyDialog } from '../_components/Dialogs/AddPenaltyDialog';
-import { ShowUserOperationsDialog } from '../_components/Dialogs/ShowUserOperationsDialog';
+import { ShowOperationsDialog } from '../_components/Dialogs/ShowOperationsDialog';
 
 interface IMainProps {
     isLoading?: boolean;
@@ -246,7 +246,7 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                     isDisplayed={this.state.showPenaltyInfo.isDisplayed}
                     onClose={() => this.setState({ showPenaltyInfo: { isDisplayed: false } })}
                 />
-                <ShowUserOperationsDialog
+                <ShowOperationsDialog
                     gamerId={this.state.operationsDialog.gamerId}
                     isDisplayed={this.state.operationsDialog.isDisplayed}
                     onClose={() => this.setState({ operationsDialog: { isDisplayed: false } })}
