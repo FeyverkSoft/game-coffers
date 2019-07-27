@@ -40,7 +40,7 @@ export class operationService {
     
     /**
      * Получить список опеаций по id пользователя
-     *  /Operations/gamer/{userId}
+     *  /Operations/guild/{userId}
      */
     static async GetOperationsByUserId(userId: string, dateFrom?: string): Promise<Array<IOperationView>> {
         let session = authService.getCurrentSession();
@@ -54,6 +54,39 @@ export class operationService {
             },
         };
         return await fetch(Config.BuildUrl(`/Operations/gamer/${userId}`, { dateFrom: dateFrom}), requestOptions)
+            .then<BaseResponse & Array<any>>(getResponse)
+            .then(data => {
+                if (data && data.type || data.traceId) {
+                    return errorHandle(data);
+                }
+                return data.map(_ => new OperationView(
+                    _.id,
+                    _.amount,
+                    _.documentId,
+                    _.type,
+                    _.description,
+                    _.createDate
+                ));
+            })
+            .catch(catchHandle);
+    }
+
+        /**
+     * Получить список опеаций по id пользователя
+     *  /Operations/guild/{userId}
+     */
+    static async GetOperationsByGuildId(guildId: string, dateFrom?: string): Promise<Array<IOperationView>> {
+        let session = authService.getCurrentSession();
+        const requestOptions: RequestInit = {
+            method: 'GET',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+                'Authorization': 'Bearer ' + session.sessionId
+            },
+        };
+        return await fetch(Config.BuildUrl(`/Operations/guild/${guildId}`, { dateFrom: dateFrom}), requestOptions)
             .then<BaseResponse & Array<any>>(getResponse)
             .then(data => {
                 if (data && data.type || data.traceId) {

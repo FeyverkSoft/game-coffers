@@ -11,7 +11,6 @@ import { IOperation } from "../../_reducers/operation/operations.reducer";
 
 interface IProps extends React.Props<any> {
     isDisplayed: boolean;
-    gamerId: string;
     operations: IOperation;
     onClose: Function;
     [id: string]: any;
@@ -74,10 +73,27 @@ const connected_ShowUserOperations = connect<{}, {}, _IProps, IStore>((store, pr
     var opG = store.operations.gamers[props.gamerId];
     return {
         isDisplayed: props.isDisplayed,
-        gamerId: props.gamerId,
+        onClose: props.onClose,
+        operations: opG != null ? opG : { items: [] }
+    };
+})(_UerOperationsDialog);
+
+
+interface _GIProps extends React.Props<any> {
+    isDisplayed: boolean;
+    guildId: string;
+    onClose: Function;
+    [id: string]: any;
+}
+const connected_ShowGuildOperations = connect<{}, {}, _GIProps, IStore>((store, props): IProps => {
+    var opG = store.operations.guilds[props.guildId];
+    return {
+        isDisplayed: props.isDisplayed,
         onClose: props.onClose,
         operations: opG != null ? opG : { items: [] }
     };
 })(_UerOperationsDialog);
 
 export { connected_ShowUserOperations as ShowOperationsDialog }; 
+
+export { connected_ShowGuildOperations as ShowGuildOperationsDialog }; 

@@ -6,6 +6,7 @@ import { IHolded } from "../../core";
 
 interface IBalanceViewProps extends React.Props<any> {
     balance: GuildBalanceReport & IHolded;
+    showGuildOperations(): void;
     [id: string]: any;
 }
 /// Плашка с информацией о пользователе
@@ -22,8 +23,11 @@ export class BalanceView extends BaseReactComp<IBalanceViewProps> {
                 direction="vertical"
             >
                 <Col1>
-                    <NamedValue name={Lang("MAIN_PAGE_GUILD_BALANCE")}>
-                        {LangF("MAIN_PAGE_GUILD_B_F", balance.balance, balance.gamersBalance)}
+                    <NamedValue
+                        name={Lang("MAIN_PAGE_GUILD_BALANCE")}>
+                        <div onClick={() => this.props.showGuildOperations()}>
+                            {LangF("MAIN_PAGE_GUILD_B_F", balance.balance, balance.gamersBalance)}
+                        </div>
                     </NamedValue>
                 </Col1>
                 <Col1>

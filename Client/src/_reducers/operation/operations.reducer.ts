@@ -10,6 +10,7 @@ export interface IOperation extends IHolded {
 export class IOperationsStore {
     operations: IDictionary<IOperation> = {};
     gamers: IDictionary<IOperation> = {};
+    guilds: IDictionary<IOperation> = {};
 }
 
 export function operations(state: IOperationsStore = new IOperationsStore(), action: IAction<OperationActionsType>):
@@ -54,6 +55,25 @@ export function operations(state: IOperationsStore = new IOperationsStore(), act
             if (clonedState.gamers[action.id] == undefined)
                 clonedState.gamers[action.id] = { items: [] };
             clonedState.gamers[action.id].holding = false;
+            return clonedState;
+
+        case OperationActionsType.PROC_GET_OPERATIONS_BY_GUILD:
+            if (clonedState.guilds[action.id] == undefined)
+                clonedState.guilds[action.id] = { items: [] };
+            clonedState.guilds[action.id].holding = true;
+            return clonedState;
+
+        case OperationActionsType.SUCC_GET_OPERATIONS_BY_GUILD:
+            if (clonedState.guilds[action.id] == undefined)
+                clonedState.guilds[action.id] = { items: [] };
+            clonedState.guilds[action.id].holding = false;
+            clonedState.guilds[action.id] = { items: action.operations };
+            return clonedState;
+
+        case OperationActionsType.FAILED_GET_OPERATIONS_BY_GUILD:
+            if (clonedState.guilds[action.id] == undefined)
+                clonedState.guilds[action.id] = { items: [] };
+            clonedState.guilds[action.id].holding = false;
             return clonedState;
         default:
             return state
