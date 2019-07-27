@@ -38,7 +38,7 @@ namespace Coffers.Public.WebApi.Models.Gamers
         {
             RuleFor(r => r.Amount)
                 .GreaterThan(0)
-                .LessThan(Int32.MaxValue);// 2 лярда это и так много
+                .LessThan(int.MaxValue);// 2 лярда это и так много
 
             RuleFor(r => r.ExpiredDate)
                 .NotEmpty()

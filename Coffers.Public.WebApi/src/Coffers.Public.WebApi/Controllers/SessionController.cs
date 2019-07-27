@@ -36,7 +36,7 @@ namespace Coffers.Public.WebApi.Controllers
         public async Task<IActionResult> Post([FromBody] AuthBinding binding, CancellationToken cancellationToken)
         {
             var gamer = await _authorizationRepository.FindGamer(binding.Login, cancellationToken);
-            if (gamer == null || String.IsNullOrEmpty(gamer.Password))
+            if (gamer == null || string.IsNullOrEmpty(gamer.Password))
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.Forbidden, "");
 
             var crypt = new SHA256Managed();
@@ -83,7 +83,7 @@ namespace Coffers.Public.WebApi.Controllers
         {
 #warning Придумать что-то лучше...
             var gamer = await _authorizationRepository.FindGamer(binding.Login, cancellationToken);
-            if (gamer == null || gamer.Id != userId || !String.IsNullOrEmpty(gamer.Password))
+            if (gamer == null || gamer.Id != userId || !string.IsNullOrEmpty(gamer.Password))
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.Forbidden, "");
 
             var crypt = new SHA256Managed();

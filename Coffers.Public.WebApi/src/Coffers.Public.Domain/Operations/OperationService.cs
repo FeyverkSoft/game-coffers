@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Coffers.Types.Account;
@@ -169,16 +170,18 @@ namespace Coffers.Public.Domain.Operations
             var gamerAccount = await _oRepository.GetAccount(gamerAccountId, default);
             var guildAccount = await _oRepository.GetAccount(guildAccountId, default);
             var penalty = await _oRepository.GetPenalty(penaltyId, default);
-            var penaltyOpSum = (await _oRepository.GetOperationWithDocIdAndType(penaltyId, OperationType.Penalty)).Sum(_ => _.Amount);
+            var penaltyOpSum = (await _oRepository.GetOperationWithDocIdAndType(penaltyId, OperationType.Penalty))
+                .Sum(_ => _.Amount);
             var overSum = penaltyOpSum + amount - penalty.Amount;
-            gamerAccount.ChangeBalance(overSum >= 0 ? overSum : -1 * amount);
-            guildAccount.ChangeBalance(overSum >= 0 ? 0 : amount);
+
+            gamerAccount.ChangeBalance(amount - (overSum > 0 ? overSum : 0));
+            guildAccount.ChangeBalance(-1 * (amount - (overSum > 0 ? overSum : 0));
 
             await _oRepository.Save(new Operation
             {
                 Id = Guid.NewGuid(),
                 DocumentId = penaltyId,
-                Amount = amount,
+                Amount = amount - (overSum > 0 ? overSum : 0),
                 OperationDate = DateTime.UtcNow,
                 Type = OperationType.Penalty,
                 Description = description,
@@ -195,10 +198,64 @@ namespace Coffers.Public.Domain.Operations
             });
         }
 
-        public async Task AddLoanOperation(Guid fromGamerAccountId, Guid guildAccAccountId, Guid loanId,
+        public async Task AddLoanOperation(Guid gamerAccountId, Guid guildAccAccountId, Guid loanId,
             Decimal amount, String description)
         {
-            throw new NotImplementedException();
+            var operations = new List<Operation>();
+            var gamerAccount = await _oRepository.GetAccount(gamerAccountId, default);
+            var guildAccount = await _oRepository.GetAccount(guildAccAccountId, default);
+            var loan = await _oRepository.GetLoan(loanId, default);
+
+            var lA = 0m;
+            if (loan.Account.Balance <= 0)
+                lA = 0;
+            else
+            {
+                if (loan.Account.Balance >= amount)
+                    lA = amount;
+                if (loan.Account.Balance < amount)
+                    lA = loan.Account.Balance;
+            }
+
+            loan.Account.ChangeBalance(-1 * lA);
+
+            if (amount - lA > 0)
+            {
+                operations.Add(new Operation
+                {
+                    Id = Guid.NewGuid(),
+                    Amount = amount - lA,
+                    OperationDate = DateTime.UtcNow,
+                    Type = OperationType.Other,
+                    Description = $"Сдача с погашения займа#{loanId}",
+                    ToAccount = gamerAccount,
+                });
+                gamerAccount.ChangeBalance(amount - lA);
+            }
+
+            guildAccount.ChangeBalance(lA);
+            operations.Add(new Operation
+            {
+                Id = Guid.NewGuid(),
+                DocumentId = loanId,
+                Amount = lA,
+                OperationDate = DateTime.UtcNow,
+                Type = OperationType.Penalty,
+                Description = description,
+                FromAccount = loan.Account,
+                ToAccount = guildAccount,
+            });
+
+            await _oRepository.Save(operations)
+                .ContinueWith(async c =>
+            {
+                if (loan.Account.Balance <= 0)
+                {
+                    c.Wait();
+                    loan.LoanStatus = LoanStatus.Paid;
+                    await _oRepository.SaveLoan(loan);
+                }
+            });
         }
     }
 }

@@ -94,6 +94,7 @@ class _LoanDialog extends BaseReactComp<IProps> {
                         <NamedValue name={Lang("MODAL__OPERATIONS")}>
                             {this.props.operations.map(_ => (
                                 <div
+                                    key={_.id}
                                     title={_.description}
                                     className={style['operations']}
                                 >

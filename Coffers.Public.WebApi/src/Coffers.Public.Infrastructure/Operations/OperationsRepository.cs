@@ -42,6 +42,19 @@ namespace Coffers.Public.Infrastructure.Operations
         }
 
         /// <summary>
+        /// Сохраняет операции в бд
+        /// </summary>
+        /// <param name="operation"></param>
+        /// <returns></returns>
+        public async Task Save(ICollection<Operation> operation)
+        {
+            var entry = _context.Entry(operation);
+            if (entry.State == EntityState.Detached)
+                _context.Operations.AddRange(operation);
+            await _context.SaveChangesAsync();
+        }
+
+        /// <summary>
         /// Получить информацию об операциях по документу
         /// </summary>
         /// <param name="id"></param>
@@ -68,6 +81,22 @@ namespace Coffers.Public.Infrastructure.Operations
             var entry = _context.Entry(penalty);
             if (entry.State == EntityState.Detached)
                 _context.Penalties.Add(penalty);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<Loan> GetLoan(Guid loanId, CancellationToken cancellationToken)
+        {
+            return await _context.Loans
+                .Include(_=>_.Account)
+                .Where(_ => _.Id == loanId)
+                .FirstOrDefaultAsync(cancellationToken);
+        }
+
+        public async Task SaveLoan(Loan loan)
+        {
+            var entry = _context.Entry(loan);
+            if (entry.State == EntityState.Detached)
+                _context.Loans.Add(loan);
             await _context.SaveChangesAsync();
         }
     }

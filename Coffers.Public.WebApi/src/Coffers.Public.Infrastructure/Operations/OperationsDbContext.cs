@@ -73,6 +73,42 @@ namespace Coffers.Public.Infrastructure.Operations
                     .IsConcurrencyToken()
                     .IsRequired();
             });
+
+            modelBuilder.Entity<Loan>(b =>
+            {
+                b.ToTable(nameof(Loan));
+
+                b.HasIndex(gt => gt.Id)
+                    .IsUnique();
+                b.HasKey(gt => gt.Id);
+                b.Property(gt => gt.Id)
+                    .HasColumnName("Id")
+                    .IsRequired();
+
+                b.Property(t => t.LoanStatus)
+                    .HasConversion<String>()
+                    .IsRequired();
+
+                b.HasOne(_ => _.Account)
+                    .WithMany()
+                    .HasPrincipalKey(_ => _.Id);
+            });
+
+            modelBuilder.Entity<Penalty>(b =>
+            {
+                b.ToTable(nameof(Penalty));
+
+                b.HasIndex(gt => gt.Id)
+                    .IsUnique();
+                b.HasKey(gt => gt.Id);
+                b.Property(gt => gt.Id)
+                    .HasColumnName("Id")
+                    .IsRequired();
+
+                b.Property(t => t.PenaltyStatus)
+                    .HasConversion<String>()
+                    .IsRequired();
+            });
         }
     }
 }

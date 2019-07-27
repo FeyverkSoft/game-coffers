@@ -11,9 +11,9 @@ namespace Coffers.DB.Migrations.Migrations
                 name: "Account",
                 columns: table => new
                 {
-                    Id = table.Column<byte[]>(nullable: false),
-                    Balance = table.Column<decimal>(nullable: false, defaultValue: 0m),
-                    ConcurrencyTokens = table.Column<byte[]>(nullable: false)
+                    Id = table.Column<Byte[]>(nullable: false),
+                    Balance = table.Column<Decimal>(nullable: false, defaultValue: 0m),
+                    ConcurrencyTokens = table.Column<Byte[]>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -24,10 +24,10 @@ namespace Coffers.DB.Migrations.Migrations
                 name: "Tariff",
                 columns: table => new
                 {
-                    Id = table.Column<byte[]>(nullable: false),
-                    LoanTax = table.Column<decimal>(nullable: false, defaultValue: 0m),
-                    ExpiredLoanTax = table.Column<decimal>(nullable: false, defaultValue: 0m),
-                    Tax = table.Column<string>(maxLength: 4096, nullable: false, defaultValue: "{}")
+                    Id = table.Column<Byte[]>(nullable: false),
+                    LoanTax = table.Column<Decimal>(nullable: false, defaultValue: 0m),
+                    ExpiredLoanTax = table.Column<Decimal>(nullable: false, defaultValue: 0m),
+                    Tax = table.Column<String>(maxLength: 4096, nullable: false, defaultValue: "{}")
                 },
                 constraints: table =>
                 {
@@ -38,15 +38,15 @@ namespace Coffers.DB.Migrations.Migrations
                 name: "Operation",
                 columns: table => new
                 {
-                    Id = table.Column<byte[]>(nullable: false),
+                    Id = table.Column<Byte[]>(nullable: false),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     OperationDate = table.Column<DateTime>(nullable: false),
-                    Amount = table.Column<decimal>(nullable: false, defaultValue: 0m),
-                    FromAccountId = table.Column<byte[]>(nullable: true),
-                    ToAccountId = table.Column<byte[]>(nullable: true),
-                    Type = table.Column<string>(maxLength: 32, nullable: false),
-                    DocumentId = table.Column<byte[]>(nullable: true),
-                    Description = table.Column<string>(maxLength: 512, nullable: true)
+                    Amount = table.Column<Decimal>(nullable: false, defaultValue: 0m),
+                    FromAccountId = table.Column<Byte[]>(nullable: true),
+                    ToAccountId = table.Column<Byte[]>(nullable: true),
+                    Type = table.Column<String>(maxLength: 32, nullable: false),
+                    DocumentId = table.Column<Byte[]>(nullable: true),
+                    Description = table.Column<String>(maxLength: 512, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -69,13 +69,13 @@ namespace Coffers.DB.Migrations.Migrations
                 name: "GuildTariff",
                 columns: table => new
                 {
-                    Id = table.Column<byte[]>(nullable: false),
+                    Id = table.Column<Byte[]>(nullable: false),
                     CreateDate = table.Column<DateTime>(nullable: false),
-                    LeaderTariffId = table.Column<byte[]>(nullable: true),
-                    OfficerTariffId = table.Column<byte[]>(nullable: true),
-                    VeteranTariffId = table.Column<byte[]>(nullable: true),
-                    SoldierTariffId = table.Column<byte[]>(nullable: true),
-                    BeginnerTariffId = table.Column<byte[]>(nullable: true)
+                    LeaderTariffId = table.Column<Byte[]>(nullable: true),
+                    OfficerTariffId = table.Column<Byte[]>(nullable: true),
+                    VeteranTariffId = table.Column<Byte[]>(nullable: true),
+                    SoldierTariffId = table.Column<Byte[]>(nullable: true),
+                    BeginnerTariffId = table.Column<Byte[]>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -116,14 +116,14 @@ namespace Coffers.DB.Migrations.Migrations
                 name: "Guild",
                 columns: table => new
                 {
-                    Id = table.Column<byte[]>(nullable: false),
-                    TariffId = table.Column<byte[]>(nullable: true),
-                    GuildAccountId = table.Column<byte[]>(nullable: true),
+                    Id = table.Column<Byte[]>(nullable: false),
+                    TariffId = table.Column<Byte[]>(nullable: true),
+                    GuildAccountId = table.Column<Byte[]>(nullable: true),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     UpdateDate = table.Column<DateTime>(nullable: false),
-                    Name = table.Column<string>(maxLength: 512, nullable: false),
-                    Status = table.Column<string>(maxLength: 32, nullable: false),
-                    RecruitmentStatus = table.Column<string>(maxLength: 32, nullable: false)
+                    Name = table.Column<String>(maxLength: 512, nullable: false),
+                    Status = table.Column<String>(maxLength: 32, nullable: false),
+                    RecruitmentStatus = table.Column<String>(maxLength: 32, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -146,19 +146,19 @@ namespace Coffers.DB.Migrations.Migrations
                 name: "Gamer",
                 columns: table => new
                 {
-                    Id = table.Column<byte[]>(nullable: false),
-                    GuildId = table.Column<byte[]>(nullable: true),
-                    DefaultAccountId = table.Column<byte[]>(nullable: true),
+                    Id = table.Column<Byte[]>(nullable: false),
+                    GuildId = table.Column<Byte[]>(nullable: true),
+                    DefaultAccountId = table.Column<Byte[]>(nullable: true),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     UpdateDate = table.Column<DateTime>(nullable: false),
                     DeletedDate = table.Column<DateTime>(nullable: true),
-                    Name = table.Column<string>(maxLength: 64, nullable: true),
-                    Rank = table.Column<string>(maxLength: 32, nullable: false),
-                    Status = table.Column<string>(maxLength: 32, nullable: false),
+                    Name = table.Column<String>(maxLength: 64, nullable: true),
+                    Rank = table.Column<String>(maxLength: 32, nullable: false),
+                    Status = table.Column<String>(maxLength: 32, nullable: false),
                     DateOfBirth = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)),
-                    Login = table.Column<string>(maxLength: 64, nullable: false),
-                    Password = table.Column<string>(maxLength: 128, nullable: true),
-                    Roles = table.Column<string>(maxLength: 512, nullable: true)
+                    Login = table.Column<String>(maxLength: 64, nullable: false),
+                    Password = table.Column<String>(maxLength: 128, nullable: true),
+                    Roles = table.Column<String>(maxLength: 512, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -181,11 +181,11 @@ namespace Coffers.DB.Migrations.Migrations
                 name: "Character",
                 columns: table => new
                 {
-                    Id = table.Column<byte[]>(nullable: false),
-                    Name = table.Column<string>(maxLength: 64, nullable: false),
-                    ClassName = table.Column<string>(maxLength: 64, nullable: false),
-                    Status = table.Column<string>(maxLength: 32, nullable: false),
-                    GamerId = table.Column<byte[]>(nullable: true)
+                    Id = table.Column<Byte[]>(nullable: false),
+                    Name = table.Column<String>(maxLength: 64, nullable: false),
+                    ClassName = table.Column<String>(maxLength: 64, nullable: false),
+                    Status = table.Column<String>(maxLength: 32, nullable: false),
+                    GamerId = table.Column<Byte[]>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -202,9 +202,9 @@ namespace Coffers.DB.Migrations.Migrations
                 name: "History",
                 columns: table => new
                 {
-                    Id = table.Column<byte[]>(nullable: false),
-                    GamerId = table.Column<byte[]>(nullable: true),
-                    Action = table.Column<string>(maxLength: 1024, nullable: false),
+                    Id = table.Column<Byte[]>(nullable: false),
+                    GamerId = table.Column<Byte[]>(nullable: true),
+                    Action = table.Column<String>(maxLength: 1024, nullable: false),
                     CreateDate = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
@@ -222,19 +222,19 @@ namespace Coffers.DB.Migrations.Migrations
                 name: "Loan",
                 columns: table => new
                 {
-                    Id = table.Column<byte[]>(nullable: false),
-                    GamerId = table.Column<byte[]>(nullable: true),
-                    TariffId = table.Column<byte[]>(nullable: true),
+                    Id = table.Column<Byte[]>(nullable: false),
+                    GamerId = table.Column<Byte[]>(nullable: true),
+                    TariffId = table.Column<Byte[]>(nullable: true),
                     CreateDate = table.Column<DateTime>(nullable: false),
-                    Description = table.Column<string>(maxLength: 512, nullable: true),
+                    Description = table.Column<String>(maxLength: 512, nullable: true),
                     UpdateDate = table.Column<DateTime>(nullable: false),
                     BorrowDate = table.Column<DateTime>(nullable: false),
                     ExpiredDate = table.Column<DateTime>(nullable: false),
-                    Amount = table.Column<decimal>(nullable: false, defaultValue: 0m),
-                    AccountId = table.Column<byte[]>(nullable: true),
-                    TaxAmount = table.Column<decimal>(nullable: false, defaultValue: 0m),
-                    PenaltyAmount = table.Column<decimal>(nullable: false, defaultValue: 0m),
-                    LoanStatus = table.Column<string>(maxLength: 32, nullable: false)
+                    Amount = table.Column<Decimal>(nullable: false, defaultValue: 0m),
+                    AccountId = table.Column<Byte[]>(nullable: true),
+                    TaxAmount = table.Column<Decimal>(nullable: false, defaultValue: 0m),
+                    PenaltyAmount = table.Column<Decimal>(nullable: false, defaultValue: 0m),
+                    LoanStatus = table.Column<String>(maxLength: 32, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -263,13 +263,13 @@ namespace Coffers.DB.Migrations.Migrations
                 name: "Penalty",
                 columns: table => new
                 {
-                    Id = table.Column<byte[]>(nullable: false),
-                    GamerId = table.Column<byte[]>(nullable: true),
-                    Amount = table.Column<decimal>(nullable: false, defaultValue: 0m),
-                    AccountId = table.Column<byte[]>(nullable: true),
+                    Id = table.Column<Byte[]>(nullable: false),
+                    GamerId = table.Column<Byte[]>(nullable: true),
+                    Amount = table.Column<Decimal>(nullable: false, defaultValue: 0m),
+                    AccountId = table.Column<Byte[]>(nullable: true),
                     CreateDate = table.Column<DateTime>(nullable: false),
-                    PenaltyStatus = table.Column<string>(maxLength: 32, nullable: false),
-                    Description = table.Column<string>(maxLength: 2048, nullable: true)
+                    PenaltyStatus = table.Column<String>(maxLength: 32, nullable: false),
+                    Description = table.Column<String>(maxLength: 2048, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -292,11 +292,11 @@ namespace Coffers.DB.Migrations.Migrations
                 name: "Session",
                 columns: table => new
                 {
-                    SessionId = table.Column<byte[]>(nullable: false),
-                    GamerId = table.Column<byte[]>(nullable: true),
+                    SessionId = table.Column<Byte[]>(nullable: false),
+                    GamerId = table.Column<Byte[]>(nullable: true),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     ExpireDate = table.Column<DateTime>(nullable: false),
-                    Ip = table.Column<string>(maxLength: 128, nullable: true)
+                    Ip = table.Column<String>(maxLength: 128, nullable: true)
                 },
                 constraints: table =>
                 {

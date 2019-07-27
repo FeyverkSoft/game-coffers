@@ -23,7 +23,7 @@ export class BalanceView extends BaseReactComp<IBalanceViewProps> {
             >
                 <Col1>
                     <NamedValue name={Lang("MAIN_PAGE_GUILD_BALANCE")}>
-                        {balance.balance || 0}
+                        {LangF("MAIN_PAGE_GUILD_B_F", balance.balance, balance.gamersBalance)}
                     </NamedValue>
                 </Col1>
                 <Col1>

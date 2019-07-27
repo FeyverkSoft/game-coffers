@@ -96,6 +96,8 @@ namespace Coffers.Public.Infrastructure.Guilds
                 .Include(g => g.Gamers)
                 .ThenInclude(gm => gm.Characters)
                 .Include(g => g.Gamers)
+                .ThenInclude(gm => gm.DefaultAccount)
+                .Include(g => g.Gamers)
                 .ThenInclude(gm => gm.Loans);
 
             var skipLoanStat = new[] { LoanStatus.Paid, LoanStatus.Canceled };
@@ -114,7 +116,8 @@ namespace Coffers.Public.Infrastructure.Guilds
                         Characters = gm.Characters.Count(c => !skipChStat.Contains(c.Status)),
                     }).ToList(),
                 TaxAmount = g.GuildAccount.ToOperations.Where(o => o.Type == OperationType.Tax && o.OperationDate >= DateTime.UtcNow.Trunc(DateTruncType.Month))
-                    .Sum(o => o.Amount)
+                    .Sum(o => o.Amount),
+                GamersBalance = g.Gamers.Sum((_ => _.DefaultAccount.Balance))
             })
             .FirstOrDefaultAsync(cancellationToken);
 
@@ -136,6 +139,7 @@ namespace Coffers.Public.Infrastructure.Guilds
             return new GuildBalanceView
             {
                 Balance = temp.Balance,
+                GamersBalance = temp.GamersBalance,
                 ExpectedTaxAmount = temp.ExpectedTaxAmount.Sum(gt => CalcTax(tariff.FirstOrDefault()?.Tariff, gt.Rank, gt.Characters)),
                 ActiveLoansAmount = temp.ActiveLoansAmount,
                 TaxAmount = temp.TaxAmount

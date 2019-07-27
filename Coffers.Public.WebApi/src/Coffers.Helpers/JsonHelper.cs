@@ -45,7 +45,7 @@ namespace Coffers.Helpers
         /// <returns></returns>
         public static T ParseJson<T>(this String json)
         {
-            if (String.IsNullOrEmpty(json))
+            if (string.IsNullOrEmpty(json))
                 return default;
             var serializer = new JsonSerializer
             {

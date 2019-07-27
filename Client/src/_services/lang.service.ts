@@ -35,6 +35,7 @@ const locString: any = {
         CLASS_NAME: 'Класс',
         MAIN_PAGE_EXPECTED_TAX: 'Налоги: ',
         MAIN_PAGE_EXPECTED_TAX_FORMAT: "{0} из {1}",
+        MAIN_PAGE_GUILD_B_F: '{0} / {1}',
         TARIFF_TITLE: 'Тариф',
         TARIFF_TAX: 'Налог за 1 чара:',
         TARIFF_LOAN_TAX: 'Стоимость займа в день',

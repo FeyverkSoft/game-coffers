@@ -21,6 +21,12 @@ namespace Coffers.Public.Domain.Operations
         /// <param name="operation"></param>
         /// <returns></returns>
         Task Save(Operation operation);
+        /// <summary>
+        /// Сохраняет операции в бд
+        /// </summary>
+        /// <param name="operation"></param>
+        /// <returns></returns>
+        Task Save(ICollection<Operation> operation);
 
         /// <summary>
         /// Получить информацию об операциях по документу
@@ -32,5 +38,7 @@ namespace Coffers.Public.Domain.Operations
 
         Task<Penalty> GetPenalty(Guid penaltyId, CancellationToken cancellationToken);
         Task SavePenalty(Penalty penalty);
+        Task<Loan> GetLoan(Guid loanId, CancellationToken cancellationToken);
+        Task SaveLoan(Loan loan);
     }
 }

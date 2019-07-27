@@ -18,19 +18,19 @@ namespace Coffers.DB.Migrations.Migrations
 
             modelBuilder.Entity("Coffers.DB.Migrations.Entities.Account", b =>
                 {
-                    b.Property<byte[]>("Id")
+                    b.Property<Byte[]>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)))
+                        .HasConversion(new ValueConverter<Byte[], Byte[]>(v => default(Byte[]), v => default(Byte[]), new ConverterMappingHints(size: 16)))
                         .HasColumnName("Id");
 
-                    b.Property<decimal>("Balance")
+                    b.Property<Decimal>("Balance")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(0m);
 
-                    b.Property<byte[]>("ConcurrencyTokens")
+                    b.Property<Byte[]>("ConcurrencyTokens")
                         .IsConcurrencyToken()
                         .IsRequired()
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
+                        .HasConversion(new ValueConverter<Byte[], Byte[]>(v => default(Byte[]), v => default(Byte[]), new ConverterMappingHints(size: 16)));
 
                     b.HasKey("Id");
 
@@ -42,23 +42,23 @@ namespace Coffers.DB.Migrations.Migrations
 
             modelBuilder.Entity("Coffers.DB.Migrations.Entities.Character", b =>
                 {
-                    b.Property<byte[]>("Id")
+                    b.Property<Byte[]>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)))
+                        .HasConversion(new ValueConverter<Byte[], Byte[]>(v => default(Byte[]), v => default(Byte[]), new ConverterMappingHints(size: 16)))
                         .HasColumnName("Id");
 
-                    b.Property<string>("ClassName")
+                    b.Property<String>("ClassName")
                         .IsRequired()
                         .HasMaxLength(64);
 
-                    b.Property<byte[]>("GamerId")
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
+                    b.Property<Byte[]>("GamerId")
+                        .HasConversion(new ValueConverter<Byte[], Byte[]>(v => default(Byte[]), v => default(Byte[]), new ConverterMappingHints(size: 16)));
 
-                    b.Property<string>("Name")
+                    b.Property<String>("Name")
                         .IsRequired()
                         .HasMaxLength(64);
 
-                    b.Property<string>("Status")
+                    b.Property<String>("Status")
                         .IsRequired()
                         .HasMaxLength(32);
 
@@ -74,9 +74,9 @@ namespace Coffers.DB.Migrations.Migrations
 
             modelBuilder.Entity("Coffers.DB.Migrations.Entities.Gamer", b =>
                 {
-                    b.Property<byte[]>("Id")
+                    b.Property<Byte[]>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)))
+                        .HasConversion(new ValueConverter<Byte[], Byte[]>(v => default(Byte[]), v => default(Byte[]), new ConverterMappingHints(size: 16)))
                         .HasColumnName("Id");
 
                     b.Property<DateTime>("CreateDate");
@@ -85,32 +85,32 @@ namespace Coffers.DB.Migrations.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
-                    b.Property<byte[]>("DefaultAccountId")
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
+                    b.Property<Byte[]>("DefaultAccountId")
+                        .HasConversion(new ValueConverter<Byte[], Byte[]>(v => default(Byte[]), v => default(Byte[]), new ConverterMappingHints(size: 16)));
 
                     b.Property<DateTime?>("DeletedDate");
 
-                    b.Property<byte[]>("GuildId")
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
+                    b.Property<Byte[]>("GuildId")
+                        .HasConversion(new ValueConverter<Byte[], Byte[]>(v => default(Byte[]), v => default(Byte[]), new ConverterMappingHints(size: 16)));
 
-                    b.Property<string>("Login")
+                    b.Property<String>("Login")
                         .IsRequired()
                         .HasMaxLength(64);
 
-                    b.Property<string>("Name")
+                    b.Property<String>("Name")
                         .HasMaxLength(64);
 
-                    b.Property<string>("Password")
+                    b.Property<String>("Password")
                         .HasMaxLength(128);
 
-                    b.Property<string>("Rank")
+                    b.Property<String>("Rank")
                         .IsRequired()
                         .HasMaxLength(32);
 
-                    b.Property<string>("Roles")
+                    b.Property<String>("Roles")
                         .HasMaxLength(512);
 
-                    b.Property<string>("Status")
+                    b.Property<String>("Status")
                         .IsRequired()
                         .HasMaxLength(32);
 
@@ -130,33 +130,33 @@ namespace Coffers.DB.Migrations.Migrations
 
             modelBuilder.Entity("Coffers.DB.Migrations.Entities.Guild", b =>
                 {
-                    b.Property<byte[]>("Id")
+                    b.Property<Byte[]>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)))
+                        .HasConversion(new ValueConverter<Byte[], Byte[]>(v => default(Byte[]), v => default(Byte[]), new ConverterMappingHints(size: 16)))
                         .HasColumnName("Id");
 
                     b.Property<DateTime>("CreateDate");
 
-                    b.Property<byte[]>("GuildAccountId")
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
+                    b.Property<Byte[]>("GuildAccountId")
+                        .HasConversion(new ValueConverter<Byte[], Byte[]>(v => default(Byte[]), v => default(Byte[]), new ConverterMappingHints(size: 16)));
 
-                    b.Property<string>("Name")
+                    b.Property<String>("Name")
                         .IsRequired()
                         .HasColumnName("Name")
                         .HasMaxLength(512);
 
-                    b.Property<string>("RecruitmentStatus")
+                    b.Property<String>("RecruitmentStatus")
                         .IsRequired()
                         .HasColumnName("RecruitmentStatus")
                         .HasMaxLength(32);
 
-                    b.Property<string>("Status")
+                    b.Property<String>("Status")
                         .IsRequired()
                         .HasColumnName("Status")
                         .HasMaxLength(32);
 
-                    b.Property<byte[]>("TariffId")
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
+                    b.Property<Byte[]>("TariffId")
+                        .HasConversion(new ValueConverter<Byte[], Byte[]>(v => default(Byte[]), v => default(Byte[]), new ConverterMappingHints(size: 16)));
 
                     b.Property<DateTime>("UpdateDate");
 
@@ -174,27 +174,27 @@ namespace Coffers.DB.Migrations.Migrations
 
             modelBuilder.Entity("Coffers.DB.Migrations.Entities.GuildTariff", b =>
                 {
-                    b.Property<byte[]>("Id")
+                    b.Property<Byte[]>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)))
+                        .HasConversion(new ValueConverter<Byte[], Byte[]>(v => default(Byte[]), v => default(Byte[]), new ConverterMappingHints(size: 16)))
                         .HasColumnName("Id");
 
-                    b.Property<byte[]>("BeginnerTariffId")
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
+                    b.Property<Byte[]>("BeginnerTariffId")
+                        .HasConversion(new ValueConverter<Byte[], Byte[]>(v => default(Byte[]), v => default(Byte[]), new ConverterMappingHints(size: 16)));
 
                     b.Property<DateTime>("CreateDate");
 
-                    b.Property<byte[]>("LeaderTariffId")
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
+                    b.Property<Byte[]>("LeaderTariffId")
+                        .HasConversion(new ValueConverter<Byte[], Byte[]>(v => default(Byte[]), v => default(Byte[]), new ConverterMappingHints(size: 16)));
 
-                    b.Property<byte[]>("OfficerTariffId")
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
+                    b.Property<Byte[]>("OfficerTariffId")
+                        .HasConversion(new ValueConverter<Byte[], Byte[]>(v => default(Byte[]), v => default(Byte[]), new ConverterMappingHints(size: 16)));
 
-                    b.Property<byte[]>("SoldierTariffId")
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
+                    b.Property<Byte[]>("SoldierTariffId")
+                        .HasConversion(new ValueConverter<Byte[], Byte[]>(v => default(Byte[]), v => default(Byte[]), new ConverterMappingHints(size: 16)));
 
-                    b.Property<byte[]>("VeteranTariffId")
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
+                    b.Property<Byte[]>("VeteranTariffId")
+                        .HasConversion(new ValueConverter<Byte[], Byte[]>(v => default(Byte[]), v => default(Byte[]), new ConverterMappingHints(size: 16)));
 
                     b.HasKey("Id");
 
@@ -216,19 +216,19 @@ namespace Coffers.DB.Migrations.Migrations
 
             modelBuilder.Entity("Coffers.DB.Migrations.Entities.History", b =>
                 {
-                    b.Property<byte[]>("Id")
+                    b.Property<Byte[]>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)))
+                        .HasConversion(new ValueConverter<Byte[], Byte[]>(v => default(Byte[]), v => default(Byte[]), new ConverterMappingHints(size: 16)))
                         .HasColumnName("Id");
 
-                    b.Property<string>("Action")
+                    b.Property<String>("Action")
                         .IsRequired()
                         .HasMaxLength(1024);
 
                     b.Property<DateTime>("CreateDate");
 
-                    b.Property<byte[]>("GamerId")
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
+                    b.Property<Byte[]>("GamerId")
+                        .HasConversion(new ValueConverter<Byte[], Byte[]>(v => default(Byte[]), v => default(Byte[]), new ConverterMappingHints(size: 16)));
 
                     b.HasKey("Id");
 
@@ -242,15 +242,15 @@ namespace Coffers.DB.Migrations.Migrations
 
             modelBuilder.Entity("Coffers.DB.Migrations.Entities.Loan", b =>
                 {
-                    b.Property<byte[]>("Id")
+                    b.Property<Byte[]>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)))
+                        .HasConversion(new ValueConverter<Byte[], Byte[]>(v => default(Byte[]), v => default(Byte[]), new ConverterMappingHints(size: 16)))
                         .HasColumnName("Id");
 
-                    b.Property<byte[]>("AccountId")
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
+                    b.Property<Byte[]>("AccountId")
+                        .HasConversion(new ValueConverter<Byte[], Byte[]>(v => default(Byte[]), v => default(Byte[]), new ConverterMappingHints(size: 16)));
 
-                    b.Property<decimal>("Amount")
+                    b.Property<Decimal>("Amount")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(0m);
 
@@ -258,26 +258,26 @@ namespace Coffers.DB.Migrations.Migrations
 
                     b.Property<DateTime>("CreateDate");
 
-                    b.Property<string>("Description")
+                    b.Property<String>("Description")
                         .HasMaxLength(512);
 
                     b.Property<DateTime>("ExpiredDate");
 
-                    b.Property<byte[]>("GamerId")
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
+                    b.Property<Byte[]>("GamerId")
+                        .HasConversion(new ValueConverter<Byte[], Byte[]>(v => default(Byte[]), v => default(Byte[]), new ConverterMappingHints(size: 16)));
 
-                    b.Property<string>("LoanStatus")
+                    b.Property<String>("LoanStatus")
                         .IsRequired()
                         .HasMaxLength(32);
 
-                    b.Property<decimal>("PenaltyAmount")
+                    b.Property<Decimal>("PenaltyAmount")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(0m);
 
-                    b.Property<byte[]>("TariffId")
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
+                    b.Property<Byte[]>("TariffId")
+                        .HasConversion(new ValueConverter<Byte[], Byte[]>(v => default(Byte[]), v => default(Byte[]), new ConverterMappingHints(size: 16)));
 
-                    b.Property<decimal>("TaxAmount")
+                    b.Property<Decimal>("TaxAmount")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(0m);
 
@@ -299,32 +299,32 @@ namespace Coffers.DB.Migrations.Migrations
 
             modelBuilder.Entity("Coffers.DB.Migrations.Entities.Operation", b =>
                 {
-                    b.Property<byte[]>("Id")
+                    b.Property<Byte[]>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)))
+                        .HasConversion(new ValueConverter<Byte[], Byte[]>(v => default(Byte[]), v => default(Byte[]), new ConverterMappingHints(size: 16)))
                         .HasColumnName("Id");
 
-                    b.Property<decimal>("Amount")
+                    b.Property<Decimal>("Amount")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(0m);
 
                     b.Property<DateTime>("CreateDate");
 
-                    b.Property<string>("Description")
+                    b.Property<String>("Description")
                         .HasMaxLength(512);
 
-                    b.Property<byte[]>("DocumentId")
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
+                    b.Property<Byte[]>("DocumentId")
+                        .HasConversion(new ValueConverter<Byte[], Byte[]>(v => default(Byte[]), v => default(Byte[]), new ConverterMappingHints(size: 16)));
 
-                    b.Property<byte[]>("FromAccountId")
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
+                    b.Property<Byte[]>("FromAccountId")
+                        .HasConversion(new ValueConverter<Byte[], Byte[]>(v => default(Byte[]), v => default(Byte[]), new ConverterMappingHints(size: 16)));
 
                     b.Property<DateTime>("OperationDate");
 
-                    b.Property<byte[]>("ToAccountId")
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
+                    b.Property<Byte[]>("ToAccountId")
+                        .HasConversion(new ValueConverter<Byte[], Byte[]>(v => default(Byte[]), v => default(Byte[]), new ConverterMappingHints(size: 16)));
 
-                    b.Property<string>("Type")
+                    b.Property<String>("Type")
                         .IsRequired()
                         .HasMaxLength(32);
 
@@ -342,27 +342,27 @@ namespace Coffers.DB.Migrations.Migrations
 
             modelBuilder.Entity("Coffers.DB.Migrations.Entities.Penalty", b =>
                 {
-                    b.Property<byte[]>("Id")
+                    b.Property<Byte[]>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)))
+                        .HasConversion(new ValueConverter<Byte[], Byte[]>(v => default(Byte[]), v => default(Byte[]), new ConverterMappingHints(size: 16)))
                         .HasColumnName("Id");
 
-                    b.Property<byte[]>("AccountId")
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
+                    b.Property<Byte[]>("AccountId")
+                        .HasConversion(new ValueConverter<Byte[], Byte[]>(v => default(Byte[]), v => default(Byte[]), new ConverterMappingHints(size: 16)));
 
-                    b.Property<decimal>("Amount")
+                    b.Property<Decimal>("Amount")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(0m);
 
                     b.Property<DateTime>("CreateDate");
 
-                    b.Property<string>("Description")
+                    b.Property<String>("Description")
                         .HasMaxLength(2048);
 
-                    b.Property<byte[]>("GamerId")
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
+                    b.Property<Byte[]>("GamerId")
+                        .HasConversion(new ValueConverter<Byte[], Byte[]>(v => default(Byte[]), v => default(Byte[]), new ConverterMappingHints(size: 16)));
 
-                    b.Property<string>("PenaltyStatus")
+                    b.Property<String>("PenaltyStatus")
                         .IsRequired()
                         .HasMaxLength(32);
 
@@ -380,19 +380,19 @@ namespace Coffers.DB.Migrations.Migrations
 
             modelBuilder.Entity("Coffers.DB.Migrations.Entities.Session", b =>
                 {
-                    b.Property<byte[]>("SessionId")
+                    b.Property<Byte[]>("SessionId")
                         .ValueGeneratedOnAdd()
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)))
+                        .HasConversion(new ValueConverter<Byte[], Byte[]>(v => default(Byte[]), v => default(Byte[]), new ConverterMappingHints(size: 16)))
                         .HasColumnName("SessionId");
 
                     b.Property<DateTime>("CreateDate");
 
                     b.Property<DateTime>("ExpireDate");
 
-                    b.Property<byte[]>("GamerId")
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
+                    b.Property<Byte[]>("GamerId")
+                        .HasConversion(new ValueConverter<Byte[], Byte[]>(v => default(Byte[]), v => default(Byte[]), new ConverterMappingHints(size: 16)));
 
-                    b.Property<string>("Ip")
+                    b.Property<String>("Ip")
                         .HasMaxLength(128);
 
                     b.HasKey("SessionId");
@@ -407,20 +407,20 @@ namespace Coffers.DB.Migrations.Migrations
 
             modelBuilder.Entity("Coffers.DB.Migrations.Entities.Tariff", b =>
                 {
-                    b.Property<byte[]>("Id")
+                    b.Property<Byte[]>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)))
+                        .HasConversion(new ValueConverter<Byte[], Byte[]>(v => default(Byte[]), v => default(Byte[]), new ConverterMappingHints(size: 16)))
                         .HasColumnName("Id");
 
-                    b.Property<decimal>("ExpiredLoanTax")
+                    b.Property<Decimal>("ExpiredLoanTax")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(0m);
 
-                    b.Property<decimal>("LoanTax")
+                    b.Property<Decimal>("LoanTax")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(0m);
 
-                    b.Property<string>("Tax")
+                    b.Property<String>("Tax")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(4096)

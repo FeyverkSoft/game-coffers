@@ -88,7 +88,7 @@ namespace Coffers.Public.Infrastructure.Gamers
                         Date = p.CreateDate,
                         Description = p.Description,
                         PenaltyStatus = p.PenaltyStatus
-                    }).ToList(),
+                    }).OrderBy(_ => _.Date).ToList(),
                 Loans = g.Loans.Where(l => l.CreateDate >= dateFrom)
                     .Select(l => new LoanView
                     {
@@ -98,7 +98,7 @@ namespace Coffers.Public.Infrastructure.Gamers
                         LoanStatus = l.LoanStatus,
                         ExpiredDate = l.ExpiredDate,
                         Id = l.Id
-                    }).ToList(),
+                    }).OrderBy(_=>_.Date).ToList(),
             })
                 .ToListAsync(cancellationToken);
         }
@@ -115,7 +115,7 @@ namespace Coffers.Public.Infrastructure.Gamers
                 {
                     UserId = _.Id,
                     AccountId = _.DefaultAccount.Id,
-                    GuildId = _.Id
+                    GuildId = _.GuildId
                 })
                 .FirstOrDefaultAsync(cancellationToken);
         }

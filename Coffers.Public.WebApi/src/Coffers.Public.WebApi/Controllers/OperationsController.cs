@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Coffers.Helpers;
 using Coffers.Public.Domain.Operations;
 using Coffers.Public.Queries.Gamers;
 using Coffers.Public.Queries.Guilds;
@@ -47,6 +48,29 @@ namespace Coffers.Public.WebApi.Controllers
                 }, cancellationToken));
         }
 
+
+
+        /// <summary>
+        /// This method Returns all operations by document id.
+        /// </summary>
+        [HttpGet("gamer/{userId}")]
+        [ProducesResponseType(typeof(ICollection<OperationView>), 200)]
+        public async Task<ActionResult<ICollection<OperationView>>> GetOperationsByUserId([FromRoute] Guid userId,
+          [FromQuery]  DateTime dateFrom, CancellationToken cancellationToken)
+        {
+            var user = await _queryProcessor.Process<GetGamerInfoQuery, GamerInfoView>(new GetGamerInfoQuery
+            {
+                UserId = userId
+            }, cancellationToken);
+
+            return Ok(await _queryProcessor.Process<GetOperationsByAccQuery, ICollection<OperationView>>(
+                new GetOperationsByAccQuery
+                {
+                    AccountId = user.AccountId,
+                    DateFrom = dateFrom.Trunc(DateTruncType.Day)
+                }, cancellationToken));
+        }
+
         /// <summary>
         /// This method add new operation
         /// </summary>
@@ -69,7 +93,7 @@ namespace Coffers.Public.WebApi.Controllers
 
             var guildAcc = await _queryProcessor.Process<GuildAccountQuery, GuildAccountView>(new GuildAccountQuery
             {
-                GuildId = fromGamer?.GuildId ?? toGamer.GuildId
+                GuildId = fromGamer?.GuildId ?? toGamer?.GuildId ?? HttpContext.GuildId()
             }, cancellationToken);
 
             switch (binding.Type)

@@ -14,7 +14,7 @@ namespace Coffers.Public.Domain.Gamers
         /// <summary>
         /// Сумма займа
         /// </summary>
-        public decimal Amount { get; internal set; }
+        public Decimal Amount { get; internal set; }
 
         /// <summary>
         /// Дата создания

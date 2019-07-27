@@ -14,11 +14,11 @@ namespace Coffers.Public.WebApi.Filters
 {
     public class PermissionAuthorizationFilter : IAsyncAuthorizationFilter
     {
-        private readonly string[] _roles;
+        private readonly String[] _roles;
 
         private readonly IAuthorizationRepository _authorizationRepository;
 
-        public PermissionAuthorizationFilter(IAuthorizationRepository authorizationRepository, string[] roles)
+        public PermissionAuthorizationFilter(IAuthorizationRepository authorizationRepository, String[] roles)
         {
             _authorizationRepository = authorizationRepository;
             _roles = roles;

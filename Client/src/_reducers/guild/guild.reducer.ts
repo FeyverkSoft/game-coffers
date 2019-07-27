@@ -73,7 +73,8 @@ export class IGuildStore {
                 balance: 0,
                 expectedTaxAmount: 0,
                 activeLoansAmount: 0,
-                taxAmount: 0
+                taxAmount: 0,
+                gamersBalance: 0
             }
         };
 

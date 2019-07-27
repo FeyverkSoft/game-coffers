@@ -30,7 +30,7 @@ namespace Coffers.Public.WebApi.Authorization
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
-            string authorization = Request.Headers["Authorization"];
+            String authorization = Request.Headers["Authorization"];
 
             if (string.IsNullOrEmpty(authorization))
                 return AuthenticateResult.NoResult();

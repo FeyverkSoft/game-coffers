@@ -16,7 +16,7 @@ namespace Coffers.Public.Domain.Guilds
         /// <summary>
         /// Сумма займа
         /// </summary>
-        public decimal Amount { get; internal set; }
+        public Decimal Amount { get; internal set; }
 
         /// <summary>
         /// Номер счёта по займу

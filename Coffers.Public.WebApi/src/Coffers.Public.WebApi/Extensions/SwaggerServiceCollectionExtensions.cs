@@ -38,9 +38,9 @@ namespace Coffers.Public.WebApi.Extensions
                     Name = "Authorization",
                     Type = "apiKey"
                 });
-                options.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>
+                options.AddSecurityRequirement(new Dictionary<String, IEnumerable<String>>
                 {
-                    { "Bearer", new string[] { } }
+                    { "Bearer", new String[] { } }
                 });
             });
         }

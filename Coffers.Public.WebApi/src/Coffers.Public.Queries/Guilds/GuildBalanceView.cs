@@ -1,4 +1,6 @@
-﻿namespace Coffers.Public.Queries.Guilds
+﻿using System;
+
+namespace Coffers.Public.Queries.Guilds
 {
     /// <summary>
     /// Информация о балансе гильдии
@@ -8,18 +10,22 @@
         /// <summary>
         /// Баланс гильдии на момент запроса
         /// </summary>
-        public decimal Balance { get; set; }
+        public Decimal Balance { get; set; }
         /// <summary>
         /// Ожидаемая сумма налога, на конец месяца
         /// </summary>
-        public decimal ExpectedTaxAmount { get; set; }
+        public Decimal ExpectedTaxAmount { get; set; }
         /// <summary>
         /// Уплаченная сумма налогов на текущий момент
         /// </summary>
-        public decimal TaxAmount { get; set; }
+        public Decimal TaxAmount { get; set; }
         /// <summary>
         /// Сумма активных займов
         /// </summary>
-        public decimal ActiveLoansAmount { get; set; }
+        public Decimal ActiveLoansAmount { get; set; }
+        /// <summary>
+        /// Балланс игроков на складе гильдии
+        /// </summary>
+        public Decimal GamersBalance { get; set; }
     }
 }
