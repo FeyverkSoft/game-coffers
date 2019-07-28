@@ -73,6 +73,9 @@ namespace Coffers.Public.Infrastructure.Gamers
 
             q = q.Where(g => g.DeletedDate == null || g.DeletedDate >= dateFrom);
 
+#warning прячим служебного временного пользователя
+            q = q.Where(g => g.Name!= "user");
+
             if (query.DateTo != null)
                 q = q.Where(g => g.CreateDate <= query.DateTo.Value.Trunc(DateTruncType.Month));
 
