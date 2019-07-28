@@ -151,9 +151,6 @@ function getTranslate(value: string): string {
     return locString["ru"][lowerVal] || locString["ru"][value];
 }
 
-export const LangF = function (value: string, ...arg: (string | number)[]) {
-    return Lang(value).format(...arg);
-}
 
 export const DLang = function (value: string, key?: string): string {
     if (!key)
@@ -188,4 +185,13 @@ export const Lang = function (value: string, count?: number | undefined): string
     if (count)
         return res.replace(/\{0\}/ig, count);
     return res;
+}
+
+export const LangF = function (value: string, ...arg: (string | number)[]) {
+    let l = Lang(value);
+    console.debug(l);
+    Object.keys(arg).forEach((element, i) => {
+        l = l.replace('{' + i + '}', String(arg[i]));
+    })
+    return l;
 }

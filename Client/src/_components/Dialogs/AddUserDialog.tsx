@@ -4,7 +4,7 @@ import { Dialog, Form, Col1, Input, Button, DateTimeInput, MaterialSelect } from
 import { Lang, GamerRankList, DLang, GamerStatusList, GamerRank, GamerStatus } from "../../_services";
 import { Item } from "../Input/SelectList";
 import { guildInstance } from "../../_actions";
-import { getGuid } from "../../_helpers";
+import { getGuid, formatDateTime } from "../../_helpers";
 import { connect } from "react-redux";
 
 interface IProps extends React.Props<any> {
@@ -112,7 +112,7 @@ class _AddUserDialog extends BaseReactComp<IProps, IState> {
                             isRequired={true}
                             path='dateOfBirth'
                             //type='date'
-                            value={dateOfBirth.value.toISOString()}
+                            value={formatDateTime(dateOfBirth.value, 'd')}
                         />
                     </Col1>
                     <Col1>

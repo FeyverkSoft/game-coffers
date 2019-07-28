@@ -83,7 +83,9 @@ namespace Coffers.Public.Infrastructure.Gamers
              .Include(g => g.Characters)
              .Include(g => g.Loans)
              .Include(g => g.Penalties);
-            return await q.Select(g => new GamersListView
+            return await q
+            .OrderBy(_=>_.CreateDate)
+            .Select(g => new GamersListView
             {
                 Id = g.Id,
                 Balance = g.DefaultAccount.Balance,
