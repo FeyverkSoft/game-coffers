@@ -58,14 +58,14 @@ class _PenaltyDialog extends BaseReactComp<IProps> {
     }
 
     render() {
-        const { penalty } = this.props;
+        const { penalty, operations } = this.props;
         return (
             <Dialog
                 isDisplayed={this.props.isDisplayed}
                 title={Lang('SHOW_PENALTY_MODAL')}
                 onCancel={() => this.onClose()}
                 footer={this.footer()}
-                isLoading={this.props.operations.holding}
+                isLoading={operations.holding}
             >
                 <Grid
                     direction="vertical"
@@ -92,7 +92,7 @@ class _PenaltyDialog extends BaseReactComp<IProps> {
                     </Col1>
                     <Col1 className={style['operation-list']}>
                         <NamedValue name={Lang("MODAL__OPERATIONS")}>
-                            {this.props.operations.items.map(_ => (
+                            {operations.items.map(_ => (
                                 <div
                                     key={_.id}
                                     title={_.description}
@@ -117,13 +117,12 @@ interface _IProps extends React.Props<any> {
     [id: string]: any;
 }
 const connected_PenaltyDialog = connect<{}, {}, _IProps, IStore>((store, props): IProps => {
-    const op = store.operations.operations[props.penaltyId] || { items: [] };
     return {
         isDisplayed: props.isDisplayed,
         gamerId: props.gamerId,
-        operations: op,
+        operations: store.operations.GetOperations(props.penaltyId),
         onClose: props.onClose,
-        penalty: props.isDisplayed ? store.gamers.gamersList[props.gamerId].penalties[props.penaltyId] : {} as IPenaltyView
+        penalty: store.gamers.GetGamer(props.gamerId).GetPenalty(props.penaltyId)
     };
 })(_PenaltyDialog);
 

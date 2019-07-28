@@ -37,7 +37,7 @@ export class operationService {
             .catch(catchHandle);
     }
 
-    
+
     /**
      * Получить список опеаций по id пользователя
      *  /Operations/guild/{userId}
@@ -53,7 +53,7 @@ export class operationService {
                 'Authorization': 'Bearer ' + session.sessionId
             },
         };
-        return await fetch(Config.BuildUrl(`/Operations/gamer/${userId}`, { dateFrom: dateFrom}), requestOptions)
+        return await fetch(Config.BuildUrl(`/Operations/gamer/${userId}`, { dateFrom: dateFrom }), requestOptions)
             .then<BaseResponse & Array<any>>(getResponse)
             .then(data => {
                 if (data && data.type || data.traceId) {
@@ -71,10 +71,10 @@ export class operationService {
             .catch(catchHandle);
     }
 
-        /**
-     * Получить список опеаций по id пользователя
-     *  /Operations/guild/{userId}
-     */
+    /**
+ * Получить список опеаций по id пользователя
+ *  /Operations/guild/{userId}
+ */
     static async GetOperationsByGuildId(guildId: string, dateFrom?: string): Promise<Array<IOperationView>> {
         let session = authService.getCurrentSession();
         const requestOptions: RequestInit = {
@@ -86,7 +86,7 @@ export class operationService {
                 'Authorization': 'Bearer ' + session.sessionId
             },
         };
-        return await fetch(Config.BuildUrl(`/Operations/guild/${guildId}`, { dateFrom: dateFrom}), requestOptions)
+        return await fetch(Config.BuildUrl(`/Operations/guild/${guildId}`, { dateFrom: dateFrom }), requestOptions)
             .then<BaseResponse & Array<any>>(getResponse)
             .then(data => {
                 if (data && data.type || data.traceId) {
@@ -100,6 +100,42 @@ export class operationService {
                     _.description,
                     _.createDate
                 ));
+            })
+            .catch(catchHandle);
+    }
+
+    /**
+     * Создать новую операцию
+     */
+    static async CreateOperation(id: string, type: OperationType, amount: number, description: string,
+        fromUserId?: string, toUserId?: string, penaltyId?: string, loanId?: string):
+        Promise<Array<IOperationView>> {
+        let session = authService.getCurrentSession();
+        const requestOptions: RequestInit = {
+            method: 'PUT',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+                'Authorization': 'Bearer ' + session.sessionId
+            },
+            body: JSON.stringify({})
+        };
+        return await fetch(Config.BuildUrl(`/Operations`, {
+            id: id,
+            fromUserId: fromUserId,
+            toUserId: toUserId,
+            type: type,
+            amount: amount,
+            description: description,
+            penaltyId: penaltyId,
+            loanId: loanId
+        }), requestOptions)
+            .then<BaseResponse & Array<any>>(getResponse)
+            .then(data => {
+                if (data && data.type || data.traceId) {
+                    return errorHandle(data);
+                }
             })
             .catch(catchHandle);
     }

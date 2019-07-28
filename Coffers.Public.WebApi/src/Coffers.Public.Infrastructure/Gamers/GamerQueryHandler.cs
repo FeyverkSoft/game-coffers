@@ -92,6 +92,7 @@ namespace Coffers.Public.Infrastructure.Gamers
                 Characters = g.Characters.Where(c => c.Status == CharStatus.Active).Select(x => x.Name).ToList(),
                 Rank = g.Rank,
                 Status = g.Status,
+                DateOfBirth = g.DateOfBirth.Trunc(DateTruncType.Day),
                 Penalties = g.Penalties.Where(p => p.CreateDate >= dateFrom)
                     .Select(p => new PenaltyView
                     {

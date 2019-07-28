@@ -66,6 +66,7 @@ class Auth extends BaseReactComp<IAuthProps, any> {
                                     onChange={this.onInputVal}
                                     isRequired={true}
                                     path='form.password'
+                                    customValidator={(str) => `${str}`.length >= 8}
                                     value={password.value}
                                     isRequiredMessage={Lang('IsRequired')}
                                 />

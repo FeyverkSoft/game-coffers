@@ -72,9 +72,10 @@ namespace Coffers.Public.Domain.Gamers
         {
             if (Characters == null)
                 Characters = new List<Character>();
-
+            var _name = name.Trim();
+            var _className = className.Trim();
             var ch = Characters.FirstOrDefault(x =>
-                x.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase) &&
+                x.Name.Equals(_name, StringComparison.CurrentCultureIgnoreCase) &&
                 x.ClassName.Equals(className, StringComparison.CurrentCultureIgnoreCase));
             if (ch != null)
             {
@@ -82,15 +83,15 @@ namespace Coffers.Public.Domain.Gamers
                 return;
             }
 
-            if (Characters.Exists(x => x.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase) && !x.ClassName.Equals(className, StringComparison.CurrentCultureIgnoreCase)))
-                throw new ArgumentException($"Character {name} already exists");
+            if (Characters.Exists(x => x.Name.Equals(_name, StringComparison.CurrentCultureIgnoreCase) && !x.ClassName.Equals(_className, StringComparison.CurrentCultureIgnoreCase)))
+                throw new ArgumentException($"Character {_name} already exists");
 
             Characters.Add(new Character
             {
                 Id = new Guid(),
                 Status = CharStatus.Active,
-                Name = name,
-                ClassName = className
+                Name = _name,
+                ClassName = _className
             });
             UpdateDate = DateTime.UtcNow;
         }

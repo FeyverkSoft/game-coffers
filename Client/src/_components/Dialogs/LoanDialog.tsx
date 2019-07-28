@@ -55,14 +55,14 @@ class _LoanDialog extends BaseReactComp<IProps> {
     }
 
     render() {
-        const { loan } = this.props;
+        const { loan, operations } = this.props;
         return (
             <Dialog
                 isDisplayed={this.props.isDisplayed}
                 title={Lang('SHOW_LOAN_MODAL')}
                 onCancel={() => this.onClose()}
                 footer={this.footer()}
-                isLoading={this.props.operations.holding}
+                isLoading={operations.holding}
             >
                 <Grid
                     direction="vertical"
@@ -94,7 +94,7 @@ class _LoanDialog extends BaseReactComp<IProps> {
                     </Col1>
                     <Col1 className={style['operation-list']}>
                         <NamedValue name={Lang("MODAL__OPERATIONS")}>
-                            {this.props.operations.items.map(_ => (
+                            {operations.items.map(_ => (
                                 <div
                                     key={_.id}
                                     title={_.description}
@@ -119,13 +119,12 @@ interface _IProps extends React.Props<any> {
     [id: string]: any;
 }
 const connected_LoanDialog = connect<{}, {}, _IProps, IStore>((store, props): IProps => {
-    const op = store.operations.operations[props.loanId] || { items: [] };
     return {
         gamerId: props.gamerId,
         isDisplayed: props.isDisplayed,
         onClose: props.onClose,
-        operations: op,
-        loan: props.isDisplayed ? store.gamers.gamersList[props.gamerId].loans[props.loanId] : {} as ILoanView
+        operations: store.operations.GetOperations(props.loanId),
+        loan: store.gamers.GetGamer(props.gamerId).GetLoan(props.loanId)
     };
 })(_LoanDialog);
 

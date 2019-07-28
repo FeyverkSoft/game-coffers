@@ -12,6 +12,10 @@ export interface IGamersListView {
     loans: Dictionary<ILoanView>;
     rank: GamerRank;
     status: GamerStatus;
+    dateOfBirth: Date;
+
+    GetLoan(id: string): ILoanView;
+    GetPenalty(penaltyId: string): IPenaltyView;
 }
 
 export interface IPenaltyView {
@@ -39,13 +43,28 @@ export class GamersListView implements IGamersListView {
     loans: Dictionary<ILoanView>;
     rank: GamerRank;
     status: GamerStatus;
+    dateOfBirth: Date;
+
+    GetPenalty(penaltyId: string): IPenaltyView {
+        if (this.penalties[penaltyId])
+            return this.penalties[penaltyId]
+        return {} as IPenaltyView;
+    }
+
+    GetLoan(id: string): ILoanView {
+        if (this.loans[id])
+            return this.loans[id]
+        return {} as ILoanView;
+    }
+
     constructor(id: string,
         characters: Array<string>,
         balance: number,
         penalties: Array<IPenaltyView>,
         loans: Array<ILoanView>,
         rank: GamerRank,
-        status: GamerStatus
+        status: GamerStatus,
+        dateOfBirth: string
     ) {
         this.id = id;
         this.characters = characters;
@@ -60,5 +79,6 @@ export class GamersListView implements IGamersListView {
         }
         this.rank = rank;
         this.status = status;
+        this.dateOfBirth = new Date(dateOfBirth);
     }
 }

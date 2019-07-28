@@ -177,7 +177,7 @@ namespace Coffers.Public.WebApi.Controllers
             )
                 guild.AddGamer(binding.Login);
             else
-                guild.AddGamer(binding.Id, binding.Name, binding.Login, binding.DateOfBirth, binding.Status, binding.Rank);
+                guild.AddGamer(binding.Id, binding.Name, binding.Login, binding.DateOfBirth.Trunc(DateTruncType.Day), binding.Status, binding.Rank);
 
             await _guildRepository.Save(guild);
 

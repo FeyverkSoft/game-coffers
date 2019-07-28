@@ -2,18 +2,18 @@
 
 .user-card {
     .flex();
-    position: relative;
-    width: 100%;
+    position     : relative;
+    width        : 100%;
     border-bottom: 1px fade(@black, 50%) solid;
-    align-items: center;
+    align-items  : center;
 
     &:last-child {
         border-bottom: none;
     }
 
     .add {
-        cursor: pointer;
-        color: @defaultColor;
+        cursor : pointer;
+        color  : @defaultColor;
         padding: .25rem;
 
         &:focus,
@@ -22,42 +22,40 @@
         }
 
         &:before {
-            display: block;
-            font: normal normal normal 24px/1 "Material Design Icons";
+            display  : block;
+            font     : normal normal normal 24px/1 "Material Design Icons";
             font-size: 1rem;
-            content: "\F417"
+            content  : "\F417"
         }
     }
 
     .main {
         .flex();
-        padding: .5rem .5rem;
-        flex: 3 1;
+        padding       : .5rem .5rem;
+        flex          : 3 1;
         flex-direction: column;
-        height: 100%;
+        height        : 100%;
 
         .title {
-            text-transform: lowercase;
-            font-size: .8rem;
-            font-weight: 500;
-            color: fade(@black, 80%);
-            padding-bottom: .25rem;
+            .title();
         }
 
         .char-list {
             .flex();
             padding-left: .25rem;
-            flex-wrap: wrap;
+            flex-wrap   : wrap;
 
             @media screen and (max-width: @mobile-L) {
                 justify-content: center;
+                font-size      : .85rem;
+                flex-direction : column;
             }
 
             .char_name {
                 .flex();
-                position: relative;
+                position     : relative;
                 padding-right: .2rem;
-                align-items: center;
+                align-items  : center;
 
                 &:focus,
                 &:hover {
@@ -67,23 +65,23 @@
                 }
 
                 .delete {
-                    cursor: pointer;
+                    cursor  : pointer;
                     position: absolute;
-                    color: @defaultColor;
-                    right: 0;
-                    display: none;
+                    color   : @defaultColor;
+                    right   : 0;
+                    display : none;
 
                     &:focus,
                     &:hover {
                         display: block;
-                        color: lighten(@defaultColor, @hover);
+                        color  : lighten(@defaultColor, @hover);
                     }
 
                     &:before {
-                        display: block;
-                        font: normal normal normal 24px/1 "Material Design Icons";
+                        display  : block;
+                        font     : normal normal normal 24px/1 "Material Design Icons";
                         font-size: 1rem;
-                        content: "\F1C0"
+                        content  : "\F1C0"
                     }
                 }
             }
@@ -92,68 +90,79 @@
 
     .user-status {
         .flex();
-        padding: .5rem .125rem;
+        padding       : .5rem .125rem;
         flex-direction: column;
-        flex: 1 1;
-        height: 100%;
+        flex          : 1 1;
+        height        : 100%;
 
         .title {
-            text-transform: lowercase;
-            font-size: .8rem;
-            font-weight: 500;
-            color: fade(@black, 80%);
-            padding-bottom: .25rem;
+            .title();
         }
 
         .content {
             text-transform: uppercase;
-            padding-left: .25rem;
-            min-width: 6rem;
+            padding-left  : .25rem;
+            min-width     : 6rem;
+
+            @media screen and (max-width: @mobile-L) {
+                font-size: .85rem;
+            }
         }
     }
 
     .rank {
         .flex();
-        padding: .5rem .125rem;
+        padding       : .5rem .125rem;
         flex-direction: column;
-        flex: 1 1;
-        height: 100%;
+        flex          : 1 1;
+        height        : 100%;
 
         .title {
-            text-transform: lowercase;
-            font-weight: 500;
-            font-size: .8rem;
-            color: fade(@black, 80%);
-            padding-bottom: .25rem;
+            .title();
         }
 
         .content {
             text-transform: uppercase;
-            font-size: 1rem;
-            padding-left: .25rem;
-            min-width: 4rem;
+            font-size     : 1rem;
+            padding-left  : .25rem;
+            min-width     : 4rem;
+
+            @media screen and (max-width: @mobile-L) {
+                font-size: .85rem;
+            }
+
+            &.officer {
+                color      : @errorColor;
+                font-weight: 400;
+            }
+
+            &.leader {
+                color      : @importantColor;
+                font-weight: 500;
+            }
+
+            &.veteran {
+                color      : @defaultColor;
+                font-weight: 400;
+            }
         }
     }
 
     .balance {
         .flex();
-        padding: .5rem .125rem;
+        padding       : .5rem .125rem;
         flex-direction: column;
-        flex: 1 1;
-        height: 100%;
+        flex          : 1 1;
+        height        : 100%;
 
         .title {
-            text-transform: lowercase;
-            font-size: .8rem;
-            font-weight: 500;
-            color: fade(@black, 80%);
-            padding-bottom: .25rem;
+            .title();
         }
 
         .content {
             padding-left: .25rem;
-            min-width: 4rem;
-            cursor: pointer;
+            min-width   : 4rem;
+            cursor      : pointer;
 
             &:hover {
                 color: @defaultColor  !important;
@@ -161,36 +170,33 @@
 
             &.red {
                 font-weight: 800;
-                color: @importantColor;
+                color      : @importantColor;
             }
         }
     }
 
     .penalties {
         .flex();
-        padding: .5rem .125rem;
+        padding       : .5rem .125rem;
         flex-direction: column;
-        flex: 1 1;
-        height: 100%;
+        flex          : 1 1;
+        height        : 100%;
 
         .title {
-            text-transform: lowercase;
-            font-size: .8rem;
-            color: fade(@black, 80%);
-            padding-bottom: .25rem;
+            .title();
         }
 
         .content {
             .flex();
             flex-direction: row;
-            font-weight: 400;
+            font-weight   : 400;
 
             @media screen and (max-width: @mobile-L) {
                 justify-content: center;
             }
 
             .penalty {
-                cursor: pointer;
+                cursor      : pointer;
                 padding-left: .25rem;
 
                 &:hover {
@@ -203,12 +209,12 @@
 
                 &.inactive {
                     text-decoration: line-through;
-                    color: fade(@black, 60%);
+                    color          : fade(@black, 60%);
                 }
 
                 &.canceled {
                     text-decoration: line-through;
-                    color: fade(@black, 40%);
+                    color          : fade(@black, 40%);
                 }
             }
         }
@@ -216,30 +222,27 @@
 
     .loans {
         .flex();
-        padding: .5rem 0;
+        padding       : .5rem 0;
         flex-direction: column;
-        flex: 1 1;
-        padding-right: .25rem;
-        height: 100%;
+        flex          : 1 1;
+        padding-right : .25rem;
+        height        : 100%;
 
         .title {
-            text-transform: lowercase;
-            font-size: .8rem;
-            color: fade(@black, 80%);
-            padding-bottom: .25rem;
+            .title();
         }
 
         .content {
             .flex();
             flex-direction: row;
-            flex-wrap: wrap;
+            flex-wrap     : wrap;
 
             @media screen and (max-width: @mobile-L) {
                 justify-content: center;
             }
 
             .loan {
-                cursor: pointer;
+                cursor      : pointer;
                 padding-left: .25rem;
 
                 &:hover {
@@ -252,14 +255,14 @@
 
                 &.canceled,
                 &.paid {
-                    font-weight: 400;
+                    font-weight    : 400;
                     text-decoration: line-through;
-                    color: fade(@black, 50%);
+                    color          : fade(@black, 50%);
                 }
 
                 &.expired {
                     font-weight: 800;
-                    color: @importantColor;
+                    color      : @importantColor;
                 }
             }
         }
@@ -301,5 +304,17 @@
         &:hover {
             background-color: fade(@successColor, 10%);
         }
+    }
+}
+
+.title() {
+    text-transform: lowercase;
+    font-size     : .8rem;
+    font-weight   : 500;
+    color         : fade(@black, 80%);
+    padding-bottom: .25rem;
+
+    @media screen and (max-width: @mobile-L) {
+        font-size: .75rem;
     }
 }

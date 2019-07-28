@@ -9,6 +9,7 @@ export interface IBaseInputProps extends React.Props<any> {
     value?: string | number;
     isRequired?: boolean;
     regExp?: string;
+    customValidator?(string: string | number | Date | undefined): boolean;
     [id: string]: any;
 }
 export interface IBaseInputState {
@@ -81,6 +82,10 @@ export class BaseInput<TProps extends IBaseInputProps = {}, TState extends IBase
                 valid = false;
                 this.setState({ regExpValid: false });
             }
+        }
+        if (this.props.customValidator && val && valid) {
+            valid = valid && this.props.customValidator(val);
+            this.setState({ regExpValid: valid });
         }
         return valid;
     }

@@ -11,6 +11,22 @@ export class IOperationsStore {
     operations: IDictionary<IOperation> = {};
     gamers: IDictionary<IOperation> = {};
     guilds: IDictionary<IOperation> = {};
+
+    GetGuildOperations(guildId: string): IOperation {
+        if (this.guilds[guildId])
+            return this.guilds[guildId];
+        return { items: [] };
+    }
+    GetOperations(opId: string): IOperation {
+        if (this.operations[opId])
+            return this.operations[opId];
+        return { items: [] };
+    }
+    GetGamerOperations(gamerId: string): IOperation {
+        if (this.gamers[gamerId])
+        return this.gamers[gamerId];
+    return { items: [] };
+    }
 }
 
 export function operations(state: IOperationsStore = new IOperationsStore(), action: IAction<OperationActionsType>):

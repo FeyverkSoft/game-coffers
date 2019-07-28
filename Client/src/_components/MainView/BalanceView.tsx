@@ -1,6 +1,7 @@
 import * as React from "react";
+import style from "./balanceview.module.less"
 import { СanvasBlock, Grid, Col1, NamedValue } from "..";
-import { Lang, DLang, GuildBalanceReport, LangF } from "../../_services";
+import { Lang, GuildBalanceReport, LangF } from "../../_services";
 import { BaseReactComp } from "../BaseReactComponent";
 import { IHolded } from "../../core";
 
@@ -25,7 +26,10 @@ export class BalanceView extends BaseReactComp<IBalanceViewProps> {
                 <Col1>
                     <NamedValue
                         name={Lang("MAIN_PAGE_GUILD_BALANCE")}>
-                        <div onClick={() => this.props.showGuildOperations()}>
+                        <div 
+                        className={style['balance']}
+                        onClick={() => this.props.showGuildOperations()} 
+                        >
                             {LangF("MAIN_PAGE_GUILD_B_F", balance.balance, balance.gamersBalance)}
                         </div>
                     </NamedValue>

@@ -4,6 +4,7 @@ import style from "./profilebutton.module.less";
 import { IStore } from '../../_helpers';
 import { IGamerInfo } from '../../_services';
 import { gamerInstance } from '../../_actions';
+import { Link } from 'react-router-dom';
 
 interface ProfileButtonProps extends React.Props<any> {
     isLoading: boolean,
@@ -19,9 +20,11 @@ class _profileButton extends React.Component<ProfileButtonProps & DispatchProp<a
     render() {
         return (
             <div className={style['profile-button-wrapper']}>
-                <div className={style['profile-button']} >
-                    {this.props.name}
-                </div>
+                <Link to="/logout">
+                    <div className={style['profile-button']} >
+                        {this.props.name}
+                    </div>
+                </Link>
             </div>
         );
     }

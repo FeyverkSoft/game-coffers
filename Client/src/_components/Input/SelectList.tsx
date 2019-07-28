@@ -79,6 +79,7 @@ export class MaterialSelect extends React.Component<IMaterialSelectProps, any> {
                 style={$this.props.style}>
                 {label}
                 <select
+                    className={style['input']}
                     id={$this.props.id}
                     name={$this.props.id}
                     onChange={$this.onChange}

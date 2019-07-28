@@ -35,6 +35,7 @@ interface IMainProps {
 }
 
 class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
+    timer: NodeJS.Timeout;
     constructor(props: IMainProps & DispatchProp<any>) {
         super(props);
         this.state = {
@@ -69,14 +70,35 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                 isDisplayed: false,
             },
         };
+        this.timer = 0 as any;
     }
 
-    componentDidMount() {
-        if (this.props.guildInfo.id == '' && this.props.guildId) {
+    loadData = () => {
+        if (this.timer)
+            clearTimeout(this.timer);
+        this.timer = setTimeout(() => {
+            if (this.props.guildId)
+                try {
+                    this.autoUpdateDataProvider();
+                    this.loadData();
+                } catch (error) {
+                    this.loadData()
+                }
+            else
+                this.loadData();
+        }, 60000);
+    }
+
+    autoUpdateDataProvider = () => {
+        if (this.props.guildId) {
             this.props.dispatch(guildInstance.GetGuild({ guildId: this.props.guildId }))
             this.props.dispatch(guildInstance.GetGuildBalanceReport({ guildId: this.props.guildId }))
             this.props.dispatch(gamerInstance.GetGamers({ guildId: this.props.guildId }))
         }
+    }
+    componentDidMount() {
+        this.autoUpdateDataProvider();
+        this.loadData();
     }
 
     onAddChar = (userId: string) => {

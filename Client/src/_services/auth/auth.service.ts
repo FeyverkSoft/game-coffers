@@ -1,8 +1,7 @@
 import { getResponse, catchHandle, errorHandle } from '../../_helpers';
-import { SessionInfo, BaseResponse } from '../.';
+import { SessionInfo, BaseResponse, LangF } from '../.';
 import { store } from '../../_helpers';
 import { Config } from '../../core';
-import { Lang } from '../.';
 
 export class authService {
     ///Возвращает текущую сессию пользователя
@@ -36,9 +35,9 @@ export class authService {
         return fetch(Config.BuildUrl('/Session'), requestOptions)
             .then<BaseResponse & SessionInfo>(getResponse)
             .then((data: any) => {
-                if (data && data.type || data.traceId){
+                if (data && data.type || data.traceId) {
                     authService.clearLocalSession();
-                    throw new Error(Lang(data.type).format(data.errors || ''));
+                    throw new Error(LangF(data.type || 'INVALID_ARGUMENT', Object.keys(data.errors || {})[0]));
                 }
                 let session: SessionInfo = new SessionInfo(data);
                 localStorage.setItem('session', JSON.stringify(session));
@@ -52,7 +51,7 @@ export class authService {
     static async logOut(): Promise<any> {
         let session = authService.getCurrentSession();
         if (session) {
-            return fetch(`${Config.BuildUrl('/session')}/${session.sessionId}`, { method: 'DELETE', headers: { 'token': session.sessionId } })
+            return fetch(`${Config.BuildUrl('/session')}/${session.sessionId}`, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + session.sessionId } })
                 .then<BaseResponse>(getResponse)
                 .then((data: any) => {
                     authService.clearLocalSession();

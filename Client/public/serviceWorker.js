@@ -61,7 +61,7 @@ self.addEventListener('install', (event) => {
                         .filter(key => !key.includes(".map"))
                         .map(f => files[f]);
 
-                    ["./", "./about_us", "./catalog", "./contacts", "./order"].forEach(x => {
+                    ["./", "./bd"].forEach(x => {
                         cashedFiles.push(x);
                     })
 
@@ -86,7 +86,7 @@ self.addEventListener('activate', (event) => {
 
 const FALLBACK =
     '<div>\n' +
-    '    <div>DaddyAndCo</div>\n' +
+    '    <div>Daddy And Co</div>\n' +
     '    <div>you are offline</div>\n' +
     '</div>';
 

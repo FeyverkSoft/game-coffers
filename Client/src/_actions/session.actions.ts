@@ -38,6 +38,8 @@ export class SessionActions {
                 .then(
                     data => {
                         dispatch(success());
+                        this.clearLocalSession();
+                        history.push('/');
                     })
                 .catch(
                     error => {

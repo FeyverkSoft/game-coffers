@@ -1,6 +1,6 @@
 import * as React from "react";
 import { BaseReactComp, IStatedField } from "../BaseReactComponent";
-import { Dialog, Form, Col1, Input, Button, DateTimeInput, MaterialSelect } from "..";
+import { Dialog, Form, Col1, Input, Button, MaterialSelect } from "..";
 import { Lang, GamerRankList, DLang, GamerStatusList, GamerRank, GamerStatus } from "../../_services";
 import { Item } from "../Input/SelectList";
 import { guildInstance } from "../../_actions";
@@ -86,7 +86,7 @@ class _AddUserDialog extends BaseReactComp<IProps, IState> {
                 >
                     <Col1>
                         <Input
-                            label={'Name'}
+                            label={Lang('NAME')}
                             onChange={this.onInputVal}
                             isRequired={true}
                             path='name'
@@ -96,7 +96,7 @@ class _AddUserDialog extends BaseReactComp<IProps, IState> {
                     </Col1>
                     <Col1>
                         <Input
-                            label={'Login'}
+                            label={Lang('Login')}
                             onChange={this.onInputVal}
                             isRequired={true}
                             path='login'
@@ -106,7 +106,7 @@ class _AddUserDialog extends BaseReactComp<IProps, IState> {
                     </Col1>
                     <Col1>
                         <Input
-                            label={'DateOfBirth'}
+                            label={Lang('DateOfBirth')}
                             onChange={this.onInputVal}
                             isRequiredMessage={Lang('IsRequired')}
                             isRequired={true}

@@ -52,7 +52,9 @@ namespace Coffers.Public.Infrastructure.Guilds
                     Veteran = TariffViewBuilder(res.Tariff != null ? res.Tariff.VeteranTariff : null),
                     Soldier = TariffViewBuilder(res.Tariff != null ? res.Tariff.SoldierTariff : null)
                 },
-                GamersCount = res.Gamers.Count(g => !skipGmSta.Contains(g.Status)),
+                GamersCount = res.Gamers
+                    .Where(g => g.Login != "user")
+                    .Count(g => !skipGmSta.Contains(g.Status)),
                 CharactersCount = res.Gamers.Where(g => !skipGmSta.Contains(g.Status))
                          .SelectMany(x => x.Characters).Count(c => c.Status == CharStatus.Active),
                 Balance = res.GuildAccount.Balance

@@ -1,6 +1,6 @@
 import * as React from "react";
 import style from "./gamerrowview.module.less"
-import { Lang, DLang, LangF, GamersListView, GamerRankList, GamerRank, GamerStatusList, GamerStatus } from "../../_services";
+import { Lang, DLang, GamersListView, GamerRankList, GamerRank, GamerStatusList, GamerStatus } from "../../_services";
 import { BaseReactComp } from "../BaseReactComponent";
 import { IHolded } from "../../core";
 import { Spinner } from "../Spinner/Spinner";
@@ -71,7 +71,7 @@ export class GamerRowView extends BaseReactComp<IGamerRowViewProps> {
                     <div className={style['title']}>
                         {Lang('USER_ROW_RANK')}
                     </div>
-                    <div className={style['content']}>
+                    <div className={`${style['content']} ${style[gamer.rank.toLowerCase()]}`}>
                         <EditableList
                             roles={['admin', 'leader', 'officer']}
                             items={GamerRankList.map(t => new Item(t, DLang('USER_ROLE', t)))}

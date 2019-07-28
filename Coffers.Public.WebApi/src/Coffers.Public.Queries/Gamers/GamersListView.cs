@@ -43,5 +43,9 @@ namespace Coffers.Public.Queries.Gamers
         /// Статус игрока
         /// </summary>
         public GamerStatus Status { get; set; }
+        /// <summary>
+        /// День рождения
+        /// </summary>
+        public DateTime DateOfBirth { get; set; }
     }
 }

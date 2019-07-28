@@ -72,8 +72,8 @@ namespace Coffers.Public.Domain.Guilds
             Id = id;
             UpdateDate = DateTime.UtcNow;
             CreateDate = DateTime.UtcNow;
-            Login = login;
-            Name = name;
+            Login = login.Trim();
+            Name = name.Trim();
             DateOfBirth = dateOfBirth;
             Status = gamerStatus;
             Rank = rank;

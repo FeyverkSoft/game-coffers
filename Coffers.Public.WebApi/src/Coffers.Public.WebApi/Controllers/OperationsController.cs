@@ -125,6 +125,7 @@ namespace Coffers.Public.WebApi.Controllers
             {
                 case OperationType.Tax:
                     await _operationService.AddTaxOperation(
+                        binding.Id,
                          fromGamer.AccountId,
                          guildAcc.AccountId,
                          binding.Amount,
@@ -132,6 +133,7 @@ namespace Coffers.Public.WebApi.Controllers
                     break;
                 case OperationType.Penalty:
                     await _operationService.AddPenaltyOperation(
+                        binding.Id,
                         fromGamer.AccountId,
                         guildAcc.AccountId,
                         binding.PenaltyId.Value,
@@ -140,6 +142,7 @@ namespace Coffers.Public.WebApi.Controllers
                     break;
                 case OperationType.Loan:
                     await _operationService.AddLoanOperation(
+                        binding.Id,
                         fromGamer.AccountId,
                         guildAcc.AccountId,
                         binding.LoanId.Value,
@@ -150,6 +153,7 @@ namespace Coffers.Public.WebApi.Controllers
                     if (binding.Amount < 0)
                         throw new ApiException(HttpStatusCode.BadRequest, ErrorCodes.IncorrectOperation, "");
                     await _operationService.AddOtherOperation(
+                        binding.Id,
                         fromGamer.AccountId,
                         fromGamer.AccountId,
                         binding.Amount,
@@ -157,6 +161,7 @@ namespace Coffers.Public.WebApi.Controllers
                     break;
                 case OperationType.Reward:
                     await _operationService.AddRewardOperation(
+                        binding.Id,
                         guildAcc.AccountId,
                         toGamer.AccountId,
                         binding.Amount,
@@ -164,6 +169,7 @@ namespace Coffers.Public.WebApi.Controllers
                     break;
                 case OperationType.Salary:
                     await _operationService.AddSalaryOperation(
+                        binding.Id,
                         guildAcc.AccountId,
                         toGamer.AccountId,
                         binding.Amount,
@@ -171,6 +177,7 @@ namespace Coffers.Public.WebApi.Controllers
                     break;
                 case OperationType.Sell:
                     await _operationService.AddOtherOperation(
+                        binding.Id,
                         guildAcc.AccountId,
                         binding.Amount,
                         binding.Description);
@@ -179,6 +186,7 @@ namespace Coffers.Public.WebApi.Controllers
                     if (binding.ToUserId != null && binding.FromUserId == null)
                     {
                         await _operationService.AddOtherOperation(
+                            binding.Id,
                             toGamer.AccountId,
                             binding.Amount,
                             binding.Description);
@@ -186,12 +194,19 @@ namespace Coffers.Public.WebApi.Controllers
                     else if (binding.ToUserId != null && binding.FromUserId != null)
                     {
                         await _operationService.AddOtherOperation(
+                            binding.Id,
                             fromGamer.AccountId,
                             toGamer.AccountId,
                             binding.Amount,
                             binding.Description);
                     }
-
+                    break;
+                case OperationType.Emission:
+                    await _operationService.EmissionOperation(
+                        binding.Id,
+                        guildAcc.AccountId,
+                        binding.Amount,
+                        binding.Description);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

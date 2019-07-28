@@ -8,6 +8,10 @@ namespace Coffers.Public.WebApi.Models.Operations
     public sealed class CreateOperationBinding
     {
         /// <summary>
+        /// Id операции
+        /// </summary>
+        public Guid Id { get; set; }
+        /// <summary>
         /// Пользователь с которого производится перевод
         /// </summary>
         public Guid? FromUserId { get; set; }

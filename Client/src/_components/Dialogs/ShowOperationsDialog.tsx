@@ -70,11 +70,10 @@ interface _IProps extends React.Props<any> {
     [id: string]: any;
 }
 const connected_ShowUserOperations = connect<{}, {}, _IProps, IStore>((store, props): IProps => {
-    var opG = store.operations.gamers[props.gamerId];
     return {
         isDisplayed: props.isDisplayed,
         onClose: props.onClose,
-        operations: opG != null ? opG : { items: [] }
+        operations: store.operations.GetGamerOperations(props.gamerId)
     };
 })(_UerOperationsDialog);
 
@@ -86,11 +85,10 @@ interface _GIProps extends React.Props<any> {
     [id: string]: any;
 }
 const connected_ShowGuildOperations = connect<{}, {}, _GIProps, IStore>((store, props): IProps => {
-    var opG = store.operations.guilds[props.guildId];
     return {
         isDisplayed: props.isDisplayed,
         onClose: props.onClose,
-        operations: opG != null ? opG : { items: [] }
+        operations: store.operations.GetGuildOperations(props.guildId)
     };
 })(_UerOperationsDialog);
 

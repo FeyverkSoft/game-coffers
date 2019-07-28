@@ -8,11 +8,11 @@ import { BaseReactComp } from "../BaseReactComponent";
 interface ITarifViewProps extends React.Props<any> {
     tariff: ITariffs;
     isLoading?: boolean;
-    currentRole?: GamerRank;
+    currentRole: GamerRank;
     [id: string]: any;
 }
 interface ITarifViewState {
-    currentRole?: string;
+    currentRole: string;
 }
 /// Плашка с информацией о тарифе
 export class TariffView extends BaseReactComp<ITarifViewProps, ITarifViewState> {
@@ -26,9 +26,13 @@ export class TariffView extends BaseReactComp<ITarifViewProps, ITarifViewState> 
         }
     }
 
+    componentWillReceiveProps(props: ITarifViewProps) {
+        this.setState({ currentRole: props.currentRole });
+    }
+
     renderRoleList = () => {
         const { tariff, currentRole } = this.props;
-        const roles = Object.keys(tariff).map(t => new Item(t,  DLang('USER_ROLE', t)));
+        const roles = Object.keys(tariff).map(t => new Item(t, DLang('USER_ROLE', t)));
         var role = this.state.currentRole || currentRole || roles[0].key;
         if (role != this.state.currentRole)
             this.setState({ currentRole: role });

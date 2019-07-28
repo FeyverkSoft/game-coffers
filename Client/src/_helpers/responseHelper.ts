@@ -1,4 +1,4 @@
-import { Lang } from '../_services';
+import { Lang, LangF } from '../_services';
 import { sessionInstance } from '../_actions';
 import { store } from '.';
 
@@ -19,7 +19,7 @@ const HttpStatusDecode = (code: number | string): string => {
             return code.toString();
     }
 }
-export function getResponse<T=any>(response: Response): Promise<T> {
+export function getResponse<T = any>(response: Response): Promise<T> {
     let status: number | string = response.statusText || response.status;
     try {
         return response.json();
@@ -32,8 +32,12 @@ export const catchHandle = (ex: any): Promise<any> => Promise.reject(ex.message 
 
 export const errorHandle = (data: any): Promise<any> => {
     if (data && data.types || data.traceId) {
-        if (data.type|| data.traceId) {
-            let error: string = Lang(data.type).format(data.errors || data.title || '');
+        if (data.type || data.traceId) {
+            let error: string = '';
+            if (data.status == 400)
+                error = LangF('INVALID_ARGUMENT', data.errors || data.title || '');
+            else
+                error = LangF(data.type, data.errors || data.title || '');
             if (data.type == 'unauthorized') {
                 try {
                     store.dispatch(sessionInstance.clearLocalSession(true));

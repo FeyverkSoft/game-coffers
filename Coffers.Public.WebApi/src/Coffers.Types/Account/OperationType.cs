@@ -34,5 +34,9 @@
         /// Иное
         /// </summary>
         Other,
+        /// <summary>
+        /// Эмиссия игровых средств в систему
+        /// </summary>
+        Emission
     }
 }
