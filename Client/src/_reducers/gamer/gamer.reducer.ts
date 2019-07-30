@@ -10,7 +10,7 @@ export class IGamerStore {
     public GetGamer(id: string): IGamersListView {
         if (this.gamersList[id])
             return this.gamersList[id];
-        return new GamersListView('', [], 0, [], [], 'Beginner', 'New', new Date().toISOString());
+        return new GamersListView('', [], 0, [], [], 'Beginner', 'New', new Date().toISOString(), '');
     }
 
     constructor(currentGamer?: IGamerInfo | IHolded & any, gamersList?: Array<IGamersListView>) {

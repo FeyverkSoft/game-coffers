@@ -10,6 +10,7 @@ import {
     LogOutController,
     MainController,
     NotFoundController,
+    BirthdayController,
 } from './controller';
 import { alertInstance } from './_actions';
 import { Lang } from './_services';
@@ -39,7 +40,7 @@ class MyApp extends React.Component<any, any> {
                         <Private>
                             <Link to="/">{Lang('COFFERS')}</Link>
                             <span>&nbsp; &nbsp;</span>
-                            <Link to="/bd">{Lang('BD')}</Link>
+                            <Link to="/birthday">{Lang('BD')}</Link>
                         </Private>
                         <Space />
                         <Private>
@@ -52,6 +53,7 @@ class MyApp extends React.Component<any, any> {
                                 <PrivateRoute path='/demo' component={DemoController} />
                                 <Route path='/auth' component={AuthController} />
                                 <PrivateRoute path='/logout' component={LogOutController} />
+                                <PrivateRoute path='/birthday' component={BirthdayController} />
                                 <PrivateRoute path="/" component={MainController} />
                                 <Route component={NotFoundController} />
                             </Switch>

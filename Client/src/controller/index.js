@@ -3,3 +3,4 @@ export * from './LogOutController.tsx';
 export * from './DemoController.tsx';
 export * from './NotFoundController.tsx';
 export * from './MainController.tsx';
+export * from './BirthdayController.tsx';

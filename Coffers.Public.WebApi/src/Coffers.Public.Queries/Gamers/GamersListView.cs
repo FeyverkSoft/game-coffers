@@ -47,5 +47,9 @@ namespace Coffers.Public.Queries.Gamers
         /// День рождения
         /// </summary>
         public DateTime DateOfBirth { get; set; }
+        /// <summary>
+        /// имя юзвера
+        /// </summary>
+        public String Name { get; set; }
     }
 }

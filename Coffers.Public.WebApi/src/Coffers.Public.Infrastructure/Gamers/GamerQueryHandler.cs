@@ -88,6 +88,7 @@ namespace Coffers.Public.Infrastructure.Gamers
             .Select(g => new GamersListView
             {
                 Id = g.Id,
+                Name = g.Name,
                 Balance = g.DefaultAccount.Balance,
                 Characters = g.Characters.Where(c => c.Status == CharStatus.Active).Select(x => x.Name).ToList(),
                 Rank = g.Rank,

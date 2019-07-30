@@ -36,6 +36,8 @@ const locString: any = {
         NAME: "Имя",
         LOGIN: 'Логин',
         LOGOUT: 'Выход',
+        LOGOUT_PAGE: 'Страница выхода',
+        LOGOUT_PAGE_: 'Подтвердите выход',
         DATEOFBIRTH: 'День рождения',
         CLASS_NAME: 'Класс',
         MAIN_PAGE_EXPECTED_TAX: 'Налоги: ',
@@ -112,6 +114,8 @@ const locString: any = {
         LOAN_EXPIREDDATE: 'Дата стухания',
         LOAN_DESCRIPTION: 'Описание',
         MODAL__OPERATIONS: 'Операции',
+        BIRTHDAY_PAGE: 'Дни рождения',
+        BIRTHDAY_TILE: 'Участники'
     }
 };
 

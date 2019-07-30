@@ -184,7 +184,8 @@ export class gamerService {
                     g.loans,
                     g.rank,
                     g.status,
-                    g.dateOfBirth
+                    g.dateOfBirth,
+                    g.name
                 ));
             })
             .catch(catchHandle);

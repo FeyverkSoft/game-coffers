@@ -21,8 +21,8 @@ class LogOut extends React.Component<ILogOutProps> {
 
     render() {
         return (<Page
-            title={Lang("LOGOUT")}
-            breadcrumbs={[new Crumbs("./logout", Lang("LOGOUT"))]}
+            title={Lang("LOGOUT_PAGE")}
+            breadcrumbs={[new Crumbs("./logout", Lang("LOGOUT_PAGE"))]}
         >
             <Grid
                 align="center"
@@ -31,7 +31,7 @@ class LogOut extends React.Component<ILogOutProps> {
                     <СanvasBlock
                         type="default"
                         isLoading={this.props.isLoading}
-                        title={Lang('logout')}
+                        title={Lang('LOGOUT_PAGE_')}
                     >
                         <Form
                             onSubmit={this.logout}

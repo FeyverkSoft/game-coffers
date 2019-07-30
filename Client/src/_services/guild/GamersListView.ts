@@ -13,6 +13,7 @@ export interface IGamersListView {
     rank: GamerRank;
     status: GamerStatus;
     dateOfBirth: Date;
+    name: string;
 
     GetLoan(id: string): ILoanView;
     GetPenalty(penaltyId: string): IPenaltyView;
@@ -44,6 +45,7 @@ export class GamersListView implements IGamersListView {
     rank: GamerRank;
     status: GamerStatus;
     dateOfBirth: Date;
+    name: string;
 
     GetPenalty(penaltyId: string): IPenaltyView {
         if (this.penalties[penaltyId])
@@ -64,7 +66,8 @@ export class GamersListView implements IGamersListView {
         loans: Array<ILoanView>,
         rank: GamerRank,
         status: GamerStatus,
-        dateOfBirth: string
+        dateOfBirth: string,
+        name: string
     ) {
         this.id = id;
         this.characters = characters;
@@ -80,5 +83,6 @@ export class GamersListView implements IGamersListView {
         this.rank = rank;
         this.status = status;
         this.dateOfBirth = new Date(dateOfBirth);
+        this.name = name || '';
     }
 }
