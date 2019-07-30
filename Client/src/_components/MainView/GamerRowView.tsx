@@ -9,6 +9,7 @@ import { Private, EditableList, Item } from "..";
 
 interface IGamerRowViewProps extends React.Props<any> {
     gamer: GamersListView & IHolded;
+    isSelected: boolean;
     onAddChar(userId: string): void;
     onAddLoan(userId: string): void;
     onAddPenalty(userId: string): void;
@@ -24,11 +25,11 @@ interface IGamerRowViewProps extends React.Props<any> {
 export class GamerRowView extends BaseReactComp<IGamerRowViewProps> {
 
     render() {
-        const { gamer } = this.props;
+        const { gamer, isSelected } = this.props;
         return (
             <div
                 key={gamer.id}
-                className={`${style['user-card']} ${style[gamer.status.toLowerCase()]}`}
+                className={`${style['user-card']} ${style[gamer.status.toLowerCase()]} ${isSelected ? style['selected'] : ''}`}
             >
                 <IF value={gamer.holding}>
                     <Spinner />
@@ -39,7 +40,7 @@ export class GamerRowView extends BaseReactComp<IGamerRowViewProps> {
                     </div>
                     <div className={style['char-list']}>
                         {gamer.characters.map(c => <div key={c} className={style['char_name']}>
-                            {c}
+                            <div>{c}</div>
                             <Private roles={['admin', 'leader', 'officer']}>
                                 <div
                                     className={style['delete']}

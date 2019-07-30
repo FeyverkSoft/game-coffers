@@ -176,7 +176,7 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
     }
 
     charactersGrid = () => {
-        const { gamers } = this.props;
+        const { gamers, user } = this.props;
         return <СanvasBlock
             title={Lang("MAIN_PAGE_CHARACTERS_GRID")}
             type="success"
@@ -195,6 +195,7 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                     return <GamerRowView
                         key={g.id}
                         gamer={g}
+                        isSelected={user.userId == g.id}
                         onAddChar={this.onAddChar}
                         onDeleteChar={this.onDeleteChar}
                         onRankChange={this.onSetRank}
