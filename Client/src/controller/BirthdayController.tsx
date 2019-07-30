@@ -46,13 +46,22 @@ export class _BirthdayController extends React.Component<IMainProps & DispatchPr
                         title={Lang("BIRTHDAY_TILE")}
                         type={"success"}
                     >
-                        {
-                            gamers.map(g => {
-                                return (
-                                    <div>{g.name}__</div>
-                                )
-                            })
-                        }
+                        <Grid
+                            align="center"
+                        >
+                            <Col1> {
+                                gamers.map(g => {
+                                    return (
+                                        <div>
+                                            <div>{g.name}</div>
+                                            <div>{g.birthday}</div>
+                                            <div>{g.count}</div>
+                                        </div>
+                                    )
+                                })
+                            }
+                            </Col1>
+                        </Grid>
                     </СanvasBlock>
                 </Col1>
             </Grid>
@@ -72,14 +81,15 @@ const connectedBirthdayController = connect<{}, {}, {}, IStore>((state: IStore):
             .map((_): IGamerView => {
                 let f: any = new Date(_.dateOfBirth.getFullYear(), d.getMonth(), d.getDate());
                 let n: any = new Date(_.dateOfBirth.getFullYear(), _.dateOfBirth.getMonth(), _.dateOfBirth.getDate());
+                let res = Math.floor((f - n) / 86400000);
                 return {
                     id: _.id,
                     name: _.name,
                     birthday: `${_.dateOfBirth.getDate()}-${_.dateOfBirth.getMonth() + 1}`,
-                    count: n > 0 ? 365 - n : -1 * n
+                    count: res > 0 ? 365 - res : -1 * res
                 }
             })
-            .sort(g => g.count)
+            .sort((a, b) => a.count - b.count)
     };
 })(_BirthdayController);
 
