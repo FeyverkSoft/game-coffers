@@ -1,5 +1,8 @@
 ﻿namespace Coffers.Types.Account
 {
+    /// <summary>
+    /// Тип доступных операций
+    /// </summary>
     public enum OperationType
     {
         /// <summary>
@@ -31,12 +34,12 @@
         /// </summary>
         Salary,
         /// <summary>
-        /// Иное
-        /// </summary>
-        Other,
-        /// <summary>
         /// Эмиссия игровых средств в систему
         /// </summary>
-        Emission
+        Emission,
+        /// <summary>
+        /// Иное
+        /// </summary>
+        Other
     }
 }

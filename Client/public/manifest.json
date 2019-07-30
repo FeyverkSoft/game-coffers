@@ -1,6 +1,6 @@
 {
-  "short_name": "Казна БатькоИКо",
-  "name": "БатькоИКо",
+  "short_name": "Казна Батько И Ко",
+  "name": "Батько И Ко",
   "icons": [
     {
       "src": "favicon.ico",
@@ -10,6 +10,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#137ae0",
+  "theme_color": "#FFFFFF",
   "background_color": "#ffffff"
 }

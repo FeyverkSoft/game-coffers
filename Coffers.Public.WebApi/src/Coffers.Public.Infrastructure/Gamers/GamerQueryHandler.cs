@@ -84,7 +84,7 @@ namespace Coffers.Public.Infrastructure.Gamers
              .Include(g => g.Loans)
              .Include(g => g.Penalties);
             return await q
-            .OrderBy(_=>_.CreateDate)
+            .OrderBy(_ => _.Rank).ThenBy(_ => _.Status).ThenBy(_ => _.CreateDate)
             .Select(g => new GamersListView
             {
                 Id = g.Id,
