@@ -1,10 +1,10 @@
 ﻿import * as React from 'react';
-import { Lang, IGamerInfo, IGamersListView } from '../_services';
-import { render } from 'react-dom';
+import { Lang } from '../_services';
 import { Page, Crumbs, Grid, Col3, СanvasBlock, Form, Col1, Button } from '../_components';
 import { connect, DispatchProp } from 'react-redux';
 import { IStore } from '../_helpers';
 import { gamerInstance } from '../_actions';
+import { UserBirthdayView } from '../_components/BirthdayView/UserBirthdayView';
 
 interface IGamerView {
     id: string;
@@ -51,13 +51,12 @@ export class _BirthdayController extends React.Component<IMainProps & DispatchPr
                         >
                             <Col1> {
                                 gamers.map(g => {
-                                    return (
-                                        <div>
-                                            <div>{g.name}</div>
-                                            <div>{g.birthday}</div>
-                                            <div>{g.count}</div>
-                                        </div>
-                                    )
+                                    return <UserBirthdayView
+                                        id={g.id}
+                                        name={g.name}
+                                        birthday={g.birthday}
+                                        dayCount={g.count}
+                                    />
                                 })
                             }
                             </Col1>
@@ -82,10 +81,11 @@ const connectedBirthdayController = connect<{}, {}, {}, IStore>((state: IStore):
                 let f: any = new Date(_.dateOfBirth.getFullYear(), d.getMonth(), d.getDate());
                 let n: any = new Date(_.dateOfBirth.getFullYear(), _.dateOfBirth.getMonth(), _.dateOfBirth.getDate());
                 let res = Math.floor((f - n) / 86400000);
+                var mo = _.dateOfBirth.getMonth() + 1;
                 return {
                     id: _.id,
                     name: _.name,
-                    birthday: `${_.dateOfBirth.getDate()}-${_.dateOfBirth.getMonth() + 1}`,
+                    birthday: `${_.dateOfBirth.getDate() > 9 ? _.dateOfBirth.getDate() : '0' + _.dateOfBirth.getDate()}-${mo > 9 ? mo : '0' + mo}`,
                     count: res > 0 ? 365 - res : -1 * res
                 }
             })
