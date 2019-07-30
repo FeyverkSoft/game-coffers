@@ -1,11 +1,12 @@
 import * as React from "react";
 import style from "./gamerrowview.module.less"
-import { Lang, DLang, GamersListView, GamerRankList, GamerRank, GamerStatusList, GamerStatus } from "../../_services";
+import { Lang, DLang, GamersListView, GamerRankList, GamerRank, GamerStatusList, GamerStatus, LangF } from "../../_services";
 import { BaseReactComp } from "../BaseReactComponent";
 import { IHolded } from "../../core";
 import { Spinner } from "../Spinner/Spinner";
 import { IF } from "../../_helpers";
 import { Private, EditableList, Item } from "..";
+import { Link } from "react-router-dom";
 
 interface IGamerRowViewProps extends React.Props<any> {
     gamer: GamersListView & IHolded;
@@ -29,15 +30,18 @@ export class GamerRowView extends BaseReactComp<IGamerRowViewProps> {
         return (
             <div
                 key={gamer.id}
+                id={gamer.id}
                 className={`${style['user-card']} ${style[gamer.status.toLowerCase()]} ${isSelected ? style['selected'] : ''}`}
             >
                 <IF value={gamer.holding}>
                     <Spinner />
                 </IF>
                 <div className={style['main']}>
-                    <div className={style['title']}>
-                        {Lang('USER_CHAR_LIST')}
-                    </div>
+                    <Link
+                        className={style['title']}
+                        to={`./birthday#${gamer.id}`}>
+                        {LangF('USER_CHAR_LIST', gamer.name)}
+                    </Link>
                     <div className={style['char-list']}>
                         {gamer.characters.map(c => <div key={c} className={style['char_name']}>
                             <div>{c}</div>

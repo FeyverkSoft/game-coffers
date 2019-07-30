@@ -47,7 +47,7 @@ const locString: any = {
         TARIFF_TAX: 'Налог за 1 чара:',
         TARIFF_LOAN_TAX: 'Стоимость займа в день',
         TARIFF_LOAN_EXPTAX: 'Стоимость просрочки займа',
-        USER_CHAR_LIST: 'Персонажи',
+        USER_CHAR_LIST: 'персонажи игрока: {0}',
         USER_ROW_STATUS: 'Статус',
         USER_ROW_RANK: 'Ранг',
         USER_ROW_BALANCE: 'Баланс',

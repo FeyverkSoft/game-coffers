@@ -52,6 +52,7 @@ export class _BirthdayController extends React.Component<IMainProps & DispatchPr
                             <Col1> {
                                 gamers.map(g => {
                                     return <UserBirthdayView
+                                        key={g.id}
                                         id={g.id}
                                         name={g.name}
                                         birthday={g.birthday}

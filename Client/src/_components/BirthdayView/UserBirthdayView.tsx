@@ -12,6 +12,7 @@ interface IUserBirthdayViewProps extends React.Props<any> {
 /// Плашка с информацией о др пользователя 
 export const UserBirthdayView = ({ ...props }: IUserBirthdayViewProps) => {
     return <div
+        id={props.id}
         key={props.id}
         className={`${style['user-bd-row']} ${props.dayCount == 0 ? style['current'] : ''}`}
         style={{ background: BlendColor('#36c13955', '#fb6d2955', (100 / 365) * props.dayCount) }}
