@@ -63,6 +63,12 @@ namespace Coffers.Public.WebApi.Authorization
             if (session.IsExpired)
                 throw new ApiException(HttpStatusCode.Unauthorized, ErrorCodes.Unauthorized, "Session expired");
 
+            //если изменился ip говорим что сессия стухла.
+            if (!session.Ip.Equals(Request.HttpContext.GetIp(), StringComparison.InvariantCultureIgnoreCase))
+            {
+                throw new ApiException(HttpStatusCode.Unauthorized, ErrorCodes.Unauthorized, "Session expired");
+            }
+
             session.ExtendSession(60 * 26);
 
             await _authorizationRepository.Save(session);

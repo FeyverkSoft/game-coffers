@@ -94,7 +94,7 @@ namespace Coffers.Public.Infrastructure.Gamers
                 Rank = g.Rank,
                 Status = g.Status,
                 DateOfBirth = g.DateOfBirth.Trunc(DateTruncType.Day),
-                Penalties = g.Penalties.Where(p => p.CreateDate >= dateFrom)
+                Penalties = g.Penalties.Where(p => p.CreateDate >= dateFrom || p.PenaltyStatus == PenaltyStatus.Active)
                     .Select(p => new PenaltyView
                     {
                         Id = p.Id,
@@ -103,7 +103,7 @@ namespace Coffers.Public.Infrastructure.Gamers
                         Description = p.Description,
                         PenaltyStatus = p.PenaltyStatus
                     }).OrderBy(_ => _.Date).ToList(),
-                Loans = g.Loans.Where(l => l.CreateDate >= dateFrom)
+                Loans = g.Loans.Where(l => l.CreateDate >= dateFrom || l.LoanStatus == LoanStatus.Active || l.LoanStatus == LoanStatus.Expired)
                     .Select(l => new LoanView
                     {
                         Amount = l.Amount,

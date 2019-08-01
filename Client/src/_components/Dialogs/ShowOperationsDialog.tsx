@@ -1,44 +1,69 @@
-
-
 import * as React from "react";
 import style from "./dialog.module.less";
 import { BaseReactComp } from "../BaseReactComponent";
-import { Dialog, Col1, Grid, NamedValue } from "..";
-import { Lang, IOperationView } from "../../_services";
+import { Dialog, Col1, Grid, NamedValue, Item } from "..";
+import { Lang } from "../../_services";
 import { connect } from "react-redux";
-import { getGuid, IStore } from "../../_helpers";
+import { IStore } from "../../_helpers";
 import { IOperation } from "../../_reducers/operation/operations.reducer";
+import { operationsInstance } from "../../_actions";
 
-interface IProps extends React.Props<any> {
+export interface IProps extends React.Props<any> {
     isDisplayed: boolean;
     operations: IOperation;
     onClose: Function;
     [id: string]: any;
 }
+interface IState {
+    isLoad: boolean;
+}
 
+export abstract class _OperationsDialog<TProp = {}, TState = {}> extends BaseReactComp<IProps & TProp, IState & TState> {
+    constructor(props: IProps & TProp, state: IState & TState) {
+        super(props, state);
+        this.state = state;
+    }
 
-class _UerOperationsDialog extends BaseReactComp<IProps> {
-    constructor(props: IProps) {
-        super(props);
-        this.state = {
-            id: getGuid(),
-            description: { value: undefined },
-            borrowDate: { value: new Date() },
-            expiredDate: { value: new Date() },
-            amount: { value: 0 },
-            isLoad: false
+    formatDate = (data: Date) => {
+        let dat = new Date(data);
+        return `${dat.getFullYear()}-${dat.getMonth() + 1}-01`;
+    }
+
+    getDateList = (): Array<Item> => {
+        let result: Array<Item> = [];
+        let std = new Date();
+        let startMnt = std.getMonth();
+        let satartYear = std.getFullYear();
+        for (let i = 0; i < 12; i++) {
+            if (startMnt - i < 0) {
+                startMnt = 11 + i;
+                satartYear -= 1;
+            }
+            let val = this.formatDate(new Date(satartYear, startMnt - i, 1));
+            result.push(new Item(val, `${satartYear}-${startMnt - i + 1}`));
         }
+        return result;
+    }
+    
+    abstract loadData = () => { }
+    abstract subTitle = (): React.ReactNode => {
+        return;
     }
 
     onClose = () => {
         this.props.onClose();
     }
 
+    onInputAndLoadDate = <T extends {} = any>(val: T, valid: boolean, path: string): void => {
+        this.onInput(val, valid, path);
+        this.loadData();
+    }
+
     render() {
         return (
             <Dialog
                 isDisplayed={this.props.isDisplayed}
-                title={Lang('MODAL__OPERATIONS')}
+                title={<div className={style['header']} >{Lang('MODAL__OPERATIONS')} {this.subTitle()}</div>}
                 onCancel={() => this.onClose()}
                 isLoading={this.props.operations.holding}
             >
@@ -63,6 +88,20 @@ class _UerOperationsDialog extends BaseReactComp<IProps> {
     }
 }
 
+class _ShowOperationsDialog extends _OperationsDialog {
+
+    subTitle = () => '';
+
+    loadData = () => { }
+
+    componentDidMount() {
+        if (this.props.guildId)
+            this.props.dispatch(operationsInstance.GetOperationsByGuildId({
+                guildId: this.props.guildId
+            }));
+    }
+}
+
 interface _IProps extends React.Props<any> {
     isDisplayed: boolean;
     gamerId: string;
@@ -75,23 +114,7 @@ const connected_ShowUserOperations = connect<{}, {}, _IProps, IStore>((store, pr
         onClose: props.onClose,
         operations: store.operations.GetGamerOperations(props.gamerId)
     };
-})(_UerOperationsDialog);
+})(_ShowOperationsDialog);
 
+export { connected_ShowUserOperations as ShowOperationsDialog };
 
-interface _GIProps extends React.Props<any> {
-    isDisplayed: boolean;
-    guildId: string;
-    onClose: Function;
-    [id: string]: any;
-}
-const connected_ShowGuildOperations = connect<{}, {}, _GIProps, IStore>((store, props): IProps => {
-    return {
-        isDisplayed: props.isDisplayed,
-        onClose: props.onClose,
-        operations: store.operations.GetGuildOperations(props.guildId)
-    };
-})(_UerOperationsDialog);
-
-export { connected_ShowUserOperations as ShowOperationsDialog }; 
-
-export { connected_ShowGuildOperations as ShowGuildOperationsDialog }; 

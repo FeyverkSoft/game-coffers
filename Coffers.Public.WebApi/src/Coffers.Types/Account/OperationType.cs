@@ -26,17 +26,14 @@
         /// </summary>
         Exchange,
         /// <summary>
-        /// Награда
-        /// </summary>
-        Reward,
-        /// <summary>
-        /// ЗП
-        /// </summary>
-        Salary,
-        /// <summary>
         /// Эмиссия игровых средств в систему
         /// </summary>
         Emission,
+        /// <summary>
+        /// Операция вывод средств из гильдии во внешнюю систему в пользу игрока
+        /// Без зачисления на гильдиский счёт игрока
+        /// </summary>
+        Output,
         /// <summary>
         /// Иное
         /// </summary>

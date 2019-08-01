@@ -12,7 +12,7 @@ import {
 } from '../_components';
 
 import { guildInstance, gamerInstance, operationsInstance } from '../_actions';
-import { IStore } from '../_helpers';
+import { IStore, IF } from '../_helpers';
 import { IHolded } from '../core';
 import { AddUserDialog } from '../_components/Dialogs/AddUserDialog';
 import { AddCharDialog } from '../_components/Dialogs/AddCharDialog';
@@ -20,7 +20,9 @@ import { AddLoanDialog } from '../_components/Dialogs/AddLoanDialog';
 import { ShowLoanDialog } from '../_components/Dialogs/LoanDialog';
 import { ShowPenaltyDialog } from '../_components/Dialogs/PenaltyDialog';
 import { AddPenaltyDialog } from '../_components/Dialogs/AddPenaltyDialog';
-import { ShowOperationsDialog, ShowGuildOperationsDialog } from '../_components/Dialogs/ShowOperationsDialog';
+import { ShowOperationsDialog } from '../_components/Dialogs/ShowOperationsDialog';
+import { ShowGuildOperationsDialog } from '../_components/Dialogs/ShowGuildOperations';
+import { ShowUserOperations } from '../_components/Dialogs/ShowUserOperations';
 
 interface IMainProps {
     isLoading?: boolean;
@@ -152,18 +154,10 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
 
     showGuildOperations = () => {
         this.setState({ operationsGDialog: { isDisplayed: true } });
-        if (this.props.guildId)
-            this.props.dispatch(operationsInstance.GetOperationsByGuildId({
-                guildId: this.props.guildId
-            }));
     }
 
     showBalanceInfo = (gamerid: string) => {
         this.setState({ operationsDialog: { isDisplayed: true, gamerId: gamerid } });
-        if (gamerid)
-            this.props.dispatch(operationsInstance.GetOperationsByUserId({
-                userId: gamerid
-            }));
     }
 
     showPenaltyInfo = (penaltyId: string, gamerid: string) => {
@@ -195,7 +189,7 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                     return <GamerRowView
                         key={g.id}
                         gamer={g}
-                        isSelected={user.userId == g.id}
+                        isCurrentUser={user.userId == g.id}
                         onAddChar={this.onAddChar}
                         onDeleteChar={this.onDeleteChar}
                         onRankChange={this.onSetRank}
@@ -281,16 +275,20 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                     isDisplayed={this.state.showPenaltyInfo.isDisplayed}
                     onClose={() => this.setState({ showPenaltyInfo: { isDisplayed: false } })}
                 />
-                <ShowOperationsDialog
-                    gamerId={this.state.operationsDialog.gamerId}
-                    isDisplayed={this.state.operationsDialog.isDisplayed}
-                    onClose={() => this.setState({ operationsDialog: { isDisplayed: false } })}
-                />
-                <ShowGuildOperationsDialog
-                    guildId={this.props.guildId || ''}
-                    isDisplayed={this.state.operationsGDialog.isDisplayed}
-                    onClose={() => this.setState({ operationsGDialog: { isDisplayed: false } })}
-                />
+                <IF value={this.state.operationsDialog.isDisplayed}>
+                    <ShowUserOperations
+                        gamerId={this.state.operationsDialog.gamerId}
+                        isDisplayed={this.state.operationsDialog.isDisplayed}
+                        onClose={() => this.setState({ operationsDialog: { isDisplayed: false } })}
+                    />
+                </IF>
+                <IF value={this.state.operationsGDialog.isDisplayed}>
+                    <ShowGuildOperationsDialog
+                        guildId={this.props.guildId || ''}
+                        isDisplayed={this.state.operationsGDialog.isDisplayed}
+                        onClose={() => this.setState({ operationsGDialog: { isDisplayed: false } })}
+                    />
+                </IF>
             </Page>
         );
     }

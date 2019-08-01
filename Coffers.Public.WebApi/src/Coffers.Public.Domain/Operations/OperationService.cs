@@ -108,57 +108,44 @@ namespace Coffers.Public.Domain.Operations
         }
 
         /// <summary>
-        /// Операция премирования игрока
+        /// Операция вывод средств из гильдии во внешнюю систему в пользу игрока
+        /// Без зачисления на гильдиский счёт игрока
         /// </summary>
         /// <param name="fromAccountId"></param>
         /// <param name="toAccountId"></param>
         /// <param name="amount"></param>
         /// <param name="description"></param>
         /// <returns></returns>
-        public async Task AddRewardOperation(Guid id, Guid fromAccountId, Guid toAccountId, Decimal amount, String description = "")
+        public async Task DoOutputOperation(Guid id, Guid fromAccountId, Guid toAccountId, Decimal amount, String description = "")
         {
             var fromAccount = await _oRepository.GetAccount(fromAccountId, default);
             var toAccount = await _oRepository.GetAccount(toAccountId, default);
             fromAccount.ChangeBalance(-1 * amount);
-            toAccount.ChangeBalance(amount);
-            await _oRepository.Save(new Operation
-            {
-                Id = id,
-                DocumentId = null,
-                Amount = amount,
-                OperationDate = DateTime.UtcNow,
-                Type = OperationType.Reward,
-                Description = description,
-                FromAccount = fromAccount,
-                ToAccount = toAccount,
-            });
-        }
-
-        /// <summary>
-        /// Операция выплаты зп
-        /// </summary>
-        /// <param name="fromAccountId"></param>
-        /// <param name="toAccountId"></param>
-        /// <param name="amount"></param>
-        /// <param name="description"></param>
-        /// <returns></returns>
-        public async Task AddSalaryOperation(Guid id, Guid fromAccountId, Guid toAccountId, Decimal amount, String description = "")
-        {
-            var fromAccount = await _oRepository.GetAccount(fromAccountId, default);
-            var toAccount = await _oRepository.GetAccount(toAccountId, default);
-            fromAccount.ChangeBalance(-1 * amount);
-            toAccount.ChangeBalance(amount);
-            await _oRepository.Save(new Operation
-            {
-                Id = id,
-                DocumentId = null,
-                Amount = amount,
-                OperationDate = DateTime.UtcNow,
-                Type = OperationType.Salary,
-                Description = description,
-                FromAccount = fromAccount,
-                ToAccount = toAccount,
-            });
+            toAccount.ChangeBalance(0);
+            var operations = new [] {
+                new Operation
+                {
+                    Id = id,
+                    DocumentId = null,
+                    Amount = amount,
+                    OperationDate = DateTime.UtcNow,
+                    Type = OperationType.Other,
+                    Description = $"Промежуточный перевод на счёт игрока со счёта гильдии, для последующего вывода; {description}",
+                    FromAccount = fromAccount,
+                    ToAccount = toAccount,
+                },
+                new Operation
+                {
+                    Id = id,
+                    DocumentId = null,
+                    Amount = amount,
+                    OperationDate = DateTime.UtcNow,
+                    Type = OperationType.Output,
+                    Description = description,
+                    FromAccount = toAccount
+                },
+            };
+            await _oRepository.Save(operations);
         }
 
         /// <summary>

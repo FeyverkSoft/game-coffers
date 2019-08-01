@@ -55,10 +55,10 @@ namespace Coffers.Public.WebApi.Controllers
         [ProducesResponseType(typeof(ICollection<OperationView>), 200)]
         public async Task<ActionResult<ICollection<OperationView>>> GetGuildOperations(
             [FromRoute] Guid guildId,
-            [FromQuery] DateTime? dateFrom,
+            [FromQuery] DateTime? dateMonth,
             CancellationToken cancellationToken)
         {
-            var date = dateFrom ?? DateTime.UtcNow.Trunc(DateTruncType.Month);
+            var date = dateMonth ?? DateTime.UtcNow.Trunc(DateTruncType.Month);
             var guildAcc = await _queryProcessor.Process<GuildAccountQuery, GuildAccountView>(new GuildAccountQuery
             {
                 GuildId = guildId
@@ -68,7 +68,7 @@ namespace Coffers.Public.WebApi.Controllers
                 new GetOperationsByAccQuery
                 {
                     AccountId = guildAcc.AccountId,
-                    DateFrom = date.Trunc(DateTruncType.Day)
+                    DateMonth = date.Trunc(DateTruncType.Month)
                 }, cancellationToken));
         }
 
@@ -79,10 +79,10 @@ namespace Coffers.Public.WebApi.Controllers
         [ProducesResponseType(typeof(ICollection<OperationView>), 200)]
         public async Task<ActionResult<ICollection<OperationView>>> GetOperationsByUserId(
             [FromRoute] Guid userId,
-            [FromQuery] DateTime? dateFrom,
+            [FromQuery] DateTime? dateMonth,
             CancellationToken cancellationToken)
         {
-            var date = dateFrom ?? DateTime.UtcNow.Trunc(DateTruncType.Month);
+            var date = dateMonth ?? DateTime.UtcNow.Trunc(DateTruncType.Month);
             var user = await _queryProcessor.Process<GetGamerInfoQuery, GamerInfoView>(new GetGamerInfoQuery
             {
                 UserId = userId
@@ -92,7 +92,7 @@ namespace Coffers.Public.WebApi.Controllers
                 new GetOperationsByAccQuery
                 {
                     AccountId = user.AccountId,
-                    DateFrom = date.Trunc(DateTruncType.Day)
+                    DateMonth = date.Trunc(DateTruncType.Month)
                 }, cancellationToken));
         }
 
@@ -159,16 +159,8 @@ namespace Coffers.Public.WebApi.Controllers
                         binding.Amount,
                         binding.Description);
                     break;
-                case OperationType.Reward:
-                    await _operationService.AddRewardOperation(
-                        binding.Id,
-                        guildAcc.AccountId,
-                        toGamer.AccountId,
-                        binding.Amount,
-                        binding.Description);
-                    break;
-                case OperationType.Salary:
-                    await _operationService.AddSalaryOperation(
+                case OperationType.Output:
+                    await _operationService.DoOutputOperation(
                         binding.Id,
                         guildAcc.AccountId,
                         toGamer.AccountId,

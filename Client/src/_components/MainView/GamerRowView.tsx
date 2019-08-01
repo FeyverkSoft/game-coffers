@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 
 interface IGamerRowViewProps extends React.Props<any> {
     gamer: GamersListView & IHolded;
-    isSelected: boolean;
+    isCurrentUser: boolean;
     onAddChar(userId: string): void;
     onAddLoan(userId: string): void;
     onAddPenalty(userId: string): void;
@@ -26,12 +26,12 @@ interface IGamerRowViewProps extends React.Props<any> {
 export class GamerRowView extends BaseReactComp<IGamerRowViewProps> {
 
     render() {
-        const { gamer, isSelected } = this.props;
+        const { gamer, isCurrentUser } = this.props;
         return (
             <div
                 key={gamer.id}
                 id={gamer.id}
-                className={`${style['user-card']} ${style[gamer.status.toLowerCase()]} ${isSelected ? style['selected'] : ''}`}
+                className={`${style['user-card']} ${style[gamer.status.toLowerCase()]} ${isCurrentUser ? style['selected'] : ''}`}
             >
                 <IF value={gamer.holding}>
                     <Spinner />

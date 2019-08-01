@@ -26,11 +26,11 @@ export class BalanceView extends BaseReactComp<IBalanceViewProps> {
                 <Col1>
                     <NamedValue
                         name={Lang("MAIN_PAGE_GUILD_BALANCE")}>
-                        <div 
-                        className={style['balance']}
-                        onClick={() => this.props.showGuildOperations()} 
+                        <div
+                            className={style['balance']}
+                            onClick={() => this.props.showGuildOperations()}
                         >
-                            {LangF("MAIN_PAGE_GUILD_B_F", balance.balance, balance.gamersBalance)}
+                            {LangF("MAIN_PAGE_GUILD_B_F", balance.balance, balance.gamersBalance, balance.balance + balance.gamersBalance)}
                         </div>
                     </NamedValue>
                 </Col1>

@@ -10,11 +10,11 @@ interface GetOperationsProps extends ICallback<any> {
 
 interface GetOperationsByUserIdProps extends ICallback<any> {
     userId: string;
-    dateFrom?: string;
+    dateMonth?: string;
 }
 interface GetOperationsByGuildProps extends ICallback<any> {
     guildId: string;
-    dateFrom?: string;
+    dateMonth?: string;
 }
 interface CreateOperationProps extends ICallback<any> {
     id: string;
@@ -62,7 +62,7 @@ class OperationActions {
     GetOperationsByUserId(props: GetOperationsByUserIdProps): Function {
         return (dispatch: Function) => {
             dispatch(request(props.userId));
-            operationService.GetOperationsByUserId(props.userId, props.dateFrom)
+            operationService.GetOperationsByUserId(props.userId, props.dateMonth)
                 .then(
                     data => {
                         dispatch(success(props.userId, data));
@@ -89,7 +89,7 @@ class OperationActions {
     GetOperationsByGuildId(props: GetOperationsByGuildProps): Function {
         return (dispatch: Function) => {
             dispatch(request(props.guildId));
-            operationService.GetOperationsByGuildId(props.guildId, props.dateFrom)
+            operationService.GetOperationsByGuildId(props.guildId, props.dateMonth)
                 .then(
                     data => {
                         dispatch(success(props.guildId, data));

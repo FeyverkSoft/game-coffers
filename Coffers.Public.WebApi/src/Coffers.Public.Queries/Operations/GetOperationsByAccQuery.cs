@@ -11,6 +11,6 @@ namespace Coffers.Public.Queries.Operations
     public sealed class GetOperationsByAccQuery : IQuery<ICollection<OperationView>>
     {
         public Guid AccountId { get; set; }
-        public DateTime DateFrom { get; set; }
+        public DateTime DateMonth { get; set; }
     }
 }

@@ -42,8 +42,9 @@ namespace Coffers.Public.Infrastructure.Operations
         public async Task<ICollection<OperationView>> Handle(GetOperationsByAccQuery query,
             CancellationToken cancellationToken)
         {
+            var toDate = query.DateMonth.AddMonths(1);
             var q = _context.Operations.AsNoTracking()
-                .Where(_ => _.CreateDate >= query.DateFrom);
+                .Where(_ => _.CreateDate >= query.DateMonth && _.CreateDate<= toDate);
 
             var result = new List<OperationView>();
             var to = await q
