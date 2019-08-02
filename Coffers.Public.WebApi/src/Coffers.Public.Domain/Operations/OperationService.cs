@@ -162,20 +162,17 @@ namespace Coffers.Public.Domain.Operations
             var toAccount = await _oRepository.GetAccount(toAccountId, default);
             fromAccount.ChangeBalance(-1 * amount);
             toAccount.ChangeBalance(0);
-            var operations = new[] {
-                new Operation
-                {
-                    Id = id,
-                    DocumentId = null,
-                    Amount = amount,
-                    OperationDate = DateTime.UtcNow,
-                    Type = OperationType.InternalOutput,
-                    Description = $"Перевод на счёт игрока со счёта гильдии; {description}",
-                    FromAccount = fromAccount,
-                    ToAccount = toAccount,
-                },
-            };
-            await _oRepository.Save(operations);
+            await _oRepository.Save(new Operation
+            {
+                Id = id,
+                DocumentId = null,
+                Amount = amount,
+                OperationDate = DateTime.UtcNow,
+                Type = OperationType.InternalOutput,
+                Description = $"Перевод на счёт игрока со счёта гильдии; {description}",
+                FromAccount = fromAccount,
+                ToAccount = toAccount,
+            });
         }
 
         /// <summary>

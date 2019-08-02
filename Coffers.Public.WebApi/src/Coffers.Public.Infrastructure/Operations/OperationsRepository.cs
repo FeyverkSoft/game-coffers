@@ -48,9 +48,7 @@ namespace Coffers.Public.Infrastructure.Operations
         /// <returns></returns>
         public async Task Save(ICollection<Operation> operation)
         {
-            var entry = _context.Entry(operation);
-            if (entry.State == EntityState.Detached)
-                _context.Operations.AddRange(operation);
+            _context.Operations.AddRange(operation);
             await _context.SaveChangesAsync();
         }
 
