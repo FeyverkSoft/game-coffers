@@ -109,7 +109,7 @@ namespace Coffers.Public.Domain.Operations
 
         /// <summary>
         /// Операция вывод средств из гильдии во внешнюю систему в пользу игрока
-        /// Без зачисления на гильдиский счёт игрока
+        /// Через зачисление на гильдиский счёт игрока
         /// </summary>
         /// <param name="fromAccountId"></param>
         /// <param name="toAccountId"></param>
@@ -122,7 +122,7 @@ namespace Coffers.Public.Domain.Operations
             var toAccount = await _oRepository.GetAccount(toAccountId, default);
             fromAccount.ChangeBalance(-1 * amount);
             toAccount.ChangeBalance(0);
-            var operations = new [] {
+            var operations = new[] {
                 new Operation
                 {
                     Id = id,
@@ -136,13 +136,43 @@ namespace Coffers.Public.Domain.Operations
                 },
                 new Operation
                 {
-                    Id = id,
+                    Id = Guid.NewGuid(),
                     DocumentId = null,
                     Amount = amount,
                     OperationDate = DateTime.UtcNow,
                     Type = OperationType.Output,
                     Description = description,
                     FromAccount = toAccount
+                },
+            };
+            await _oRepository.Save(operations);
+        }
+
+        /// <summary>
+        /// Операция вывод средств из гильдии в пользу счёта игрока без эмиссии во внешнюю систему
+        /// </summary>
+        /// <param name="fromAccountId"></param>
+        /// <param name="toAccountId"></param>
+        /// <param name="amount"></param>
+        /// <param name="description"></param>
+        /// <returns></returns>
+        public async Task DoInternalOutputOperation(Guid id, Guid fromAccountId, Guid toAccountId, Decimal amount, String description = "")
+        {
+            var fromAccount = await _oRepository.GetAccount(fromAccountId, default);
+            var toAccount = await _oRepository.GetAccount(toAccountId, default);
+            fromAccount.ChangeBalance(-1 * amount);
+            toAccount.ChangeBalance(0);
+            var operations = new[] {
+                new Operation
+                {
+                    Id = id,
+                    DocumentId = null,
+                    Amount = amount,
+                    OperationDate = DateTime.UtcNow,
+                    Type = OperationType.InternalOutput,
+                    Description = $"Перевод на счёт игрока со счёта гильдии; {description}",
+                    FromAccount = fromAccount,
+                    ToAccount = toAccount,
                 },
             };
             await _oRepository.Save(operations);
@@ -307,6 +337,36 @@ namespace Coffers.Public.Domain.Operations
                 Type = OperationType.Emission,
                 Description = description,
                 ToAccount = toAccount,
+            });
+        }
+
+        /// <summary>
+        /// Перевод игроком со своего счёта голды, в пользу счёта гильдии
+        /// По иной причине, отличной от займа итд
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="gamerAccountId"></param>
+        /// <param name="guildAccAccountId"></param>
+        /// <param name="amount"></param>
+        /// <param name="description"></param>
+        /// <returns></returns>
+        public async Task DoInternalEmissionOperation(Guid id, Guid gamerAccountId, Guid guildAccAccountId,
+            Decimal amount, String description)
+        {
+            var gamerAccount = await _oRepository.GetAccount(gamerAccountId, default);
+            var guildAccount = await _oRepository.GetAccount(guildAccAccountId, default);
+            gamerAccount.ChangeBalance(-1 * amount);
+            guildAccount.ChangeBalance(amount);
+            await _oRepository.Save(new Operation
+            {
+                Id = id,
+                DocumentId = null,
+                Amount = amount,
+                OperationDate = DateTime.UtcNow,
+                Type = OperationType.InternalEmission,
+                Description = description,
+                FromAccount = gamerAccount,
+                ToAccount = guildAccount,
             });
         }
     }

@@ -167,6 +167,29 @@ namespace Coffers.Public.WebApi.Controllers
                         binding.Amount,
                         binding.Description);
                     break;
+                case OperationType.InternalOutput:
+                    await _operationService.DoInternalOutputOperation(
+                        binding.Id,
+                        guildAcc.AccountId,
+                        toGamer.AccountId,
+                        binding.Amount,
+                        binding.Description);
+                    break;
+                case OperationType.Emission:
+                    await _operationService.EmissionOperation(
+                        binding.Id,
+                        guildAcc.AccountId,
+                        binding.Amount,
+                        binding.Description);
+                    break;
+                case OperationType.InternalEmission:
+                    await _operationService.DoInternalEmissionOperation(
+                        binding.Id,
+                        fromGamer.AccountId,
+                        guildAcc.AccountId,
+                        binding.Amount,
+                        binding.Description);
+                    break;
                 case OperationType.Sell:
                     await _operationService.AddOtherOperation(
                         binding.Id,
@@ -192,13 +215,6 @@ namespace Coffers.Public.WebApi.Controllers
                             binding.Amount,
                             binding.Description);
                     }
-                    break;
-                case OperationType.Emission:
-                    await _operationService.EmissionOperation(
-                        binding.Id,
-                        guildAcc.AccountId,
-                        binding.Amount,
-                        binding.Description);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
