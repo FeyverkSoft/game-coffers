@@ -161,7 +161,7 @@ namespace Coffers.Public.Domain.Operations
             var fromAccount = await _oRepository.GetAccount(fromAccountId, default);
             var toAccount = await _oRepository.GetAccount(toAccountId, default);
             fromAccount.ChangeBalance(-1 * amount);
-            toAccount.ChangeBalance(0);
+            toAccount.ChangeBalance(amount);
             await _oRepository.Save(new Operation
             {
                 Id = id,
