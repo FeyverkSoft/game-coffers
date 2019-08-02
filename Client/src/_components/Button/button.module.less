@@ -2,27 +2,27 @@
 
 .button {
     .transition(~'background, box-shadow');
-    background-color: @mainButonBgColor;
-    color: @whiteFontColor;
-    box-shadow: @box-shadow-1;
-    display: inline-block;
-    text-align: center;
-    position: relative;
-    cursor: pointer;
-    overflow: hidden;
+    background-color   : @mainButonBgColor;
+    color              : @whiteFontColor;
+    box-shadow         : @box-shadow-1;
+    display            : inline-block;
+    text-align         : center;
+    position           : relative;
+    cursor             : pointer;
+    overflow           : hidden;
     -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
-    vertical-align: middle;
-    padding: .5rem 2rem;
-    text-transform: uppercase;
-    border: none;
-    box-sizing: border-box;
-    letter-spacing: 0.03em;
-    will-change: background-color, box-shadow;
-    outline:none;
+    -moz-user-select   : none;
+    user-select        : none;
+    vertical-align     : middle;
+    padding            : .5rem 2rem;
+    text-transform     : uppercase;
+    border             : none;
+    box-sizing         : border-box;
+    letter-spacing     : 0.03em;
+    will-change        : background-color, box-shadow;
+    outline            : none;
 
-    &.small{
+    &.small {
         padding: 0.2rem 1rem;
     }
 
@@ -36,17 +36,17 @@
 
     &:not(.disabled):not([disabled]):hover,
     &:not(.disabled):not([disabled]):focus {
-        cursor: pointer;
-        box-shadow: @box-shadow-2;
+        cursor          : pointer;
+        box-shadow      : @box-shadow-2;
         background-color: saturate(lighten(@mainButonBgColor, @hover), @hover);
     }
 
     &.disabled,
     &[disabled] {
-        color: @lightFontColor;
-        cursor: not-allowed;
+        color           : @lightFontColor;
+        cursor          : not-allowed;
         background-color: lighten(@lightFontColor, 80%);
-        box-shadow: @box-shadow-0;
+        box-shadow      : @box-shadow-0;
     }
 
     &.default {
@@ -89,5 +89,37 @@
         &:not(.disabled):not([disabled]):focus {
             background-color: saturate(lighten(@successColor, @hover), @hover);
         }
+    }
+}
+
+.float-button {
+    box-shadow   : @box-shadow-2;
+    outline      : none;
+    position     : fixed;
+    font-family  : @font-family;
+    bottom       : 2rem;
+    right        : 2rem;
+    border-radius: 50% 25%;
+    border       : none;
+    height       : 3rem;
+    width        : 3rem;
+    font-size    : 2rem;
+    font-weight  : 300;
+    color        : @white;
+    cursor       : pointer;
+    background   : fade(spin(@importantColor, @spin), 95%);
+
+    &:hover {
+        background: lighten(spin(@importantColor, @spin), @hover_10);
+    }
+
+    @media screen and (max-width: @mobile-L) {
+        bottom: 3.1rem;
+        right : 2rem;
+    }
+
+    @media screen and (min-width: @mobile-L) and (max-width: @tablet) {
+        bottom: 3.1rem;
+        right : 1.5rem;
     }
 }

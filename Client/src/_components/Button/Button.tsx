@@ -34,7 +34,7 @@ export class FloatButton extends BaseButton<ButtonProps> {
     render() {
         return <button
             className={
-                `${style['button']} ${style[this.props.type || '']}` +
+                `${style['float-button']} ${style[this.props.type || '']}` +
                 ` ${this.props.extClassName ? this.props.extClassName : ''}`
             }
             disabled={this.props.disabled || this.props.isLoading}

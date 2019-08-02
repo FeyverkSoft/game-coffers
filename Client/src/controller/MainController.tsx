@@ -8,7 +8,7 @@ import {
 import {
     Crumbs, BaseReactComp, СanvasBlock, Page, Grid,
     Col2, TariffView, UserView, MainView,
-    BalanceView, GamerRowView, Button, Private
+    BalanceView, GamerRowView, Button, Private, FloatButton
 } from '../_components';
 
 import { guildInstance, gamerInstance, operationsInstance } from '../_actions';
@@ -23,6 +23,7 @@ import { AddPenaltyDialog } from '../_components/Dialogs/AddPenaltyDialog';
 import { ShowOperationsDialog } from '../_components/Dialogs/ShowOperationsDialog';
 import { ShowGuildOperationsDialog } from '../_components/Dialogs/ShowGuildOperations';
 import { ShowUserOperations } from '../_components/Dialogs/ShowUserOperations';
+import { CreateOperationDialog } from '../_components/Dialogs/CreateOperationDialog';
 
 interface IMainProps {
     isLoading?: boolean;
@@ -41,9 +42,7 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
     constructor(props: IMainProps & DispatchProp<any>) {
         super(props);
         this.state = {
-            addNewUser: {
-                isDisplayed: false,
-            },
+            addNewUser: { isDisplayed: false, },
             addChar: {
                 isDisplayed: false,
                 userId: ''
@@ -68,9 +67,8 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                 isDisplayed: false,
                 gamerId: ''
             },
-            operationsGDialog: {
-                isDisplayed: false,
-            },
+            operationsGDialog: { isDisplayed: false, },
+            addNewOperation: { isDisplayed: false, }
         };
         this.timer = 0 as any;
     }
@@ -289,6 +287,19 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                         onClose={() => this.setState({ operationsGDialog: { isDisplayed: false } })}
                     />
                 </IF>
+                <CreateOperationDialog
+                    guildId={this.props.guildId || ''}
+                    isDisplayed={this.state.addNewOperation.isDisplayed}
+                    onClose={() => this.setState({ addNewOperation: { isDisplayed: false } })}
+                />
+                <Private roles={['admin', 'leader', 'officer']}>
+                    <FloatButton
+                        type={'default'}
+                        onClick={() => this.setState({ addNewOperation: { isDisplayed: true } })}
+                    >
+                        +
+                    </FloatButton>
+                </Private>
             </Page>
         );
     }

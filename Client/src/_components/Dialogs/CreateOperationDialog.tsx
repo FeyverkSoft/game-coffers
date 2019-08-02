@@ -4,6 +4,7 @@ import { Dialog, Form, Col1, Input, Button } from "..";
 import { Lang } from "../../_services";
 import { operationsInstance } from "../../_actions";
 import { connect } from "react-redux";
+import { getGuid } from "../../_helpers";
 
 interface IProps extends React.Props<any> {
     isDisplayed: boolean;
@@ -13,6 +14,7 @@ interface IProps extends React.Props<any> {
 }
 
 interface IState {
+    id: string;
     name: IStatedField<string | undefined>;
     className: IStatedField<string | undefined>;
     isLoad: boolean;
@@ -22,6 +24,7 @@ class _CreateOperationDialog extends BaseReactComp<IProps, IState> {
     constructor(props: IProps) {
         super(props);
         this.state = {
+            id: getGuid(),
             name: { value: undefined },
             className: { value: undefined },
             isLoad: false
@@ -30,6 +33,7 @@ class _CreateOperationDialog extends BaseReactComp<IProps, IState> {
 
     onClose = () => {
         this.setState({
+            id: getGuid(),
             name: { value: undefined },
             className: { value: undefined },
             isLoad: false
@@ -46,14 +50,14 @@ class _CreateOperationDialog extends BaseReactComp<IProps, IState> {
         return (
             <Dialog
                 isDisplayed={this.props.isDisplayed}
-                title={Lang('NEW_CHAR_MODAL')}
+                title={Lang('NEW_OPERATION_MODAL')}
                 onCancel={() => this.onClose()}
             >
                 <Form
                     onSubmit={() => this.handleSubmit()}
                     direction="vertical"
                 >
-                   
+
                     <Col1>
                         {<Button
                             isLoading={this.state.isLoad}
