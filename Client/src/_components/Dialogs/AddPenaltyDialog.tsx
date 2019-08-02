@@ -9,6 +9,7 @@ import { getGuid } from "../../_helpers";
 interface IProps extends React.Props<any> {
     isDisplayed: boolean;
     userId: string;
+    guildId: string;
     onClose: Function;
     [id: string]: any;
 }
