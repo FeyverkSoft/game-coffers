@@ -1,7 +1,7 @@
 import * as React from "react";
 import { BaseReactComp, IStatedField } from "../BaseReactComponent";
-import { Dialog, Form, Col1, Input, Button } from "..";
-import { Lang } from "../../_services";
+import { Dialog, Form, Col1, Input, Button, MaterialSelect, Item } from "..";
+import { Lang, OperationTypeList, DLang, OperationType } from "../../_services";
 import { operationsInstance } from "../../_actions";
 import { connect } from "react-redux";
 import { getGuid } from "../../_helpers";
@@ -15,7 +15,7 @@ interface IProps extends React.Props<any> {
 
 interface IState {
     id: string;
-    name: IStatedField<string | undefined>;
+    type: OperationType;
     className: IStatedField<string | undefined>;
     isLoad: boolean;
 }
@@ -25,7 +25,7 @@ class _CreateOperationDialog extends BaseReactComp<IProps, IState> {
         super(props);
         this.state = {
             id: getGuid(),
-            name: { value: undefined },
+            type: 'Emission',
             className: { value: undefined },
             isLoad: false
         }
@@ -34,7 +34,7 @@ class _CreateOperationDialog extends BaseReactComp<IProps, IState> {
     onClose = () => {
         this.setState({
             id: getGuid(),
-            name: { value: undefined },
+            type: 'Emission',
             className: { value: undefined },
             isLoad: false
         })
@@ -46,7 +46,7 @@ class _CreateOperationDialog extends BaseReactComp<IProps, IState> {
     }
 
     render() {
-        const { } = this.state;
+        const { type } = this.state;
         return (
             <Dialog
                 isDisplayed={this.props.isDisplayed}
@@ -57,7 +57,15 @@ class _CreateOperationDialog extends BaseReactComp<IProps, IState> {
                     onSubmit={() => this.handleSubmit()}
                     direction="vertical"
                 >
-
+                    <Col1>
+                        <MaterialSelect
+                            items={OperationTypeList.map(t => new Item(t, DLang('OPERATIONS_TYPE', t)))}
+                            value={type}
+                            path="type"
+                            onChange={this.onInput}
+                            type='default'
+                        ></MaterialSelect>
+                    </Col1>
                     <Col1>
                         {<Button
                             isLoading={this.state.isLoad}

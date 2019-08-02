@@ -116,7 +116,16 @@ const locString: any = {
         LOAN_DESCRIPTION: 'Описание',
         MODAL__OPERATIONS: 'Операции',
         BIRTHDAY_PAGE: 'Дни рождения',
-        BIRTHDAY_TILE: 'Участники'
+        BIRTHDAY_TILE: 'Участники',
+        OPERATIONS_TYPE: {
+            Tax: 'Погашение налога',
+            Penalty: 'Погашение штрафа',
+            Loan: 'Погашение займа',
+            Exchange: 'Обмен между твинами',
+            Output: 'Вывод во внешнюю систему',
+            Other: 'Иное',
+            Emission: 'Имиссия'
+        }
     }
 };
 
