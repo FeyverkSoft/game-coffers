@@ -115,27 +115,18 @@ namespace Coffers.Public.WebApi.Controllers
                 throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.OperationAlreadyExists, "");
             }
 
-            var fromGamer = binding.FromUserId != null ? await _queryProcessor.Process<GetGamerInfoQuery, GamerInfoView>(new GetGamerInfoQuery
-            {
-                UserId = binding.FromUserId.Value
-            }, cancellationToken) : null;
-
-            var toGamer = binding.ToUserId != null ? await _queryProcessor.Process<GetGamerInfoQuery, GamerInfoView>(new GetGamerInfoQuery
-            {
-                UserId = binding.ToUserId.Value
-            }, cancellationToken) : null;
-
-            var guildAcc = await _queryProcessor.Process<GuildAccountQuery, GuildAccountView>(new GuildAccountQuery
-            {
-                GuildId = fromGamer?.GuildId ?? toGamer?.GuildId ?? HttpContext.GuildId()
-            }, cancellationToken);
+            var guildAcc = await _queryProcessor.Process<GuildAccountQuery, GuildAccountView>(
+                new GuildAccountQuery
+                {
+                    GuildId = HttpContext.GuildId()
+                }, cancellationToken);
 
             switch (binding.Type)
             {
                 case OperationType.Tax:
                     await _operationService.AddTaxOperation(
-                        binding.Id,
-                         fromGamer.AccountId,
+                         binding.Id,
+                         await GetAccountId(binding.FromUserId.Value, cancellationToken),
                          guildAcc.AccountId,
                          binding.Amount,
                          binding.Description);
@@ -143,7 +134,6 @@ namespace Coffers.Public.WebApi.Controllers
                 case OperationType.Penalty:
                     await _operationService.AddPenaltyOperation(
                         binding.Id,
-                        fromGamer.AccountId,
                         guildAcc.AccountId,
                         binding.PenaltyId.Value,
                         binding.Amount,
@@ -152,7 +142,6 @@ namespace Coffers.Public.WebApi.Controllers
                 case OperationType.Loan:
                     await _operationService.AddLoanOperation(
                         binding.Id,
-                        fromGamer.AccountId,
                         guildAcc.AccountId,
                         binding.LoanId.Value,
                         binding.Amount,
@@ -161,10 +150,9 @@ namespace Coffers.Public.WebApi.Controllers
                 case OperationType.Exchange:
                     if (binding.Amount < 0)
                         throw new ApiException(HttpStatusCode.BadRequest, ErrorCodes.IncorrectOperation, "");
-                    await _operationService.AddOtherOperation(
+                    await _operationService.DoExchangeOperation(
                         binding.Id,
-                        fromGamer.AccountId,
-                        fromGamer.AccountId,
+                        await GetAccountId(binding.FromUserId.Value, cancellationToken),
                         binding.Amount,
                         binding.Description);
                     break;
@@ -172,7 +160,7 @@ namespace Coffers.Public.WebApi.Controllers
                     await _operationService.DoOutputOperation(
                         binding.Id,
                         guildAcc.AccountId,
-                        toGamer.AccountId,
+                        await GetAccountId(binding.ToUserId.Value, cancellationToken),
                         binding.Amount,
                         binding.Description);
                     break;
@@ -180,7 +168,7 @@ namespace Coffers.Public.WebApi.Controllers
                     await _operationService.DoInternalOutputOperation(
                         binding.Id,
                         guildAcc.AccountId,
-                        toGamer.AccountId,
+                        await GetAccountId(binding.ToUserId.Value, cancellationToken),
                         binding.Amount,
                         binding.Description);
                     break;
@@ -194,7 +182,7 @@ namespace Coffers.Public.WebApi.Controllers
                 case OperationType.InternalEmission:
                     await _operationService.DoInternalEmissionOperation(
                         binding.Id,
-                        fromGamer.AccountId,
+                        await GetAccountId(binding.FromUserId.Value, cancellationToken),
                         guildAcc.AccountId,
                         binding.Amount,
                         binding.Description);
@@ -211,7 +199,7 @@ namespace Coffers.Public.WebApi.Controllers
                     {
                         await _operationService.AddOtherOperation(
                             binding.Id,
-                            toGamer.AccountId,
+                            await GetAccountId(binding.ToUserId.Value, cancellationToken),
                             binding.Amount,
                             binding.Description);
                     }
@@ -219,8 +207,8 @@ namespace Coffers.Public.WebApi.Controllers
                     {
                         await _operationService.AddOtherOperation(
                             binding.Id,
-                            fromGamer.AccountId,
-                            toGamer.AccountId,
+                            await GetAccountId(binding.FromUserId.Value, cancellationToken),
+                            await GetAccountId(binding.ToUserId.Value, cancellationToken),
                             binding.Amount,
                             binding.Description);
                     }
@@ -230,6 +218,14 @@ namespace Coffers.Public.WebApi.Controllers
             }
 
             return Ok(new { });
+        }
+
+        private async Task<Guid> GetAccountId(Guid gamerId, CancellationToken cancellationToken)
+        {
+            return (await _queryProcessor.Process<GetGamerInfoQuery, GamerInfoView>(new GetGamerInfoQuery
+            {
+                UserId = gamerId
+            }, cancellationToken)).AccountId;
         }
     }
 }

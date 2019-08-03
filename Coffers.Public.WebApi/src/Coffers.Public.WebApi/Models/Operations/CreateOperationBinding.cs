@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using Coffers.Types.Account;
 using FluentValidation;
 
@@ -45,18 +44,83 @@ namespace Coffers.Public.WebApi.Models.Operations
     {
         public CreateOperationBindingValidator()
         {
+            RuleFor(b => b.Id)
+                .NotNull()
+                .NotEmpty();
+
             When(x => x.Type == OperationType.Loan, () =>
             {
+                RuleFor(b => b.Amount)
+                    .NotNull()
+                    .GreaterThanOrEqualTo(0m);
                 RuleFor(b => b.LoanId)
                     .NotNull()
                     .NotEmpty();
             });
             When(x => x.Type == OperationType.Penalty, () =>
             {
+                RuleFor(b => b.Amount)
+                    .NotNull()
+                    .GreaterThanOrEqualTo(0m);
                 RuleFor(b => b.PenaltyId)
                     .NotNull()
                     .NotEmpty();
             });
+            When(x => x.Type == OperationType.Tax, () =>
+            {
+                RuleFor(b => b.Amount)
+                    .NotNull()
+                    .GreaterThanOrEqualTo(0m);
+                RuleFor(b => b.FromUserId)
+                    .NotNull()
+                    .NotEmpty();
+            });
+            When(x => x.Type == OperationType.Exchange, () =>
+            {
+                RuleFor(b => b.FromUserId)
+                    .NotNull()
+                    .NotEmpty();
+            });
+            When(x => x.Type == OperationType.Output, () =>
+            {
+                RuleFor(b => b.Amount)
+                    .NotNull()
+                    .GreaterThanOrEqualTo(0m);
+                RuleFor(b => b.ToUserId)
+                    .NotNull()
+                    .NotEmpty();
+            });
+            When(x => x.Type == OperationType.InternalOutput, () =>
+            {
+                RuleFor(b => b.Amount)
+                    .NotNull()
+                    .GreaterThanOrEqualTo(0m);
+                RuleFor(b => b.ToUserId)
+                    .NotNull()
+                    .NotEmpty();
+            });
+            When(x => x.Type == OperationType.Emission, () =>
+            {
+                RuleFor(b => b.Amount)
+                    .NotNull()
+                    .GreaterThanOrEqualTo(0m);
+            });
+            When(x => x.Type == OperationType.InternalEmission, () =>
+            {
+                RuleFor(b => b.FromUserId)
+                    .NotNull()
+                    .NotEmpty();
+                RuleFor(b => b.Amount)
+                    .NotNull()
+                    .GreaterThanOrEqualTo(0m);
+            });
+            When(x => x.Type == OperationType.Sell, () =>
+            {
+                RuleFor(b => b.Amount)
+                    .NotNull()
+                    .GreaterThanOrEqualTo(0m);
+            });
+
             RuleFor(b => b.Description)
                 .NotNull()
                 .NotEmpty();

@@ -14,9 +14,9 @@ namespace Coffers.Public.Domain.Operations
         public Guid Id { get; internal set; }
 
         /// <summary>
-        /// Идентификатор игрока, которому принадлежит займ
+        /// Игрок которому принадлежит займ
         /// </summary>
-        public Guid GamerId { get; internal set; }
+        public Gamer Gamer { get; internal set; }
 
         /// <summary>
         /// Сумма займа

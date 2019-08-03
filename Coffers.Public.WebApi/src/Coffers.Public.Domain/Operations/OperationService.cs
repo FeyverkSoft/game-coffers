@@ -235,22 +235,23 @@ namespace Coffers.Public.Domain.Operations
         /// <summary>
         /// Добавляет новую операцию погашения займа
         /// </summary>
-        /// <param name="gamerAccountId"></param>
         /// <param name="guildAccountId"></param>
         /// <param name="penaltyId"></param>
         /// <param name="amount"></param>
         /// <param name="description"></param>
         /// <returns></returns>
-        public async Task AddPenaltyOperation(Guid id, Guid gamerAccountId, Guid guildAccountId,
+        public async Task AddPenaltyOperation(Guid id, Guid guildAccountId,
             Guid penaltyId, Decimal amount, String description)
         {
             var operation = await _oRepository.Get(id, default);
             if (operation != null)
                 throw new Exception("Operation already exists");
 
-            var gamerAccount = await _oRepository.GetAccount(gamerAccountId, default);
-            var guildAccount = await _oRepository.GetAccount(guildAccountId, default);
             var penalty = await _oRepository.GetPenalty(penaltyId, default);
+
+            var gamerAccount = penalty.Gamer.DefaultAccount;
+            var guildAccount = await _oRepository.GetAccount(guildAccountId, default);
+
             var penaltyOpSum = (await _oRepository.GetOperationWithDocIdAndType(penaltyId, OperationType.Penalty))
                 .Sum(_ => _.Amount);
             var overSum = penaltyOpSum + amount - penalty.Amount;
@@ -282,13 +283,12 @@ namespace Coffers.Public.Domain.Operations
         /// <summary>
         /// Добавляет новую операцию в пользу займа
         /// </summary>
-        /// <param name="gamerAccountId"></param>
         /// <param name="guildAccAccountId"></param>
         /// <param name="loanId"></param>
         /// <param name="amount"></param>
         /// <param name="description"></param>
         /// <returns></returns>
-        public async Task AddLoanOperation(Guid id, Guid gamerAccountId, Guid guildAccAccountId, Guid loanId,
+        public async Task AddLoanOperation(Guid id, Guid guildAccAccountId, Guid loanId,
             Decimal amount, String description)
         {
             var operation = await _oRepository.Get(id, default);
@@ -297,7 +297,8 @@ namespace Coffers.Public.Domain.Operations
 
             var operations = new List<Operation>();
             var loan = await _oRepository.GetLoan(loanId, default);
-            var gamerAccount = await _oRepository.GetAccount(gamerAccountId, default);
+            
+            var gamerAccount = loan.Gamer.DefaultAccount;
             var guildAccount = await _oRepository.GetAccount(guildAccAccountId, default);
 
             var lA = 0m;
@@ -414,6 +415,33 @@ namespace Coffers.Public.Domain.Operations
                 Description = description,
                 FromAccount = gamerAccount,
                 ToAccount = guildAccount,
+            });
+        }
+
+        /// <summary>
+        /// Производит операцию обмена голдой между разными чарами через склад
+        /// </summary>
+        /// <returns></returns>
+        public async Task DoExchangeOperation(Guid id, Guid accountId, Decimal amount, String description = "")
+        {
+            var operation = await _oRepository.Get(id, default);
+            if (operation != null && (operation.Type != OperationType.Other || operation.Amount != amount))
+                throw new Exception("Operation already exists");
+            if (operation != null)
+                return;
+
+            var account = await _oRepository.GetAccount(accountId, default);
+
+            await _oRepository.Save(new Operation
+            {
+                Id = id,
+                DocumentId = null,
+                Amount = amount,
+                OperationDate = DateTime.UtcNow,
+                Type = OperationType.Exchange,
+                Description = description,
+                FromAccount = account,
+                ToAccount = account,
             });
         }
     }

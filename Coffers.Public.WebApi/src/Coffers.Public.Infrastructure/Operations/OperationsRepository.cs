@@ -80,6 +80,8 @@ namespace Coffers.Public.Infrastructure.Operations
         public async Task<Penalty> GetPenalty(Guid penaltyId, CancellationToken cancellationToken)
         {
             return await _context.Penalties
+                .Include(_ => _.Gamer)
+                .ThenInclude(_ => _.DefaultAccount)
                 .Where(_ => _.Id == penaltyId)
                 .FirstOrDefaultAsync(cancellationToken);
         }
@@ -96,6 +98,8 @@ namespace Coffers.Public.Infrastructure.Operations
         {
             return await _context.Loans
                 .Include(_ => _.Account)
+                .Include(_=>_.Gamer)
+                .ThenInclude(_=>_.DefaultAccount)
                 .Where(_ => _.Id == loanId)
                 .FirstOrDefaultAsync(cancellationToken);
         }

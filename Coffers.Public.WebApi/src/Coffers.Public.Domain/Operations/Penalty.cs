@@ -17,6 +17,11 @@ namespace Coffers.Public.Domain.Operations
         public Decimal Amount { get; internal set; }
 
         /// <summary>
+        /// Игрок которому выставили штраф
+        /// </summary>
+        public Gamer Gamer { get; internal set; }
+
+        /// <summary>
         /// Дата создания
         /// </summary>
         public DateTime CreateDate { get; set; }
