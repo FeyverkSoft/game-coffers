@@ -27,16 +27,18 @@ export class Dialog extends React.Component<IDialogProps, any> {
         });
     }
     render() {
-        return <IF value={this.props.isDisplayed}>
-            <div className={style["dialog"]}>
-                <div className={style['wrapper']}>
-                    <div className={style["header"]}>
+        return <div className={`${style["dialog"]} ${this.props.isDisplayed ? '' : style['none']}`}>
+            <div className={style['wrapper']}>
+                <div className={style["header"]}>
+                    <IF value={this.props.isDisplayed}>
                         {this.props.title}
-                        <div className={style["close"]}
-                            onClick={() => this.props.onCancel ? this.props.onCancel() : null}>
-                            ×
-                        </div>
+                    </IF>
+                    <div className={style["close"]}
+                        onClick={() => this.props.onCancel ? this.props.onCancel() : null}>
+                        ×
                     </div>
+                </div>
+                <IF value={this.props.isDisplayed}>
                     <div className={style["body"]}>
                         <IF value={this.props.isLoading}>
                             <Spinner />
@@ -48,8 +50,8 @@ export class Dialog extends React.Component<IDialogProps, any> {
                             {this.props.footer}
                         </div>
                     </IF>
-                </div>
+                </IF>
             </div>
-        </IF>
+        </div>
     }
 }

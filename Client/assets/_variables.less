@@ -92,18 +92,22 @@
     -webkit-animation: _fadein 0.1s linear 1 normal both;
     -moz-animation: _fadein 0.1s linear 1 normal both;
     animation: _fadein 0.1s linear 1 normal both;
+    will-change: background-color, box-shadow, animation, opacity;
 }
 
 @keyframes _fadein {
     0% {
+        will-change: opacity;
         opacity: 0;
     }
 
     66% {
+        will-change: opacity;
         opacity: 0.5;
     }
 
     100% {
+        will-change: opacity;
         opacity: 1;
     }
 }

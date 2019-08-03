@@ -41,7 +41,7 @@ export class BalanceView extends BaseReactComp<IBalanceViewProps> {
                 </Col1>
                 <Col1>
                     <NamedValue name={Lang("MAIN_PAGE_EXPECTED_TAX")}>
-                        {LangF("MAIN_PAGE_EXPECTED_TAX_FORMAT", balance.expectedTaxAmount, balance.taxAmount)}
+                        {LangF("MAIN_PAGE_EXPECTED_TAX_FORMAT", balance.taxAmount, balance.expectedTaxAmount)}
                     </NamedValue>
                 </Col1>
             </Grid>
