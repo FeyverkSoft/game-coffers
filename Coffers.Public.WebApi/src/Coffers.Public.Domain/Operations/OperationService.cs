@@ -258,9 +258,9 @@ namespace Coffers.Public.Domain.Operations
             Decimal amount, String description)
         {
             var operations = new List<Operation>();
+            var loan = await _oRepository.GetLoan(loanId, default);
             var gamerAccount = await _oRepository.GetAccount(gamerAccountId, default);
             var guildAccount = await _oRepository.GetAccount(guildAccAccountId, default);
-            var loan = await _oRepository.GetLoan(loanId, default);
 
             var lA = 0m;
             if (loan.Account.Balance <= 0)
@@ -296,7 +296,7 @@ namespace Coffers.Public.Domain.Operations
                 DocumentId = loanId,
                 Amount = lA,
                 OperationDate = DateTime.UtcNow,
-                Type = OperationType.Penalty,
+                Type = OperationType.Loan,
                 Description = description,
                 FromAccount = loan.Account,
                 ToAccount = guildAccount,

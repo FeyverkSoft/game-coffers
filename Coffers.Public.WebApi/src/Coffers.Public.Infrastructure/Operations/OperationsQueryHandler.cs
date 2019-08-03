@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Coffers.Public.Queries.Operations;
+using Coffers.Types.Account;
 using Microsoft.EntityFrameworkCore;
 using Query.Core;
 
@@ -23,13 +24,19 @@ namespace Coffers.Public.Infrastructure.Operations
         {
             var q = _context.Operations.AsNoTracking()
                 .Where(o => o.DocumentId == query.DocumentId && o.Type == query.Type);
+            Guid? loanAccId = null;
+
+            if(query.Type == OperationType.Loan)
+                loanAccId = _context.Loans.AsNoTracking().Where(o => o.Id == query.DocumentId)
+                    .Select(_=>_.Account.Id)
+                    .FirstOrDefault();
 
             return await q
                 .OrderBy(o => o.OperationDate)
                 .Select(o => new OperationView
                 {
                     Id = o.Id,
-                    Amount = o.Amount,
+                    Amount = o.FromAccountId == loanAccId? -1*  o.Amount: o.Amount,
                     DocumentId = o.DocumentId,
                     Type = o.Type,
                     Description = o.Description,

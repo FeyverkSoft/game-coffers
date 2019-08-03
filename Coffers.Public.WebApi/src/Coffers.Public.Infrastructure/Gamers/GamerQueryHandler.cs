@@ -107,6 +107,7 @@ namespace Coffers.Public.Infrastructure.Gamers
                     .Select(l => new LoanView
                     {
                         Amount = l.Amount,
+                        Balance = l.Account.Balance,
                         Date = l.CreateDate,
                         Description = l.Description,
                         LoanStatus = l.LoanStatus,

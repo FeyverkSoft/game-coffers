@@ -99,6 +99,7 @@ const locString: any = {
         },
         NEW_OPERATION_MODAL: 'Новая операция',
         MODAL_LOAN_AMOUNT: 'Сумма',
+        MODAL_LOAN_BALANCE: 'Осталось',
         MODAL_LOAN_DATE: 'Дата',
         MODAL_LOAN_EXPIREDDATE: 'Дата истечения',
         MODAL_LOAN_DESCRIPTION: 'Описание',

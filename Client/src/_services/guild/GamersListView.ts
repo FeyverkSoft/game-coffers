@@ -32,6 +32,7 @@ export interface ILoanView {
     date: Date;
     expiredDate: Date;
     amount: number;
+    balance: number;
     description: string;
     loanStatus: LoanStatus
 }

@@ -221,6 +221,7 @@ export class GamerActions {
                             date: loan.borrowDate,
                             expiredDate: loan.expiredDate,
                             amount: loan.amount,
+                            balance: loan.amount,
                             description: loan.description,
                             loanStatus: 'Active'
                         }));

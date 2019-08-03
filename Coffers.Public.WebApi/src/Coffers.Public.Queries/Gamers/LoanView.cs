@@ -18,6 +18,11 @@ namespace Coffers.Public.Queries.Gamers
         public Decimal Amount { get; set; }
 
         /// <summary>
+        /// Осталось выплатить
+        /// </summary>
+        public Decimal Balance { get; set; }
+
+        /// <summary>
         /// Дата стухания займа
         /// </summary>
         public DateTime ExpiredDate { get; set; }

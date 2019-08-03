@@ -73,6 +73,11 @@ class _LoanDialog extends BaseReactComp<IProps> {
                         </NamedValue>
                     </Col1>
                     <Col1>
+                        <NamedValue name={Lang("MODAL_LOAN_BALANCE")}>
+                            {loan.balance}
+                        </NamedValue>
+                    </Col1>
+                    <Col1>
                         <NamedValue name={Lang("MODAL_LOAN_DATE")}>
                             {formatDateTime(loan.date, 'd')}
                         </NamedValue>
