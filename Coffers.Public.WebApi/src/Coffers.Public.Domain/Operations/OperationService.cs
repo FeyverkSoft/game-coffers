@@ -179,7 +179,7 @@ namespace Coffers.Public.Domain.Operations
             var operation = await _oRepository.Get(id, default);
             if (operation != null && (operation.Type != OperationType.InternalOutput || operation.Amount != amount))
                 throw new Exception("Operation already exists");
-            if(operation!= null)
+            if (operation != null)
                 return;
 
             var fromAccount = await _oRepository.GetAccount(fromAccountId, default);
@@ -255,8 +255,8 @@ namespace Coffers.Public.Domain.Operations
                 .Sum(_ => _.Amount);
             var overSum = penaltyOpSum + amount - penalty.Amount;
 
-            gamerAccount.ChangeBalance(amount - (overSum > 0 ? overSum : 0));
-            guildAccount.ChangeBalance(-1 * (amount - (overSum > 0 ? overSum : 0)));
+            gamerAccount.ChangeBalance(-1 * (amount - (overSum > 0 ? overSum : 0)));
+            guildAccount.ChangeBalance(amount - (overSum > 0 ? overSum : 0));
 
             await _oRepository.Save(new Operation
             {
