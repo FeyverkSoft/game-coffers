@@ -25,6 +25,7 @@ namespace Coffers.Public.WebApi.Controllers
     public class OperationsController : ControllerBase
     {
         private readonly OperationService _operationService;
+        private readonly IOperationsRepository _operationsRepository;
         private readonly IQueryProcessor _queryProcessor;
 
         public OperationsController(OperationService operationService, IQueryProcessor queryProcessor)
@@ -106,6 +107,12 @@ namespace Coffers.Public.WebApi.Controllers
             [FromBody] CreateOperationBinding binding,
             CancellationToken cancellationToken)
         {
+            var operation = await _operationsRepository.Get(binding.Id, cancellationToken);
+            if (operation != null && (operation.Type != binding.Type || operation.Amount != binding.Amount))
+            {
+                throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.OperationAlreadyExists, "");
+            }
+
             var fromGamer = binding.FromUserId != null ? await _queryProcessor.Process<GetGamerInfoQuery, GamerInfoView>(new GetGamerInfoQuery
             {
                 UserId = binding.FromUserId.Value

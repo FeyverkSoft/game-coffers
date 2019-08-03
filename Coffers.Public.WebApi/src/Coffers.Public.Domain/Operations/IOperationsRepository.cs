@@ -8,6 +8,13 @@ namespace Coffers.Public.Domain.Operations
 {
     public interface IOperationsRepository
     {
+
+        /// <summary>
+        /// Возвращает информацию об операции
+        /// </summary>
+        /// <param name="operationId"></param>
+        /// <returns></returns>
+        Task<Operation> Get(Guid operationId, CancellationToken cancellationToken);
         /// <summary>
         /// Возвращает информацию о счёте по его ID
         /// </summary>

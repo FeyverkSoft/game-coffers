@@ -19,6 +19,16 @@ namespace Coffers.Public.Infrastructure.Operations
         }
 
         /// <summary>
+        /// Возвращает информацию об операции
+        /// </summary>
+        /// <param name="operationId"></param>
+        /// <returns></returns>
+        public async Task<Operation> Get(Guid operationId, CancellationToken cancellationToken)
+        {
+            return await _context.Operations.FirstOrDefaultAsync(_ => _.Id == operationId, cancellationToken);
+        }
+
+        /// <summary>
         /// Возвращает информацию о счёте по его ID
         /// </summary>
         /// <param name="accountId"></param>
@@ -85,7 +95,7 @@ namespace Coffers.Public.Infrastructure.Operations
         public async Task<Loan> GetLoan(Guid loanId, CancellationToken cancellationToken)
         {
             return await _context.Loans
-                .Include(_=>_.Account)
+                .Include(_ => _.Account)
                 .Where(_ => _.Id == loanId)
                 .FirstOrDefaultAsync(cancellationToken);
         }

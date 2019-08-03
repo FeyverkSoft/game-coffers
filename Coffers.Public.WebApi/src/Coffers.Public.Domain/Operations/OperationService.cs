@@ -69,6 +69,12 @@ namespace Coffers.Public.Domain.Operations
         /// <returns></returns>
         public async Task AddOtherOperation(Guid id, Guid fromAccountId, Guid toAccountId, Decimal amount, String description = "")
         {
+            var operation = await _oRepository.Get(id, default);
+            if (operation != null && (operation.Type != OperationType.Other || operation.Amount != amount))
+                throw new Exception("Operation already exists");
+            if (operation != null)
+                return;
+
             var fromAccount = await _oRepository.GetAccount(fromAccountId, default);
             var toAccount = await _oRepository.GetAccount(toAccountId, default);
             fromAccount.ChangeBalance(-1 * amount);
@@ -93,6 +99,12 @@ namespace Coffers.Public.Domain.Operations
         /// <returns></returns>
         public async Task AddOtherOperation(Guid id, Guid toAccountId, Decimal amount, String description = "")
         {
+            var operation = await _oRepository.Get(id, default);
+            if (operation != null && (operation.Type != OperationType.Other || operation.Amount != amount))
+                throw new Exception("Operation already exists");
+            if (operation != null)
+                return;
+
             var toAccount = await _oRepository.GetAccount(toAccountId, default);
             toAccount.ChangeBalance(amount);
             await _oRepository.Save(new Operation
@@ -118,6 +130,12 @@ namespace Coffers.Public.Domain.Operations
         /// <returns></returns>
         public async Task DoOutputOperation(Guid id, Guid fromAccountId, Guid toAccountId, Decimal amount, String description = "")
         {
+            var operation = await _oRepository.Get(id, default);
+            if (operation != null && (operation.Type != OperationType.Other || operation.Amount != amount))
+                throw new Exception("Operation already exists");
+            if (operation != null)
+                return;
+
             var fromAccount = await _oRepository.GetAccount(fromAccountId, default);
             var toAccount = await _oRepository.GetAccount(toAccountId, default);
             fromAccount.ChangeBalance(-1 * amount);
@@ -158,6 +176,12 @@ namespace Coffers.Public.Domain.Operations
         /// <returns></returns>
         public async Task DoInternalOutputOperation(Guid id, Guid fromAccountId, Guid toAccountId, Decimal amount, String description = "")
         {
+            var operation = await _oRepository.Get(id, default);
+            if (operation != null && (operation.Type != OperationType.InternalOutput || operation.Amount != amount))
+                throw new Exception("Operation already exists");
+            if(operation!= null)
+                return;
+
             var fromAccount = await _oRepository.GetAccount(fromAccountId, default);
             var toAccount = await _oRepository.GetAccount(toAccountId, default);
             fromAccount.ChangeBalance(-1 * amount);
@@ -185,6 +209,12 @@ namespace Coffers.Public.Domain.Operations
         /// <returns></returns>
         public async Task AddTaxOperation(Guid id, Guid fromAccountId, Guid toAccountId, Decimal amount, String description = "")
         {
+            var operation = await _oRepository.Get(id, default);
+            if (operation != null && (operation.Type != OperationType.Tax || operation.Amount != amount))
+                throw new Exception("Operation already exists");
+            if (operation != null)
+                return;
+
             var fromAccount = await _oRepository.GetAccount(fromAccountId, default);
             var toAccount = await _oRepository.GetAccount(toAccountId, default);
             fromAccount.ChangeBalance(-1 * amount);
@@ -214,6 +244,10 @@ namespace Coffers.Public.Domain.Operations
         public async Task AddPenaltyOperation(Guid id, Guid gamerAccountId, Guid guildAccountId,
             Guid penaltyId, Decimal amount, String description)
         {
+            var operation = await _oRepository.Get(id, default);
+            if (operation != null)
+                throw new Exception("Operation already exists");
+
             var gamerAccount = await _oRepository.GetAccount(gamerAccountId, default);
             var guildAccount = await _oRepository.GetAccount(guildAccountId, default);
             var penalty = await _oRepository.GetPenalty(penaltyId, default);
@@ -257,6 +291,10 @@ namespace Coffers.Public.Domain.Operations
         public async Task AddLoanOperation(Guid id, Guid gamerAccountId, Guid guildAccAccountId, Guid loanId,
             Decimal amount, String description)
         {
+            var operation = await _oRepository.Get(id, default);
+            if (operation != null)
+                throw new Exception("Operation already exists");
+
             var operations = new List<Operation>();
             var loan = await _oRepository.GetLoan(loanId, default);
             var gamerAccount = await _oRepository.GetAccount(gamerAccountId, default);
@@ -323,6 +361,12 @@ namespace Coffers.Public.Domain.Operations
         /// <returns></returns>
         public async Task EmissionOperation(Guid id, Guid guildAccountId, Decimal amount, String description)
         {
+            var operation = await _oRepository.Get(id, default);
+            if (operation != null && (operation.Type != OperationType.Emission || operation.Amount != amount))
+                throw new Exception("Operation already exists");
+            if (operation != null)
+                return;
+
             var toAccount = await _oRepository.GetAccount(guildAccountId, default);
             toAccount.ChangeBalance(amount);
             await _oRepository.Save(new Operation
@@ -350,6 +394,12 @@ namespace Coffers.Public.Domain.Operations
         public async Task DoInternalEmissionOperation(Guid id, Guid gamerAccountId, Guid guildAccAccountId,
             Decimal amount, String description)
         {
+            var operation = await _oRepository.Get(id, default);
+            if (operation != null && (operation.Type != OperationType.InternalEmission || operation.Amount != amount))
+                throw new Exception("Operation already exists");
+            if (operation != null)
+                return;
+
             var gamerAccount = await _oRepository.GetAccount(gamerAccountId, default);
             var guildAccount = await _oRepository.GetAccount(guildAccAccountId, default);
             gamerAccount.ChangeBalance(-1 * amount);
