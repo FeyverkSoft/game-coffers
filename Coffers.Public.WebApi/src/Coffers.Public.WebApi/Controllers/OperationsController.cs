@@ -28,10 +28,12 @@ namespace Coffers.Public.WebApi.Controllers
         private readonly IOperationsRepository _operationsRepository;
         private readonly IQueryProcessor _queryProcessor;
 
-        public OperationsController(OperationService operationService, IQueryProcessor queryProcessor)
+        public OperationsController(OperationService operationService, IQueryProcessor queryProcessor,
+            IOperationsRepository operationsRepository)
         {
             _operationService = operationService;
             _queryProcessor = queryProcessor;
+            _operationsRepository = operationsRepository;
         }
 
         /// <summary>
