@@ -253,7 +253,7 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                 />
                 <AddLoanDialog
                     userId={this.state.addLoan.userId}
-                    guildId={this.state.guildId || ''}
+                    guildId={this.props.guildId || ''}
                     isDisplayed={this.state.addLoan.isDisplayed}
                     onClose={() => this.setState({ addLoan: { isDisplayed: false } })}
                 />
