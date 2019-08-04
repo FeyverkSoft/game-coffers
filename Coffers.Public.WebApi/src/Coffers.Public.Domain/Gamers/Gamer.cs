@@ -67,7 +67,6 @@ namespace Coffers.Public.Domain.Gamers
         /// </summary>
         /// <param name="name"></param>
         /// <param name="className"></param>
-        /// <exception cref="ArgumentException">Character {name} already exists</exception>
         public void AddCharacters(String name, String className)
         {
             if (Characters == null)
@@ -83,8 +82,13 @@ namespace Coffers.Public.Domain.Gamers
                 return;
             }
 
-            if (Characters.Exists(x => x.Name.Equals(_name, StringComparison.CurrentCultureIgnoreCase) && !x.ClassName.Equals(_className, StringComparison.CurrentCultureIgnoreCase)))
-                throw new ArgumentException($"Character {_name} already exists");
+            //Если персонаж был ранее но с другим классом. То удаляем запись о старом.
+            //Пока что так....
+            if (Characters.Exists(x =>
+                x.Name.Equals(_name, StringComparison.CurrentCultureIgnoreCase) &&
+                !x.ClassName.Equals(_className, StringComparison.CurrentCultureIgnoreCase)))
+                Characters.Remove(Characters.FirstOrDefault(_ =>
+                    _.Name.Equals(_name, StringComparison.CurrentCultureIgnoreCase)));
 
             Characters.Add(new Character
             {
@@ -146,7 +150,7 @@ namespace Coffers.Public.Domain.Gamers
             if (Penalties == null)
                 Penalties = new List<Penalty>();
 
-            if (Penalties.Any(x => x.Id == Id && x.Amount == amount)) 
+            if (Penalties.Any(x => x.Id == Id && x.Amount == amount))
                 return;
             Penalties.Add(new Penalty(id, amount, description));
         }
@@ -162,7 +166,7 @@ namespace Coffers.Public.Domain.Gamers
 
             if (Loans.Any(x => x.Id == loan.Id && x.Amount == loan.Amount))
                 return;
-            
+
             Loans.Add(loan);
         }
 
@@ -174,9 +178,9 @@ namespace Coffers.Public.Domain.Gamers
         {
             if (Penalties == null)
                 Penalties = new List<Penalty>();
-            var p = Penalties.FirstOrDefault(_ => _.Id == id );
+            var p = Penalties.FirstOrDefault(_ => _.Id == id);
 
-            if(p == null)
+            if (p == null)
                 throw new KeyNotFoundException(id.ToString());
 
             if (p.PenaltyStatus == PenaltyStatus.Active)
