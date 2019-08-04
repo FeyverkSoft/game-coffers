@@ -17,6 +17,7 @@ services:
     image: maiznpetr/coffers-client:latest
     depends_on:
       - coffers-proxy
+    restart: always
 
   coffers-proxy:
     image: nginx:1.15.10-alpine
