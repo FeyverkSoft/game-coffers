@@ -74,7 +74,7 @@ namespace Coffers.Public.Infrastructure.Gamers
             q = q.Where(g => g.DeletedDate == null || g.DeletedDate >= dateFrom);
 
 #warning прячим служебного временного пользователя
-            q = q.Where(g => g.Name!= "user");
+            q = q.Where(g => g.Name != "user");
 
             if (query.DateTo != null)
                 q = q.Where(g => g.CreateDate <= query.DateTo.Value.Trunc(DateTruncType.Month));
@@ -103,7 +103,7 @@ namespace Coffers.Public.Infrastructure.Gamers
                         Description = p.Description,
                         PenaltyStatus = p.PenaltyStatus
                     }).OrderBy(_ => _.Date).ToList(),
-                Loans = g.Loans.Where(l => l.CreateDate >= dateFrom || l.LoanStatus == LoanStatus.Active || l.LoanStatus == LoanStatus.Expired)
+                Loans = g.Loans.Where(l => l.CreateDate >= dateFrom || l.LoanStatus == LoanStatus.Active || l.LoanStatus == LoanStatus.Expired || l.ExpiredDate >= dateFrom)
                     .Select(l => new LoanView
                     {
                         Amount = l.Amount,
