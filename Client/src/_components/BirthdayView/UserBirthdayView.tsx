@@ -10,7 +10,7 @@ interface IUserBirthdayViewProps extends React.Props<any> {
 }
 
 /// Плашка с информацией о др пользователя 
-export const UserBirthdayView = ({ ...props }: IUserBirthdayViewProps) => {
+export const UserBirthdayView = React.memo(({ ...props }: IUserBirthdayViewProps) => {
     return <div
         id={props.id}
         key={props.id}
@@ -30,4 +30,4 @@ export const UserBirthdayView = ({ ...props }: IUserBirthdayViewProps) => {
             {props.dayCount}
         </div>
     </div>
-}
+});

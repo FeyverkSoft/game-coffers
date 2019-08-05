@@ -120,17 +120,24 @@ const locString: any = {
         BIRTHDAY_TILE: 'Участники',
         OPERATIONS_TYPE: {
             Tax: 'Погашение налога',
+            Sell: 'Операция продажи предмета со склада',
             Penalty: 'Погашение штрафа',
             Loan: 'Погашение займа',
             Exchange: 'Обмен между твинами',
             Output: 'Вывод во внешнюю систему',
+            InternalOutput: 'Вывод на счёт игрока',
+            Emission: 'Эмиссия',
+            InternalEmission: 'Пополнение со счёта игрока',
             Other: 'Иное',
-            Emission: 'Имиссия'
-        }
+        },
+        OPERATION_AMOUNT: 'Сумма операции',
+        OPERATION_DESCRIPTION: 'Описание операции',
+        OPERATION_FROMUSERID: 'С пользователя:',
+        OPERATION_TOUSERID: 'Пользователю:'
     }
 };
 
-
+let _CurrentLang: string | undefined;
 export const getCookie = function getCookie(name: string): string | undefined {
     var matches = document.cookie.match(new RegExp(
         "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
@@ -143,7 +150,10 @@ export const setCookie = function setCookie(name: string, val: string): void {
 }
 
 export const CurrentLang = function (): string {
-    return getCookie("Lang") || 'ru';
+    if (_CurrentLang)
+        return _CurrentLang;
+    _CurrentLang = getCookie("Lang") || 'ru';
+    return _CurrentLang;
 }
 
 function getTranslate(value: string): string {

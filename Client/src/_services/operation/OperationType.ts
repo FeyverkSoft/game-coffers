@@ -1,3 +1,3 @@
-export type OperationType = 'Tax' | 'Penalty' | 'Loan' | 'Exchange' | 'Output' | 'Other' | 'Emission';
+export type OperationType = 'Tax' | 'Sell' | 'Penalty' | 'Loan' | 'Exchange' | 'Emission' | 'Output' | 'InternalOutput' | 'InternalEmission' | 'Other';
 
-export const OperationTypeList = ['Tax', 'Penalty', 'Loan', 'Exchange', 'Output', 'Other', 'Emission'];
+export const OperationTypeList = ['Tax', 'Sell', 'Penalty', 'Loan', 'Exchange', 'Emission', 'Output', 'InternalOutput', 'InternalEmission', 'Other'];

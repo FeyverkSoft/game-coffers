@@ -23,133 +23,128 @@ interface IGamerRowViewProps extends React.Props<any> {
     [id: string]: any;
 }
 /// Плашка с информацией о пользователе
-export class GamerRowView extends BaseReactComp<IGamerRowViewProps> {
-
-    render() {
-        const { gamer, isCurrentUser } = this.props;
-        return (
-            <div
-                key={gamer.id}
-                id={gamer.id}
-                className={`${style['user-card']} ${style[gamer.status.toLowerCase()]} ${isCurrentUser ? style['selected'] : ''}`}
-            >
-                <IF value={gamer.holding}>
-                    <Spinner />
-                </IF>
-                <div className={style['main']}>
-                    <Link
-                        className={style['title']}
-                        to={`./birthday#${gamer.id}`}>
-                        {LangF('USER_CHAR_LIST', gamer.name)}
-                    </Link>
-                    <div className={style['char-list']}>
-                        {gamer.characters.map(c => <div key={c} className={style['char_name']}>
-                            <div>{c}</div>
-                            <Private roles={['admin', 'leader', 'officer']}>
-                                <div
-                                    className={style['delete']}
-                                    onClick={() => this.props.onDeleteChar(gamer.id, c)}
-                                />
-                            </Private>
-                        </div>)}
+export const GamerRowView = React.memo(({ ...props }: IGamerRowViewProps) => {
+    const { gamer, isCurrentUser } = props;
+    return (
+        <div
+            key={gamer.id}
+            id={gamer.id}
+            className={`${style['user-card']} ${style[gamer.status.toLowerCase()]} ${isCurrentUser ? style['selected'] : ''}`}
+        >
+            <IF value={gamer.holding}>
+                <Spinner />
+            </IF>
+            <div className={style['main']}>
+                <Link
+                    className={style['title']}
+                    to={`./birthday#${gamer.id}`}>
+                    {LangF('USER_CHAR_LIST', gamer.name)}
+                </Link>
+                <div className={style['char-list']}>
+                    {gamer.characters.map(c => <div key={c} className={style['char_name']}>
+                        <div>{c}</div>
                         <Private roles={['admin', 'leader', 'officer']}>
-                            <span className={style['add']}
-                                onClick={() => this.props.onAddChar(gamer.id)}
+                            <div
+                                className={style['delete']}
+                                onClick={() => props.onDeleteChar(gamer.id, c)}
                             />
                         </Private>
-                    </div>
-                </div>
-                <div className={style['user-status']}>
-                    <div className={style['title']}>
-                        {Lang('USER_ROW_STATUS')}
-                    </div>
-                    <div className={style['content']}>
-                        <EditableList
-                            roles={['admin', 'leader', 'officer']}
-                            items={GamerStatusList.map(t => new Item(t, DLang('USER_STATUS', t)))}
-                            value={gamer.status}
-                            onSave={(value) => this.props.onStatusChange(gamer.id, value as GamerStatus)}
+                    </div>)}
+                    <Private roles={['admin', 'leader', 'officer']}>
+                        <span className={style['add']}
+                            onClick={() => props.onAddChar(gamer.id)}
                         />
-                    </div>
-                </div>
-                <div className={style['rank']}>
-                    <div className={style['title']}>
-                        {Lang('USER_ROW_RANK')}
-                    </div>
-                    <div className={`${style['content']} ${style[gamer.rank.toLowerCase()]}`}>
-                        <EditableList
-                            roles={['admin', 'leader', 'officer']}
-                            items={GamerRankList.map(t => new Item(t, DLang('USER_ROLE', t)))}
-                            value={gamer.rank}
-                            onSave={(value) => this.props.onRankChange(gamer.id, value as GamerRank)}
-                        />
-                    </div>
-                </div>
-
-                <div className={style['penalties']}>
-                    <div className={style['title']}>
-                        {Lang('USER_ROW_PENALTIES')}
-                    </div>
-                    <div className={style['content']}>
-                        {Object.keys(gamer.penalties).map(_ => {
-                            const p = gamer.penalties[_];
-                            return (
-                                <div key={p.id}
-                                    title={p.description}
-                                    className={`${style['penalty']} ${style[p.penaltyStatus.toLowerCase()]}`}
-                                    onClick={() => this.props.showPenaltyInfo(p.id, gamer.id)}
-                                >
-                                    {p.amount}
-                                </div>
-                            )
-                        })}
-                        <Private roles={['admin', 'leader', 'officer']}>
-                            <span className={style['add']}
-                                onClick={() => this.props.onAddPenalty(gamer.id)}
-                            />
-                        </Private>
-                    </div>
-                </div>
-
-                <div className={style['balance']}>
-                    <div className={style['title']}>
-                        {Lang('USER_ROW_BALANCE')}
-                    </div>
-                    <div
-                        className={`${style['content']} ${gamer.balance < 0 ? style['red'] : ''}`}
-                        onClick={() => this.props.showBalanceInfo(gamer.id)}
-                    >
-                        {gamer.balance}
-                    </div>
-                </div>
-
-                <div className={style['loans']}>
-                    <div className={style['title']}>
-                        {Lang('USER_ROW_LOANS')}
-                    </div>
-                    <div className={style['content']}>
-                        {Object.keys(gamer.loans).map(_ => {
-                            const l = gamer.loans[_];
-                            return (
-                                <div key={l.id}
-                                    className={`${style['loan']} ${style[l.loanStatus.toLowerCase()]}`}
-                                    title={`${l.expiredDate.toString()} ${l.description}`}
-                                    onClick={() => this.props.showLoanInfo(l.id, gamer.id)}
-                                >
-                                    {l.amount}
-                                </div>
-                            )
-                        })}
-                        <Private roles={['admin', 'leader', 'officer']}>
-                            <span className={style['add']}
-                                onClick={() => this.props.onAddLoan(gamer.id)}
-                            />
-                        </Private>
-                    </div>
-                </div>
-                <div>
+                    </Private>
                 </div>
             </div>
-        );
-    }
-}
+            <div className={style['user-status']}>
+                <div className={style['title']}>
+                    {Lang('USER_ROW_STATUS')}
+                </div>
+                <div className={style['content']}>
+                    <EditableList
+                        roles={['admin', 'leader', 'officer']}
+                        items={GamerStatusList.map(t => new Item(t, DLang('USER_STATUS', t)))}
+                        value={gamer.status}
+                        onSave={(value) => props.onStatusChange(gamer.id, value as GamerStatus)}
+                    />
+                </div>
+            </div>
+            <div className={style['rank']}>
+                <div className={style['title']}>
+                    {Lang('USER_ROW_RANK')}
+                </div>
+                <div className={`${style['content']} ${style[gamer.rank.toLowerCase()]}`}>
+                    <EditableList
+                        roles={['admin', 'leader', 'officer']}
+                        items={GamerRankList.map(t => new Item(t, DLang('USER_ROLE', t)))}
+                        value={gamer.rank}
+                        onSave={(value) => props.onRankChange(gamer.id, value as GamerRank)}
+                    />
+                </div>
+            </div>
+
+            <div className={style['penalties']}>
+                <div className={style['title']}>
+                    {Lang('USER_ROW_PENALTIES')}
+                </div>
+                <div className={style['content']}>
+                    {Object.keys(gamer.penalties).map(_ => {
+                        const p = gamer.penalties[_];
+                        return (
+                            <div key={p.id}
+                                title={p.description}
+                                className={`${style['penalty']} ${style[p.penaltyStatus.toLowerCase()]}`}
+                                onClick={() => props.showPenaltyInfo(p.id, gamer.id)}
+                            >
+                                {p.amount}
+                            </div>
+                        )
+                    })}
+                    <Private roles={['admin', 'leader', 'officer']}>
+                        <span className={style['add']}
+                            onClick={() => props.onAddPenalty(gamer.id)}
+                        />
+                    </Private>
+                </div>
+            </div>
+
+            <div className={style['balance']}>
+                <div className={style['title']}>
+                    {Lang('USER_ROW_BALANCE')}
+                </div>
+                <div
+                    className={`${style['content']} ${gamer.balance < 0 ? style['red'] : ''}`}
+                    onClick={() => props.showBalanceInfo(gamer.id)}
+                >
+                    {gamer.balance}
+                </div>
+            </div>
+
+            <div className={style['loans']}>
+                <div className={style['title']}>
+                    {Lang('USER_ROW_LOANS')}
+                </div>
+                <div className={style['content']}>
+                    {Object.keys(gamer.loans).map(_ => {
+                        const l = gamer.loans[_];
+                        return (
+                            <div key={l.id}
+                                className={`${style['loan']} ${style[l.loanStatus.toLowerCase()]}`}
+                                title={`${l.expiredDate.toString()} ${l.description}`}
+                                onClick={() => props.showLoanInfo(l.id, gamer.id)}
+                            >
+                                {l.amount}
+                            </div>
+                        )
+                    })}
+                    <Private roles={['admin', 'leader', 'officer']}>
+                        <span className={style['add']}
+                            onClick={() => props.onAddLoan(gamer.id)}
+                        />
+                    </Private>
+                </div>
+            </div>
+        </div>
+    );
+});

@@ -6,6 +6,7 @@
     width        : 100%;
     border-bottom: 1px fade(@black, 50%) solid;
     align-items  : center;
+    will-change: align-items, width, background-color, color;
 
     &:last-child {
         border-bottom: none;
@@ -131,6 +132,7 @@
             font-size     : 1rem;
             padding-left  : .25rem;
             min-width     : 4rem;
+            will-change: font-weight, color;
 
             @media screen and (max-width: @mobile-L) {
                 font-size: .85rem;
@@ -164,6 +166,7 @@
         flex-direction: column;
         flex          : 1 1;
         height        : 100%;
+        will-change: font-weight, color, height;
 
         .title {
             .title();
@@ -191,6 +194,7 @@
         flex-direction: column;
         flex          : 1 1;
         height        : 100%;
+        will-change: font-weight, color, height;
 
         .title {
             .title();
@@ -200,6 +204,7 @@
             .flex();
             flex-direction: row;
             font-weight   : 400;
+            will-change: font-weight, color, height, justify-content;
 
             @media screen and (max-width: @mobile-L) {
                 justify-content: center;

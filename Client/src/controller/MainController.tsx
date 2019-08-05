@@ -20,7 +20,6 @@ import { AddLoanDialog } from '../_components/Dialogs/AddLoanDialog';
 import { ShowLoanDialog } from '../_components/Dialogs/LoanDialog';
 import { ShowPenaltyDialog } from '../_components/Dialogs/PenaltyDialog';
 import { AddPenaltyDialog } from '../_components/Dialogs/AddPenaltyDialog';
-import { ShowOperationsDialog } from '../_components/Dialogs/ShowOperationsDialog';
 import { ShowGuildOperationsDialog } from '../_components/Dialogs/ShowGuildOperations';
 import { ShowUserOperations } from '../_components/Dialogs/ShowUserOperations';
 import { CreateOperationDialog } from '../_components/Dialogs/CreateOperationDialog';
@@ -307,6 +306,8 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
     }
 }
 
+const _Main = React.memo(({ ...props }: IMainProps & DispatchProp<any>) => <Main {...props} />)
+
 const connectedMain = connect<{}, {}, {}, IStore>((state: IStore): IMainProps => {
     const { guild, tariffs, reports } = state.guild;
     const { currentGamer, gamersList } = state.gamers;
@@ -320,6 +321,6 @@ const connectedMain = connect<{}, {}, {}, IStore>((state: IStore): IMainProps =>
         balance: reports.balanceReport,
         gamers: Object.keys(gamersList).map(k => gamersList[k])
     };
-})(Main);
+})(_Main);
 
 export { connectedMain as MainController }; 

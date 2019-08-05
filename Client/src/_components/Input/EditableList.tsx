@@ -1,7 +1,7 @@
 import * as React from 'react';
 import style from "./input.module.less";
-import { SmallSpinner, Item, Private } from '..';
-import { IF, getGuid } from '../../_helpers';
+import { Item, Private } from '..';
+import { IF } from '../../_helpers';
 
 interface IEditableListProps {
     items: Array<Item>;
@@ -9,7 +9,7 @@ interface IEditableListProps {
     roles: Array<string>;
     onSave(value: string): void;
 }
-export class EditableList extends React.Component<IEditableListProps, any> {
+class _EditableList extends React.Component<IEditableListProps, any> {
     constructor(props: IEditableListProps) {
         super(props);
         this.state = {
@@ -79,5 +79,6 @@ export class EditableList extends React.Component<IEditableListProps, any> {
             </div >
         )
     }
-
 }
+
+export const EditableList = React.memo(({ ...props }: IEditableListProps) => <_EditableList {...props} />)
