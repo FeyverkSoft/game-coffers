@@ -14,7 +14,7 @@ export * from './NamedValue/NamedValue';
 export * from './Input/SearchInput';
 export * from './Dialog/Dialog';
 export * from './Alert/Alert';
-export * from './Canvas/СanvasBlock';
+export * from './Canvas/CanvasBlock';
 export * from './Progressbar/Progressbar';
 export * from './Pagination/Pagination';
 export * from './Select/MultiSelectFilter';

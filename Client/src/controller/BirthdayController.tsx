@@ -1,6 +1,7 @@
 ﻿import * as React from 'react';
+import memoize from 'lodash.memoize';
 import { Lang } from '../_services';
-import { Page, Crumbs, Grid, Col3, СanvasBlock, Form, Col1, Button } from '../_components';
+import { Page, Crumbs, Grid, Col3, CanvasBlock, Form, Col1, Button } from '../_components';
 import { connect, DispatchProp } from 'react-redux';
 import { IStore } from '../_helpers';
 import { gamerInstance } from '../_actions';
@@ -41,7 +42,7 @@ export class _BirthdayController extends React.Component<IMainProps & DispatchPr
                 align="center"
             >
                 <Col1>
-                    <СanvasBlock
+                    <CanvasBlock
                         isLoading={isLoading}
                         title={Lang("BIRTHDAY_TILE")}
                         type={"success"}
@@ -62,35 +63,40 @@ export class _BirthdayController extends React.Component<IMainProps & DispatchPr
                             }
                             </Col1>
                         </Grid>
-                    </СanvasBlock>
+                    </CanvasBlock>
                 </Col1>
             </Grid>
         </Page>
         );
     }
 }
+
+const MemGamers = memoize(gamersList => {
+    let d = new Date();
+    return Object.keys(gamersList)
+        .map(k => gamersList[k])
+        .filter(g => !(g.status == 'Banned' || g.status == 'Left'))
+        .map((_): IGamerView => {
+            let f: any = new Date(_.dateOfBirth.getFullYear(), d.getMonth(), d.getDate());
+            let n: any = new Date(_.dateOfBirth.getFullYear(), _.dateOfBirth.getMonth(), _.dateOfBirth.getDate());
+            let res = Math.floor((f - n) / 86400000);
+            var mo = _.dateOfBirth.getMonth() + 1;
+            return {
+                id: _.id,
+                name: _.name,
+                birthday: `${_.dateOfBirth.getDate() > 9 ? _.dateOfBirth.getDate() : '0' + _.dateOfBirth.getDate()}-${mo > 9 ? mo : '0' + mo}`,
+                count: res > 0 ? 365 - res : -1 * res
+            }
+        })
+        .sort((a, b) => a.count - b.count)
+}, it => JSON.stringify(it));
+
 const connectedBirthdayController = connect<{}, {}, {}, IStore>((state: IStore): IMainProps => {
     const { gamersList } = state.gamers;
-    let d = new Date();
     return {
         isLoading: Object.keys(gamersList).length === 0,
         guildId: state.session.guildId,
-        gamers: Object.keys(gamersList)
-            .map(k => gamersList[k])
-            .filter(g => !(g.status == 'Banned' || g.status == 'Left'))
-            .map((_): IGamerView => {
-                let f: any = new Date(_.dateOfBirth.getFullYear(), d.getMonth(), d.getDate());
-                let n: any = new Date(_.dateOfBirth.getFullYear(), _.dateOfBirth.getMonth(), _.dateOfBirth.getDate());
-                let res = Math.floor((f - n) / 86400000);
-                var mo = _.dateOfBirth.getMonth() + 1;
-                return {
-                    id: _.id,
-                    name: _.name,
-                    birthday: `${_.dateOfBirth.getDate() > 9 ? _.dateOfBirth.getDate() : '0' + _.dateOfBirth.getDate()}-${mo > 9 ? mo : '0' + mo}`,
-                    count: res > 0 ? 365 - res : -1 * res
-                }
-            })
-            .sort((a, b) => a.count - b.count)
+        gamers: MemGamers(gamersList)
     };
 })(_BirthdayController);
 

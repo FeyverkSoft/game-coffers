@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect, DispatchProp } from 'react-redux';
 import { Lang } from '../_services';
-import { Page, Crumbs, Grid, Col3, СanvasBlock, Form, Col1, Button } from '../_components';
+import { Page, Crumbs, Grid, Col3, CanvasBlock, Form, Col1, Button } from '../_components';
 
 import { sessionInstance } from '../_actions';
 import { IStore } from '../_helpers';
@@ -28,7 +28,7 @@ class LogOut extends React.Component<ILogOutProps> {
                 align="center"
             >
                 <Col3>
-                    <СanvasBlock
+                    <CanvasBlock
                         type="default"
                         isLoading={this.props.isLoading}
                         title={Lang('LOGOUT_PAGE_')}
@@ -45,7 +45,7 @@ class LogOut extends React.Component<ILogOutProps> {
                                 >{Lang('Logout')}</Button>}
                             </Col1>
                         </Form>
-                    </СanvasBlock>
+                    </CanvasBlock>
                 </Col3>
             </Grid>
         </Page>

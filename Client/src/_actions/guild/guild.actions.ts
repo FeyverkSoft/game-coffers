@@ -48,7 +48,7 @@ export class GuildActions {
     /**
      * Возвращает информацию о гильдии по её ID
      */
-    GetGuild(guild: GetGuildProps): Function {
+    GetGuild(guild: GetGuildProps) {
         return (dispatch: Function) => {
             dispatch(request());
             guildService.getGuild(guild.guildId)

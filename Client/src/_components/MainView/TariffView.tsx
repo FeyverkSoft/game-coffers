@@ -1,6 +1,6 @@
 import * as React from "react";
 import style from "./tarifview.module.less"
-import { СanvasBlock, Grid, Col1, NamedValue } from "..";
+import { CanvasBlock, Grid, Col1, NamedValue } from "..";
 import { Lang, ITariffs, GamerRank, DLang } from "../../_services";
 import { MaterialSelect, Item } from "../Input/SelectList";
 import { BaseReactComp } from "../BaseReactComponent";
@@ -51,7 +51,7 @@ export class TariffView extends BaseReactComp<ITarifViewProps, ITarifViewState> 
     render() {
         const role = this.state.currentRole || '';
         const { tariff } = this.props;
-        return (<СanvasBlock
+        return (<CanvasBlock
             isLoading={this.props.isLoading}
             title={Lang("TARIFF_TITLE")}
             type="success"
@@ -75,7 +75,7 @@ export class TariffView extends BaseReactComp<ITarifViewProps, ITarifViewState> 
                     </NamedValue>
                 </Col1>
             </Grid>
-        </СanvasBlock>
+        </CanvasBlock>
         );
     }
 }

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect, DispatchProp } from 'react-redux';
 import { Lang } from '../_services';
-import { Crumbs, BaseReactComp, Form, Input, Button, СanvasBlock, Col1, Page, Grid, Col3 } from '../_components';
+import { Crumbs, BaseReactComp, Form, Input, Button, CanvasBlock, Col1, Page, Grid, Col3 } from '../_components';
 
 import { sessionInstance } from '../_actions';
 import { IStore } from '../_helpers';
@@ -40,7 +40,7 @@ class Auth extends BaseReactComp<IAuthProps, any> {
                 align="center"
             >
                 <Col3>
-                    <СanvasBlock
+                    <CanvasBlock
                         type="default"
                         isLoading={this.props.isLoading}
                         title={Lang('Authorize_Form')}
@@ -80,7 +80,7 @@ class Auth extends BaseReactComp<IAuthProps, any> {
                                 >{Lang('Login')}</Button>}
                             </Col1>
                         </Form>
-                    </СanvasBlock>
+                    </CanvasBlock>
                 </Col3>
             </Grid>
         </Page>

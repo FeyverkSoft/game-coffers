@@ -12,7 +12,7 @@ interface IСanvasProps extends React.Props<any> {
 }
 
 ///Холст
-export const СanvasBlock = React.memo(({ ...props }: IСanvasProps) => {
+export const CanvasBlock = React.memo(({ ...props }: IСanvasProps) => {
     return <div
         className={`${style['canvas']} ${props.title ? style['titled'] : ''}`}
     >

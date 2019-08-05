@@ -1,5 +1,5 @@
 import * as React from "react";
-import { СanvasBlock, Grid, Col1, NamedValue } from "..";
+import { CanvasBlock, Grid, Col1, NamedValue } from "..";
 import { Lang, IGamerInfo, ITariffs, LangF } from "../../_services";
 import { BaseReactComp } from "../BaseReactComponent";
 
@@ -23,7 +23,7 @@ export class UserView extends BaseReactComp<IUserViewProps> {
         const { user } = this.props;
         let index: number = user.charCount - 1;
         let tax = this.props.tax[index >= 0 ? index : 0] || this.props.tax[this.props.tax.length - 1] || 0;
-        return (<СanvasBlock
+        return (<CanvasBlock
             isLoading={this.props.isLoading}
             title={Lang("USER_TITLE")}
             subChildren={this.PinaltyRender()}
@@ -49,7 +49,7 @@ export class UserView extends BaseReactComp<IUserViewProps> {
                     </NamedValue>
                 </Col1>
             </Grid>
-        </СanvasBlock>
+        </CanvasBlock>
         );
     }
 }

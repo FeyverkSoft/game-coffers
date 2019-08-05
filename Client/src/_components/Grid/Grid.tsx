@@ -7,11 +7,11 @@ export interface IGridProps extends React.Props<any> {
     [id: string]: any;
 }
 
-export const Grid = ({ ...props }: IGridProps) => {
+export const Grid = React.memo(({ ...props }: IGridProps) => {
     return (<div className={`${style['grid']} ${style[props.align || "left"]} ${style[props.direction || "horizontal"]}`}>
         {props.children}
     </div>);
-}
+})
 
 export const Col1 = ({ ...props }) => {
     return (<div className={style['col-1']}>

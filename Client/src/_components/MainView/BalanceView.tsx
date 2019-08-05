@@ -1,6 +1,6 @@
 import * as React from "react";
 import style from "./balanceview.module.less"
-import { СanvasBlock, Grid, Col1, NamedValue } from "..";
+import { CanvasBlock, Grid, Col1, NamedValue } from "..";
 import { Lang, GuildBalanceReport, LangF } from "../../_services";
 import { BaseReactComp } from "../BaseReactComponent";
 import { IHolded } from "../../core";
@@ -15,7 +15,7 @@ export class BalanceView extends BaseReactComp<IBalanceViewProps> {
 
     render() {
         const { balance } = this.props;
-        return (<СanvasBlock
+        return (<CanvasBlock
             title={Lang("MAIN_PAGE_MAIN_BALANCE")}
             type="important"
             isLoading={this.props.balance.holding}
@@ -45,7 +45,7 @@ export class BalanceView extends BaseReactComp<IBalanceViewProps> {
                     </NamedValue>
                 </Col1>
             </Grid>
-        </СanvasBlock>
+        </CanvasBlock>
         );
     }
 }

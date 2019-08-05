@@ -49,6 +49,11 @@ export class IGamerStore {
             this.gamersList = {};
     }
 }
+const TestStat = (_new: IGamerStore, _old: IGamerStore): IGamerStore => {
+    if (JSON.stringify(_new) == JSON.stringify(_old))
+        return _old;
+    return _new;
+};
 
 export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<GamerActionsType>):
     IGamerStore {
@@ -58,17 +63,16 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<G
          * Секция получения ионформации о текущем игроке сессии
          */
         case GamerActionsType.PROC_GET_CURRENT_GAMER:
-            clonedState.currentGamer.holding = true;
-            return clonedState;
+            Object.assign(state.currentGamer, { holding: true });
+            return state;
 
         case GamerActionsType.SUCC_GET_CURRENT_GAMER:
             clonedState.currentGamer = action.currentGamer;
             return clonedState;
 
         case GamerActionsType.FAILED_GET_CURRENT_GAMER:
-            clonedState.currentGamer.holding = false;
-            return clonedState;
-
+            Object.assign(state.currentGamer, { holding: false });
+            return state;
 
         /**
          * Секция получения информации о списке игроков в гильдии
@@ -82,7 +86,7 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<G
                     clonedState.gamersList = {};
                 clonedState.gamersList[gamer.id] = gamer;
             });
-            return clonedState;
+            return TestStat(clonedState, state);
 
         case GamerActionsType.FAILED_GET_GUILD_GAMERS:
             return state;

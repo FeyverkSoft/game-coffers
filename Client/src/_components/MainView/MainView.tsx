@@ -1,5 +1,5 @@
 import * as React from "react";
-import { СanvasBlock, Grid, Col1, NamedValue } from "..";
+import { CanvasBlock, Grid, Col1, NamedValue } from "..";
 import { Lang, IGuild, DLang } from "../../_services";
 import { BaseReactComp } from "../BaseReactComponent";
 
@@ -14,7 +14,7 @@ export class MainView extends BaseReactComp<IMainViewProps> {
     render() {
         const { guildInfo } = this.props;
 
-        return (<СanvasBlock
+        return (<CanvasBlock
             title={Lang("MAIN_PAGE_MAIN_INFO")}
             type="important"
             isLoading={this.props.isLoading}
@@ -38,7 +38,7 @@ export class MainView extends BaseReactComp<IMainViewProps> {
                     </NamedValue>
                 </Col1>
             </Grid>
-        </СanvasBlock>
+        </CanvasBlock>
         );
     }
 }

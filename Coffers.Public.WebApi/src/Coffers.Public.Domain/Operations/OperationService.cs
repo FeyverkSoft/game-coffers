@@ -71,7 +71,7 @@ namespace Coffers.Public.Domain.Operations
         {
             var operation = await _oRepository.Get(id, default);
             if (operation != null && (operation.Type != OperationType.Other || operation.Amount != amount))
-                throw new Exception("Operation already exists");
+                throw new OperationException("Operation already exists");
             if (operation != null)
                 return;
 
@@ -101,7 +101,7 @@ namespace Coffers.Public.Domain.Operations
         {
             var operation = await _oRepository.Get(id, default);
             if (operation != null && (operation.Type != OperationType.Other || operation.Amount != amount))
-                throw new Exception("Operation already exists");
+                throw new OperationException("Operation already exists");
             if (operation != null)
                 return;
 
@@ -132,7 +132,7 @@ namespace Coffers.Public.Domain.Operations
         {
             var operation = await _oRepository.Get(id, default);
             if (operation != null && (operation.Type != OperationType.Other || operation.Amount != amount))
-                throw new Exception("Operation already exists");
+                throw new OperationException("Operation already exists");
             if (operation != null)
                 return;
 
@@ -245,7 +245,7 @@ namespace Coffers.Public.Domain.Operations
         {
             var operation = await _oRepository.Get(id, default);
             if (operation != null)
-                throw new Exception("Operation already exists");
+                throw new OperationException("Operation already exists");
 
             var penalty = await _oRepository.GetPenalty(penaltyId, default);
 
@@ -364,7 +364,7 @@ namespace Coffers.Public.Domain.Operations
         {
             var operation = await _oRepository.Get(id, default);
             if (operation != null && (operation.Type != OperationType.Emission || operation.Amount != amount))
-                throw new Exception("Operation already exists");
+                throw new OperationException("Operation already exists");
             if (operation != null)
                 return;
 
@@ -397,7 +397,7 @@ namespace Coffers.Public.Domain.Operations
         {
             var operation = await _oRepository.Get(id, default);
             if (operation != null && (operation.Type != OperationType.InternalEmission || operation.Amount != amount))
-                throw new Exception("Operation already exists");
+                throw new OperationException("Operation already exists");
             if (operation != null)
                 return;
 
@@ -426,7 +426,7 @@ namespace Coffers.Public.Domain.Operations
         {
             var operation = await _oRepository.Get(id, default);
             if (operation != null && (operation.Type != OperationType.Other || operation.Amount != amount))
-                throw new Exception("Operation already exists");
+                throw new OperationException("Operation already exists");
             if (operation != null)
                 return;
 

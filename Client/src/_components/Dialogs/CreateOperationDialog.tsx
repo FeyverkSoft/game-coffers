@@ -1,4 +1,5 @@
 import * as React from "react";
+import memoize from 'lodash.memoize';
 import { BaseReactComp, IStatedField } from "../BaseReactComponent";
 import { Dialog, Form, Col1, Input, Button, MaterialSelect, Item } from "..";
 import { Lang, OperationTypeList, DLang, OperationType } from "../../_services";
@@ -162,9 +163,7 @@ interface _IProps {
     [id: string]: any;
 }
 
-const connected_CreateOperationDialog = connect<{}, {}, _IProps, IStore>((state: IStore, props): IProps => {
-    const { gamersList } = state.gamers;
-    var users = Object.keys(gamersList).map(k => gamersList[k]).map(_ => new Item(_.id, `${_.name} - ${_.characters[0]}`));
+const Loans = memoize(gamersList => {
     let _temp: any = Object.keys(gamersList)
         .map(k => gamersList[k])
         .map(_ => Object.keys(_.loans)
@@ -177,10 +176,17 @@ const connected_CreateOperationDialog = connect<{}, {}, _IProps, IStore>((state:
                 }
             })
         );
-    var loans = [].concat(..._temp).filter((_: any) => _.loanStatus == 'Active' || _.loanStatus == 'Expired');
+    return [].concat(..._temp).filter((_: any) => _.loanStatus == 'Active' || _.loanStatus == 'Expired');
+}, it => { return JSON.stringify(it) });
+
+const MemGamers = memoize(gms=>gms, it=>JSON.stringify(it));
+
+const connected_CreateOperationDialog = connect<{}, {}, _IProps, IStore>((state: IStore, props): IProps => {
+    const { gamersList } = state.gamers;
     return {
         ...props,
-        users: users
+        users: MemGamers(Object.keys(gamersList).map(k => gamersList[k]).map(_ => new Item(_.id, `${_.name} - ${_.characters[0]}`))),
+        loans: Loans(gamersList)
     };
 })(_CreateOperationDialog);
 

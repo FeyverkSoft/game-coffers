@@ -13,7 +13,7 @@ export * from './Input/EditableList.tsx';
 export * from './NamedValue/NamedValue.tsx';
 export * from './Input/SearchInput.tsx';
 export * from './Alert/Alert.tsx';
-export * from './Canvas/СanvasBlock.tsx';
+export * from './Canvas/CanvasBlock.tsx';
 export * from './Dialog/Dialog.tsx';
 export * from './Progressbar/Progressbar.tsx';
 export * from './Pagination/Pagination.tsx';

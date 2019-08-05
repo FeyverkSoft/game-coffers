@@ -1,4 +1,5 @@
 import * as React from 'react';
+import memoize from 'lodash.memoize';
 import { connect, DispatchProp } from 'react-redux';
 import {
     Lang, GuildInfo, LangF, ITariffs, IGamerInfo,
@@ -6,7 +7,7 @@ import {
     GamerStatus
 } from '../_services';
 import {
-    Crumbs, BaseReactComp, СanvasBlock, Page, Grid,
+    Crumbs, BaseReactComp, CanvasBlock, Page, Grid,
     Col2, TariffView, UserView, MainView,
     BalanceView, GamerRowView, Button, Private, FloatButton
 } from '../_components';
@@ -168,7 +169,7 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
 
     charactersGrid = () => {
         const { gamers, user } = this.props;
-        return <СanvasBlock
+        return <CanvasBlock
             title={Lang("MAIN_PAGE_CHARACTERS_GRID")}
             type="success"
             subType='none'
@@ -199,7 +200,7 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                     />;
                 })
             }
-        </СanvasBlock>;
+        </CanvasBlock>;
     }
 
     render() {
@@ -306,7 +307,7 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
     }
 }
 
-const _Main = React.memo(({ ...props }: IMainProps & DispatchProp<any>) => <Main {...props} />)
+const MemGamers = memoize(gms=>gms, it=>JSON.stringify(it));
 
 const connectedMain = connect<{}, {}, {}, IStore>((state: IStore): IMainProps => {
     const { guild, tariffs, reports } = state.guild;
@@ -319,8 +320,8 @@ const connectedMain = connect<{}, {}, {}, IStore>((state: IStore): IMainProps =>
         tariffs: tariffs,
         guildId: state.session.guildId,
         balance: reports.balanceReport,
-        gamers: Object.keys(gamersList).map(k => gamersList[k])
+        gamers: MemGamers(Object.keys(gamersList).map(k => gamersList[k]))
     };
-})(_Main);
+})(Main);
 
 export { connectedMain as MainController }; 

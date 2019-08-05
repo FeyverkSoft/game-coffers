@@ -121,100 +121,107 @@ namespace Coffers.Public.WebApi.Controllers
                     GuildId = HttpContext.GuildId()
                 }, cancellationToken);
 
-            switch (binding.Type)
+            try
             {
-                case OperationType.Tax:
-                    await _operationService.AddTaxOperation(
-                         binding.Id,
-                         await GetAccountId(binding.FromUserId.Value, cancellationToken),
-                         guildAcc.AccountId,
-                         binding.Amount,
-                         binding.Description);
-                    break;
-                case OperationType.Penalty:
-                    await _operationService.AddPenaltyOperation(
-                        binding.Id,
-                        guildAcc.AccountId,
-                        binding.PenaltyId.Value,
-                        binding.Amount,
-                        binding.Description);
-                    break;
-                case OperationType.Loan:
-                    await _operationService.AddLoanOperation(
-                        binding.Id,
-                        guildAcc.AccountId,
-                        binding.LoanId.Value,
-                        binding.Amount,
-                        binding.Description);
-                    break;
-                case OperationType.Exchange:
-                    if (binding.Amount < 0)
-                        throw new ApiException(HttpStatusCode.BadRequest, ErrorCodes.IncorrectOperation, "");
-                    await _operationService.DoExchangeOperation(
-                        binding.Id,
-                        await GetAccountId(binding.FromUserId.Value, cancellationToken),
-                        binding.Amount,
-                        binding.Description);
-                    break;
-                case OperationType.Output:
-                    await _operationService.DoOutputOperation(
-                        binding.Id,
-                        guildAcc.AccountId,
-                        await GetAccountId(binding.ToUserId.Value, cancellationToken),
-                        binding.Amount,
-                        binding.Description);
-                    break;
-                case OperationType.InternalOutput:
-                    await _operationService.DoInternalOutputOperation(
-                        binding.Id,
-                        guildAcc.AccountId,
-                        await GetAccountId(binding.ToUserId.Value, cancellationToken),
-                        binding.Amount,
-                        binding.Description);
-                    break;
-                case OperationType.Emission:
-                    await _operationService.EmissionOperation(
-                        binding.Id,
-                        guildAcc.AccountId,
-                        binding.Amount,
-                        binding.Description);
-                    break;
-                case OperationType.InternalEmission:
-                    await _operationService.DoInternalEmissionOperation(
-                        binding.Id,
-                        await GetAccountId(binding.FromUserId.Value, cancellationToken),
-                        guildAcc.AccountId,
-                        binding.Amount,
-                        binding.Description);
-                    break;
-                case OperationType.Sell:
-                    await _operationService.AddOtherOperation(
-                        binding.Id,
-                        guildAcc.AccountId,
-                        binding.Amount,
-                        binding.Description);
-                    break;
-                case OperationType.Other:
-                    if (binding.ToUserId != null && binding.FromUserId == null)
-                    {
-                        await _operationService.AddOtherOperation(
+                switch (binding.Type)
+                {
+                    case OperationType.Tax:
+                        await _operationService.AddTaxOperation(
+                             binding.Id,
+                             await GetAccountId(binding.FromUserId.Value, cancellationToken),
+                             guildAcc.AccountId,
+                             binding.Amount,
+                             binding.Description);
+                        break;
+                    case OperationType.Penalty:
+                        await _operationService.AddPenaltyOperation(
                             binding.Id,
-                            await GetAccountId(binding.ToUserId.Value, cancellationToken),
+                            guildAcc.AccountId,
+                            binding.PenaltyId.Value,
                             binding.Amount,
                             binding.Description);
-                    }
-                    else if (binding.ToUserId != null && binding.FromUserId != null)
-                    {
-                        await _operationService.AddOtherOperation(
+                        break;
+                    case OperationType.Loan:
+                        await _operationService.AddLoanOperation(
+                            binding.Id,
+                            guildAcc.AccountId,
+                            binding.LoanId.Value,
+                            binding.Amount,
+                            binding.Description);
+                        break;
+                    case OperationType.Exchange:
+                        if (binding.Amount < 0)
+                            throw new ApiException(HttpStatusCode.BadRequest, ErrorCodes.IncorrectOperation, "");
+                        await _operationService.DoExchangeOperation(
                             binding.Id,
                             await GetAccountId(binding.FromUserId.Value, cancellationToken),
+                            binding.Amount,
+                            binding.Description);
+                        break;
+                    case OperationType.Output:
+                        await _operationService.DoOutputOperation(
+                            binding.Id,
+                            guildAcc.AccountId,
                             await GetAccountId(binding.ToUserId.Value, cancellationToken),
                             binding.Amount,
                             binding.Description);
-                    }
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                        break;
+                    case OperationType.InternalOutput:
+                        await _operationService.DoInternalOutputOperation(
+                            binding.Id,
+                            guildAcc.AccountId,
+                            await GetAccountId(binding.ToUserId.Value, cancellationToken),
+                            binding.Amount,
+                            binding.Description);
+                        break;
+                    case OperationType.Emission:
+                        await _operationService.EmissionOperation(
+                            binding.Id,
+                            guildAcc.AccountId,
+                            binding.Amount,
+                            binding.Description);
+                        break;
+                    case OperationType.InternalEmission:
+                        await _operationService.DoInternalEmissionOperation(
+                            binding.Id,
+                            await GetAccountId(binding.FromUserId.Value, cancellationToken),
+                            guildAcc.AccountId,
+                            binding.Amount,
+                            binding.Description);
+                        break;
+                    case OperationType.Sell:
+                        await _operationService.AddOtherOperation(
+                            binding.Id,
+                            guildAcc.AccountId,
+                            binding.Amount,
+                            binding.Description);
+                        break;
+                    case OperationType.Other:
+                        if (binding.ToUserId != null && binding.FromUserId == null)
+                        {
+                            await _operationService.AddOtherOperation(
+                                binding.Id,
+                                await GetAccountId(binding.ToUserId.Value, cancellationToken),
+                                binding.Amount,
+                                binding.Description);
+                        }
+                        else if (binding.ToUserId != null && binding.FromUserId != null)
+                        {
+                            await _operationService.AddOtherOperation(
+                                binding.Id,
+                                await GetAccountId(binding.FromUserId.Value, cancellationToken),
+                                await GetAccountId(binding.ToUserId.Value, cancellationToken),
+                                binding.Amount,
+                                binding.Description);
+                        }
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+            catch (OperationException ex)
+            {
+                throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.OperationAlreadyExists, ex.Message);
             }
 
             return Ok(new { });

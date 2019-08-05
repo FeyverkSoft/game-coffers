@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { alertInstance } from '../_actions';
 import { getGuid, IStore } from '../_helpers';
 import { Lang } from '../_services';
-import { Pagination, Spinner, SmallSpinner, Dialog, Button, СanvasBlock } from '../_components';
+import { Pagination, Spinner, SmallSpinner, Dialog, Button, CanvasBlock } from '../_components';
 
 class Demo extends React.Component<any, any> {
     state = { dialog_isDisplayed: false };
@@ -73,7 +73,7 @@ class Demo extends React.Component<any, any> {
                     {"Привет мир!!!"}
                 </Dialog>
             </div>
-            <СanvasBlock
+            <CanvasBlock
                 type={'important'}
                 isLoading={!true}
                 title={'demo'}
@@ -83,7 +83,7 @@ class Demo extends React.Component<any, any> {
                     CurrentPage={2}
                     onSelectPage={() => { }}
                 />
-            </СanvasBlock>
+            </CanvasBlock>
         </div>);
     }
 }

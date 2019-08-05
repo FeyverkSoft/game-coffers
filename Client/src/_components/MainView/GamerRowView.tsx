@@ -1,7 +1,6 @@
 import * as React from "react";
 import style from "./gamerrowview.module.less"
 import { Lang, DLang, GamersListView, GamerRankList, GamerRank, GamerStatusList, GamerStatus, LangF } from "../../_services";
-import { BaseReactComp } from "../BaseReactComponent";
 import { IHolded } from "../../core";
 import { Spinner } from "../Spinner/Spinner";
 import { IF } from "../../_helpers";
