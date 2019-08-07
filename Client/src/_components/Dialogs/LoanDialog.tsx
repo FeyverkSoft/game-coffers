@@ -1,7 +1,7 @@
 import * as React from "react";
 import style from "./dialog.module.less";
 import { BaseReactComp } from "../BaseReactComponent";
-import { Dialog, Col1, Button, NamedValue } from "..";
+import { Dialog, Col1, Button, NamedValue, Private } from "..";
 import { Lang, ILoanView, DLang, IOperationView } from "../../_services";
 import { gamerInstance } from "../../_actions";
 import { connect } from "react-redux";
@@ -43,14 +43,16 @@ class _LoanDialog extends BaseReactComp<IProps> {
 
     footer = () => {
         return (
-            <IF value={this.props.loan.loanStatus == 'Active'}>
-                <Button
-                    type='important'
-                    onClick={() => this.onCancel()}
-                >
-                    {Lang('CANCEL')}
-                </Button>
-            </IF>
+            <Private roles={['admin', 'leader', 'officer']}>
+                <IF value={this.props.loan.loanStatus == 'Active'}>
+                    <Button
+                        type='important'
+                        onClick={() => this.onCancel()}
+                    >
+                        {Lang('CANCEL')}
+                    </Button>
+                </IF>
+            </Private>
         );
     }
 

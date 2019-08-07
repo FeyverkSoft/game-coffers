@@ -2,7 +2,7 @@
 import * as React from "react";
 import style from "./dialog.module.less";
 import { BaseReactComp } from "../BaseReactComponent";
-import { Dialog, Col1, Button, Grid, NamedValue } from "..";
+import { Dialog, Col1, Button, Grid, NamedValue, Private } from "..";
 import { Lang, IPenaltyView, DLang, IOperationView } from "../../_services";
 import { gamerInstance } from "../../_actions";
 import { connect } from "react-redux";
@@ -46,14 +46,16 @@ class _PenaltyDialog extends BaseReactComp<IProps> {
 
     footer = () => {
         return (
-            <IF value={this.props.penalty.penaltyStatus == 'Active'}>
-                <Button
-                    type='important'
-                    onClick={() => this.onCancel()}
-                >
-                    {Lang('CANCEL')}
-                </Button>
-            </IF>
+            <Private roles={['admin', 'leader', 'officer']}>
+                <IF value={this.props.penalty.penaltyStatus == 'Active'}>
+                    <Button
+                        type='important'
+                        onClick={() => this.onCancel()}
+                    >
+                        {Lang('CANCEL')}
+                    </Button>
+                </IF>
+            </Private>
         );
     }
 
