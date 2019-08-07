@@ -25,11 +25,9 @@ export class Nav extends React.Component {
     }
 }
 
-export class Logo extends React.Component {
-    render() {
-        return <div className={style["logo"]}>
-            {<div className={style["title"]}><b>Games</b>Treasury<sup>α</sup></div>}
-            <div className={style["small-title"]}><b>G</b><b>T</b><sup>α</sup></div>
-        </div>
-    }
+export const Logo = ({...props}) => {
+    return <div className={style["logo"]}>
+        {<div className={style["title"]}><b>Games</b>Treasury<sup>α</sup></div>}
+        <div className={style["small-title"]}><b>G</b><b>T</b><sup>α</sup></div>
+    </div>
 }

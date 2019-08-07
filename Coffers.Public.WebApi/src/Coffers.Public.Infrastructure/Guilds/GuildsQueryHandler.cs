@@ -104,14 +104,17 @@ namespace Coffers.Public.Infrastructure.Guilds
 
             var skipLoanStat = new[] { LoanStatus.Paid, LoanStatus.Canceled };
             var skipChStat = new[] { CharStatus.Deleted, CharStatus.Left };
+            var skipGmStat = new[] { GamerStatus.Left, GamerStatus.Banned, GamerStatus.New };
 
             var temp = await q.Select(g => new
             {
                 Balance = g.GuildAccount.Balance,
-                ActiveLoansAmount = g.Gamers.Sum(gm => gm.Loans
+                ActiveLoansAmount = g.Gamers
+                    .Sum(gm => gm.Loans
                     .Where(l => !skipLoanStat.Contains(l.LoanStatus))
                     .Sum(l => l.Amount)),
                 ExpectedTaxAmount = g.Gamers
+                    .Where(_ => !skipGmStat.Contains(_.Status))
                     .Select(gm => new
                     {
                         Rank = gm.Rank,

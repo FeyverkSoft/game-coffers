@@ -73,6 +73,11 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
         this.timer = 0 as any;
     }
 
+    componentWillUnmount() {
+        if (this.timer)
+            clearTimeout(this.timer);
+    }
+
     loadData = () => {
         if (this.timer)
             clearTimeout(this.timer);
@@ -166,7 +171,7 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                 type: 'Penalty'
             }));
     }
-
+    
     charactersGrid = () => {
         const { gamers, user } = this.props;
         return <CanvasBlock
@@ -307,7 +312,7 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
     }
 }
 
-const MemGamers = memoize(gms=>gms, it=>JSON.stringify(it));
+const MemGamers = memoize(gms => gms, it => JSON.stringify(it));
 
 const connectedMain = connect<{}, {}, {}, IStore>((state: IStore): IMainProps => {
     const { guild, tariffs, reports } = state.guild;

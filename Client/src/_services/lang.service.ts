@@ -1,3 +1,4 @@
+import memoize from "lodash.memoize";
 const locString: any = {
     en: {
         NOT_FOUND: 'Resource {0} not found;',
@@ -217,11 +218,13 @@ export const Lang = function (value: string, count?: number | undefined): string
     return res;
 }
 
-export const LangF = function (value: string, ...arg: (string | number)[]) {
+export const LangF = memoize((value: string, ...arg: (string | number)[]) => {
     let l = Lang(value);
     console.debug(l);
     Object.keys(arg).forEach((element, i) => {
         l = l.replace('{' + i + '}', String(arg[i]));
     })
     return l;
-}
+}, (it, ...arg) => {
+    return it + arg;
+})

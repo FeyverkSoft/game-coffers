@@ -15,7 +15,7 @@ interface ITarifViewState {
     currentRole: string;
 }
 /// Плашка с информацией о тарифе
-export class TariffView extends BaseReactComp<ITarifViewProps, ITarifViewState> {
+class _TariffView extends BaseReactComp<ITarifViewProps, ITarifViewState> {
     /**
      *
      */
@@ -79,3 +79,5 @@ export class TariffView extends BaseReactComp<ITarifViewProps, ITarifViewState> 
         );
     }
 }
+
+export const TariffView = React.memo(({ ...props }: ITarifViewProps) => <_TariffView {...props} />)

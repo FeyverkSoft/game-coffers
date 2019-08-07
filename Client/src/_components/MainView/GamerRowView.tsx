@@ -1,5 +1,4 @@
 import * as React from "react";
-import memoize from "lodash.memoize";
 import style from "./gamerrowview.module.less"
 import { Lang, DLang, GamersListView, GamerRankList, GamerRank, GamerStatusList, GamerStatus, LangF, CurrentLang } from "../../_services";
 import { IHolded } from "../../core";
@@ -26,7 +25,7 @@ interface IGamerRowViewProps extends React.Props<any> {
     [id: string]: any;
 }
 /// Плашка с информацией о пользователе
-export const GamerRowView = memoize(({ ...props }: IGamerRowViewProps) => {
+export const GamerRowView = React.memo(({ ...props }: IGamerRowViewProps) => {
     const { gamer, isCurrentUser } = props;
     return (
         <div
@@ -150,4 +149,4 @@ export const GamerRowView = memoize(({ ...props }: IGamerRowViewProps) => {
             </div>
         </div>
     );
-}, it => JSON.stringify(it));
+});
