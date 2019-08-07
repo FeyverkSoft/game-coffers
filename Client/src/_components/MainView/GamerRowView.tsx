@@ -1,11 +1,15 @@
 import * as React from "react";
+import memoize from "lodash.memoize";
 import style from "./gamerrowview.module.less"
-import { Lang, DLang, GamersListView, GamerRankList, GamerRank, GamerStatusList, GamerStatus, LangF } from "../../_services";
+import { Lang, DLang, GamersListView, GamerRankList, GamerRank, GamerStatusList, GamerStatus, LangF, CurrentLang } from "../../_services";
 import { IHolded } from "../../core";
 import { Spinner } from "../Spinner/Spinner";
 import { IF } from "../../_helpers";
 import { Private, EditableList, Item } from "..";
 import { Link } from "react-router-dom";
+
+const UserStatuses = GamerStatusList.map(t => new Item(t, DLang('USER_STATUS', t)));
+const GamerRanks = GamerRankList.map(t => new Item(t, DLang('USER_ROLE', t)));
 
 interface IGamerRowViewProps extends React.Props<any> {
     gamer: GamersListView & IHolded;
@@ -22,7 +26,7 @@ interface IGamerRowViewProps extends React.Props<any> {
     [id: string]: any;
 }
 /// Плашка с информацией о пользователе
-export const GamerRowView = React.memo(({ ...props }: IGamerRowViewProps) => {
+export const GamerRowView = memoize(({ ...props }: IGamerRowViewProps) => {
     const { gamer, isCurrentUser } = props;
     return (
         <div
@@ -63,7 +67,7 @@ export const GamerRowView = React.memo(({ ...props }: IGamerRowViewProps) => {
                 <div className={style['content']}>
                     <EditableList
                         roles={['admin', 'leader', 'officer']}
-                        items={GamerStatusList.map(t => new Item(t, DLang('USER_STATUS', t)))}
+                        items={UserStatuses}
                         value={gamer.status}
                         onSave={(value) => props.onStatusChange(gamer.id, value as GamerStatus)}
                     />
@@ -76,7 +80,7 @@ export const GamerRowView = React.memo(({ ...props }: IGamerRowViewProps) => {
                 <div className={`${style['content']} ${style[gamer.rank.toLowerCase()]}`}>
                     <EditableList
                         roles={['admin', 'leader', 'officer']}
-                        items={GamerRankList.map(t => new Item(t, DLang('USER_ROLE', t)))}
+                        items={GamerRanks}
                         value={gamer.rank}
                         onSave={(value) => props.onRankChange(gamer.id, value as GamerRank)}
                     />
@@ -146,4 +150,4 @@ export const GamerRowView = React.memo(({ ...props }: IGamerRowViewProps) => {
             </div>
         </div>
     );
-});
+}, it => JSON.stringify(it));
