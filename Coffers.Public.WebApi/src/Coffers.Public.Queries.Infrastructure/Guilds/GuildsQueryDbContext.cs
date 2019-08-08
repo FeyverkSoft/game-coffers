@@ -1,15 +1,15 @@
 ﻿using System;
-using Coffers.Public.Domain.Guilds;
+using Coffers.Types.Gamer;
 using Coffers.Helpers;
 using Microsoft.EntityFrameworkCore;
 
-namespace Coffers.Public.Infrastructure.Guilds
+namespace Coffers.Public.Queries.Infrastructure.Guilds
 {
-    public class GuildsDbContext : DbContext
+    public class GuildsQueryDbContext : DbContext
     {
         public DbSet<Guild> Guilds { get; set; }
 
-        public GuildsDbContext(DbContextOptions<GuildsDbContext> options) : base(options) { }
+        public GuildsQueryDbContext(DbContextOptions<GuildsQueryDbContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -52,7 +52,7 @@ namespace Coffers.Public.Infrastructure.Guilds
                     .HasPrincipalKey(_ => _.Id);
 
                 b.HasMany(g => g.Gamers)
-                    .WithOne(_ => _.Guild)
+                    .WithOne()
                     .HasPrincipalKey(_ => _.Id);
 
                 b.HasOne(g => g.GuildAccount)
@@ -72,16 +72,6 @@ namespace Coffers.Public.Infrastructure.Guilds
                     .HasColumnName("Id")
                     .IsRequired();
 
-                b.Property(g => g.CreateDate)
-                    .IsRequired();
-                b.Property(g => g.UpdateDate);
-
-                b.Property(g => g.DateOfBirth)
-                    .HasDefaultValue(new DateTime(1900, 1, 1))
-                    .IsRequired();
-
-                b.Property(g => g.Name)
-                    .HasMaxLength(64);
                 b.Property(g => g.Rank)
                     .HasConversion<String>()
                     .HasMaxLength(32);
@@ -96,6 +86,15 @@ namespace Coffers.Public.Infrastructure.Guilds
                     .WithMany()
                     .HasPrincipalKey(_ => _.Id);
 
+                b.HasMany(g => g.Characters)
+                    .WithOne()
+                    .HasPrincipalKey(_ => _.Id);
+
+                b.HasMany(g => g.Loans)
+                    .WithOne()
+                    .HasPrincipalKey(_ => _.Id);
+
+
             });
             modelBuilder.Entity<Account>(b =>
             {
@@ -108,12 +107,12 @@ namespace Coffers.Public.Infrastructure.Guilds
                     .HasColumnName("Id")
                     .IsRequired();
 
+                b.HasMany(g => g.ToOperations)
+                    .WithOne(_=>_.ToAccount)
+                    .HasPrincipalKey(_ => _.Id);
+
                 b.Property(a => a.Balance)
                     .HasDefaultValue(0)
-                    .IsRequired();
-
-                b.Property(a => a.ConcurrencyTokens)
-                    .IsConcurrencyToken()
                     .IsRequired();
             });
 
@@ -143,6 +142,22 @@ namespace Coffers.Public.Infrastructure.Guilds
                     .IsRequired();
             });
 
+            modelBuilder.Entity<Loan>(b =>
+            {
+                b.ToTable(nameof(Loan));
+
+                b.HasIndex(gt => gt.Id)
+                    .IsUnique();
+                b.HasKey(gt => gt.Id);
+                b.Property(gt => gt.Id)
+                    .HasColumnName("Id")
+                    .IsRequired();
+
+                b.Property(t => t.LoanStatus)
+                    .HasConversion<String>()
+                    .IsRequired();
+            });
+
             modelBuilder.Entity<GuildTariff>(b =>
             {
                 b.ToTable(nameof(GuildTariff));
@@ -152,9 +167,6 @@ namespace Coffers.Public.Infrastructure.Guilds
                 b.HasKey(gt => gt.Id);
                 b.Property(gt => gt.Id)
                     .HasColumnName("Id")
-                    .IsRequired();
-
-                b.Property(t => t.CreateDate)
                     .IsRequired();
 
                 b.HasOne(t => t.BeginnerTariff)
@@ -174,6 +186,43 @@ namespace Coffers.Public.Infrastructure.Guilds
                     .HasPrincipalKey(_ => _.Id);
 
             });
+
+            modelBuilder.Entity<Character>(b =>
+            {
+                b.ToTable(nameof(Character));
+
+                b.HasIndex(gt => gt.Id)
+                    .IsUnique();
+                b.HasKey(gt => gt.Id);
+                b.Property(gt => gt.Id)
+                    .HasColumnName("Id")
+                    .IsRequired();
+
+                b.Property(t => t.Status)
+                    .HasDefaultValue(CharStatus.Active)
+                    .HasConversion<String>()
+                    .IsRequired();
+            });
+
+            modelBuilder.Entity<Operation>(b =>
+            {
+                b.ToTable(nameof(Operation));
+
+                b.HasIndex(gt => gt.Id)
+                    .IsUnique();
+                b.HasKey(gt => gt.Id);
+                b.Property(gt => gt.Id)
+                    .HasColumnName("Id")
+                    .IsRequired();
+
+                b.Property(o => o.Type)
+                    .HasConversion<String>();
+
+                b.Property(t => t.Type)
+                    .HasConversion<String>()
+                    .IsRequired();
+            });
+
         }
     }
 }

@@ -1,17 +1,14 @@
 ﻿using System;
-using Coffers.Public.Domain.Operations;
 using Microsoft.EntityFrameworkCore;
 
-namespace Coffers.Public.Infrastructure.Operations
+namespace Coffers.Public.Queries.Infrastructure.Operations
 {
-    public class OperationsDbContext : DbContext
+    public class OperationsQueriesDbContext : DbContext
     {
-        public DbSet<Account> Accounts { get; set; }
         public DbSet<Operation> Operations { get; set; }
-        public DbSet<Penalty> Penalties { get; set; }
         public DbSet<Loan> Loans { get; set; }
 
-        public OperationsDbContext(DbContextOptions<OperationsDbContext> options) : base(options) { }
+        public OperationsQueriesDbContext(DbContextOptions<OperationsQueriesDbContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,6 +32,15 @@ namespace Coffers.Public.Infrastructure.Operations
 
                 b.Property(g => g.CreateDate)
                     .IsRequired();
+
+                b.HasOne(g => g.FromAccount)
+                    .WithMany(_=>_.FromOperations)
+                    .HasPrincipalKey(_ => _.Id);
+
+                b.HasOne(g => g.ToAccount)
+                    .WithMany(_ => _.ToOperations)
+                    .HasPrincipalKey(_ => _.Id);
+
             });
 
             modelBuilder.Entity<Account>(b =>
@@ -52,6 +58,14 @@ namespace Coffers.Public.Infrastructure.Operations
                     .HasDefaultValue(0)
                     .IsRequired();
 
+                b.HasMany(g => g.FromOperations)
+                    .WithOne(_=>_.FromAccount)
+                    .HasPrincipalKey(_ => _.Id);
+
+                b.HasMany(g => g.ToOperations)
+                    .WithOne(_=>_.ToAccount)
+                    .HasPrincipalKey(_ => _.Id);
+
                 b.Property(a => a.ConcurrencyTokens)
                     .IsConcurrencyToken()
                     .IsRequired();
@@ -68,36 +82,12 @@ namespace Coffers.Public.Infrastructure.Operations
                     .HasColumnName("Id")
                     .IsRequired();
 
-                b.Property(t => t.LoanStatus)
-                    .HasConversion<String>()
-                    .IsRequired();
-
                 b.HasOne(_ => _.Account)
                     .WithMany()
                     .HasPrincipalKey(_ => _.Id);
-                b.Property(l => l.ConcurrencyTokens)
-                    .IsRequired()
-                    .IsConcurrencyToken();
             });
 
-            modelBuilder.Entity<Penalty>(b =>
-            {
-                b.ToTable(nameof(Penalty));
-
-                b.HasIndex(gt => gt.Id)
-                    .IsUnique();
-                b.HasKey(gt => gt.Id);
-                b.Property(gt => gt.Id)
-                    .HasColumnName("Id")
-                    .IsRequired();
-
-                b.Property(t => t.PenaltyStatus)
-                    .HasConversion<String>()
-                    .IsRequired();
-                b.Property(l => l.ConcurrencyTokens)
-                    .IsRequired()
-                    .IsConcurrencyToken();
-            });
+           
         }
     }
 }

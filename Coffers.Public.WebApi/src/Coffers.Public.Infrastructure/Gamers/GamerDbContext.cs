@@ -1,6 +1,5 @@
 ﻿using System;
 using Coffers.Public.Domain.Gamers;
-using Coffers.Types.Gamer;
 using Microsoft.EntityFrameworkCore;
 
 namespace Coffers.Public.Infrastructure.Gamers
@@ -110,7 +109,12 @@ namespace Coffers.Public.Infrastructure.Gamers
                 b.HasOne(_ => _.Account)
                     .WithMany()
                     .HasPrincipalKey(_ => _.Id);
+
+                b.Property(l => l.ConcurrencyTokens)
+                    .IsRequired()
+                    .IsConcurrencyToken();
             });
+
             modelBuilder.Entity<Penalty>(b =>
             {
                 b.ToTable(nameof(Penalty));
@@ -125,6 +129,10 @@ namespace Coffers.Public.Infrastructure.Gamers
                 b.Property(t => t.PenaltyStatus)
                     .HasConversion<String>()
                     .IsRequired();
+
+                b.Property(l => l.ConcurrencyTokens)
+                    .IsRequired()
+                    .IsConcurrencyToken();
             });
         }
     }

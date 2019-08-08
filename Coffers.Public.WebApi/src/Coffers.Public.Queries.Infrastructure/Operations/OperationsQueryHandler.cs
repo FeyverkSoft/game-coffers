@@ -8,14 +8,14 @@ using Coffers.Types.Account;
 using Microsoft.EntityFrameworkCore;
 using Query.Core;
 
-namespace Coffers.Public.Infrastructure.Operations
+namespace Coffers.Public.Queries.Infrastructure.Operations
 {
     public sealed class OperationsQueryHandler : IQueryHandler<GetOperationsQuery, ICollection<OperationView>>,
         IQueryHandler<GetOperationsByAccQuery, ICollection<OperationView>>
     {
-        private readonly OperationsDbContext _context;
+        private readonly OperationsQueriesDbContext _context;
 
-        public OperationsQueryHandler(OperationsDbContext context)
+        public OperationsQueryHandler(OperationsQueriesDbContext context)
         {
             _context = context;
         }
@@ -26,9 +26,9 @@ namespace Coffers.Public.Infrastructure.Operations
                 .Where(o => o.DocumentId == query.DocumentId && o.Type == query.Type);
             Guid? loanAccId = null;
 
-            if(query.Type == OperationType.Loan)
+            if (query.Type == OperationType.Loan)
                 loanAccId = _context.Loans.AsNoTracking().Where(o => o.Id == query.DocumentId)
-                    .Select(_=>_.Account.Id)
+                    .Select(_ => _.Account.Id)
                     .FirstOrDefault();
 
             return await q
@@ -36,13 +36,13 @@ namespace Coffers.Public.Infrastructure.Operations
                 .Select(o => new OperationView
                 {
                     Id = o.Id,
-                    Amount = o.FromAccountId == loanAccId? -1*  o.Amount: o.Amount,
+                    Amount = o.FromAccountId == loanAccId ? -1 * o.Amount : o.Amount,
                     DocumentId = o.DocumentId,
                     Type = o.Type,
                     Description = o.Description,
                     CreateDate = o.OperationDate
                 })
-                .OrderBy(_=>_.CreateDate)
+                .OrderBy(_ => _.CreateDate)
                 .ToListAsync(cancellationToken);
         }
 
@@ -51,7 +51,7 @@ namespace Coffers.Public.Infrastructure.Operations
         {
             var toDate = query.DateMonth.AddMonths(1);
             var q = _context.Operations.AsNoTracking()
-                .Where(_ => _.CreateDate >= query.DateMonth && _.CreateDate<= toDate);
+                .Where(_ => _.CreateDate >= query.DateMonth && _.CreateDate <= toDate);
 
             var result = new List<OperationView>();
             var to = await q

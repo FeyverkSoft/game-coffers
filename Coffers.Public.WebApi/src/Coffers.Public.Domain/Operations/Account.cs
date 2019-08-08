@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Coffers.Public.Domain.Operations
 {
@@ -20,15 +19,6 @@ namespace Coffers.Public.Domain.Operations
         /// </summary>
         public Guid ConcurrencyTokens { get; set; }
 
-        /// <summary>
-        /// Список изходящих операций произведенных над счётом
-        /// </summary>
-        public List<Operation> FromOperations { get; set; }
-
-        /// <summary>
-        /// Список входящих операций произведенных над счётом
-        /// </summary>
-        public List<Operation> ToOperations { get; set; }
 
         public void ChangeBalance(Decimal amount)
         {

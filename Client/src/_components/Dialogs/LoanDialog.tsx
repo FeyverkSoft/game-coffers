@@ -12,9 +12,11 @@ import { IOperation } from "../../_reducers/operation/operations.reducer";
 interface IProps extends React.Props<any> {
     isDisplayed: boolean;
     loan: ILoanView;
-    onClose: Function;
     operations: IOperation;
     gamerId: string;
+
+    onClose: Function;
+    onSuccess: Function;
     [id: string]: any;
 }
 
@@ -37,7 +39,9 @@ class _LoanDialog extends BaseReactComp<IProps> {
         this.props.dispatch(gamerInstance.CancelLoan({
             id: this.props.loan.id,
             gamerId: this.props.gamerId,
-            onSuccess: () => this.onClose()
+            onSuccess: () =>{ 
+                this.props.onSuccess();
+                 this.onClose()}
         }));
     }
 
@@ -122,7 +126,9 @@ interface _IProps extends React.Props<any> {
     isDisplayed: boolean;
     loanId: string;
     gamerId: string;
+
     onClose: Function;
+    onSuccess: Function;
     [id: string]: any;
 }
 const connected_LoanDialog = connect<{}, {}, _IProps, IStore>((store, props): IProps => {
@@ -130,6 +136,7 @@ const connected_LoanDialog = connect<{}, {}, _IProps, IStore>((store, props): IP
         gamerId: props.gamerId,
         isDisplayed: props.isDisplayed,
         onClose: props.onClose,
+        onSuccess: props.onSuccess,
         operations: store.operations.GetOperations(props.loanId),
         loan: store.gamers.GetGamer(props.gamerId).GetLoan(props.loanId)
     };

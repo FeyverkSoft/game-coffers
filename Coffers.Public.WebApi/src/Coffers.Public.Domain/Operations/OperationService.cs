@@ -274,7 +274,7 @@ namespace Coffers.Public.Domain.Operations
                 if (overSum >= 0)
                 {
                     c.Wait();
-                    penalty.PenaltyStatus = PenaltyStatus.InActive;
+                    penalty.SetStatus(PenaltyStatus.InActive);
                     await _oRepository.SavePenalty(penalty);
                 }
             });
@@ -347,7 +347,7 @@ namespace Coffers.Public.Domain.Operations
                 if (loan.Account.Balance <= 0)
                 {
                     c.Wait();
-                    loan.LoanStatus = LoanStatus.Paid;
+                    loan.SetStatus(LoanStatus.Paid);
                     await _oRepository.SaveLoan(loan);
                 }
             });

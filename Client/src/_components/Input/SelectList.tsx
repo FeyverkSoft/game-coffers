@@ -17,22 +17,17 @@ export class Item {
         return this.Key;
     }
 }
-
-interface IMaterialSelectProps extends React.Props<any> {
-    style?: React.CSSProperties;
+interface IBaseSelectProps extends React.Props<any> {
     value?: number | string;
     path?: string;
     items?: Array<Item>;
-    label?: string;
-    id?: string;
     className?: string;
-    isLoading?: boolean;
     onChange?(value: string, isValid?: boolean, path?: string): any;
-    [id: string]: any;
+   //[id: string]: any;
 }
 
-class _MaterialSelect extends React.Component<IMaterialSelectProps, any> {
-    constructor(props: IMaterialSelectProps) {
+export class BaseSelect<T> extends React.Component<IBaseSelectProps & T, any> {
+    constructor(props: IBaseSelectProps & T) {
         super(props);
         this.state = {
             value: props.value || '',
@@ -42,7 +37,7 @@ class _MaterialSelect extends React.Component<IMaterialSelectProps, any> {
         this.onChange = this.onChange.bind(this);
     }
 
-    componentWillReceiveProps(props: IMaterialSelectProps) {
+    componentWillReceiveProps(props: IBaseSelectProps & T) {
         const nP = [new Item('<!--!>', ' '), ...(props.items || [])];
         if (this.state.value != (props.value || '') ||
             nP != this.state.items ||
@@ -68,6 +63,36 @@ class _MaterialSelect extends React.Component<IMaterialSelectProps, any> {
                     $this.props.onChange(value, true, $this.state.path);
             }
     }
+    render() {
+        let $this = this;
+        return (
+            <div className={`${style['select-wrapper']} ${this.props.className}`}>
+                <select
+                    className={style['input']}
+                    id={this.props.path}
+                    onChange={$this.onChange}
+                    data-path={$this.state.path}
+                    value={$this.state.value}>
+                    {
+                        $this.state.items.map((item: Item) => {
+                            return <option key={item.Key} value={item.value}>{item.name || item.value || item} </option>;
+                        })
+                    }
+                </select>
+            </div>
+        )
+    }
+}
+
+interface IMaterialSelectProps extends IBaseSelectProps {
+    style?: React.CSSProperties;
+    label?: string;
+    id?: string;
+    isLoading?: boolean;
+    [id: string]: any;
+}
+
+class _MaterialSelect extends BaseSelect<IMaterialSelectProps> {
     render() {
         let $this = this;
         return (

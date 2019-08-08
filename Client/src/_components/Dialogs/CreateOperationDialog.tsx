@@ -3,18 +3,19 @@ import memoize from 'lodash.memoize';
 import { BaseReactComp, IStatedField } from "../BaseReactComponent";
 import { Dialog, Form, Col1, Input, Button, MaterialSelect, Item } from "..";
 import { Lang, OperationTypeList, DLang, OperationType, IGamersListView } from "../../_services";
-import { operationsInstance, guildInstance } from "../../_actions";
+import { operationsInstance } from "../../_actions";
 import { connect } from "react-redux";
 import { getGuid, IF, IStore } from "../../_helpers";
 import { Dictionary } from "../../core";
 
 interface IProps extends React.Props<any> {
     isDisplayed: boolean;
-    guildId: string;
-    onClose: Function;
     users: Array<Item>;
     loans: Array<Item>;
     penalties: Array<Item>;
+
+    onClose: Function;
+    onSuccess: Function;
     [id: string]: any;
 }
 
@@ -87,25 +88,24 @@ class _CreateOperationDialog extends BaseReactComp<IProps, IState> {
 
     handleSubmit = () => {
         this.setState({ isLoad: true });
-        if (this.props.guildId)
-            this.props.dispatch(operationsInstance.CreateOperation({
-                id: this.state.id,
-                type: this.state.type,
-                toUserId: this.state.toUserId.value,
-                fromUserId: this.state.fromUserId.value,
-                description: this.GetDesc(),
-                amount: this.state.amount.value || 0,
-                penaltyId: this.state.penaltyId.value,
-                loanId: this.state.loanId.value,
-                onFailure: () => {
-                    this.setState({ isLoad: false });
-                },
-                onSuccess: () => {
-                    this.setState({ isLoad: false });
-                    this.props.dispatch(guildInstance.GetGuildBalanceReport({ guildId: this.props.guildId || '' }))
-                    this.onClose();
-                }
-            }))
+        this.props.dispatch(operationsInstance.CreateOperation({
+            id: this.state.id,
+            type: this.state.type,
+            toUserId: this.state.toUserId.value,
+            fromUserId: this.state.fromUserId.value,
+            description: this.GetDesc(),
+            amount: this.state.amount.value || 0,
+            penaltyId: this.state.penaltyId.value,
+            loanId: this.state.loanId.value,
+            onFailure: () => {
+                this.setState({ isLoad: false });
+            },
+            onSuccess: () => {
+                this.setState({ isLoad: false });
+                this.props.onSuccess();
+                this.onClose();
+            }
+        }))
     }
 
     render() {
@@ -223,8 +223,9 @@ class _CreateOperationDialog extends BaseReactComp<IProps, IState> {
 
 interface _IProps {
     isDisplayed: boolean;
-    guildId: string;
+
     onClose: Function;
+    onSuccess: Function;
     [id: string]: any;
 }
 

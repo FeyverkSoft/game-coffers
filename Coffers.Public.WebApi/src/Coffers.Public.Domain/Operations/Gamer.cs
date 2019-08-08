@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Coffers.Public.Domain.Operations
 {
@@ -14,9 +13,5 @@ namespace Coffers.Public.Domain.Operations
         /// Счёт игрока по умолчанию
         /// </summary>
         public Account DefaultAccount { get; internal set; }
-
-        public List<Loan> Loans { get; set; }
-
-        public List<Penalty> Penalties { get; set; }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Coffers.Types.Gamer;
 
 namespace Coffers.Public.Domain.Guilds
@@ -55,15 +54,6 @@ namespace Coffers.Public.Domain.Guilds
         /// Логин для авторизации
         /// </summary>
         public String Login { get; internal set; }
-        /// <summary>
-        /// Список чаров игрока
-        /// </summary>
-        public List<Character> Characters { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public ICollection<Loan> Loans { get; set; }
 
         internal Gamer() { }
 

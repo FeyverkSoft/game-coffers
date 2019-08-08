@@ -76,12 +76,14 @@ namespace Coffers.Public.Domain.Guilds
                     gamer.Rank = GamerRank.Beginner;
                 }
             }
+            UpdateDate = DateTime.UtcNow;
         }
         public void AddGamer(Guid id, String name, String login, DateTime dateOfBirth, GamerStatus gamerStatus, GamerRank rank)
         {
             if (Gamers.Any(g => g.Id == id && !g.Login.Equals(login, StringComparison.InvariantCultureIgnoreCase)))
                 throw new DuplicateNameException("Gamer already exists");
             Gamers.Add(new Gamer(id, name, login, dateOfBirth, gamerStatus, rank));
+            UpdateDate = DateTime.UtcNow;
         }
 
         public void UpdateBeginnerTariff(Decimal beginnerTariffLoanTax,
@@ -96,6 +98,7 @@ namespace Coffers.Public.Domain.Guilds
                 VeteranTariff = Tariff?.VeteranTariff,
                 SoldierTariff = Tariff?.SoldierTariff
             };
+            UpdateDate = DateTime.UtcNow;
         }
 
         public void UpdateOfficerTariff(Decimal officerTariffLoanTax,
@@ -110,6 +113,7 @@ namespace Coffers.Public.Domain.Guilds
                 VeteranTariff = Tariff?.VeteranTariff,
                 SoldierTariff = Tariff?.SoldierTariff
             };
+            UpdateDate = DateTime.UtcNow;
         }
 
         public void UpdateLeaderTariff(Decimal leaderTariffLoanTax,
@@ -124,6 +128,7 @@ namespace Coffers.Public.Domain.Guilds
                 VeteranTariff = Tariff?.VeteranTariff,
                 SoldierTariff = Tariff?.SoldierTariff
             };
+            UpdateDate = DateTime.UtcNow;
         }
 
         public void UpdateVeteranTariff(Decimal veteranTariffLoanTax,
@@ -138,6 +143,7 @@ namespace Coffers.Public.Domain.Guilds
                 VeteranTariff = new Tariff(veteranTariffLoanTax, veteranTariffExpiredLoanTax, veteranTariffTax),
                 SoldierTariff = Tariff?.SoldierTariff
             };
+            UpdateDate = DateTime.UtcNow;
         }
 
         public void UpdateSoldierTariff(Decimal soldierTariffLoanTax,
@@ -152,6 +158,7 @@ namespace Coffers.Public.Domain.Guilds
                 VeteranTariff = Tariff?.VeteranTariff,
                 SoldierTariff = new Tariff(soldierTariffLoanTax, soldierTariffExpiredLoanTax, soldierTariffTax)
             };
+            UpdateDate = DateTime.UtcNow;
         }
     }
 }

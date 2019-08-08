@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Coffers.Types.Account;
 using Query.Core;
 
 namespace Coffers.Public.Queries.Operations

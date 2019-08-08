@@ -4,14 +4,13 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Coffers.Helpers;
-using Coffers.Public.Domain.Guilds;
 using Coffers.Public.Queries.Guilds;
 using Coffers.Types.Account;
 using Coffers.Types.Gamer;
 using Microsoft.EntityFrameworkCore;
 using Query.Core;
 
-namespace Coffers.Public.Infrastructure.Guilds
+namespace Coffers.Public.Queries.Infrastructure.Guilds
 {
     public class GuildsQueryHandler : IQueryHandler<GuildQuery, GuildView>,
         IQueryHandler<GuildsQuery, ICollection<GuildView>>,
@@ -19,9 +18,9 @@ namespace Coffers.Public.Infrastructure.Guilds
         IQueryHandler<GuildAccountQuery, GuildAccountView>
 
     {
-        private readonly GuildsDbContext _context;
+        private readonly GuildsQueryDbContext _context;
 
-        public GuildsQueryHandler(GuildsDbContext context)
+        public GuildsQueryHandler(GuildsQueryDbContext context)
         {
             _context = context;
         }

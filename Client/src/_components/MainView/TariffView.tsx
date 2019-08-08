@@ -1,11 +1,11 @@
 import * as React from "react";
-import style from "./tarifview.module.less"
+import style from "./tariffview.module.less"
 import { CanvasBlock, Grid, Col1, NamedValue } from "..";
 import { Lang, ITariffs, GamerRank, DLang } from "../../_services";
-import { MaterialSelect, Item } from "../Input/SelectList";
+import { Item, BaseSelect } from "../Input/SelectList";
 import { BaseReactComp } from "../BaseReactComponent";
 
-interface ITarifViewProps extends React.Props<any> {
+interface ITariffViewProps extends React.Props<any> {
     tariff: ITariffs;
     isLoading?: boolean;
     currentRole: GamerRank;
@@ -15,18 +15,18 @@ interface ITarifViewState {
     currentRole: string;
 }
 /// Плашка с информацией о тарифе
-class _TariffView extends BaseReactComp<ITarifViewProps, ITarifViewState> {
+class _TariffView extends BaseReactComp<ITariffViewProps, ITarifViewState> {
     /**
      *
      */
-    constructor(props: ITarifViewProps) {
+    constructor(props: ITariffViewProps) {
         super(props);
         this.state = {
             currentRole: props.currentRole || Object.keys(props.tariff)[0]
         }
     }
 
-    componentWillReceiveProps(props: ITarifViewProps) {
+    componentWillReceiveProps(props: ITariffViewProps) {
         this.setState({ currentRole: props.currentRole });
     }
 
@@ -37,14 +37,14 @@ class _TariffView extends BaseReactComp<ITarifViewProps, ITarifViewState> {
         if (role != this.state.currentRole)
             this.setState({ currentRole: role });
         return (
-            <MaterialSelect
+            <BaseSelect
                 items={roles}
                 value={role}
                 path="currentRole"
                 onChange={this.onInput}
                 className={style['select']}
                 type='white'
-            ></MaterialSelect>
+            ></BaseSelect>
         );
     }
 
@@ -80,4 +80,4 @@ class _TariffView extends BaseReactComp<ITarifViewProps, ITarifViewState> {
     }
 }
 
-export const TariffView = React.memo(({ ...props }: ITarifViewProps) => <_TariffView {...props} />)
+export const TariffView = React.memo(({ ...props }: ITariffViewProps) => <_TariffView {...props} />)

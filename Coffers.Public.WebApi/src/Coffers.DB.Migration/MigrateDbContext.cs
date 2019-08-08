@@ -247,6 +247,10 @@ namespace Coffers.DB.Migrations
                 b.Property(l => l.Description)
                     .HasMaxLength(512);
 
+                b.Property(l => l.ConcurrencyTokens)
+                    .IsRequired()
+                    .IsConcurrencyToken();
+
                 b.HasOne(g => g.Account)
                     .WithMany()
                     .HasPrincipalKey(_ => _.Id)
@@ -274,11 +278,14 @@ namespace Coffers.DB.Migrations
 
                 b.Property(p => p.CreateDate)
                     .IsRequired();
+
                 b.Property(o => o.Amount)
                     .HasDefaultValue(0)
                     .IsRequired();
+
                 b.Property(p => p.Description)
                     .HasMaxLength(2048);
+
                 b.Property(p => p.PenaltyStatus)
                     .HasConversion<String>()
                     .HasMaxLength(32);
@@ -286,6 +293,10 @@ namespace Coffers.DB.Migrations
                 b.HasOne(p => p.Gamer)
                     .WithMany(_ => _.Penalties)
                     .HasPrincipalKey(_ => _.Id);
+
+                b.Property(l => l.ConcurrencyTokens)
+                    .IsRequired()
+                    .IsConcurrencyToken();
 
             });
 
@@ -326,6 +337,7 @@ namespace Coffers.DB.Migrations
                 b.Property(a => a.Balance)
                     .HasDefaultValue(0)
                     .IsRequired();
+
                 b.Property(a => a.ConcurrencyTokens)
                     .IsConcurrencyToken()
                     .IsRequired();

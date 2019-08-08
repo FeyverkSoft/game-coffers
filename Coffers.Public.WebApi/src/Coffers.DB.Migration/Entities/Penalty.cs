@@ -26,6 +26,11 @@ namespace Coffers.DB.Migrations.Entities
         public DateTime CreateDate { get; set; }
 
         /// <summary>
+        /// Дата обновления
+        /// </summary>
+        public DateTime UpdateDate { get; set; }
+
+        /// <summary>
         /// Статус штрафа
         /// </summary>
         public PenaltyStatus PenaltyStatus { get; set; }
@@ -35,5 +40,6 @@ namespace Coffers.DB.Migrations.Entities
         /// </summary>
         public String Description { get; set; }
 
+        public Guid ConcurrencyTokens { get; internal set; }
     }
 }

@@ -12,53 +12,67 @@ namespace Coffers.Public.Domain.Gamers
         /// <summary>
         /// Идентификатор займа
         /// </summary>
-        public Guid Id { get; internal set; }
+        public Guid Id { get; private set; }
 
         /// <summary>
         /// Сумма займа
         /// </summary>
-        public Decimal Amount { get; internal set; }
+        public Decimal Amount { get; private set; }
 
-        public Account Account { get; internal set; }
+        public Account Account { get; private set; }
 
-        public Guid TariffId { get; internal set; }
+        public Guid TariffId { get; private set; }
 
         /// <summary>
         /// Дата стухания займа
         /// </summary>
-        public DateTime ExpiredDate { get; internal set; }
+        public DateTime ExpiredDate { get; private set; }
 
         /// <summary>
         /// Дата создания займа
         /// </summary>
-        public DateTime CreateDate { get; internal set; }
+        public DateTime CreateDate { get; private set; }
 
         /// <summary>
         /// Дата обновления записи
         /// </summary>
-        public DateTime UpdateDate { get; internal set; }
+        public DateTime UpdateDate { get; private set; }
 
         /// <summary>
         /// Сумма комиссии 
         /// </summary>
-        public Decimal TaxAmount { get; internal set; }
+        public Decimal TaxAmount { get; private set; }
 
         /// <summary>
         /// Сумма штрафа 
         /// </summary>
-        public Decimal PenaltyAmount { get; internal set; }
+        public Decimal PenaltyAmount { get; private set; }
 
         /// <summary>
         /// Дата займа
         /// </summary>
-        public DateTime BorrowDate { get; internal set; }
+        public DateTime BorrowDate { get; private set; }
+
         /// <summary>
         /// Необязательное описание, для чего был взят займ
         /// </summary>
-        public String Description { get; internal set; }
+        public String Description { get; private set; }
 
-        public LoanStatus LoanStatus { get; internal set; }
+        public LoanStatus LoanStatus { get; private set; }
+        internal void SetStatus(LoanStatus newStatus)
+        {
+            if (LoanStatus != newStatus)
+            {
+                UpdateDate = DateTime.UtcNow;
+                LoanStatus = newStatus;
+                ConcurrencyTokens = Guid.NewGuid();
+            }
+        }
 
+        /// <summary>
+        /// Токен конкуренции, предназначен для разруливания согласованности данных, при ассинхроных запросаз
+        /// </summary>
+        public Guid ConcurrencyTokens { get; private set; }
 
         public Loan(Guid id, Guid tariffId, Decimal amount, Decimal taxAmount,
             String description, DateTime borrowDate, DateTime expiredDate)
@@ -66,6 +80,7 @@ namespace Coffers.Public.Domain.Gamers
             CreateDate = DateTime.UtcNow;
             UpdateDate = DateTime.UtcNow;
             LoanStatus = LoanStatus.Active;
+            ConcurrencyTokens = Guid.NewGuid();
             Id = id;
             Account = new Account();
             TariffId = tariffId;

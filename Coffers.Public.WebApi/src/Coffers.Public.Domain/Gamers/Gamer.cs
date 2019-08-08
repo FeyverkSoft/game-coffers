@@ -123,6 +123,7 @@ namespace Coffers.Public.Domain.Gamers
             {
                 ch.Status = CharStatus.Deleted;
             }
+            UpdateDate = DateTime.UtcNow;
         }
 
         public void SetRank(GamerRank bindingRank)
@@ -144,6 +145,7 @@ namespace Coffers.Public.Domain.Gamers
             if (Penalties.Any(x => x.Id == Id && x.Amount == amount))
                 return;
             Penalties.Add(new Penalty(id, amount, description));
+            UpdateDate = DateTime.UtcNow;
         }
 
         /// <summary>
@@ -159,6 +161,7 @@ namespace Coffers.Public.Domain.Gamers
                 return;
 
             Loans.Add(loan);
+            UpdateDate = DateTime.UtcNow;
         }
 
         /// <summary>
@@ -175,7 +178,10 @@ namespace Coffers.Public.Domain.Gamers
                 throw new KeyNotFoundException(id.ToString());
 
             if (p.PenaltyStatus == PenaltyStatus.Active)
-                p.PenaltyStatus = PenaltyStatus.Canceled;
+            {
+                p.SetStatus(PenaltyStatus.Canceled);
+                UpdateDate = DateTime.UtcNow;
+            }
         }
 
         /// <summary>
@@ -193,7 +199,9 @@ namespace Coffers.Public.Domain.Gamers
                 throw new KeyNotFoundException(id.ToString());
 
             if (l.LoanStatus != LoanStatus.Paid)
-                l.LoanStatus = LoanStatus.Canceled;
+                l.SetStatus(LoanStatus.Canceled);
+
+            UpdateDate = DateTime.UtcNow;
         }
     }
 }

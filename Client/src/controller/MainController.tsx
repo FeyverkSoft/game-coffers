@@ -171,7 +171,7 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                 type: 'Penalty'
             }));
     }
-    
+
     charactersGrid = () => {
         const { gamers, user } = this.props;
         return <CanvasBlock
@@ -252,34 +252,38 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                 />
                 <AddCharDialog
                     userId={this.state.addChar.userId}
-                    guildId={this.props.guildId || ''}
                     isDisplayed={this.state.addChar.isDisplayed}
                     onClose={() => this.setState({ addChar: { isDisplayed: false } })}
+                    onSuccess={this.loadData}
                 />
                 <AddLoanDialog
                     userId={this.state.addLoan.userId}
-                    guildId={this.props.guildId || ''}
                     isDisplayed={this.state.addLoan.isDisplayed}
                     onClose={() => this.setState({ addLoan: { isDisplayed: false } })}
+                    onSuccess={this.loadData}
                 />
                 <AddPenaltyDialog
                     userId={this.state.addPenalty.userId}
-                    guildId={this.state.guildId || ''}
                     isDisplayed={this.state.addPenalty.isDisplayed}
                     onClose={() => this.setState({ addPenalty: { isDisplayed: false } })}
                 />
-                <ShowLoanDialog
-                    loanId={this.state.showLoanInfo.loanId}
-                    gamerId={this.state.showLoanInfo.gamerId}
-                    isDisplayed={this.state.showLoanInfo.isDisplayed}
-                    onClose={() => this.setState({ showLoanInfo: { isDisplayed: false } })}
-                />
-                <ShowPenaltyDialog
-                    penaltyId={this.state.showPenaltyInfo.penaltyId}
-                    gamerId={this.state.showPenaltyInfo.gamerId}
-                    isDisplayed={this.state.showPenaltyInfo.isDisplayed}
-                    onClose={() => this.setState({ showPenaltyInfo: { isDisplayed: false } })}
-                />
+                <IF value={this.state.showLoanInfo.isDisplayed}>
+                    <ShowLoanDialog
+                        loanId={this.state.showLoanInfo.loanId}
+                        gamerId={this.state.showLoanInfo.gamerId}
+                        isDisplayed={this.state.showLoanInfo.isDisplayed}
+                        onClose={() => this.setState({ showLoanInfo: { isDisplayed: false } })}
+                        onSuccess={this.loadData}
+                    />
+                </IF>
+                <IF value={this.state.showPenaltyInfo.isDisplayed}>
+                    <ShowPenaltyDialog
+                        penaltyId={this.state.showPenaltyInfo.penaltyId}
+                        gamerId={this.state.showPenaltyInfo.gamerId}
+                        isDisplayed={this.state.showPenaltyInfo.isDisplayed}
+                        onClose={() => this.setState({ showPenaltyInfo: { isDisplayed: false } })}
+                    />
+                </IF>
                 <IF value={this.state.operationsDialog.isDisplayed}>
                     <ShowUserOperations
                         gamerId={this.state.operationsDialog.gamerId}
@@ -294,11 +298,13 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                         onClose={() => this.setState({ operationsGDialog: { isDisplayed: false } })}
                     />
                 </IF>
-                <CreateOperationDialog
-                    guildId={this.props.guildId || ''}
-                    isDisplayed={this.state.addNewOperation.isDisplayed}
-                    onClose={() => this.setState({ addNewOperation: { isDisplayed: false } })}
-                />
+                <IF value={this.state.addNewOperation.isDisplayed}>
+                    <CreateOperationDialog
+                        isDisplayed={this.state.addNewOperation.isDisplayed}
+                        onClose={() => this.setState({ addNewOperation: { isDisplayed: false } })}
+                        onSuccess={this.loadData}
+                    />
+                </IF>
                 <Private roles={['admin', 'leader', 'officer']}>
                     <FloatButton
                         type={'default'}

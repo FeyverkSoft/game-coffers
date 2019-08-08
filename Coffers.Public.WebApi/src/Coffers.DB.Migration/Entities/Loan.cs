@@ -69,6 +69,11 @@ namespace Coffers.DB.Migrations.Entities
         public Decimal PenaltyAmount { get; set; }
 
         public LoanStatus LoanStatus { get; set; }
+
+        /// <summary>
+        /// Токен конкуренции, предназначен для разруливания согласованности данных, при ассинхроных запросаз
+        /// </summary>
+        public Guid ConcurrencyTokens { get; set; }
     }
 
 }
