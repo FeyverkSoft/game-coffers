@@ -51,6 +51,7 @@ const locString: any = {
         USER_CHAR_LIST: 'персонажи игрока: {0}',
         USER_ROW_STATUS: 'Статус',
         USER_ROW_RANK: 'Ранг',
+        OPERATION: 'Операция',
         USER_ROW_BALANCE: 'Баланс',
         USER_ROW_PENALTIES: 'Штрафы',
         USER_ROW_LOANS: 'Займы',
@@ -134,7 +135,9 @@ const locString: any = {
         OPERATION_AMOUNT: 'Сумма операции',
         OPERATION_DESCRIPTION: 'Описание операции',
         OPERATION_FROMUSERID: 'С пользователя:',
-        OPERATION_TOUSERID: 'Пользователю:'
+        OPERATION_TOUSERID: 'Пользователю:',
+        OPERATION_PENALTY: 'Уплата штрафа',
+        OPERATION_LOANS: 'Уплата займа',
     }
 };
 

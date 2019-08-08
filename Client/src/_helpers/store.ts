@@ -16,11 +16,22 @@ export interface IStore extends Dictionary<any> {
     session: SessionInfo;
     operations: IOperationsStore;
 }
+let _store;
+if (process.env.NODE_ENV !== 'production') {
+    _store = createStore<any, any, any, any>(
+        rootReducer,
+        applyMiddleware(
+            thunkMiddleware,
+            logger
+        )
+    ) as Store<IStore, any>
+} else {
+    _store = createStore<any, any, any, any>(
+        rootReducer,
+        applyMiddleware(
+            thunkMiddleware,
+        )
+    ) as Store<IStore, any>
+}
 
-export const store = createStore<any, any, any, any>(
-    rootReducer,
-    applyMiddleware(
-        thunkMiddleware,
-        logger
-    )
-) as Store<IStore, any>
+export const store = _store;

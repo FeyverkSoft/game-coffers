@@ -20,7 +20,6 @@ export class Item {
 
 interface IMaterialSelectProps extends React.Props<any> {
     style?: React.CSSProperties;
-    type: 'white' | 'default' | 'error';
     value?: number | string;
     path?: string;
     items?: Array<Item>;
@@ -32,7 +31,7 @@ interface IMaterialSelectProps extends React.Props<any> {
     [id: string]: any;
 }
 
-export class MaterialSelect extends React.Component<IMaterialSelectProps, any> {
+class _MaterialSelect extends React.Component<IMaterialSelectProps, any> {
     constructor(props: IMaterialSelectProps) {
         super(props);
         this.state = {
@@ -71,16 +70,12 @@ export class MaterialSelect extends React.Component<IMaterialSelectProps, any> {
     }
     render() {
         let $this = this;
-        let label;
-        if ($this.props.label)
-            label = <label>{$this.props.label}</label>;
         return (
-            <div className={`${style['select-wrapper']} ${this.props.className || ''} ${style[this.props.type]}`}
+            <div className={`${style['select-wrapper']} ${this.props.className}`}
                 style={$this.props.style}>
-                {label}
                 <select
-                    className={style['input']}
-                    id={$this.props.id}
+                    className={`${style['input']} ${this.state.value ? `${style['full']} ${style['default']}` : style['error']}`}
+                    id={this.props.path}
                     name={$this.props.id}
                     onChange={$this.onChange}
                     data-path={$this.state.path}
@@ -91,6 +86,14 @@ export class MaterialSelect extends React.Component<IMaterialSelectProps, any> {
                         })
                     }
                 </select>
+                <IF value={this.props.label}>
+                    <label
+                        className={`${style['label']} ${this.state.value ? style['default'] : style['error']}`}
+                        htmlFor={this.props.path}
+                    >
+                        {$this.props.label}
+                    </label>
+                </IF>
                 <span className={style['bar']} />
                 <IF value={this.props.isLoading}>
                     <SmallSpinner className="dark" />
@@ -99,3 +102,5 @@ export class MaterialSelect extends React.Component<IMaterialSelectProps, any> {
         )
     }
 }
+
+export const MaterialSelect = React.memo(({ ...props }: IMaterialSelectProps) => <_MaterialSelect {...props} />)

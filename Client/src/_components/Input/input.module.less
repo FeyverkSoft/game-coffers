@@ -8,7 +8,7 @@
     align-items   : center;
     border-radius : 0.25rem 0.2rem 0.25rem 0.2rem;
     padding       : 0 .25rem;
-    margin        : 1.5rem 0.25rem 0 0.25rem;
+    margin        : 1.5rem 0.25rem 0.25rem 0.25rem;
 
     .label {
         .flex();
@@ -181,7 +181,39 @@
     align-items   : center;
     border-radius : 0.25rem 0.2rem 0.25rem 0.2rem;
     padding       : 0 .25rem;
-    margin        : 1.5rem 0.25rem 0 0.25rem;
+    margin        : 1.5rem 0.25rem 0.25rem 0.25rem;
+
+    .label {
+        .flex();
+        position      : absolute;
+        align-items   : center;
+        z-index       : 9;
+        top           : 0;
+        left          : 0;
+        padding       : .25rem .75rem;
+        font-weight   : 500;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        user-select   : none;
+        font-size     : @14px;
+        color         : @white;
+        border-radius : .75rem .25rem .75rem .25rem;
+        min-width     : 100%;
+        min-height    : 100%;
+        box-shadow    : @box-shadow-0-inset;
+        cursor        : text;
+        .transition(~'min-width, min-height, top');
+        will-change: min-width, min-height, top, box-shadow;
+
+
+        &.default {
+            background-color: fade(@defaultColor, 80%);
+        }
+
+        &.error {
+            background-color: fade(@errorColor, 80%);
+        }
+    }
 
     .input {
         border          : none;
@@ -192,12 +224,17 @@
         font-size       : @16px;
         background-color: transparent;
         width           : 100%;
+        height          : 2.1rem;
         border-bottom   : 1px transparent solid;
         .transition(width);
         will-change: width;
 
         @media (max-width: @mobile-M) {
             width: 100%;
+        }
+
+        &>option {
+            font-size: 1.05rem;
         }
 
         &:focus~label,
@@ -220,19 +257,6 @@
             ~.bar:after,
             ~.bar:before {
                 background: @defaultColor;
-            }
-        }
-
-        &.white {
-
-            &:focus~label,
-            &.full~label {
-                border-bottom-color: fade(@white, 80%);
-            }
-
-            ~.bar:after,
-            ~.bar:before {
-                background: @white;
             }
         }
 
@@ -259,6 +283,7 @@
         &[disabled] {
             border-bottom: 1px dashed fade(@mainFontColor, 50%);
         }
+
     }
 
     .bar {

@@ -117,6 +117,7 @@ class _AddUserDialog extends BaseReactComp<IProps, IState> {
                     </Col1>
                     <Col1>
                         <MaterialSelect
+                            label={Lang('USER_ROW_RANK')}
                             items={GamerRankList.map(t => new Item(t, DLang('USER_ROLE', t)))}
                             value={rank}
                             path="rank"
@@ -126,6 +127,7 @@ class _AddUserDialog extends BaseReactComp<IProps, IState> {
                     </Col1>
                     <Col1>
                         <MaterialSelect
+                            label={Lang('USER_ROW_STATUS')}
                             items={GamerStatusList.map(t => new Item(t, DLang('USER_STATUS', t)))}
                             value={status}
                             path="status"

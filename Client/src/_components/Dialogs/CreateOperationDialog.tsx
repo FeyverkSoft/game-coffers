@@ -2,16 +2,19 @@ import * as React from "react";
 import memoize from 'lodash.memoize';
 import { BaseReactComp, IStatedField } from "../BaseReactComponent";
 import { Dialog, Form, Col1, Input, Button, MaterialSelect, Item } from "..";
-import { Lang, OperationTypeList, DLang, OperationType } from "../../_services";
-import { operationsInstance } from "../../_actions";
+import { Lang, OperationTypeList, DLang, OperationType, IGamersListView } from "../../_services";
+import { operationsInstance, guildInstance } from "../../_actions";
 import { connect } from "react-redux";
 import { getGuid, IF, IStore } from "../../_helpers";
+import { Dictionary } from "../../core";
 
 interface IProps extends React.Props<any> {
     isDisplayed: boolean;
     guildId: string;
     onClose: Function;
     users: Array<Item>;
+    loans: Array<Item>;
+    penaltyes: Array<Item>;
     [id: string]: any;
 }
 
@@ -21,7 +24,7 @@ interface IState {
 
     fromUserId: IStatedField<string | undefined>;
     toUserId: IStatedField<string | undefined>;
-    amount: IStatedField<string | undefined>;
+    amount: IStatedField<number | undefined>;
     description: IStatedField<string | undefined>;
     penaltyId: IStatedField<string | undefined>;
     loanId: IStatedField<string | undefined>;
@@ -68,12 +71,45 @@ class _CreateOperationDialog extends BaseReactComp<IProps, IState> {
         this.props.onClose();
     }
 
+    GetDesc = (): string => {
+        let desc = this.state.description.value;
+        switch (this.state.type) {
+            case 'Tax':
+                return `Уплата налога: ${desc}`;
+            case 'Penalty':
+                return `Уплата штрафа: ${desc}`;
+            case 'Loan':
+                return `Погашение в пользу займа: ${desc}`;
+            default:
+                return desc || '';
+        }
+    }
+
     handleSubmit = () => {
         this.setState({ isLoad: true });
+        if (this.props.guildId)
+            this.props.dispatch(operationsInstance.CreateOperation({
+                id: this.state.id,
+                type: this.state.type,
+                toUserId: this.state.toUserId.value,
+                fromUserId: this.state.fromUserId.value,
+                description: this.GetDesc(),
+                amount: this.state.amount.value || 0,
+                penaltyId: this.state.penaltyId.value,
+                loanId: this.state.loanId.value,
+                onFailure: () => {
+                    this.setState({ isLoad: false });
+                },
+                onSuccess: () => {
+                    this.setState({ isLoad: false });
+                    this.props.dispatch(guildInstance.GetGuildBalanceReport({ guildId: this.props.guildId || '' }))
+                    this.onClose();
+                }
+            }))
     }
 
     render() {
-        const { type, amount, description, fromUserId, toUserId } = this.state;
+        const { type, amount, description, fromUserId, toUserId, loanId, penaltyId } = this.state;
         return (
             <Dialog
                 isDisplayed={this.props.isDisplayed}
@@ -86,6 +122,7 @@ class _CreateOperationDialog extends BaseReactComp<IProps, IState> {
                 >
                     <Col1>
                         <MaterialSelect
+                            label={Lang('OPERATION')}
                             items={OperationTypeList.map(t => new Item(t, DLang('OPERATIONS_TYPE', t)))}
                             value={type}
                             path="type"
@@ -101,16 +138,6 @@ class _CreateOperationDialog extends BaseReactComp<IProps, IState> {
                             path='amount'
                             type='number'
                             value={amount.value}
-                            isRequiredMessage={Lang('IsRequired')}
-                        />
-                    </Col1>
-                    <Col1>
-                        <Input
-                            label={Lang('OPERATION_DESCRIPTION')}
-                            onChange={this.onInputVal}
-                            isRequired={true}
-                            path='description'
-                            value={description.value}
                             isRequiredMessage={Lang('IsRequired')}
                         />
                     </Col1>
@@ -142,6 +169,44 @@ class _CreateOperationDialog extends BaseReactComp<IProps, IState> {
                             />
                         </Col1>
                     </IF>
+                    <IF value={type} in={['Loan']}>
+                        <Col1>
+                            <MaterialSelect
+                                items={this.props.loans}
+                                label={Lang('OPERATION_LOANS')}
+                                onChange={this.onInputVal}
+                                isRequired={true}
+                                path='loanId'
+                                type='default'
+                                value={loanId.value}
+                                isRequiredMessage={Lang('IsRequired')}
+                            />
+                        </Col1>
+                    </IF>
+                    <IF value={type} in={['Penalty']}>
+                        <Col1>
+                            <MaterialSelect
+                                items={this.props.penaltyes}
+                                label={Lang('OPERATION_PENALTY')}
+                                onChange={this.onInputVal}
+                                isRequired={true}
+                                path='penaltyId'
+                                type='default'
+                                value={penaltyId.value}
+                                isRequiredMessage={Lang('IsRequired')}
+                            />
+                        </Col1>
+                    </IF>
+                    <Col1>
+                        <Input
+                            label={Lang('OPERATION_DESCRIPTION')}
+                            onChange={this.onInputVal}
+                            isRequired={true}
+                            path='description'
+                            value={description.value}
+                            isRequiredMessage={Lang('IsRequired')}
+                        />
+                    </Col1>
                     <Col1>
                         {<Button
                             isLoading={this.state.isLoad}
@@ -163,7 +228,7 @@ interface _IProps {
     [id: string]: any;
 }
 
-const Loans = memoize(gamersList => {
+const Loans = memoize((gamersList: Dictionary<IGamersListView>): Array<Item> => {
     let _temp: any = Object.keys(gamersList)
         .map(k => gamersList[k])
         .map(_ => Object.keys(_.loans)
@@ -171,22 +236,43 @@ const Loans = memoize(gamersList => {
                 return {
                     user: _.name,
                     id: _.loans[l].id,
-                    description: `${_.loans[l].amount} - ${_.loans[l].description}}`,
-                    loanStatus: _.loans[l].loanStatus
+                    description: `${_.loans[l].amount} - ${_.loans[l].description}`,
+                    status: _.loans[l].loanStatus
                 }
             })
         );
-    return [].concat(..._temp).filter((_: any) => _.loanStatus == 'Active' || _.loanStatus == 'Expired');
+    return [].concat(..._temp)
+        .filter((_: any) => _.status == 'Active' || _.status == 'Expired')
+        .map((_: any) => new Item(_.id, `${_.user}: ${_.description}`));
 }, it => { return JSON.stringify(it) });
 
-const MemGamers = memoize(gms=>gms, it=>JSON.stringify(it));
+const Penaltyes = memoize((gamersList: Dictionary<IGamersListView>): Array<Item> => {
+    let _temp: any = Object.keys(gamersList)
+        .map(k => gamersList[k])
+        .map(_ => Object.keys(_.penalties)
+            .map(l => {
+                return {
+                    user: _.name,
+                    id: _.penalties[l].id,
+                    description: `${_.penalties[l].amount} - ${_.penalties[l].description}`,
+                    status: _.penalties[l].penaltyStatus
+                }
+            })
+        );
+    return [].concat(..._temp)
+        .filter((_: any) => _.status == 'Active')
+        .map((_: any) => new Item(_.id, `${_.user}: ${_.description}`));
+}, it => { return JSON.stringify(it) });
+
+const MemGamers = memoize(gms => gms, it => JSON.stringify(it));
 
 const connected_CreateOperationDialog = connect<{}, {}, _IProps, IStore>((state: IStore, props): IProps => {
     const { gamersList } = state.gamers;
     return {
         ...props,
         users: MemGamers(Object.keys(gamersList).map(k => gamersList[k]).map(_ => new Item(_.id, `${_.name} - ${_.characters[0]}`))),
-        loans: Loans(gamersList)
+        loans: Loans(gamersList),
+        penaltyes: Penaltyes(gamersList)
     };
 })(_CreateOperationDialog);
 

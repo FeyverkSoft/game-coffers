@@ -15,8 +15,7 @@ export class Input extends BaseInput<InputProps, IBaseInputState> {
         return (
             <div className={style['input-wrapper']}>
                 <input
-                    className={`${style['input']} ${this.state.valid ? style['default'] : style['error']} ${this.state.value ? style['full'] : ''}
-                    `}
+                    className={`${style['input']} ${this.state.valid ? style['default'] : style['error']} ${this.state.value ? style['full'] : ''}`}
                     placeholder={this.props.placeholder}
                     onChange={this.onChange}
                     onBlur={this.onBlur}
