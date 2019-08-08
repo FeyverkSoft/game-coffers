@@ -4,22 +4,21 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Coffers.Helpers;
-using Coffers.Public.Infrastructure.Operations;
 using Coffers.Public.Queries.Gamers;
 using Coffers.Types.Account;
 using Coffers.Types.Gamer;
 using Microsoft.EntityFrameworkCore;
 using Query.Core;
 
-namespace Coffers.Public.Infrastructure.Gamers
+namespace Coffers.Public.Queries.Infrastructure.Gamers
 {
     public sealed class GamerQueryHandler : IQueryHandler<GetBaseGamerInfoQuery, BaseGamerInfoView>,
         IQueryHandler<GetGamersQuery, ICollection<GamersListView>>,
         IQueryHandler<GetGamerInfoQuery, GamerInfoView>
 
     {
-        private readonly GamerDbContext _context;
-        public GamerQueryHandler(GamerDbContext context)
+        private readonly GamerQueryDbContext _context;
+        public GamerQueryHandler(GamerQueryDbContext context)
         {
             _context = context;
         }
@@ -82,40 +81,49 @@ namespace Coffers.Public.Infrastructure.Gamers
             q = q.Include(g => g.DefaultAccount)
              .Include(g => g.Characters)
              .Include(g => g.Loans)
+                .ThenInclude(_=>_.Account)
              .Include(g => g.Penalties);
+
             return await q
-            .OrderBy(_ => _.Rank).ThenBy(_ => _.Status).ThenBy(_ => _.CreateDate)
+            .OrderBy(_ => _.Rank)
+                .ThenBy(_ => _.Status)
+                .ThenBy(_ => _.CreateDate)
             .Select(g => new GamersListView
-            {
-                Id = g.Id,
-                Name = g.Name,
-                Balance = g.DefaultAccount.Balance,
-                Characters = g.Characters.Where(c => c.Status == CharStatus.Active).Select(x => x.Name).ToList(),
-                Rank = g.Rank,
-                Status = g.Status,
-                DateOfBirth = g.DateOfBirth.Trunc(DateTruncType.Day),
-                Penalties = g.Penalties.Where(p => p.CreateDate >= dateFrom || p.PenaltyStatus == PenaltyStatus.Active)
+            (
+                g.Id,
+                g.Name,
+                g.DefaultAccount.Balance,
+                g.Characters
+                    .Where(c => c.Status == CharStatus.Active)
+                    .Select(x => new CharacterView(x.Name, x.ClassName))
+                    .ToList(),
+                g.Rank,
+                g.Status,
+                g.DateOfBirth.Trunc(DateTruncType.Day),
+                g.Penalties
+                    .Where(p => p.CreateDate >= dateFrom || p.PenaltyStatus == PenaltyStatus.Active)
                     .Select(p => new PenaltyView
-                    {
-                        Id = p.Id,
-                        Amount = p.Amount,
-                        Date = p.CreateDate,
-                        Description = p.Description,
-                        PenaltyStatus = p.PenaltyStatus
-                    }).OrderBy(_ => _.Date).ToList(),
-                Loans = g.Loans.Where(l => l.CreateDate >= dateFrom || l.LoanStatus == LoanStatus.Active || l.LoanStatus == LoanStatus.Expired || l.ExpiredDate >= dateFrom)
+                    (
+                        p.Id,
+                        p.Amount,
+                        p.CreateDate,
+                        p.Description,
+                        p.PenaltyStatus
+                    )).OrderBy(_ => _.Date).ToList(),
+                g.Loans
+                    .Where(l => l.CreateDate >= dateFrom || l.LoanStatus == LoanStatus.Active || l.LoanStatus == LoanStatus.Expired || l.ExpiredDate >= dateFrom)
                     .Select(l => new LoanView
-                    {
-                        Amount = l.Amount,
-                        Balance = l.Account.Balance,
-                        Date = l.CreateDate,
-                        Description = l.Description,
-                        LoanStatus = l.LoanStatus,
-                        ExpiredDate = l.ExpiredDate,
-                        Id = l.Id
-                    }).OrderBy(_ => _.Date).ToList(),
-            })
-                .ToListAsync(cancellationToken);
+                    (
+                        l.Id,
+                        l.Amount,
+                        l.Account.Balance,
+                        l.CreateDate,
+                        l.Description,
+                        l.LoanStatus,
+                        l.ExpiredDate
+                    )).OrderBy(_ => _.Date).ToList()
+            ))
+            .ToListAsync(cancellationToken);
         }
 
         public async Task<GamerInfoView> Handle(GetGamerInfoQuery query, CancellationToken cancellationToken)

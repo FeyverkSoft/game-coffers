@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using Coffers.Types.Gamer;
-using Newtonsoft.Json;
 
 namespace Coffers.Public.Queries.Gamers
 {
@@ -10,46 +9,56 @@ namespace Coffers.Public.Queries.Gamers
         /// <summary>
         /// Идентификатор займа
         /// </summary>
-        public Guid Id { get; set; }
+        public Guid Id { get; }
 
         /// <summary>
         /// Сумма займа
         /// </summary>
-        public Decimal Amount { get; set; }
+        public Decimal Amount { get; }
 
         /// <summary>
         /// Осталось выплатить
         /// </summary>
-        public Decimal Balance { get; set; }
+        public Decimal Balance { get; }
 
         /// <summary>
         /// Дата стухания займа
         /// </summary>
-        public DateTime ExpiredDate { get; set; }
+        public DateTime ExpiredDate { get; }
 
         /// <summary>
         /// Дата когда был взят займ
         /// </summary>
-        public DateTime Date { get; set; }
+        public DateTime Date { get; }
 
         /// <summary>
         /// Описание на что будет потрачен займ
         /// </summary>
-        public String Description { get; set; }
+        public String Description { get; }
 
-        [JsonIgnore]
-        private LoanStatus _loanStatus;
         /// <summary>
         /// Статус займа
         /// </summary>
-        public LoanStatus LoanStatus
+        public LoanStatus LoanStatus { get; }
+
+        public LoanView(Guid id,
+            decimal amount,
+            decimal balance,
+            DateTime createDate,
+            string description,
+            LoanStatus loanStatus,
+            DateTime expiredDate)
         {
-            get =>
-                ExpiredDate < DateTime.UtcNow &&
-                !((IList) new[] {LoanStatus.Paid, LoanStatus.Canceled, LoanStatus.Expired}).Contains(_loanStatus)
+            Id = id;
+            Amount = amount;
+            Balance = balance;
+            Date = createDate;
+            Description = description;
+            LoanStatus = ExpiredDate < DateTime.UtcNow &&
+                !((IList)new[] { LoanStatus.Paid, LoanStatus.Canceled, LoanStatus.Expired }).Contains(loanStatus)
                     ? LoanStatus.Expired
-                    : _loanStatus;
-            set => _loanStatus = value;
+                    : loanStatus;
+            ExpiredDate = expiredDate;
         }
     }
 }

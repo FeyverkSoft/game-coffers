@@ -17,8 +17,6 @@ namespace Coffers.Public.Domain.Gamers
         /// </summary>
         public Guid GuildId { get; internal set; }
 
-        public DateTime CreateDate { get; internal set; }
-
         /// <summary>
         /// Дата когда игрок удалился из гильдии
         /// </summary>
@@ -28,12 +26,7 @@ namespace Coffers.Public.Domain.Gamers
         /// Счёт игрока по умолчанию
         /// </summary>
         public Account DefaultAccount { get; internal set; }
-
-        /// <summary>
-        /// Имя игрока
-        /// </summary>
-        public String Name { get; internal set; }
-
+        
         /// <summary>
         /// Звание игрока
         /// </summary>
@@ -43,14 +36,12 @@ namespace Coffers.Public.Domain.Gamers
         /// Статус игрока в гильдии
         /// </summary>
         public GamerStatus Status { get; internal set; }
+
         /// <summary>
         /// Дата обновления записи
         /// </summary>
         public DateTime UpdateDate { get; internal set; }
-        /// <summary>
-        /// Дата рождения
-        /// </summary>
-        public DateTime DateOfBirth { get; internal set; }
+
         /// <summary>
         /// Список чаров игрока
         /// </summary>

@@ -10,6 +10,7 @@ using Coffers.Public.Infrastructure.Authorization;
 using Coffers.Public.Infrastructure.Gamers;
 using Coffers.Public.Infrastructure.Guilds;
 using Coffers.Public.Infrastructure.Operations;
+using Coffers.Public.Queries.Infrastructure.Gamers;
 using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Extensions;
 using Coffers.Public.WebApi.Filters;
@@ -98,7 +99,14 @@ namespace Coffers.Public.WebApi
                 options.UseMySQL(Configuration.GetConnectionString("Coffers"));
             });
 
+
+
+            services.AddDbContext<GamerQueryDbContext>(options =>
+            {
+                options.UseMySQL(Configuration.GetConnectionString("Coffers"));
+            });
             
+
             services.AddScoped<IGuildRepository, GuildRepository>();
             services.AddScoped<IAuthorizationRepository, AuthorizationRepository>();
             services.AddScoped<IGamerRepository, GamerRepository>();
@@ -131,7 +139,7 @@ namespace Coffers.Public.WebApi
                 .AddScheme<AuthenticationSchemeOptions, SessionAuthenticationHandler>("Token", "Token", o => { });
             #endregion
 
-            #region ������ ����������� ������� ��������
+            #region Включение миграции в проект
             services.AddDbContext<MigrateDbContext>(options =>
                 options.UseMySQL(Configuration.GetConnectionString("CoffersMigration")));
             services.AddHostedService<MigrateService<MigrateDbContext>>();

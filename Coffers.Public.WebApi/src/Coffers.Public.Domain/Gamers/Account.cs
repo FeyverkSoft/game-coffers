@@ -20,12 +20,6 @@ namespace Coffers.Public.Domain.Gamers
         /// </summary>
         public Guid ConcurrencyTokens { get; set; }
 
-        /// <summary>
-        /// Список изходящих операций произведенных над счётом
-        /// </summary>
-        public List<Operation> FromOperations { get; set; }
-
-
         public Account()
         {
             Id = Guid.NewGuid();
