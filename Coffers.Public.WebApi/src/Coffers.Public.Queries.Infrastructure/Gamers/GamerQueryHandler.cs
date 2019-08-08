@@ -25,6 +25,7 @@ namespace Coffers.Public.Queries.Infrastructure.Gamers
 
         public async Task<BaseGamerInfoView> Handle(GetBaseGamerInfoQuery query, CancellationToken cancellationToken)
         {
+            var now = DateTime.UtcNow.Trunc(DateTruncType.Month);
             return await _context.Gamers
                 .Where(g => g.Id == query.UserId)
                 .AsNoTracking()
@@ -52,7 +53,7 @@ namespace Coffers.Public.Queries.Infrastructure.Gamers
                         .Sum(p => p.Amount),
                     RepaymentTaxAmount = g.DefaultAccount.FromOperations
                         .Where(_ => _.Type == OperationType.Tax
-                                  && _.CreateDate >= DateTime.UtcNow.Trunc(DateTruncType.Month))
+                                  && _.CreateDate >= now)
                         .Sum(_ => _.Amount)
                 })
                 .FirstOrDefaultAsync(cancellationToken);
@@ -63,9 +64,19 @@ namespace Coffers.Public.Queries.Infrastructure.Gamers
         {
             var q = _context.Gamers
                 .AsNoTracking()
+                .Include(g => g.DefaultAccount)
+                    .ThenInclude(_ => _.FromOperations)
+                .Include(g => g.Characters)
+                .Include(g => g.Loans)
+                    .ThenInclude(_ => _.Account)
+                .Include(g => g.Penalties)
+                .OrderBy(_ => _.Rank)
+                    .ThenBy(_ => _.Status)
+                    .ThenBy(_ => _.CreateDate)
                 .Where(g => g.GuildId == query.GuildId);
 
             var dateFrom = (query.DateFrom ?? DateTime.UtcNow).Trunc(DateTruncType.Month);
+            var dateTo = query.DateTo?.Trunc(DateTruncType.Month);
 
             if (query.GamerStatuses != null)
                 q = q.Where(g => query.GamerStatuses.Contains(g.Status));
@@ -75,20 +86,10 @@ namespace Coffers.Public.Queries.Infrastructure.Gamers
 #warning прячим служебного временного пользователя
             q = q.Where(g => g.Name != "user");
 
-            if (query.DateTo != null)
-                q = q.Where(g => g.CreateDate <= query.DateTo.Value.Trunc(DateTruncType.Month));
+            if (dateTo != null)
+                q = q.Where(g => g.CreateDate <= dateTo);
 
-            q = q.Include(g => g.DefaultAccount)
-             .Include(g => g.Characters)
-             .Include(g => g.Loans)
-                .ThenInclude(_=>_.Account)
-             .Include(g => g.Penalties);
-
-            return await q
-            .OrderBy(_ => _.Rank)
-                .ThenBy(_ => _.Status)
-                .ThenBy(_ => _.CreateDate)
-            .Select(g => new GamersListView
+            return await q.Select(g => new GamersListView
             (
                 g.Id,
                 g.Name,
@@ -110,18 +111,18 @@ namespace Coffers.Public.Queries.Infrastructure.Gamers
                         p.Description,
                         p.PenaltyStatus
                     )).OrderBy(_ => _.Date).ToList(),
-                g.Loans
-                    .Where(l => l.CreateDate >= dateFrom || l.LoanStatus == LoanStatus.Active || l.LoanStatus == LoanStatus.Expired || l.ExpiredDate >= dateFrom)
-                    .Select(l => new LoanView
-                    (
-                        l.Id,
-                        l.Amount,
-                        l.Account.Balance,
-                        l.CreateDate,
-                        l.Description,
-                        l.LoanStatus,
-                        l.ExpiredDate
-                    )).OrderBy(_ => _.Date).ToList()
+                 g.Loans
+                     .Where(l => l.CreateDate >= dateFrom || l.LoanStatus == LoanStatus.Active || l.LoanStatus == LoanStatus.Expired || l.ExpiredDate >= dateFrom)
+                     .Select(l => new LoanView
+                     (
+                         l.Id,
+                         l.Amount,
+                         l.Account.Balance,
+                         l.CreateDate,
+                         l.Description,
+                         l.LoanStatus,
+                         l.ExpiredDate
+                     )).OrderBy(_ => _.Date).ToList()
             ))
             .ToListAsync(cancellationToken);
         }

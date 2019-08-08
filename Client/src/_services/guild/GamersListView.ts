@@ -4,9 +4,14 @@ import { PenaltyStatus } from "./PenaltyStatus";
 import { LoanStatus } from "./LoanStatus";
 import { Dictionary } from "../../core";
 
+export interface ICharacter {
+    name: string;
+    className: string;
+}
+
 export interface IGamersListView {
     id: string;
-    characters: Array<string>;
+    characters: Array<ICharacter>;
     balance: number;
     penalties: Dictionary<IPenaltyView>;
     loans: Dictionary<ILoanView>;
@@ -39,7 +44,7 @@ export interface ILoanView {
 
 export class GamersListView implements IGamersListView {
     id: string;
-    characters: Array<string>;
+    characters: Array<ICharacter>;
     balance: number;
     penalties: Dictionary<IPenaltyView>;
     loans: Dictionary<ILoanView>;
@@ -61,7 +66,7 @@ export class GamersListView implements IGamersListView {
     }
 
     constructor(id: string,
-        characters: Array<string>,
+        characters: Array<ICharacter>,
         balance: number,
         penalties: Array<IPenaltyView>,
         loans: Array<ILoanView>,

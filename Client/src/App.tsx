@@ -1,20 +1,27 @@
-import * as React from 'react';
+import React, { lazy, Suspense } from "react";
 import { Router, Route, Switch, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { PrivateNavLink, PrivateRoute, Alerts, OnlyPublicNavLink, Space, ProfileButton, Private } from './_components';
+import { PrivateRoute, Alerts, Space, ProfileButton, Private, Spinner } from './_components';
 import { IStore, history, TryCatch } from './_helpers';
 import { Logo, Header } from './_components';
 import {
-    DemoController,
     AuthController,
     LogOutController,
-    MainController,
     NotFoundController,
-    BirthdayController,
 } from './controller';
 import { alertInstance } from './_actions';
 import { Lang } from './_services';
 
+
+const load = (Component: any) => (props: any) => (
+    <Suspense fallback={<Spinner />}>
+        <Component {...props} />
+    </Suspense>
+);
+
+const BirthdayController = load(lazy(() => import("./controller/BirthdayController")));
+const MainController = load(lazy(() => import("./controller/MainController")));
+const DemoController = load(lazy(() => import("./controller/DemoController")));
 
 class MyApp extends React.Component<any, any> {
     constructor(props: any) {

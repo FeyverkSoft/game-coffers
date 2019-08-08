@@ -21,6 +21,8 @@
     letter-spacing     : 0.03em;
     will-change        : background-color, box-shadow;
     outline            : none;
+    contain: layout;
+    user-select: none;
 
     &.small {
         padding: 0.2rem 1rem;
@@ -108,6 +110,7 @@
     color        : @white;
     cursor       : pointer;
     background   : fade(spin(@importantColor, @spin), 95%);
+    user-select: none;
 
     &:hover {
         background: lighten(spin(@importantColor, @spin), @hover_10);

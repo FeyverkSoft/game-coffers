@@ -186,7 +186,7 @@ function getTranslate(value: string): string {
 }
 
 
-export const DLang = function (value: string, key?: string): string {
+export const DLang = memoize((value: string, key?: string): string => {
     if (!key)
         return '';
     let res: any;
@@ -195,9 +195,11 @@ export const DLang = function (value: string, key?: string): string {
     else
         res = getTranslate(CurrentLang()) || value;
     return res[key] || '';
-}
+}, (it, ...arg) => {
+    return it + arg;
+})
 
-export const Lang = function (value: string, count?: number | undefined): string {
+export const Lang = memoize((value: string, count?: number | undefined): string =>{
     let res: any;
     if (value)
         res = getTranslate(value.toUpperCase()) || value;
@@ -219,7 +221,9 @@ export const Lang = function (value: string, count?: number | undefined): string
     if (count)
         return res.replace(/\{0\}/ig, count);
     return res;
-}
+}, (it, ...arg) => {
+    return it + arg;
+})
 
 export const LangF = memoize((value: string, ...arg: (string | number)[]) => {
     let l = Lang(value);

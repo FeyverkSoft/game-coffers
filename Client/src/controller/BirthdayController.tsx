@@ -91,7 +91,7 @@ const MemGamers = memoize(gamersList => {
         .sort((a, b) => a.count - b.count)
 }, it => JSON.stringify(it));
 
-const connectedBirthdayController = connect<{}, {}, {}, IStore>((state: IStore): IMainProps => {
+const BirthdayController = connect<{}, {}, {}, IStore>((state: IStore): IMainProps => {
     const { gamersList } = state.gamers;
     return {
         isLoading: Object.keys(gamersList).length === 0,
@@ -100,4 +100,4 @@ const connectedBirthdayController = connect<{}, {}, {}, IStore>((state: IStore):
     };
 })(_BirthdayController);
 
-export { connectedBirthdayController as BirthdayController }; 
+export default BirthdayController;

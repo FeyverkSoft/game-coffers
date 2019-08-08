@@ -102,6 +102,7 @@ namespace Coffers.Public.Infrastructure.Guilds
                 .Include(g => g.Gamers)
                 .ThenInclude(gm => gm.Loans);
 
+            var now = DateTime.UtcNow.Trunc(DateTruncType.Month);
             var skipLoanStat = new[] { LoanStatus.Paid, LoanStatus.Canceled };
             var skipChStat = new[] { CharStatus.Deleted, CharStatus.Left };
             var skipGmStat = new[] { GamerStatus.Left, GamerStatus.Banned, GamerStatus.New };
@@ -120,7 +121,7 @@ namespace Coffers.Public.Infrastructure.Guilds
                         Rank = gm.Rank,
                         Characters = gm.Characters.Count(c => !skipChStat.Contains(c.Status)),
                     }).ToList(),
-                TaxAmount = g.GuildAccount.ToOperations.Where(o => o.Type == OperationType.Tax && o.OperationDate >= DateTime.UtcNow.Trunc(DateTruncType.Month))
+                TaxAmount = g.GuildAccount.ToOperations.Where(o => o.Type == OperationType.Tax && o.OperationDate >= now)
                     .Sum(o => o.Amount),
                 GamersBalance = g.Gamers.Sum((_ => _.DefaultAccount.Balance))
             })

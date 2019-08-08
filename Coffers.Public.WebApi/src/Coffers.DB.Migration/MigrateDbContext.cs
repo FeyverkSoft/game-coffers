@@ -68,7 +68,8 @@ namespace Coffers.DB.Migrations
 
                 b.HasOne(g => g.GuildAccount)
                     .WithMany()
-                    .HasPrincipalKey(_ => _.Id);
+                    .HasPrincipalKey(_ => _.Id)
+                    .IsRequired();
 
             });
 
@@ -180,7 +181,8 @@ namespace Coffers.DB.Migrations
 
                 b.HasOne(g => g.DefaultAccount)
                     .WithMany()
-                    .HasPrincipalKey(_ => _.Id);
+                    .HasPrincipalKey(_ => _.Id)
+                    .IsRequired();
 
                 b.HasMany(g => g.Histories)
                     .WithOne()
@@ -247,7 +249,8 @@ namespace Coffers.DB.Migrations
 
                 b.HasOne(g => g.Account)
                     .WithMany()
-                    .HasPrincipalKey(_ => _.Id);
+                    .HasPrincipalKey(_ => _.Id)
+                    .IsRequired();
 
                 b.HasOne(l => l.Gamer)
                     .WithMany(_ => _.Loans)

@@ -54,11 +54,11 @@ namespace Coffers.Public.Queries.Gamers
             Balance = balance;
             Date = createDate;
             Description = description;
-            LoanStatus = ExpiredDate < DateTime.UtcNow &&
+            ExpiredDate = expiredDate;
+            LoanStatus = expiredDate < DateTime.UtcNow &&
                 !((IList)new[] { LoanStatus.Paid, LoanStatus.Canceled, LoanStatus.Expired }).Contains(loanStatus)
                     ? LoanStatus.Expired
                     : loanStatus;
-            ExpiredDate = expiredDate;
         }
     }
 }

@@ -40,7 +40,8 @@ namespace Coffers.Public.Queries.Infrastructure.Gamers
 
                 b.HasOne(g => g.DefaultAccount)
                     .WithMany()
-                    .HasPrincipalKey(_ => _.Id);
+                    .HasPrincipalKey(_ => _.Id)
+                    .IsRequired();
 
                 b.HasMany(g => g.Characters)
                     .WithOne()
@@ -123,7 +124,8 @@ namespace Coffers.Public.Queries.Infrastructure.Gamers
 
                 b.HasOne(_ => _.Account)
                     .WithMany()
-                    .HasPrincipalKey(_ => _.Id);
+                    .HasPrincipalKey(_ => _.Id)
+                    .IsRequired();
             });
             modelBuilder.Entity<Penalty>(b =>
             {

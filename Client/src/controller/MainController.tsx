@@ -314,7 +314,7 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
 
 const MemGamers = memoize(gms => gms, it => JSON.stringify(it));
 
-const connectedMain = connect<{}, {}, {}, IStore>((state: IStore): IMainProps => {
+const MainController = connect<{}, {}, {}, IStore>((state: IStore): IMainProps => {
     const { guild, tariffs, reports } = state.guild;
     const { currentGamer, gamersList } = state.gamers;
     return {
@@ -329,4 +329,4 @@ const connectedMain = connect<{}, {}, {}, IStore>((state: IStore): IMainProps =>
     };
 })(Main);
 
-export { connectedMain as MainController }; 
+export default MainController;

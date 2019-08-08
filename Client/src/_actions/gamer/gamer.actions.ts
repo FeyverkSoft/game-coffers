@@ -64,7 +64,7 @@ export class GamerActions {
             gamerService.AddNewChar(props.gamerId, props.name, props.className)
                 .then(
                     data => {
-                        dispatch(success(props.gamerId, props.name));
+                        dispatch(success(props.gamerId, props.name, props.className));
                         if (props.onSuccess)
                             props.onSuccess(data);
                     })
@@ -77,7 +77,7 @@ export class GamerActions {
                     });
         }
         function request(gamerId: string) { return { type: GamerActionsType.PROC_ADD_NEW_CHARS, gamerId } }
-        function success(gamerId: string, name: string) { return { type: GamerActionsType.SUCC_ADD_NEW_CHARS, gamerId, name } }
+        function success(gamerId: string, name: string, className: string) { return { type: GamerActionsType.SUCC_ADD_NEW_CHARS, gamerId, name, className } }
         function failure(gamerId: string) { return { type: GamerActionsType.FAILED_ADD_NEW_CHARS, gamerId } }
     }
 

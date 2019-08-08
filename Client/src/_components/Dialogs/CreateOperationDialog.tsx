@@ -14,7 +14,7 @@ interface IProps extends React.Props<any> {
     onClose: Function;
     users: Array<Item>;
     loans: Array<Item>;
-    penaltyes: Array<Item>;
+    penalties: Array<Item>;
     [id: string]: any;
 }
 
@@ -147,7 +147,7 @@ class _CreateOperationDialog extends BaseReactComp<IProps, IState> {
                                 items={this.props.users}
                                 label={Lang('OPERATION_FROMUSERID')}
                                 onChange={this.onInputVal}
-                                isRequired={true}
+                                isRequired={type != 'Other'}
                                 path='fromUserId'
                                 type='default'
                                 value={fromUserId.value}
@@ -161,7 +161,7 @@ class _CreateOperationDialog extends BaseReactComp<IProps, IState> {
                                 items={this.props.users}
                                 label={Lang('OPERATION_TOUSERID')}
                                 onChange={this.onInputVal}
-                                isRequired={true}
+                                isRequired={type != 'Other'}
                                 path='toUserId'
                                 type='default'
                                 value={toUserId.value}
@@ -186,7 +186,7 @@ class _CreateOperationDialog extends BaseReactComp<IProps, IState> {
                     <IF value={type} in={['Penalty']}>
                         <Col1>
                             <MaterialSelect
-                                items={this.props.penaltyes}
+                                items={this.props.penalties}
                                 label={Lang('OPERATION_PENALTY')}
                                 onChange={this.onInputVal}
                                 isRequired={true}
@@ -246,7 +246,7 @@ const Loans = memoize((gamersList: Dictionary<IGamersListView>): Array<Item> => 
         .map((_: any) => new Item(_.id, `${_.user}: ${_.description}`));
 }, it => { return JSON.stringify(it) });
 
-const Penaltyes = memoize((gamersList: Dictionary<IGamersListView>): Array<Item> => {
+const Penalties = memoize((gamersList: Dictionary<IGamersListView>): Array<Item> => {
     let _temp: any = Object.keys(gamersList)
         .map(k => gamersList[k])
         .map(_ => Object.keys(_.penalties)
@@ -270,9 +270,9 @@ const connected_CreateOperationDialog = connect<{}, {}, _IProps, IStore>((state:
     const { gamersList } = state.gamers;
     return {
         ...props,
-        users: MemGamers(Object.keys(gamersList).map(k => gamersList[k]).map(_ => new Item(_.id, `${_.name} - ${_.characters[0]}`))),
+        users: MemGamers(Object.keys(gamersList).map(k => gamersList[k]).map(_ => new Item(_.id, `${_.name} - ${_.characters[0].name}`))),
         loans: Loans(gamersList),
-        penaltyes: Penaltyes(gamersList)
+        penalties: Penalties(gamersList)
     };
 })(_CreateOperationDialog);
 

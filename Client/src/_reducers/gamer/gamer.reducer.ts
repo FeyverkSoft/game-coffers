@@ -147,7 +147,7 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<G
                 if (clonedState.gamersList[action.gamerId].characters == undefined)
                     clonedState.gamersList[action.gamerId].characters = [];
                 clonedState.gamersList[action.gamerId].holding = false;
-                clonedState.gamersList[action.gamerId].characters.push(action.name);
+                clonedState.gamersList[action.gamerId].characters.push({ name: action.name, className: action.className });
                 return clonedState;
             }
         case GamerActionsType.FAILED_ADD_NEW_CHARS:
@@ -170,7 +170,7 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<G
                 if (clonedState.gamersList[action.gamerId].characters == undefined)
                     clonedState.gamersList[action.gamerId].characters = [];
                 clonedState.gamersList[action.gamerId].holding = false;
-                clonedState.gamersList[action.gamerId].characters = clonedState.gamersList[action.gamerId].characters.filter(c => c != action.name);
+                clonedState.gamersList[action.gamerId].characters = clonedState.gamersList[action.gamerId].characters.filter(c => c.name != action.name);
                 return clonedState;
             }
         case GamerActionsType.FAILED_DELETE_CHARS:

@@ -24,6 +24,29 @@ interface IGamerRowViewProps extends React.Props<any> {
     showBalanceInfo(gamerId: string): void;
     [id: string]: any;
 }
+
+interface ICharacterProps {
+    name: string;
+    className: string;
+    onDeleteChar(): void;
+}
+
+const Character = React.memo(({ ...props }: ICharacterProps) => {
+    return <div key={props.name} className={style['char_name']}>
+        <div
+            title={props.className}
+        >
+            {props.name}
+        </div>
+        <Private roles={['admin', 'leader', 'officer']}>
+            <div
+                className={style['delete']}
+                onClick={() => props.onDeleteChar()}
+            />
+        </Private>
+    </div>
+});
+
 /// Плашка с информацией о пользователе
 export const GamerRowView = React.memo(({ ...props }: IGamerRowViewProps) => {
     const { gamer, isCurrentUser } = props;
@@ -43,15 +66,10 @@ export const GamerRowView = React.memo(({ ...props }: IGamerRowViewProps) => {
                     {LangF('USER_CHAR_LIST', gamer.name)}
                 </Link>
                 <div className={style['char-list']}>
-                    {gamer.characters.map(c => <div key={c} className={style['char_name']}>
-                        <div>{c}</div>
-                        <Private roles={['admin', 'leader', 'officer']}>
-                            <div
-                                className={style['delete']}
-                                onClick={() => props.onDeleteChar(gamer.id, c)}
-                            />
-                        </Private>
-                    </div>)}
+                    {gamer.characters.map(c => <Character
+                        onDeleteChar={() => props.onDeleteChar(props.gamer.id, c.name)}
+                        {...c}
+                    />)}
                     <Private roles={['admin', 'leader', 'officer']}>
                         <span className={style['add']}
                             onClick={() => props.onAddChar(gamer.id)}

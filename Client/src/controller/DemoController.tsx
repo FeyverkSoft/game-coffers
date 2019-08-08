@@ -88,11 +88,11 @@ class Demo extends React.Component<any, any> {
     }
 }
 
-const connectedDemo = connect((state: IStore) => {
+const DemoController = connect((state: IStore) => {
     const { session } = state;
     return {
         session
     };
 })(Demo);
 
-export { connectedDemo as DemoController }; 
+export default DemoController; 

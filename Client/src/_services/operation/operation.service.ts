@@ -119,18 +119,18 @@ export class operationService {
                 'accept': 'application/json',
                 'Authorization': 'Bearer ' + session.sessionId
             },
-            body: JSON.stringify({})
+            body: JSON.stringify({
+                id: id,
+                fromUserId: fromUserId,
+                toUserId: toUserId,
+                type: type,
+                amount: amount,
+                description: description,
+                penaltyId: penaltyId,
+                loanId: loanId
+            })
         };
-        return await fetch(Config.BuildUrl(`/Operations`, {
-            id: id,
-            fromUserId: fromUserId,
-            toUserId: toUserId,
-            type: type,
-            amount: amount,
-            description: description,
-            penaltyId: penaltyId,
-            loanId: loanId
-        }), requestOptions)
+        return await fetch(Config.BuildUrl(`/Operations`), requestOptions)
             .then<BaseResponse & Array<any>>(getResponse)
             .then(data => {
                 if (data && data.type || data.traceId) {
