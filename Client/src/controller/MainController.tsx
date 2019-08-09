@@ -254,13 +254,13 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                     userId={this.state.addChar.userId}
                     isDisplayed={this.state.addChar.isDisplayed}
                     onClose={() => this.setState({ addChar: { isDisplayed: false } })}
-                    onSuccess={this.loadData}
+                    onSuccess={this.autoUpdateDataProvider}
                 />
                 <AddLoanDialog
                     userId={this.state.addLoan.userId}
                     isDisplayed={this.state.addLoan.isDisplayed}
                     onClose={() => this.setState({ addLoan: { isDisplayed: false } })}
-                    onSuccess={this.loadData}
+                    onSuccess={this.autoUpdateDataProvider}
                 />
                 <AddPenaltyDialog
                     userId={this.state.addPenalty.userId}
@@ -273,7 +273,7 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                         gamerId={this.state.showLoanInfo.gamerId}
                         isDisplayed={this.state.showLoanInfo.isDisplayed}
                         onClose={() => this.setState({ showLoanInfo: { isDisplayed: false } })}
-                        onSuccess={this.loadData}
+                        onSuccess={this.autoUpdateDataProvider}
                     />
                 </IF>
                 <IF value={this.state.showPenaltyInfo.isDisplayed}>
@@ -302,7 +302,7 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                     <CreateOperationDialog
                         isDisplayed={this.state.addNewOperation.isDisplayed}
                         onClose={() => this.setState({ addNewOperation: { isDisplayed: false } })}
-                        onSuccess={this.loadData}
+                        onSuccess={this.autoUpdateDataProvider}
                     />
                 </IF>
                 <Private roles={['admin', 'leader', 'officer']}>
