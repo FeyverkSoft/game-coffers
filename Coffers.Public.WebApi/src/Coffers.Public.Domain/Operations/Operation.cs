@@ -33,8 +33,6 @@ namespace Coffers.Public.Domain.Operations
         /// </summary>
         public Account FromAccount { get; set; }
 
-        public Guid? FromAccountId { get; set; }
-
         /// <summary>
         /// Счёт на который зачисляются бабки
         /// </summary>

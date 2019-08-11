@@ -7,7 +7,7 @@ namespace Coffers.Public.Domain.Operations
         /// <summary>
         /// Идентификатор счёта
         /// </summary>
-        public Guid Id { get; set; }
+        public Guid Id { get; private set; }
 
         /// <summary>
         /// Баланс счёта
@@ -17,18 +17,12 @@ namespace Coffers.Public.Domain.Operations
         /// <summary>
         /// Токен конкуренции, предназначен для разруливания согласованности данных, при ассинхроных запросаз
         /// </summary>
-        public Guid ConcurrencyTokens { get; set; }
+        public Guid ConcurrencyTokens { get; private set; }
 
 
         public void ChangeBalance(Decimal amount)
         {
             Balance += amount;
-            ConcurrencyTokens = Guid.NewGuid();
-        }
-
-        public Account()
-        {
-            Id = Guid.NewGuid();
             ConcurrencyTokens = Guid.NewGuid();
         }
     }
