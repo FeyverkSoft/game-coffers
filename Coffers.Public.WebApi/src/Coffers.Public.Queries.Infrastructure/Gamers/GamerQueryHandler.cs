@@ -135,12 +135,11 @@ namespace Coffers.Public.Queries.Infrastructure.Gamers
                 .Where(g => g.Id == query.UserId);
 
             return await q
-                .Select(_ => new GamerInfoView
-                {
-                    UserId = _.Id,
-                    AccountId = _.DefaultAccount.Id,
-                    GuildId = _.GuildId
-                })
+                .Select(_ => new GamerInfoView(
+                    _.Id,
+                    _.DefaultAccount.Id,
+                    _.GuildId
+                ))
                 .FirstOrDefaultAsync(cancellationToken);
         }
     }

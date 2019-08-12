@@ -65,11 +65,11 @@ namespace Coffers.Public.Queries.Infrastructure.Guilds
         private static TariffView TariffViewBuilder(Tariff tariff)
         {
             return new TariffView
-            {
-                Tax = tariff?.Tax ?? new[] { 0m }.ToList(),
-                LoanTax = tariff?.LoanTax ?? 0m,
-                ExpiredLoanTax = tariff?.ExpiredLoanTax ?? 0m
-            };
+            (
+                tariff?.LoanTax ?? 0m,
+                tariff?.ExpiredLoanTax ?? 0m,
+                tariff?.Tax ?? new[] { 0m }.ToList()
+            );
         }
         public async Task<ICollection<GuildView>> Handle(GuildsQuery query, CancellationToken cancellationToken)
         {
@@ -113,6 +113,10 @@ namespace Coffers.Public.Queries.Infrastructure.Guilds
                     .Sum(gm => gm.Loans
                     .Where(l => !skipLoanStat.Contains(l.LoanStatus))
                     .Sum(l => l.Amount)),
+                RepaymentLoansAmount = g.Gamers
+                    .Sum(gm => gm.Loans
+                    .Where(l => !skipLoanStat.Contains(l.LoanStatus))
+                    .Sum(l => (l.Amount - l.Account.Balance) >= 0 ? (l.Amount - l.Account.Balance) : 0)),
                 ExpectedTaxAmount = g.Gamers
                     .Where(_ => !skipGmStat.Contains(_.Status))
                     .Select(gm => new
@@ -147,6 +151,7 @@ namespace Coffers.Public.Queries.Infrastructure.Guilds
                 GamersBalance = temp.GamersBalance,
                 ExpectedTaxAmount = temp.ExpectedTaxAmount.Sum(gt => CalcTax(tariff.FirstOrDefault()?.Tariff, gt.Rank, gt.Characters)),
                 ActiveLoansAmount = temp.ActiveLoansAmount,
+                RepaymentLoansAmount = temp.RepaymentLoansAmount,
                 TaxAmount = temp.TaxAmount
             };
         }
@@ -189,10 +194,9 @@ namespace Coffers.Public.Queries.Infrastructure.Guilds
                 .AsNoTracking()
                 .Where(guild => guild.Id == query.GuildId)
                 .Include(g => g.GuildAccount)
-                .Select(_ => new GuildAccountView
-                {
-                    AccountId = _.GuildAccount.Id
-                })
+                .Select(_ => new GuildAccountView(
+                    _.GuildAccount.Id
+                ))
                 .FirstOrDefaultAsync(cancellationToken);
         }
     }

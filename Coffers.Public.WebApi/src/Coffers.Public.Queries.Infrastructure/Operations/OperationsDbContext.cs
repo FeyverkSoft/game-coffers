@@ -84,7 +84,8 @@ namespace Coffers.Public.Queries.Infrastructure.Operations
 
                 b.HasOne(_ => _.Account)
                     .WithMany()
-                    .HasPrincipalKey(_ => _.Id);
+                    .HasPrincipalKey(_ => _.Id)
+                    .IsRequired();
             });
 
            

@@ -49,7 +49,8 @@ namespace Coffers.Public.Queries.Infrastructure.Guilds
 
                 b.HasOne(t => t.Tariff)
                     .WithMany()
-                    .HasPrincipalKey(_ => _.Id);
+                    .HasPrincipalKey(_ => _.Id)
+                    .IsRequired();
 
                 b.HasMany(g => g.Gamers)
                     .WithOne()
@@ -57,7 +58,8 @@ namespace Coffers.Public.Queries.Infrastructure.Guilds
 
                 b.HasOne(g => g.GuildAccount)
                     .WithMany()
-                    .HasPrincipalKey(_ => _.Id);
+                    .HasPrincipalKey(_ => _.Id)
+                    .IsRequired();
 
             });
 
@@ -84,7 +86,8 @@ namespace Coffers.Public.Queries.Infrastructure.Guilds
 
                 b.HasOne(g => g.DefaultAccount)
                     .WithMany()
-                    .HasPrincipalKey(_ => _.Id);
+                    .HasPrincipalKey(_ => _.Id)
+                    .IsRequired();
 
                 b.HasMany(g => g.Characters)
                     .WithOne()
@@ -151,6 +154,11 @@ namespace Coffers.Public.Queries.Infrastructure.Guilds
                 b.HasKey(gt => gt.Id);
                 b.Property(gt => gt.Id)
                     .HasColumnName("Id")
+                    .IsRequired();
+
+                b.HasOne(_ => _.Account)
+                    .WithMany()
+                    .HasPrincipalKey(_ => _.Id)
                     .IsRequired();
 
                 b.Property(t => t.LoanStatus)

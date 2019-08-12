@@ -9,14 +9,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Coffers.DB.Migrations.Migrations
 {
     [DbContext(typeof(MigrateDbContext))]
-    [Migration("20190723155028_init")]
+    [Migration("20190812181733_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062");
+                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
 
             modelBuilder.Entity("Coffers.DB.Migrations.Entities.Account", b =>
                 {
@@ -88,6 +88,7 @@ namespace Coffers.DB.Migrations.Migrations
                         .HasDefaultValue(new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
                     b.Property<byte[]>("DefaultAccountId")
+                        .IsRequired()
                         .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
 
                     b.Property<DateTime?>("DeletedDate");
@@ -140,6 +141,7 @@ namespace Coffers.DB.Migrations.Migrations
                     b.Property<DateTime>("CreateDate");
 
                     b.Property<byte[]>("GuildAccountId")
+                        .IsRequired()
                         .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
 
                     b.Property<string>("Name")
@@ -250,6 +252,7 @@ namespace Coffers.DB.Migrations.Migrations
                         .HasColumnName("Id");
 
                     b.Property<byte[]>("AccountId")
+                        .IsRequired()
                         .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
 
                     b.Property<decimal>("Amount")
@@ -257,6 +260,11 @@ namespace Coffers.DB.Migrations.Migrations
                         .HasDefaultValue(0m);
 
                     b.Property<DateTime>("BorrowDate");
+
+                    b.Property<byte[]>("ConcurrencyTokens")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
 
                     b.Property<DateTime>("CreateDate");
 
@@ -349,12 +357,14 @@ namespace Coffers.DB.Migrations.Migrations
                         .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)))
                         .HasColumnName("Id");
 
-                    b.Property<byte[]>("AccountId")
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
-
                     b.Property<decimal>("Amount")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(0m);
+
+                    b.Property<byte[]>("ConcurrencyTokens")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
 
                     b.Property<DateTime>("CreateDate");
 
@@ -368,9 +378,9 @@ namespace Coffers.DB.Migrations.Migrations
                         .IsRequired()
                         .HasMaxLength(32);
 
-                    b.HasKey("Id");
+                    b.Property<DateTime>("UpdateDate");
 
-                    b.HasIndex("AccountId");
+                    b.HasKey("Id");
 
                     b.HasIndex("GamerId");
 
@@ -447,7 +457,8 @@ namespace Coffers.DB.Migrations.Migrations
                 {
                     b.HasOne("Coffers.DB.Migrations.Entities.Account", "DefaultAccount")
                         .WithMany()
-                        .HasForeignKey("DefaultAccountId");
+                        .HasForeignKey("DefaultAccountId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Coffers.DB.Migrations.Entities.Guild", "Guild")
                         .WithMany("Gamers")
@@ -458,7 +469,8 @@ namespace Coffers.DB.Migrations.Migrations
                 {
                     b.HasOne("Coffers.DB.Migrations.Entities.Account", "GuildAccount")
                         .WithMany()
-                        .HasForeignKey("GuildAccountId");
+                        .HasForeignKey("GuildAccountId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Coffers.DB.Migrations.Entities.GuildTariff", "Tariff")
                         .WithMany()
@@ -499,7 +511,8 @@ namespace Coffers.DB.Migrations.Migrations
                 {
                     b.HasOne("Coffers.DB.Migrations.Entities.Account", "Account")
                         .WithMany()
-                        .HasForeignKey("AccountId");
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Coffers.DB.Migrations.Entities.Gamer", "Gamer")
                         .WithMany("Loans")
@@ -523,10 +536,6 @@ namespace Coffers.DB.Migrations.Migrations
 
             modelBuilder.Entity("Coffers.DB.Migrations.Entities.Penalty", b =>
                 {
-                    b.HasOne("Coffers.DB.Migrations.Entities.Account", "Account")
-                        .WithMany()
-                        .HasForeignKey("AccountId");
-
                     b.HasOne("Coffers.DB.Migrations.Entities.Gamer", "Gamer")
                         .WithMany("Penalties")
                         .HasForeignKey("GamerId");

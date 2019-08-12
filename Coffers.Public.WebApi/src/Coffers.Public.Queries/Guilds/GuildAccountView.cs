@@ -4,6 +4,14 @@ namespace Coffers.Public.Queries.Guilds
 {
     public sealed class GuildAccountView
     {
-        public Guid AccountId { get; set; }
+        /// <summary>
+        /// Нормер счёта гильдии
+        /// </summary>
+        public Guid AccountId { get; private set; }
+
+        public GuildAccountView(Guid accountId)
+        {
+            AccountId = accountId;
+        }
     }
 }

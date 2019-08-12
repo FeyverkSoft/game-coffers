@@ -65,6 +65,7 @@ namespace Coffers.Public.Domain.Guilds
             CreateDate = DateTime.UtcNow;
             UpdateDate = DateTime.UtcNow;
             GuildAccount = new Account();
+            Tariff = new GuildTariff();
         }
         public void AddGamer(String login)
         {

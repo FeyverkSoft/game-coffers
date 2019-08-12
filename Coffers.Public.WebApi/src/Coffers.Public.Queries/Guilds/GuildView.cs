@@ -86,15 +86,22 @@ namespace Coffers.Public.Queries.Guilds
         /// <summary>
         /// Стоимость займа за 1 день в процентах
         /// </summary>
-        public Decimal LoanTax { get; set; }
+        public Decimal LoanTax { get; private set; }
         /// <summary>
         /// Стоимость просрочки займа, за один день в процентах
         /// </summary>
-        public Decimal ExpiredLoanTax { get; set; }
+        public Decimal ExpiredLoanTax { get; private set; }
         /// <summary>
         /// Налог с 1го персонажа.
         /// Список. 1 персонаж, 2 персонажа, 3 итд.
         /// </summary>
-        public ICollection<Decimal> Tax { get; set; }
+        public ICollection<Decimal> Tax { get; private set; }
+
+        public TariffView(Decimal loanTax, Decimal expiredLoanTax, ICollection<Decimal> tax)
+        {
+            LoanTax = loanTax;
+            ExpiredLoanTax = expiredLoanTax;
+            Tax = tax;
+        }
     }
 }

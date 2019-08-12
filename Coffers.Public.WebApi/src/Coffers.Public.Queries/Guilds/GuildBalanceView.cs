@@ -27,5 +27,10 @@ namespace Coffers.Public.Queries.Guilds
         /// Балланс игроков на складе гильдии
         /// </summary>
         public Decimal GamersBalance { get; set; }
+
+        /// <summary>
+        /// Сумма уже уплаченная от суммы займов
+        /// </summary>
+        public Decimal RepaymentLoansAmount { get; set; }
     }
 }

@@ -4,8 +4,24 @@ namespace Coffers.Public.Queries.Gamers
 {
     public sealed class GamerInfoView
     {
-        public Guid UserId { get; set; }
-        public Guid AccountId { get; set; }
-        public Guid GuildId { get; set; }
+        /// <summary>
+        /// Идентификатор пользователя
+        /// </summary>
+        public Guid UserId { get; private set; }
+        /// <summary>
+        /// Идентификатор счёта пользователя
+        /// </summary>
+        public Guid AccountId { get; private set; }
+        /// <summary>
+        /// Идентификатор гильдии которой принадлежит пользователь
+        /// </summary>
+        public Guid GuildId { get; private set; }
+
+        public GamerInfoView(Guid userId, Guid accountId, Guid guildId)
+        {
+            UserId = userId;
+            AccountId = accountId;
+            GuildId = guildId;
+        }
     }
 }
