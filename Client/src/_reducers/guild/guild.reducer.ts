@@ -1,5 +1,5 @@
 import { GuildActionsType } from "../../_actions";
-import { IAction, IHolded, Dictionary } from "../../core";
+import { IAction, IHolded } from "../../core";
 import { ITariffs, IGuild, GuildBalanceReport, IGamersListView } from "../../_services";
 import clonedeep from 'lodash.clonedeep';
 
@@ -74,6 +74,7 @@ export class IGuildStore {
                 expectedTaxAmount: 0,
                 activeLoansAmount: 0,
                 taxAmount: 0,
+                repaymentLoansAmount: 0,
                 gamersBalance: 0
             }
         };

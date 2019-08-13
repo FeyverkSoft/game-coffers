@@ -66,6 +66,7 @@ export class guildService {
                     Number(data.expectedTaxAmount),
                     Number(data.taxAmount),
                     Number(data.activeLoansAmount),
+                    Number(data.repaymentLoansAmount),
                     Number(data.gamersBalance));
             })
             .catch(catchHandle);

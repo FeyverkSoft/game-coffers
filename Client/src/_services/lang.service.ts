@@ -32,7 +32,7 @@ const locString: any = {
         MAIN_PAGE_ADV_INFO_SPENT: "Потрачено на нужды гильдии:",
         MAIN_PAGE_CHARACTERS_GRID: "Список персонажей",
         MAIN_PAGE_GUILD_BALANCE: 'Баланс ги',
-        MAIN_PAGE_GUILD_LOANS: 'Активных займов на: ',
+        MAIN_PAGE_GUILD_LOANS: 'Погашено от займов: ',
         NEW_CHAR_MODAL: 'Добавление нового чара',
         NAME: "Имя",
         LOGIN: 'Логин',
@@ -43,6 +43,7 @@ const locString: any = {
         CLASS_NAME: 'Класс',
         MAIN_PAGE_EXPECTED_TAX: 'Налоги: ',
         MAIN_PAGE_EXPECTED_TAX_FORMAT: "{0} из {1}",
+        MAIN_PAGE_GUILD_LOANS_FORMAT: "{1} из {0}",
         MAIN_PAGE_GUILD_B_F: '{0} / {1} / {2}',
         TARIFF_TITLE: 'Тариф',
         TARIFF_TAX: 'Налог за 1 чара:',
@@ -199,7 +200,7 @@ export const DLang = memoize((value: string, key?: string): string => {
     return it + arg;
 })
 
-export const Lang = memoize((value: string, count?: number | undefined): string =>{
+export const Lang = memoize((value: string, count?: number | undefined): string => {
     let res: any;
     if (value)
         res = getTranslate(value.toUpperCase()) || value;

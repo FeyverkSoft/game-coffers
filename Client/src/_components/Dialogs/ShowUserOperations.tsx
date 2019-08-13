@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { IStore } from "../../_helpers";
 import { operationsInstance } from "../../_actions";
 import { IProps, _OperationsDialog } from "./ShowOperationsDialog";
-import { MaterialSelect } from "..";
+import { BaseSelect } from "..";
 
 interface IState {
     date: Date;
@@ -19,14 +19,14 @@ export class _UOperationsDialog extends _OperationsDialog<{}, IState> {
     }
 
     subTitle = (): React.ReactNode => {
-        return <MaterialSelect
+        return <BaseSelect
             className={style['select']}
             items={this.getDateList()}
             value={this.formatDate(this.state.date)}
             path="date"
             onChange={this.onInputAndLoadDate}
             type='default'
-        ></MaterialSelect>;
+        ></BaseSelect>;
     }
 
     loadData = () => {

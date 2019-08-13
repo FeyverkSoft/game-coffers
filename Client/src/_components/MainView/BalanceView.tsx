@@ -33,7 +33,7 @@ export const BalanceView = React.memo(({ ...props }: IBalanceViewProps) => {
             </Col1>
             <Col1>
                 <NamedValue name={Lang("MAIN_PAGE_GUILD_LOANS")}>
-                    {balance.activeLoansAmount}
+                    {LangF("MAIN_PAGE_GUILD_LOANS_FORMAT",balance.activeLoansAmount, balance.repaymentLoansAmount)}
                 </NamedValue>
             </Col1>
             <Col1>

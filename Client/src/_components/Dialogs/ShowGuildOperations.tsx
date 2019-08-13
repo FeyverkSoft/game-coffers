@@ -4,7 +4,7 @@ import style from "./dialog.module.less";
 import { IStore } from "../../_helpers";
 import { _OperationsDialog, IProps } from "./ShowOperationsDialog";
 import { operationsInstance } from "../../_actions";
-import { MaterialSelect } from "..";
+import { BaseSelect } from "..";
 
 interface _GIProps extends React.Props<any> {
     isDisplayed: boolean;
@@ -27,14 +27,14 @@ export class _GOperationsDialog extends _OperationsDialog<{}, IState> {
     }
 
     subTitle = (): React.ReactNode => {
-        return <MaterialSelect
+        return <BaseSelect
             className={style['select']}
             items={this.getDateList()}
             value={this.formatDate(this.state.date)}
             path="date"
             onChange={this.onInputAndLoadDate}
             type='default'
-        ></MaterialSelect>;
+        ></BaseSelect>;
     }
 
     loadData = () => {
