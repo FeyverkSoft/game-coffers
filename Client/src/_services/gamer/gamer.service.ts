@@ -137,7 +137,7 @@ export class gamerService {
                 'Authorization': 'Bearer ' + session.sessionId
             }
         };
-        return await fetch(Config.BuildUrl(`/Gamers/current`), requestOptions)
+        return await fetch(Config.BuildUrl(`/profile`), requestOptions)
             .then<BaseResponse & IGamerInfo>(getResponse)
             .then(data => {
                 if (data && data.type || data.traceId) {

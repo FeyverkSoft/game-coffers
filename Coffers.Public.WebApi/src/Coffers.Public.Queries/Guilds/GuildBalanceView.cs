@@ -43,10 +43,10 @@ namespace Coffers.Public.Queries.Guilds
         {
             Balance = balance;
             ExpectedTaxAmount = expectedTaxAmount;
-            taxAmount = TaxAmount;
+            TaxAmount = taxAmount;
             ActiveLoansAmount = activeLoansAmount;
             GamersBalance = gamersBalance;
-            repaymentLoansAmount = RepaymentLoansAmount;
+            RepaymentLoansAmount = repaymentLoansAmount;
         }
     }
 }

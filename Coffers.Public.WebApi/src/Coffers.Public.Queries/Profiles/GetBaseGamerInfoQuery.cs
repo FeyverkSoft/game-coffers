@@ -1,7 +1,7 @@
 ﻿using System;
 using Query.Core;
 
-namespace Coffers.Public.Queries.Gamers
+namespace Coffers.Public.Queries.Profiles
 {
     public sealed class GetBaseGamerInfoQuery : IQuery<BaseGamerInfoView>
     {

@@ -13,6 +13,7 @@ using Coffers.Public.Infrastructure.Operations;
 using Coffers.Public.Queries.Infrastructure.Gamers;
 using Coffers.Public.Queries.Infrastructure.Guilds;
 using Coffers.Public.Queries.Infrastructure.Operations;
+using Coffers.Public.Queries.Infrastructure.Profiles;
 using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Extensions;
 using Coffers.Public.WebApi.Filters;
@@ -125,12 +126,17 @@ namespace Coffers.Public.WebApi
             {
                 options.UseMySQL(Configuration.GetConnectionString("Coffers"));
             });
-
+            services.AddDbContextPool<ProfilesQueryDbContext>(options =>
+            {
+                options.UseMySQL(Configuration.GetConnectionString("Coffers"));
+            });
+            
             services.RegQueryProcessor(registry =>
             {
                 registry.Register<GuildsQueryHandler>();
                 registry.Register<GamerQueryHandler>();
                 registry.Register<OperationsQueryHandler>();
+                registry.Register<ProfilesQueryHandler>();
             });
 
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Coffers.Public.Queries.Infrastructure.Gamers
+namespace Coffers.Public.Queries.Infrastructure.Profiles
 {
     public sealed class Account
     {
@@ -14,5 +14,10 @@ namespace Coffers.Public.Queries.Infrastructure.Gamers
         /// Баланс счёта
         /// </summary>
         public Decimal Balance { get; private set; }
+
+        /// <summary>
+        /// Список изходящих операций произведенных над счётом
+        /// </summary>
+        public List<Operation> FromOperations { get; private set; }
     }
 }

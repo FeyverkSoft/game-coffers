@@ -67,6 +67,7 @@ export const GamerRowView = React.memo(({ ...props }: IGamerRowViewProps) => {
                 </Link>
                 <div className={style['char-list']}>
                     {gamer.characters.map(c => <Character
+                        key={c.name}
                         onDeleteChar={() => props.onDeleteChar(props.gamer.id, c.name)}
                         {...c}
                     />)}

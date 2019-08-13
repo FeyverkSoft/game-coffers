@@ -1,7 +1,7 @@
 ﻿using System;
 using Coffers.Types.Gamer;
 
-namespace Coffers.Public.Queries.Gamers
+namespace Coffers.Public.Queries.Profiles
 {
     /// <summary>
     /// Basic gamer information.

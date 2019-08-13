@@ -1,7 +1,7 @@
 ﻿using System;
 using Coffers.Types.Account;
 
-namespace Coffers.Public.Queries.Infrastructure.Gamers
+namespace Coffers.Public.Queries.Infrastructure.Profiles
 {
     /// <summary>
     /// Операция над счетами
@@ -12,6 +12,7 @@ namespace Coffers.Public.Queries.Infrastructure.Gamers
         /// Идентификатор операци
         /// </summary>
         public Guid Id { get; private set; }
+
         /// <summary>
         /// Дата создания записи
         /// </summary>

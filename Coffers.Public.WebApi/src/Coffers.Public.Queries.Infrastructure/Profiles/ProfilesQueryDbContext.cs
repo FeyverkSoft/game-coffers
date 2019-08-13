@@ -1,13 +1,13 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 
-namespace Coffers.Public.Queries.Infrastructure.Gamers
+namespace Coffers.Public.Queries.Infrastructure.Profiles
 {
-    public class GamerQueryDbContext : DbContext
+    public class ProfilesQueryDbContext : DbContext
     {
         public DbSet<Gamer> Gamers { get; set; }
 
-        public GamerQueryDbContext(DbContextOptions<GamerQueryDbContext> options) : base(options) { }
+        public ProfilesQueryDbContext(DbContextOptions<ProfilesQueryDbContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -25,16 +25,10 @@ namespace Coffers.Public.Queries.Infrastructure.Gamers
                     .HasColumnName("Id")
                     .IsRequired();
 
-                b.Property(g => g.DateOfBirth)
-                    .HasDefaultValue(new DateTime(1900, 1, 1))
-                    .IsRequired();
 
                 b.Property(g => g.Name)
                     .HasMaxLength(64);
                 b.Property(g => g.Rank)
-                    .HasConversion<String>()
-                    .HasMaxLength(32);
-                b.Property(g => g.Status)
                     .HasConversion<String>()
                     .HasMaxLength(32);
 
@@ -54,9 +48,8 @@ namespace Coffers.Public.Queries.Infrastructure.Gamers
                 b.HasMany(g => g.Penalties)
                     .WithOne()
                     .HasPrincipalKey(_ => _.Id);
-
-
             });
+
             modelBuilder.Entity<Account>(b =>
             {
                 b.ToTable(nameof(Account));
@@ -71,6 +64,11 @@ namespace Coffers.Public.Queries.Infrastructure.Gamers
                 b.Property(a => a.Balance)
                     .HasDefaultValue(0)
                     .IsRequired();
+
+                b.HasMany(g => g.FromOperations)
+                    .WithOne(_ => _.FromAccount)
+                    .HasPrincipalKey(_ => _.Id);
+
             });
 
             modelBuilder.Entity<Character>(b =>
@@ -85,6 +83,22 @@ namespace Coffers.Public.Queries.Infrastructure.Gamers
                     .IsRequired();
 
                 b.Property(t => t.Status)
+                    .HasConversion<String>()
+                    .IsRequired();
+            });
+
+            modelBuilder.Entity<Operation>(b =>
+            {
+                b.ToTable(nameof(Operation));
+
+                b.HasIndex(gt => gt.Id)
+                    .IsUnique();
+                b.HasKey(gt => gt.Id);
+                b.Property(gt => gt.Id)
+                    .HasColumnName("Id")
+                    .IsRequired();
+
+                b.Property(t => t.Type)
                     .HasConversion<String>()
                     .IsRequired();
             });
@@ -104,11 +118,8 @@ namespace Coffers.Public.Queries.Infrastructure.Gamers
                     .HasConversion<String>()
                     .IsRequired();
 
-                b.HasOne(_ => _.Account)
-                    .WithMany()
-                    .HasPrincipalKey(_ => _.Id)
-                    .IsRequired();
             });
+
             modelBuilder.Entity<Penalty>(b =>
             {
                 b.ToTable(nameof(Penalty));

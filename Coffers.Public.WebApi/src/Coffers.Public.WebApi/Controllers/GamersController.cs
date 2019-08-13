@@ -24,38 +24,24 @@ namespace Coffers.Public.WebApi.Controllers
     {
         private readonly IGamerRepository _gamerRepository;
         private readonly IGuildRepository _guildRepository;
-        private readonly IQueryProcessor _queryProcessor;
         private readonly LoanFactory _loanFactory;
         private readonly OperationService _operationService;
 
-        public GamersController(IGamerRepository gamerRepository, IQueryProcessor queryProcessor,
+        public GamersController(
+            IGamerRepository gamerRepository,
             IGuildRepository guildRepository,
-            LoanFactory loanFactory, OperationService operationService)
+            LoanFactory loanFactory,
+            OperationService operationService)
         {
             _gamerRepository = gamerRepository;
             _guildRepository = guildRepository;
-            _queryProcessor = queryProcessor;
             _loanFactory = loanFactory;
             _operationService = operationService;
         }
 
         /// <summary>
-        /// This method Returns basic user information.
-        /// </summary>
-        [HttpGet("current")]
-        [ProducesResponseType(typeof(BaseGamerInfoView), 200)]
-        public async Task<ActionResult<BaseGamerInfoView>> GetMyInfo(CancellationToken cancellationToken)
-        {
-            var userId = HttpContext.GetUserId();
-            return Ok(await _queryProcessor.Process<GetBaseGamerInfoQuery, BaseGamerInfoView>(
-                new GetBaseGamerInfoQuery
-                {
-                    UserId = userId
-                }, cancellationToken));
-        }
-
-        /// <summary>
         /// This method add new character for gamer.
+        /// this method is available only to the officer or leader
         /// </summary>
         [HttpPut("{gamerId}/characters")]
         [PermissionRequired("admin", "officer", "leader")]
@@ -81,6 +67,7 @@ namespace Coffers.Public.WebApi.Controllers
 
         /// <summary>
         /// This method delete character for gamer.
+        /// this method is available only to the officer or leader
         /// </summary>
         [HttpDelete("{gamerId}/characters")]
         [PermissionRequired("admin", "officer", "leader")]

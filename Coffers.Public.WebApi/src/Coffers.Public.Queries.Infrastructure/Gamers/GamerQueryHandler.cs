@@ -12,7 +12,7 @@ using Query.Core;
 
 namespace Coffers.Public.Queries.Infrastructure.Gamers
 {
-    public sealed class GamerQueryHandler : IQueryHandler<GetBaseGamerInfoQuery, BaseGamerInfoView>,
+    public sealed class GamerQueryHandler :
         IQueryHandler<GetGamersQuery, ICollection<GamersListView>>,
         IQueryHandler<GetGamerInfoQuery, GamerInfoView>
 
@@ -23,49 +23,11 @@ namespace Coffers.Public.Queries.Infrastructure.Gamers
             _context = context;
         }
 
-        public async Task<BaseGamerInfoView> Handle(GetBaseGamerInfoQuery query, CancellationToken cancellationToken)
-        {
-            var now = DateTime.UtcNow.Trunc(DateTruncType.Month);
-            return await _context.Gamers
-                .Where(g => g.Id == query.UserId)
-                .AsNoTracking()
-                .Include(_ => _.Penalties)
-                .Include(_ => _.Loans)
-                .Include(_ => _.Characters)
-                .Include(_ => _.DefaultAccount)
-                .ThenInclude(_ => _.FromOperations)
-                .Select(g => new BaseGamerInfoView
-                {
-                    UserId = g.Id,
-                    Balance = g.DefaultAccount.Balance,
-                    Name = g.Name,
-                    Rank = g.Rank,
-                    CharCount = g.Characters.Count(c => c.Status == CharStatus.Active),
-                    ActiveLoanAmount = g.Loans.Where(l => l.LoanStatus == LoanStatus.Active)
-                        .Sum(l => (l.Amount)),
-                    ActiveExpLoanAmount = g.Loans.Where(l => l.LoanStatus == LoanStatus.Active)
-                        .Sum(l => l.PenaltyAmount),
-                    ActiveLoanTaxAmount = g.Loans.Where(l => l.LoanStatus == LoanStatus.Active)
-                        .Sum(l => l.TaxAmount),
-                    RepaymentLoanAmount = g.Loans.Where(l => l.LoanStatus == LoanStatus.Active)
-                        .Sum(l => l.TaxAmount),
-                    ActivePenaltyAmount = g.Penalties.Where(p => p.PenaltyStatus == PenaltyStatus.Active)
-                        .Sum(p => p.Amount),
-                    RepaymentTaxAmount = g.DefaultAccount.FromOperations
-                        .Where(_ => _.Type == OperationType.Tax
-                                  && _.CreateDate >= now)
-                        .Sum(_ => _.Amount)
-                })
-                .FirstOrDefaultAsync(cancellationToken);
-        }
-
-
         public async Task<ICollection<GamersListView>> Handle(GetGamersQuery query, CancellationToken cancellationToken)
         {
             var q = _context.Gamers
                 .AsNoTracking()
                 .Include(g => g.DefaultAccount)
-                    .ThenInclude(_ => _.FromOperations)
                 .Include(g => g.Characters)
                 .Include(g => g.Loans)
                     .ThenInclude(_ => _.Account)
