@@ -22,6 +22,7 @@ export * from './Datetimepicker/Datetimepicker.tsx';
 export * from './Form/Form.tsx';
 export * from './ProfileButton/ProfileButton.tsx';
 export * from './Header/Header.tsx';
+export * from './Header/HeaderLink.tsx';
 export * from './Breadcrumbs/Breadcrumbs.tsx';
 export * from './Page/Page.tsx';
 export * from './MainView/TariffView.tsx';

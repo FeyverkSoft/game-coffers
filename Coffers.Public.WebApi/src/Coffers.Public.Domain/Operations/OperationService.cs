@@ -45,6 +45,7 @@ namespace Coffers.Public.Domain.Operations
         public async Task CancelLoan(Guid loanId)
         {
             var loansOperations = await _oRepository.GetOperationWithDocIdAndType(loanId, OperationType.Loan);
+            var loan = await _oRepository.GetLoan(loanId, default);
             foreach (var op in loansOperations)
             {
                 op.ToAccount.ChangeBalance(-1 * op.Amount);
@@ -53,10 +54,10 @@ namespace Coffers.Public.Domain.Operations
                 {
                     Id = Guid.NewGuid(),
                     DocumentId = loanId,
-                    Amount = -1 * op.Amount,
+                    Amount = op.Amount,
                     OperationDate = DateTime.UtcNow,
                     Type = OperationType.Loan,
-                    Description = $"Отмена операций по займу {loanId}",
+                    Description = $"Отмена операций по займу {loan.Description} - {loanId}",
                     FromAccount = op.ToAccount,
                     ToAccount = op.FromAccount,
                 });

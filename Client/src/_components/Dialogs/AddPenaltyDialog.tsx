@@ -1,4 +1,5 @@
 import * as React from "react";
+import style from "./dialog.module.less";
 import { BaseReactComp, IStatedField } from "../BaseReactComponent";
 import { Dialog, Form, Col1, Input, Button } from "..";
 import { Lang } from "../../_services";
@@ -65,7 +66,7 @@ class _AddPenaltyDialog extends BaseReactComp<IProps, IState> {
         return (
             <Dialog
                 isDisplayed={this.props.isDisplayed}
-                title={Lang('NEW_PENALTY_MODAL')}
+                title={<span className={style['text']}>{Lang('NEW_PENALTY_MODAL')}</span>}
                 onCancel={() => this.onClose()}
             >
                 <Form

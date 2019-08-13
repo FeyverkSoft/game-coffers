@@ -57,7 +57,9 @@ namespace Coffers.Public.Domain.Gamers
         /// Необязательное описание, для чего был взят займ
         /// </summary>
         public String Description { get; private set; }
-
+        /// <summary>
+        /// Статус займа
+        /// </summary>
         public LoanStatus LoanStatus { get; private set; }
         internal void SetStatus(LoanStatus newStatus)
         {

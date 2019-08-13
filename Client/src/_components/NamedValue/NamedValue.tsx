@@ -7,7 +7,7 @@ export interface NamedValueProps extends React.Props<any> {
 }
 
 export const NamedValue = ({ ...props }: NamedValueProps) => {
-    return <div className={style['named-value']}>
+    return <div className={style['named-value']} key={props.key}>
         <label className={style['label']}>
             {props.name}
         </label>

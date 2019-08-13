@@ -39,9 +39,10 @@ class _LoanDialog extends BaseReactComp<IProps> {
         this.props.dispatch(gamerInstance.CancelLoan({
             id: this.props.loan.id,
             gamerId: this.props.gamerId,
-            onSuccess: () =>{ 
+            onSuccess: () => {
                 this.props.onSuccess();
-                 this.onClose()}
+                this.onClose()
+            }
         }));
     }
 
@@ -65,7 +66,7 @@ class _LoanDialog extends BaseReactComp<IProps> {
         return (
             <Dialog
                 isDisplayed={this.props.isDisplayed}
-                title={Lang('SHOW_LOAN_MODAL')}
+                title={<span className={style['text']}>{Lang('SHOW_LOAN_MODAL')}</span>}
                 onCancel={() => this.onClose()}
                 footer={this.footer()}
                 isLoading={operations.holding}

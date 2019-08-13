@@ -62,23 +62,38 @@ namespace Coffers.Public.Queries.Guilds
         /// <summary>
         /// Тариф для главы
         /// </summary>
-        public TariffView Leader { get; set; }
+        public TariffView Leader { get; }
         /// <summary>
         /// Тариф для офицера
         /// </summary>
-        public TariffView Officer { get; set; }
+        public TariffView Officer { get; }
         /// <summary>
         /// Тариф для ветерана
         /// </summary>
-        public TariffView Veteran { get; set; }
+        public TariffView Veteran { get; }
         /// <summary>
         /// Тариф для солдата
         /// </summary>
-        public TariffView Soldier { get; set; }
+        public TariffView Soldier { get; }
         /// <summary>
         /// Тариф для духа
         /// </summary>
-        public TariffView Beginner { get; set; }
+        public TariffView Beginner { get; }
+
+        public TariffsView(
+            TariffView leader,
+            TariffView officer,
+            TariffView veteran,
+            TariffView soldier,
+            TariffView beginner
+            )
+        {
+            Leader = leader;
+            Officer = officer;
+            Veteran = veteran;
+            Soldier = soldier;
+            Beginner = beginner;
+        }
     }
 
     public class TariffView

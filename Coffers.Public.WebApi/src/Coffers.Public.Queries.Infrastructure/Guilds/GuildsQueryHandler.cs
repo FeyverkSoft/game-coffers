@@ -44,13 +44,13 @@ namespace Coffers.Public.Queries.Infrastructure.Guilds
                 UpdateDate = res.UpdateDate,
                 CreateDate = res.CreateDate,
                 Tariffs = new TariffsView
-                {
-                    Beginner = TariffViewBuilder(res.Tariff != null ? res.Tariff.BeginnerTariff : null),
-                    Officer = TariffViewBuilder(res.Tariff != null ? res.Tariff.OfficerTariff : null),
-                    Leader = TariffViewBuilder(res.Tariff != null ? res.Tariff.LeaderTariff : null),
-                    Veteran = TariffViewBuilder(res.Tariff != null ? res.Tariff.VeteranTariff : null),
-                    Soldier = TariffViewBuilder(res.Tariff != null ? res.Tariff.SoldierTariff : null)
-                },
+                (
+                    TariffViewBuilder(res.Tariff != null ? res.Tariff.LeaderTariff : null),
+                    TariffViewBuilder(res.Tariff != null ? res.Tariff.OfficerTariff : null),
+                    TariffViewBuilder(res.Tariff != null ? res.Tariff.VeteranTariff : null),
+                    TariffViewBuilder(res.Tariff != null ? res.Tariff.SoldierTariff : null),
+                    TariffViewBuilder(res.Tariff != null ? res.Tariff.BeginnerTariff : null)
+                ),
                 GamersCount = res.Gamers
                     .Where(g => g.Login != "user")
                     .Count(g => !skipGmSta.Contains(g.Status)),
@@ -131,7 +131,7 @@ namespace Coffers.Public.Queries.Infrastructure.Guilds
             .FirstOrDefaultAsync(cancellationToken);
 
             //далее костыль, так как из-за бага EF посчитать сразу сумму ожидаемого дохода не можем
-            var tariff = _context.Guilds
+            var tariff = await _context.Guilds
                 .AsNoTracking()
                 .Where(guild => guild.Id == query.GuildId)
                 .Include(g => g.Tariff)
@@ -143,17 +143,17 @@ namespace Coffers.Public.Queries.Infrastructure.Guilds
                 .Include(g => g.Tariff)
                 .ThenInclude(gt => gt.OfficerTariff)
                 .Include(g => g.Tariff)
-                .ThenInclude(gt => gt.LeaderTariff);
+                .ThenInclude(gt => gt.LeaderTariff)
+                .FirstOrDefaultAsync(cancellationToken);
 
-            return new GuildBalanceView
-            {
-                Balance = temp.Balance,
-                GamersBalance = temp.GamersBalance,
-                ExpectedTaxAmount = temp.ExpectedTaxAmount.Sum(gt => CalcTax(tariff.FirstOrDefault()?.Tariff, gt.Rank, gt.Characters)),
-                ActiveLoansAmount = temp.ActiveLoansAmount,
-                RepaymentLoansAmount = temp.RepaymentLoansAmount,
-                TaxAmount = temp.TaxAmount
-            };
+            return new GuildBalanceView(
+                balance: temp.Balance,
+                expectedTaxAmount: temp.ExpectedTaxAmount.Sum(gt => CalcTax(tariff?.Tariff, gt.Rank, gt.Characters)),
+                taxAmount: temp.TaxAmount,
+                activeLoansAmount: temp.ActiveLoansAmount,
+                gamersBalance: temp.GamersBalance,
+                repaymentLoansAmount: temp.RepaymentLoansAmount
+            );
         }
 
         private static Decimal CalcTax(GuildTariff tariff, GamerRank gmRank, Int32 count)

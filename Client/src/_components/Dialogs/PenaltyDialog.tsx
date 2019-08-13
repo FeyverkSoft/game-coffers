@@ -3,7 +3,7 @@ import * as React from "react";
 import style from "./dialog.module.less";
 import { BaseReactComp } from "../BaseReactComponent";
 import { Dialog, Col1, Button, Grid, NamedValue, Private } from "..";
-import { Lang, IPenaltyView, DLang, IOperationView } from "../../_services";
+import { Lang, IPenaltyView, DLang } from "../../_services";
 import { gamerInstance } from "../../_actions";
 import { connect } from "react-redux";
 import { getGuid, IStore, formatDateTime, IF } from "../../_helpers";
@@ -64,7 +64,7 @@ class _PenaltyDialog extends BaseReactComp<IProps> {
         return (
             <Dialog
                 isDisplayed={this.props.isDisplayed}
-                title={Lang('SHOW_PENALTY_MODAL')}
+                title={<span className={style['text']}>{Lang('SHOW_PENALTY_MODAL')}</span>}
                 onCancel={() => this.onClose()}
                 footer={this.footer()}
                 isLoading={operations.holding}

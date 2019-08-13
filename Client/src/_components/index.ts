@@ -22,6 +22,7 @@ export * from './Datetimepicker/Datetimepicker';
 export * from './Form/Form';
 export * from './ProfileButton/ProfileButton';
 export * from './Header/Header';
+export * from './Header/HeaderLink';
 export * from './Breadcrumbs/Breadcrumbs';
 export * from './Page/Page';
 export * from './MainView/TariffView';

@@ -3,7 +3,7 @@ import { Router, Route, Switch, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { PrivateRoute, Alerts, Space, ProfileButton, Private, Spinner } from './_components';
 import { IStore, history, TryCatch } from './_helpers';
-import { Logo, Header } from './_components';
+import { Logo, Header, HeaderLink } from './_components';
 import {
     AuthController,
     LogOutController,
@@ -45,9 +45,8 @@ class MyApp extends React.Component<any, any> {
                         </Link>
                         <Space />
                         <Private>
-                            <Link to="/">{Lang('COFFERS')}</Link>
-                            <span>&nbsp; &nbsp;</span>
-                            <Link to="/birthday">{Lang('BD')}</Link>
+                            <HeaderLink to="/" exact>{Lang('COFFERS')}</HeaderLink>
+                            <HeaderLink to="/birthday" exact>{Lang('BD')}</HeaderLink>
                         </Private>
                         <Space />
                         <Private>

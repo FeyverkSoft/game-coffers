@@ -1,3 +1,4 @@
+rm -r -f ./docker/build
 cp -r build ./docker
 find ./docker -name "*.css.map" -delete
 find ./docker -name "*.js.map" -delete

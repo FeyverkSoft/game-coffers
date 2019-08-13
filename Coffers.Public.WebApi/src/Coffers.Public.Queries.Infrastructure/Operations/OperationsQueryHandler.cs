@@ -33,15 +33,14 @@ namespace Coffers.Public.Queries.Infrastructure.Operations
 
             return await q
                 .OrderBy(o => o.OperationDate)
-                .Select(o => new OperationView
-                {
-                    Id = o.Id,
-                    Amount = o.FromAccountId == loanAccId ? -1 * o.Amount : o.Amount,
-                    DocumentId = o.DocumentId,
-                    Type = o.Type,
-                    Description = o.Description,
-                    CreateDate = o.OperationDate
-                })
+                .Select(o => new OperationView(
+                    o.Id,
+                    o.FromAccountId == loanAccId ? -1 * o.Amount : o.Amount,
+                    o.DocumentId,
+                    o.Type,
+                    o.Description,
+                    o.OperationDate
+                ))
                 .OrderBy(_ => _.CreateDate)
                 .ToListAsync(cancellationToken);
         }
@@ -58,28 +57,28 @@ namespace Coffers.Public.Queries.Infrastructure.Operations
                    .Where(o => o.ToAccount != null && o.ToAccount.Id == query.AccountId)
                    .OrderBy(o => o.OperationDate)
                    .Select(o => new OperationView
-                   {
-                       Id = o.Id,
-                       Amount = o.Amount,
-                       DocumentId = o.DocumentId,
-                       Type = o.Type,
-                       Description = o.Description,
-                       CreateDate = o.OperationDate
-                   })
+                   (
+                       o.Id,
+                       o.Amount,
+                       o.DocumentId,
+                       o.Type,
+                       o.Description,
+                       o.OperationDate
+                   ))
                    .ToListAsync(cancellationToken);
 
             var from = await q
                 .Where(o => o.FromAccount != null && o.FromAccount.Id == query.AccountId)
                 .OrderBy(o => o.OperationDate)
                 .Select(o => new OperationView
-                {
-                    Id = o.Id,
-                    Amount = -1 * o.Amount,
-                    DocumentId = o.DocumentId,
-                    Type = o.Type,
-                    Description = o.Description,
-                    CreateDate = o.OperationDate
-                })
+                (
+                    o.Id,
+                    -1 * o.Amount,
+                    o.DocumentId,
+                    o.Type,
+                    o.Description,
+                    o.OperationDate
+                ))
                 .ToListAsync(cancellationToken);
 
             result.AddRange(to);

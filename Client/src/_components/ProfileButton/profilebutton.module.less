@@ -7,15 +7,20 @@
     .profile-button {
         .flex();
         border-radius: 0.25rem 0.2rem 0.25rem 0.2rem;
-        background: lighten(@bgColor, 10%);
-        padding: .25rem;
-        cursor: pointer;
-        align-items: center;
+        background   : lighten(@bgColor, 10%);
+        padding      : .25rem;
+        cursor       : pointer;
+        align-items  : center;
+        color        : @mainFontColor;
 
         &::before {
             content: "\F004";
             display: block;
-            font: normal normal normal 24px/1 "Material Design Icons";
+            font   : normal normal normal 24px/1 "Material Design Icons";
+        }
+
+        &.active {
+            color: @errorColor;
         }
 
         &:hover {

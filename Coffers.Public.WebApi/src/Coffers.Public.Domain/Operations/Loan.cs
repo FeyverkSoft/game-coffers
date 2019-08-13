@@ -19,6 +19,11 @@ namespace Coffers.Public.Domain.Operations
         public Gamer Gamer { get; private set; }
 
         /// <summary>
+        /// Необязательное описание, для чего был взят займ
+        /// </summary>
+        public String Description { get; private set; }
+
+        /// <summary>
         /// Номер счёта по займу
         /// </summary>
         public Account Account { get; private set; }
