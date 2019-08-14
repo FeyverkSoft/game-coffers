@@ -26,21 +26,32 @@ export class Dialog extends React.Component<IDialogProps, any> {
             isDisplayed: props.isDisplayed
         });
     }
+
+    onScroll = (event: React.UIEvent<HTMLDivElement>) => {
+        if (event.currentTarget.scrollTop > 5)
+            this.setState({ showShadow: true })
+        else
+            this.setState({ showShadow: false })
+    }
+
     render() {
-        return <div className={`${style["dialog"]} ${this.props.isDisplayed ? '' : style['none']}`}>
+        const { isDisplayed, onCancel, isLoading } = this.props;
+        return <div className={`${style["dialog"]} ${isDisplayed ? '' : style['none']}`}>
             <div className={style['wrapper']}>
-                <div className={style["header"]}>
-                    <IF value={this.props.isDisplayed}>
+                <div className={`${style["header"]} ${this.state.showShadow ? style['shadow'] : ''}`}>
+                    <IF value={isDisplayed}>
                         {this.props.title}
                     </IF>
                     <div className={style["close"]}
-                        onClick={() => this.props.onCancel ? this.props.onCancel() : null}>
+                        onClick={() => onCancel ? onCancel() : null}>
                         ×
                     </div>
                 </div>
-                <IF value={this.props.isDisplayed}>
-                    <div className={style["body"]}>
-                        <IF value={this.props.isLoading}>
+                <IF value={isDisplayed}>
+                    <div className={style["body"]}
+                        onScroll={this.onScroll}
+                    >
+                        <IF value={isLoading}>
                             <Spinner />
                         </IF>
                         {this.props.children}
