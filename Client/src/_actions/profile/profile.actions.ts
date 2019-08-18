@@ -1,5 +1,5 @@
 
-import { gamerService, GamerInfo, IGamersListView, GamerStatus, GamerRank, ILoanView, IPenaltyView } from '../../_services';
+import { GamerInfo } from '../../_services';
 import { GamerActionsType } from '../gamer/GamerActionsType';
 import { alertInstance, ICallback } from '..';
 import { profileService } from '../../_services/profile/profile.service';
@@ -7,10 +7,12 @@ import { profileService } from '../../_services/profile/profile.service';
 interface AddCharProps extends ICallback<any> {
     name: string;
     className: string;
+    gamerId: string;
 }
 
 interface DeleteCharProps extends ICallback<any> {
     name: string;
+    gamerId: string;
 }
 
 
@@ -21,7 +23,7 @@ export class ProfileActions {
     AddCharacters(props: AddCharProps): Function {
         return (dispatch: Function) => {
             dispatch(request(props.gamerId));
-            gamerService.AddNewChar(props.gamerId, props.name, props.className)
+            profileService.AddNewChar(props.name, props.className)
                 .then(
                     data => {
                         dispatch(success(props.gamerId, props.name, props.className));
@@ -47,7 +49,7 @@ export class ProfileActions {
     DeleteCharacters(props: DeleteCharProps): Function {
         return (dispatch: Function) => {
             dispatch(request(props.gamerId));
-            gamerService.DeleteChar(props.gamerId, props.name)
+            profileService.DeleteChar(props.name)
                 .then(
                     data => {
                         dispatch(success(props.gamerId, props.name));
