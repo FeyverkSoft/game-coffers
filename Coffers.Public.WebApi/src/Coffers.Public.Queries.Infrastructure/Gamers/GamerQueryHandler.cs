@@ -32,8 +32,8 @@ namespace Coffers.Public.Queries.Infrastructure.Gamers
                 .Include(g => g.Loans)
                     .ThenInclude(_ => _.Account)
                 .Include(g => g.Penalties)
-                .OrderBy(_ => _.Rank)
-                    .ThenBy(_ => _.Status)
+                .OrderBy(_ => _.Status)
+                    .ThenBy(_ => _.Rank)
                     .ThenBy(_ => _.CreateDate)
                 .Where(g => g.GuildId == query.GuildId);
 
@@ -58,6 +58,7 @@ namespace Coffers.Public.Queries.Infrastructure.Gamers
                 g.DefaultAccount.Balance,
                 g.Characters
                     .Where(c => c.Status == CharStatus.Active)
+                    .OrderBy(c => c.Name)
                     .Select(x => new CharacterView(x.Name, x.ClassName))
                     .ToList(),
                 g.Rank,
