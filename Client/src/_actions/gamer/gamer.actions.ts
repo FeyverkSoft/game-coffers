@@ -2,6 +2,7 @@
 import { gamerService, GamerInfo, IGamersListView, GamerStatus, GamerRank, ILoanView, IPenaltyView } from '../../_services';
 import { GamerActionsType } from './GamerActionsType';
 import { alertInstance, ICallback } from '..';
+import { profileService } from '../../_services/profile/profile.service';
 
 interface GetGuildGamersProps extends ICallback<any> {
     guildId: string;
@@ -113,7 +114,7 @@ export class GamerActions {
     GetCurrentGamer(): Function {
         return (dispatch: Function) => {
             dispatch(request());
-            gamerService.getCurrentGamer()
+            profileService.getCurrentGamer()
                 .then(
                     data => {
                         dispatch(success(data));

@@ -1,5 +1,5 @@
 import { getResponse, catchHandle, errorHandle } from '../../_helpers';
-import { BaseResponse, IGamerInfo, GamerInfo, IGamersListView, GamersListView } from '..';
+import { BaseResponse, IGamersListView, GamersListView } from '..';
 import { Config } from '../../core';
 import { authService } from '..';
 import { GamerStatus } from './GamerStatus';
@@ -119,39 +119,6 @@ export class gamerService {
                 if (data && data.type || data.traceId) {
                     return errorHandle(data);
                 }
-            })
-            .catch(catchHandle);
-    }
-
-    /**
-     * Получить информацию об игроке текущем владельце сессии
-     */
-    static async getCurrentGamer(): Promise<IGamerInfo> {
-        let session = authService.getCurrentSession();
-        const requestOptions: RequestInit = {
-            method: 'GET',
-            cache: 'no-cache',
-            headers: {
-                'Content-Type': 'application/json',
-                'accept': 'application/json',
-                'Authorization': 'Bearer ' + session.sessionId
-            }
-        };
-        return await fetch(Config.BuildUrl(`/profile`), requestOptions)
-            .then<BaseResponse & IGamerInfo>(getResponse)
-            .then(data => {
-                if (data && data.type || data.traceId) {
-                    return errorHandle(data);
-                }
-                return new GamerInfo(data.userId, data.name,
-                    Number(data.balance || 0),
-                    Number(data.activeLoanAmount || 0),
-                    Number(data.activePenaltyAmount || 0),
-                    Number(data.activeExpLoanAmount || 0),
-                    Number(data.activeLoanTaxAmount || 0),
-                    Number(data.repaymentLoanAmount || 0),
-                    Number(data.repaymentTaxAmount || 0),
-                    data.rank, data.charCount || 0);
             })
             .catch(catchHandle);
     }

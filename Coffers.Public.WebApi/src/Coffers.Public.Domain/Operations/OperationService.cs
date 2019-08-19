@@ -201,6 +201,36 @@ namespace Coffers.Public.Domain.Operations
         }
 
         /// <summary>
+        /// Эмиссия бабок на склад, как итог продажи придметов со склада ги
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="toAccountId"></param>
+        /// <param name="amount"></param>
+        /// <param name="description"></param>
+        /// <returns></returns>
+        public async Task AddSellOperation(Guid id, Guid toAccountId, decimal amount, string description)
+        {
+            var operation = await _oRepository.Get(id, default);
+            if (operation != null && (operation.Type != OperationType.Other || operation.Amount != amount))
+                throw new OperationException("Operation already exists");
+            if (operation != null)
+                return;
+
+            var toAccount = await _oRepository.GetAccount(toAccountId, default);
+            toAccount.ChangeBalance(amount);
+            await _oRepository.Save(new Operation
+            {
+                Id = id,
+                DocumentId = null,
+                Amount = amount,
+                OperationDate = DateTime.UtcNow,
+                Type = OperationType.Sell,
+                Description = description,
+                ToAccount = toAccount,
+            });
+        }
+
+        /// <summary>
         /// Добавляет новую операцию уплаты налога
         /// </summary>
         /// <param name="fromAccountId"></param>

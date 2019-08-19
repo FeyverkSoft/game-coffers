@@ -190,7 +190,7 @@ namespace Coffers.Public.WebApi.Controllers
                             binding.Description);
                         break;
                     case OperationType.Sell:
-                        await _operationService.AddOtherOperation(
+                        await _operationService.AddSellOperation(
                             binding.Id,
                             guildAcc.AccountId,
                             binding.Amount,
