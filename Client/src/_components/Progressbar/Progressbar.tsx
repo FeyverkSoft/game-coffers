@@ -1,3 +1,5 @@
+
+import * as React from 'react';
 import { BlendColor } from "../../_helpers";
 import style from "./progressbar.module.less";
 
