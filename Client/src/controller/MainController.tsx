@@ -12,7 +12,7 @@ import {
     BalanceView, GamerRowView, Button, Private, FloatButton
 } from '../_components';
 
-import { guildInstance, gamerInstance, operationsInstance } from '../_actions';
+import { guildInstance, gamerInstance, operationsInstance, profileInstance } from '../_actions';
 import { IStore, IF } from '../_helpers';
 import { IHolded } from '../core';
 import { AddUserDialog } from '../_components/Dialogs/AddUserDialog';
@@ -24,6 +24,8 @@ import { AddPenaltyDialog } from '../_components/Dialogs/AddPenaltyDialog';
 import { ShowGuildOperationsDialog } from '../_components/Dialogs/ShowGuildOperations';
 import { ShowUserOperations } from '../_components/Dialogs/ShowUserOperations';
 import { CreateOperationDialog } from '../_components/Dialogs/CreateOperationDialog';
+import { SelfAddCharDialog } from '../_components/Dialogs/SelfAddCharDialog';
+
 
 interface IMainProps {
     isLoading?: boolean;
@@ -67,6 +69,7 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                 isDisplayed: false,
                 gamerId: ''
             },
+            selfAddChar: { isDisplayed: false },
             operationsGDialog: { isDisplayed: false, },
             addNewOperation: { isDisplayed: false, }
         };
@@ -110,6 +113,10 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
         this.setState({ addChar: { isDisplayed: true, userId: userId } })
     }
 
+    onSelfAddChar = (userId: string) => {
+        this.setState({ selfAddChar: { isDisplayed: true, userId: userId } })
+    }
+
     onAddLoan = (userId: string) => {
         this.setState({ addLoan: { isDisplayed: true, userId: userId } })
     }
@@ -124,10 +131,19 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                 gamerId: userId,
                 name: char,
                 onSuccess: () => {
-                    this.props.dispatch(guildInstance.GetGuildBalanceReport({ guildId: this.props.guildId || '' }));
-                    this.props.dispatch(guildInstance.GetGuild({ guildId: this.props.guildId || '' }));
+                    this.autoUpdateDataProvider();
                 }
             }));
+    }
+
+    onSelfDeleteChar = (char: string) => {
+        this.props.dispatch(profileInstance.DeleteCharacters({
+            gamerId: this.props.user.userId || '',
+            name: char,
+            onSuccess: () => {
+                this.autoUpdateDataProvider();
+            }
+        }));
     }
 
     onSetRank = (userId: string, rank: GamerRank) => {
@@ -193,8 +209,8 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                         key={g.id}
                         gamer={g}
                         isCurrentUser={user.userId == g.id}
-                        onAddChar={this.onAddChar}
-                        onDeleteChar={this.onDeleteChar}
+                        onAddChar={user.userId == g.id ? this.onSelfAddChar : this.onAddChar}
+                        onDeleteChar={user.userId == g.id ? this.onSelfDeleteChar : this.onDeleteChar}
                         onRankChange={this.onSetRank}
                         onStatusChange={this.onSetStatus}
                         onAddLoan={this.onAddLoan}
@@ -296,6 +312,14 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                         guildId={this.props.guildId || ''}
                         isDisplayed={this.state.operationsGDialog.isDisplayed}
                         onClose={() => this.setState({ operationsGDialog: { isDisplayed: false } })}
+                    />
+                </IF>
+                <IF value={this.state.selfAddChar.isDisplayed}>
+                    <SelfAddCharDialog
+                        userId={this.props.user.userId}
+                        isDisplayed={this.state.selfAddChar.isDisplayed}
+                        onSuccess={this.autoUpdateDataProvider}
+                        onClose={() => this.setState({ selfAddChar: { isDisplayed: false } })}
                     />
                 </IF>
                 <IF value={this.state.addNewOperation.isDisplayed}>

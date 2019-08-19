@@ -9,3 +9,4 @@ export * from './gamer/GamerActionsType.ts';
 export * from './operation/OperationActionsType.ts';
 export * from './gamer/gamer.actions.ts';
 export * from './operation/operation.actions.ts';
+export * from './profile/profile.actions.ts';

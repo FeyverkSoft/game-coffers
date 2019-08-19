@@ -9,3 +9,4 @@ export * from './gamer/GamerActionsType';
 export * from './operation/OperationActionsType';
 export * from './gamer/gamer.actions';
 export * from './operation/operation.actions';
+export * from './profile/profile.actions';

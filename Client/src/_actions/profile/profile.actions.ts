@@ -92,4 +92,4 @@ export class ProfileActions {
     }
 }
 
-export const gamerInstance = new ProfileActions();
+export const profileInstance = new ProfileActions();

@@ -27,6 +27,7 @@ interface IGamerRowViewProps extends React.Props<any> {
 
 interface ICharacterProps {
     name: string;
+    isCurrentUser: boolean;
     className: string;
     onDeleteChar(): void;
 }
@@ -38,7 +39,7 @@ const Character = React.memo(({ ...props }: ICharacterProps) => {
         >
             {props.name}
         </div>
-        <Private roles={['admin', 'leader', 'officer']}>
+        <Private roles={['admin', 'leader', 'officer']} skipRoleTest={props.isCurrentUser}>
             <div
                 className={style['delete']}
                 onClick={() => props.onDeleteChar()}
@@ -67,11 +68,12 @@ export const GamerRowView = React.memo(({ ...props }: IGamerRowViewProps) => {
                 </Link>
                 <div className={style['char-list']}>
                     {gamer.characters.map(c => <Character
+                        isCurrentUser={isCurrentUser}
                         key={c.name}
                         onDeleteChar={() => props.onDeleteChar(props.gamer.id, c.name)}
                         {...c}
                     />)}
-                    <Private roles={['admin', 'leader', 'officer']}>
+                    <Private roles={['admin', 'leader', 'officer']} skipRoleTest={isCurrentUser}>
                         <span className={style['add']}
                             onClick={() => props.onAddChar(gamer.id)}
                         />

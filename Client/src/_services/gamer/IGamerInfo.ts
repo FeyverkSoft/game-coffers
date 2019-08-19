@@ -1,8 +1,8 @@
 import { GamerRank } from "./GamerRank";
 
 export interface IGamerInfo {
-    userId: String;
-    name: String;
+    userId: string;
+    name: string;
     balance: number;
     activeLoanAmount: number;
     activePenaltyAmount: number;
@@ -16,8 +16,8 @@ export interface IGamerInfo {
 }
 
 export class GamerInfo implements IGamerInfo {
-    userId: String;
-    name: String;
+    userId: string;
+    name: string;
     balance: number;
     activeLoanAmount: number;
     activePenaltyAmount: number;
@@ -28,7 +28,7 @@ export class GamerInfo implements IGamerInfo {
     rank: GamerRank;
     charCount: number;
 
-    constructor(userId: String, name: String, balance: number, activeLoanAmount: number,
+    constructor(userId: string, name: string, balance: number, activeLoanAmount: number,
         activePenaltyAmount: number, activeExpLoanAmount: number, activeLoanTaxAmount: number,
         repaymentLoanAmount: number, repaymentTaxAmount: number, rank: GamerRank, charCount: number) {
         this.userId = userId;
