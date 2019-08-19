@@ -32,9 +32,6 @@ namespace Coffers.Public.Queries.Infrastructure.Gamers
                 .Include(g => g.Loans)
                     .ThenInclude(_ => _.Account)
                 .Include(g => g.Penalties)
-                .OrderBy(_ => _.Status)
-                    .ThenBy(_ => _.Rank)
-                    .ThenBy(_ => _.CreateDate)
                 .Where(g => g.GuildId == query.GuildId);
 
             var dateFrom = (query.DateFrom ?? DateTime.UtcNow).Trunc(DateTruncType.Month);
@@ -51,7 +48,7 @@ namespace Coffers.Public.Queries.Infrastructure.Gamers
             if (dateTo != null)
                 q = q.Where(g => g.CreateDate <= dateTo);
 
-            return await q.Select(g => new GamersListView
+            return (await q.Select(g => new GamersListView
             (
                 g.Id,
                 g.Name,
@@ -87,7 +84,11 @@ namespace Coffers.Public.Queries.Infrastructure.Gamers
                          l.ExpiredDate
                      )).OrderBy(_ => _.Date).ToList()
             ))
-            .ToListAsync(cancellationToken);
+            .ToListAsync(cancellationToken))
+            .OrderBy(_ => _.Status)
+                .ThenBy(_ => _.Rank)
+                .ThenBy(_ => _.DateOfBirth)
+            .ToList();
         }
 
         public async Task<GamerInfoView> Handle(GetGamerInfoQuery query, CancellationToken cancellationToken)
