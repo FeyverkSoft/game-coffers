@@ -46,6 +46,17 @@ class _LoanDialog extends BaseReactComp<IProps> {
         }));
     }
 
+    onReverse = () => {
+        this.props.dispatch(gamerInstance.ReverseLoan({
+            id: this.props.loan.id,
+            gamerId: this.props.gamerId,
+            onSuccess: () => {
+                this.props.onSuccess();
+                this.onClose()
+            }
+        }));
+    }
+
     footer = () => {
         return (
             <Private roles={['admin', 'leader', 'officer']}>
@@ -55,6 +66,12 @@ class _LoanDialog extends BaseReactComp<IProps> {
                         onClick={() => this.onCancel()}
                     >
                         {Lang('CANCEL')}
+                    </Button>
+                    <Button
+                        type='important'
+                        onClick={() => this.onReverse()}
+                    >
+                        {Lang('REVERSE')}
                     </Button>
                 </IF>
             </Private>

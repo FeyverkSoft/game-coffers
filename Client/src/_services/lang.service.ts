@@ -22,6 +22,7 @@ const locString: any = {
         MAIN_PAGE: 'Казна гильдии: {0}',
         COFFERS: 'Казна',
         BD: 'ДР',
+        REVERSE: '!СТОРНО!',
         MAIN_PAGE_MAIN_INFO: 'Сводка',
         MAIN_PAGE_MAIN_BALANCE: 'Баланс',
         MAIN_PAGE_CHARACTERS_COUNT: 'Чаров в гильдии:',
