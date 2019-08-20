@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 
@@ -23,7 +24,7 @@ namespace Coffers.Public.WebApi.Authorization
         }
         public static Boolean IsAdmin(this HttpContext httpContext)
         {
-            return bool.Parse(httpContext.User.FindFirst(x => x.Type.Equals(ClaimType.Admin)).Value);
+            return httpContext.User.FindFirst(x => x.Type.Equals(ClaimTypes.Role)).Value?.Split(",").Any(_ => _.Equals("Admin")) == true;
         }
         public static Guid GetSessionId(this HttpContext httpContext)
         {
