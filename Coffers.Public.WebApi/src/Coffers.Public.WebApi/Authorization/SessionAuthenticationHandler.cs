@@ -47,7 +47,7 @@ namespace Coffers.Public.WebApi.Authorization
                         new ClaimsIdentity(new List<Claim>
                         {
                             new Claim(ClaimTypes.NameIdentifier, Guid.Empty.ToString(), ClaimValueTypes.String),
-                            new Claim(ClaimType.Admin, true.ToString(), ClaimValueTypes.Boolean),
+                            new Claim(ClaimTypes.Role, "Admin", ClaimValueTypes.String),
                         }, "Token")),
                     null,
                     "Token"));
@@ -80,9 +80,7 @@ namespace Coffers.Public.WebApi.Authorization
                 new Claim(ClaimTypes.NameIdentifier, session.SessionId.ToString(), ClaimValueTypes.String),
                 new Claim(ClaimType.UserId, session.Gamer.Id.ToString(), ClaimValueTypes.String),
                 new Claim(ClaimType.GuildId, session.Gamer.GuildId.ToString(), ClaimValueTypes.String),
-
-#warning //костыль для определения что это админ сервера
-                new Claim(ClaimType.Admin, (session.Gamer.Login=="Feyverk").ToString(), ClaimValueTypes.Boolean),
+                new Claim(ClaimTypes.Role, String.Join(",", session.Gamer.Roles ?? new[]{ "" }), ClaimValueTypes.String),
             };
 
             var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, "Token"));

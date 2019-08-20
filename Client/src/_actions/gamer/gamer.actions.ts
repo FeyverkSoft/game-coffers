@@ -301,6 +301,32 @@ export class GamerActions {
     }
 
     /**
+     * Красное сторно займа, если это возожно
+     */
+    ReverseLoan(props: CancelLoanProps): Function {
+        return (dispatch: Function) => {
+            dispatch(request(props.gamerId));
+            gamerService.ReverseLoan(props.gamerId, props.id)
+                .then(
+                    data => {
+                        dispatch(success(props.gamerId, props.id));
+                        if (props.onSuccess)
+                            props.onSuccess(data);
+                    })
+                .catch(
+                    ex => {
+                        dispatch(failure(props.gamerId));
+                        dispatch(alertInstance.error(ex));
+                        if (props.onFailure)
+                            props.onFailure(ex);
+                    });
+        }
+        function request(gamerId: string) { return { type: GamerActionsType.PROC_CANCEL_GAMER_LOAN, gamerId } }
+        function success(gamerId: string, loanId: string) { return { type: GamerActionsType.SUCC_CANCEL_GAMER_LOAN, gamerId, loanId } }
+        function failure(gamerId: string) { return { type: GamerActionsType.FAILED_CANCEL_GAMER_LOAN, gamerId } }
+    }
+
+    /**
      * отменяет штраф если это возможно
      */
     CancelPenalty(props: CancelPenaltyProps): Function {

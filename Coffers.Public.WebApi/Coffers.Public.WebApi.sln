@@ -21,7 +21,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coffers.Types", "src\Coffer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coffers.Helpers", "src\Coffers.Helpers\Coffers.Helpers.csproj", "{ED78FAD3-557F-4E38-8BE9-8EE4D0A3181E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coffers.Public.Queries.Infrastructure", "src\Coffers.Public.Queries.Infrastructure\Coffers.Public.Queries.Infrastructure.csproj", "{36221D59-045A-4F26-B92C-8E343A62F6F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coffers.Public.Queries.Infrastructure", "src\Coffers.Public.Queries.Infrastructure\Coffers.Public.Queries.Infrastructure.csproj", "{36221D59-045A-4F26-B92C-8E343A62F6F1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workers", "Workers", "{07CE34CC-81F9-4D15-B1E8-B63A28A2255E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coffers.LoanWorker", "src\Coffers.LoanWorker\Coffers.LoanWorker.csproj", "{CEC9F555-E2FA-4A86-A436-FEFF74FBD97E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +69,10 @@ Global
 		{36221D59-045A-4F26-B92C-8E343A62F6F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36221D59-045A-4F26-B92C-8E343A62F6F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36221D59-045A-4F26-B92C-8E343A62F6F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEC9F555-E2FA-4A86-A436-FEFF74FBD97E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEC9F555-E2FA-4A86-A436-FEFF74FBD97E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEC9F555-E2FA-4A86-A436-FEFF74FBD97E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEC9F555-E2FA-4A86-A436-FEFF74FBD97E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,6 +87,8 @@ Global
 		{989BDCE5-9DF2-4E1F-8510-BC33519CAA31} = {343B916F-3AA1-4745-B51A-E1A98D3BDE08}
 		{ED78FAD3-557F-4E38-8BE9-8EE4D0A3181E} = {343B916F-3AA1-4745-B51A-E1A98D3BDE08}
 		{36221D59-045A-4F26-B92C-8E343A62F6F1} = {343B916F-3AA1-4745-B51A-E1A98D3BDE08}
+		{07CE34CC-81F9-4D15-B1E8-B63A28A2255E} = {343B916F-3AA1-4745-B51A-E1A98D3BDE08}
+		{CEC9F555-E2FA-4A86-A436-FEFF74FBD97E} = {07CE34CC-81F9-4D15-B1E8-B63A28A2255E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2E6C263F-F130-461B-8A90-C9F19C17DC07}

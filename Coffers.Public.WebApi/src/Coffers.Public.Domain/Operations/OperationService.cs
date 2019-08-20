@@ -48,6 +48,8 @@ namespace Coffers.Public.Domain.Operations
             var loan = await _oRepository.GetLoan(loanId, default);
             foreach (var op in loansOperations)
             {
+                if (op.ToAccount == null || op.FromAccount == null)
+                    continue;
                 op.ToAccount.ChangeBalance(-1 * op.Amount);
                 op.FromAccount.ChangeBalance(op.Amount);
                 await _oRepository.Save(new Operation
@@ -328,7 +330,7 @@ namespace Coffers.Public.Domain.Operations
 
             var operations = new List<Operation>();
             var loan = await _oRepository.GetLoan(loanId, default);
-            
+
             var gamerAccount = loan.Gamer.DefaultAccount;
             var guildAccount = await _oRepository.GetAccount(guildAccAccountId, default);
 

@@ -216,12 +216,31 @@ namespace Coffers.Public.WebApi.Controllers
 
         /// <summary>
         /// Отменить ещё не оплаченный  займ
-        /// + Красное сторно займа
         /// </summary>
         [HttpDelete("{gamerId}/loans/{loanId}")]
         [PermissionRequired("admin", "officer", "leader")]
         [ProducesResponseType(200)]
         public async Task<IActionResult> CancelLoan([FromRoute]Guid gamerId, [FromRoute]Guid loanId, CancellationToken cancellationToken)
+        {
+            var gamer = await _gamerRepository.Get(gamerId, cancellationToken);
+
+            if (gamer == null || !HttpContext.IsAdmin() && gamer.GuildId != HttpContext.GuildId())
+                throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");
+
+            gamer.CancelLoan(loanId);
+
+            await _gamerRepository.Save(gamer);
+
+            return Ok(new { });
+        }
+
+        /// <summary>
+        /// Реверс займа. Красное сторно.
+        /// </summary>
+        [HttpPost("{gamerId}/loans/{loanId}/reverse")]
+        [PermissionRequired("admin", "officer", "leader")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> ReverseLoan([FromRoute]Guid gamerId, [FromRoute]Guid loanId, CancellationToken cancellationToken)
         {
             var gamer = await _gamerRepository.Get(gamerId, cancellationToken);
 
