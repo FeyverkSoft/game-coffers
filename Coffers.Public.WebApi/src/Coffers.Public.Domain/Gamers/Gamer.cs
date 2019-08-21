@@ -62,6 +62,7 @@ namespace Coffers.Public.Domain.Gamers
         {
             if (Characters == null)
                 Characters = new List<Character>();
+
             var _name = name.Trim();
             var _className = className.Trim();
             var ch = Characters.FirstOrDefault(x =>

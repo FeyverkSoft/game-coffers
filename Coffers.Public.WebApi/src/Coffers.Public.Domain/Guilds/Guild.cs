@@ -12,47 +12,47 @@ namespace Coffers.Public.Domain.Guilds
         /// <summary>
         /// Id гильдии
         /// </summary>
-        public Guid Id { get; set; }
+        public Guid Id { get; private set; }
 
         /// <summary>
         /// Дата создания записи
         /// </summary>
-        public DateTime CreateDate { get; set; }
+        public DateTime CreateDate { get; private set; }
 
         /// <summary>
         /// Дата обновления записи
         /// </summary>
-        public DateTime UpdateDate { get; set; }
+        public DateTime UpdateDate { get; private set; }
 
         /// <summary>
         /// Счёт гильдии
         /// </summary>
-        public Account GuildAccount { get; set; }
+        public Account GuildAccount { get; private set; }
 
         /// <summary>
         /// Название гильдии
         /// </summary>
-        public String Name { get; set; }
+        public String Name { get; private set; }
 
         /// <summary>
         /// тариф гильдии, действующий на данный момент
         /// </summary>
-        public GuildTariff Tariff { get; set; }
+        public GuildTariff Tariff { get; private set; }
 
         /// <summary>
         /// Статус гильдии
         /// </summary>
-        public GuildStatus Status { get; set; }
+        public GuildStatus Status { get; private set; }
 
         /// <summary>
         /// Статус набора в гильдию
         /// </summary>
-        public RecruitmentStatus RecruitmentStatus { get; set; }
+        public RecruitmentStatus RecruitmentStatus { get; private set; }
 
         /// <summary>
         /// Список игроков в гильдии
         /// </summary>
-        public ICollection<Gamer> Gamers { get; set; }
+        public ICollection<Gamer> Gamers { get; private set; }
 
         internal Guild() { }
 
@@ -73,8 +73,7 @@ namespace Coffers.Public.Domain.Guilds
             {
                 if (gamer.Login.Equals(login, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    gamer.Status = GamerStatus.Active;
-                    gamer.Rank = GamerRank.Beginner;
+                    gamer.Activate();
                 }
             }
             UpdateDate = DateTime.UtcNow;

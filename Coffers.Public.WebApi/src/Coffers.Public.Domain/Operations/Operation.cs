@@ -11,7 +11,7 @@ namespace Coffers.Public.Domain.Operations
         /// <summary>
         /// Идентификатор операци
         /// </summary>
-        public Guid Id { get; set; }
+        public Guid Id { get;  set; }
 
         /// <summary>
         /// Дата создания записи

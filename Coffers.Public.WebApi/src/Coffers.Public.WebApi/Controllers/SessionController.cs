@@ -34,7 +34,10 @@ namespace Coffers.Public.WebApi.Controllers
         [AllowAnonymous]
         [HttpPost]
         [ProducesResponseType(typeof(TokenView), 200)]
-        public async Task<IActionResult> Post([FromBody] AuthBinding binding, CancellationToken cancellationToken)
+        public async Task<IActionResult> Post(
+            [FromBody] AuthBinding binding,
+            [FromServices] GamerSecurityService gamerSecurityService,
+            CancellationToken cancellationToken)
         {
             var gamer = await _authorizationRepository.FindGamer(binding.Login, cancellationToken);
             if (gamer == null)
@@ -42,22 +45,19 @@ namespace Coffers.Public.WebApi.Controllers
 
             if (String.IsNullOrEmpty(gamer.Password))
             {
-                gamer = await PutPassword(gamer.Id, binding.Password, cancellationToken);
+                gamerSecurityService.CreatePassword(gamer, binding.Password);
+                await _authorizationRepository.Save(gamer);
             }
-
-            var crypt = new SHA256Managed();
-            var hash = new StringBuilder();
-            var crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(binding.Login + binding.Password + gamer.Id));
-            foreach (var theByte in crypto)
+            else
             {
-                hash.Append(theByte.ToString("x2"));
+                if (!gamerSecurityService.TestPassword(gamer, binding.Password))
+                    throw new ApiException(HttpStatusCode.Unauthorized, ErrorCodes.Forbidden, "");
             }
-
-            if (!hash.ToString().Equals(gamer.Password, StringComparison.InvariantCultureIgnoreCase))
-                throw new ApiException(HttpStatusCode.Unauthorized, ErrorCodes.Forbidden, "");
 
             var sessionId = Guid.NewGuid();
+
             await _authorizationRepository.Save(new Session(sessionId, gamer.Id, 60 * 26, HttpContext.GetIp()));
+
             var roles = new List<String>();
             if (gamer.Roles != null)
                 roles.AddRange(gamer.Roles);
@@ -83,31 +83,6 @@ namespace Coffers.Public.WebApi.Controllers
             session.ExtendSession(-1 * 60 * 27);
             await _authorizationRepository.Save(session);
             return Ok(new { });
-        }
-
-        /// <summary>
-        /// Задаёт логин и пароль пользователю, если у него его нет при первом заходе
-        /// Сделать потом автогенеририруемый с отправкой на почту.
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        private async Task<Gamer> PutPassword(Guid userId, String password, CancellationToken cancellationToken)
-        {
-            var gamer = await _authorizationRepository.GetGamer(userId, cancellationToken);
-            if (gamer == null || gamer.Id != userId || !string.IsNullOrEmpty(gamer.Password))
-                throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.Forbidden, "");
-
-            var crypt = new SHA256Managed();
-            var hash = new StringBuilder();
-            var crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(gamer.Login + password + gamer.Id));
-            foreach (var theByte in crypto)
-            {
-                hash.Append(theByte.ToString("x2"));
-            }
-
-            gamer.SetPassword(hash.ToString());
-            await _authorizationRepository.Save(gamer);
-            return gamer;
         }
     }
 }

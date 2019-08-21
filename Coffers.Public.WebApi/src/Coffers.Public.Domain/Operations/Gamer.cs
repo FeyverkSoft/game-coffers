@@ -7,11 +7,11 @@ namespace Coffers.Public.Domain.Operations
         /// <summary>
         /// Идентификатор игрока
         /// </summary>
-        public Guid Id { get; internal set; }
+        public Guid Id { get; private set; }
 
         /// <summary>
         /// Счёт игрока по умолчанию
         /// </summary>
-        public Account DefaultAccount { get; internal set; }
+        public Account DefaultAccount { get; private set; }
     }
 }

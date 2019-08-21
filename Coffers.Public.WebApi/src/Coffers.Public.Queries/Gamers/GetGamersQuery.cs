@@ -6,7 +6,7 @@ using Query.Core;
 namespace Coffers.Public.Queries.Gamers
 {
     /// <summary>
-    /// 
+    /// Запрос на получение списка игроков в гильдии с применением указанных фильтров
     /// </summary>
     public sealed class GetGamersQuery : IQuery<ICollection<GamersListView>>
     {

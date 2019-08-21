@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 
 namespace Coffers.Public.Domain.Authorization
 {
+    /// <summary>
+    /// Интерфейс предоставляющий доступ к данным сессий игроков
+    /// </summary>
     public interface IAuthorizationRepository
     {
         Task<Session> Get(Guid sessionId, CancellationToken cancellationToken);

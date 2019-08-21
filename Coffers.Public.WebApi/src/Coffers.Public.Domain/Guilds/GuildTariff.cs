@@ -9,32 +9,32 @@ namespace Coffers.Public.Domain.Guilds
         /// <summary>
         /// Идентификатор тарифа гильдии
         /// </summary>
-        public Guid Id { get; set; }
+        public Guid Id { get; internal set; }
 
         /// <summary>
         /// Дата создания тарифа
         /// </summary>
-        public DateTime CreateDate { get; set; }
+        public DateTime CreateDate { get; internal set; }
         /// <summary>
         /// Тариф для главы
         /// </summary>
-        public Tariff LeaderTariff { get; set; }
+        public Tariff LeaderTariff { get; internal set; }
         /// <summary>
         /// Тариф для офицера
         /// </summary>
-        public Tariff OfficerTariff { get; set; }
+        public Tariff OfficerTariff { get; internal set; }
         /// <summary>
         /// Тариф для ветерана
         /// </summary>
-        public Tariff VeteranTariff { get; set; }
+        public Tariff VeteranTariff { get; internal set; }
         /// <summary>
         /// Тариф для солдата
         /// </summary>
-        public Tariff SoldierTariff { get; set; }
+        public Tariff SoldierTariff { get; internal set; }
         /// <summary>
         /// Тариф для духа
         /// </summary>
-        public Tariff BeginnerTariff { get; set; }
+        public Tariff BeginnerTariff { get; internal set; }
 
         public GuildTariff()
         {
@@ -44,13 +44,13 @@ namespace Coffers.Public.Domain.Guilds
 
     public sealed class Tariff
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; private set; }
 
-        public Decimal LoanTax { get; set; }
+        public Decimal LoanTax { get; private set; }
 
-        public Decimal ExpiredLoanTax { get; set; }
+        public Decimal ExpiredLoanTax { get; private set; }
 
-        public IList<Decimal> Tax { get; set; }
+        public IList<Decimal> Tax { get; private set; }
 
         internal Tariff() { }
 

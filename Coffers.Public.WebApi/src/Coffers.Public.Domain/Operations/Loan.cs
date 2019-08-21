@@ -31,14 +31,14 @@ namespace Coffers.Public.Domain.Operations
         /// <summary>
         /// Дата обновления записи
         /// </summary>
-        public DateTime UpdateDate { get; set; }
+        public DateTime UpdateDate { get; private set; }
 
         public LoanStatus LoanStatus { get; private set; }
 
         /// <summary>
         /// Токен конкуренции, предназначен для разруливания согласованности данных, при ассинхроных запросаз
         /// </summary>
-        public Guid ConcurrencyTokens { get; set; }
+        public Guid ConcurrencyTokens { get; private set; }
 
         internal void SetStatus(LoanStatus newStatus)
         {

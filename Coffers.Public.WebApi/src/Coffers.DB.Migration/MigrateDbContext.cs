@@ -11,18 +11,6 @@ namespace Coffers.DB.Migrations
         {
         }
 
-        /* public DbSet<Guild> Guilds { get; set; }
-         public DbSet<Tariff> Tariffs { get; set; }
-         public DbSet<GuildTariff> GuildTariffs { get; set; }
-         public DbSet<Gamer> Gamers { get; set; }
-         public DbSet<Loan> Loans { get; set; }
-         public DbSet<Penalty> Penalties { get; set; }
-         public DbSet<History> Histories { get; set; }
-         public DbSet<Account> Accounts { get; set; }
-         public DbSet<Operation> Operations { get; set; }
-         public DbSet<Character> Characters { get; set; }
-         */
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 

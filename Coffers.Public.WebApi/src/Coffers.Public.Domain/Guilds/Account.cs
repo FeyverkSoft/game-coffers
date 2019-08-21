@@ -7,17 +7,17 @@ namespace Coffers.Public.Domain.Guilds
         /// <summary>
         /// Идентификатор счёта
         /// </summary>
-        public Guid Id { get; set; }
+        public Guid Id { get; private set; }
 
         /// <summary>
         /// Баланс счёта
         /// </summary>
-        public Decimal Balance { get; set; }
+        public Decimal Balance { get; private set; }
 
         /// <summary>
         /// Токен конкуренции, предназначен для разруливания согласованности данных, при ассинхроных запросаз
         /// </summary>
-        public Guid ConcurrencyTokens { get; set; }
+        public Guid ConcurrencyTokens { get; private set; }
 
         public Account()
         {
