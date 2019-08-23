@@ -101,7 +101,7 @@ namespace Coffers.Public.WebApi
             {
                 options.UseMySQL(Configuration.GetConnectionString("Coffers"));
             });
-            
+
 
             services.AddScoped<IGuildRepository, GuildRepository>();
             services.AddScoped<IAuthorizationRepository, AuthorizationRepository>();
@@ -109,6 +109,7 @@ namespace Coffers.Public.WebApi
             services.AddScoped<IOperationsRepository, OperationsRepository>();
 
 
+            services.AddScoped<GamerSecurityService>();
             services.AddScoped<LoanFactory>();
             services.AddScoped<OperationService>();
 
@@ -130,7 +131,7 @@ namespace Coffers.Public.WebApi
             {
                 options.UseMySQL(Configuration.GetConnectionString("Coffers"));
             });
-            
+
             services.RegQueryProcessor(registry =>
             {
                 registry.Register<GuildsQueryHandler>();
@@ -172,7 +173,7 @@ namespace Coffers.Public.WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
-            
+
             app.Use(async (http, next) =>
             {
                 if (http.Request.Headers.ContainsKey("ASPNETCORE-PATH-BASE"))

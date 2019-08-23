@@ -20,14 +20,16 @@ namespace Coffers.Public.Domain.Authorization
 
         private String GetHash(Guid gamerId, String login, String password)
         {
-            var crypt = new SHA256Managed();
-            var hash = new StringBuilder();
-            var crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(login + password + gamerId));
-            foreach (var theByte in crypto)
+            using (var crypt = new SHA256Managed())
             {
-                hash.Append(theByte.ToString("x2"));
+                var hash = new StringBuilder();
+                var crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(login + password + gamerId));
+                foreach (var theByte in crypto)
+                {
+                    hash.Append(theByte.ToString("x2"));
+                }
+                return hash.ToString();
             }
-            return hash.ToString();
         }
     }
 }

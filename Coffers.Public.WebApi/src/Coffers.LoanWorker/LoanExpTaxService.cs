@@ -18,7 +18,7 @@ namespace Coffers.LoanWorker
         /// Но на случай форс-мажаорных ситуаций будем выполнять раз в час.
         /// Тем более сервис идемпотентен
         /// </summary>
-        private const Int32 SleepTime= 60*60*1000;
+        private const Int32 SleepTime = 60 * 60 * 1000;
         private readonly ILogger _logger;
 
         public LoanExpTaxService(ILogger logger)
