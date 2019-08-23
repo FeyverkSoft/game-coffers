@@ -91,15 +91,7 @@ namespace Coffers.Public.Queries.Infrastructure.Guilds
         {
             var q = _context.Guilds
                 .AsNoTracking()
-                .Where(guild => guild.Id == query.GuildId)
-                .Include(g => g.GuildAccount)
-                .ThenInclude(ga => ga.ToOperations)
-                .Include(g => g.Gamers)
-                .ThenInclude(gm => gm.Characters)
-                .Include(g => g.Gamers)
-                .ThenInclude(gm => gm.DefaultAccount)
-                .Include(g => g.Gamers)
-                .ThenInclude(gm => gm.Loans);
+                .Where(guild => guild.Id == query.GuildId);
 
             var now = DateTime.UtcNow.Trunc(DateTruncType.Month);
             var skipLoanStat = new[] { LoanStatus.Paid, LoanStatus.Canceled };

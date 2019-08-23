@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Coffers.Helpers;
 using Coffers.Public.Queries.Gamers;
-using Coffers.Types.Account;
 using Coffers.Types.Gamer;
 using Microsoft.EntityFrameworkCore;
 using Query.Core;
@@ -27,15 +26,10 @@ namespace Coffers.Public.Queries.Infrastructure.Gamers
         {
             var q = _context.Gamers
                 .AsNoTracking()
-                .Include(g => g.DefaultAccount)
-                .Include(g => g.Characters)
-                .Include(g => g.Loans)
-                    .ThenInclude(_ => _.Account)
-                .Include(g => g.Penalties)
                 .Where(g => g.GuildId == query.GuildId);
 
             var dateFrom = (query.DateFrom ?? DateTime.UtcNow).Trunc(DateTruncType.Month);
-            var dateTo = query.DateTo?.Trunc(DateTruncType.Month);
+            var dateTo = (query.DateTo ?? DateTime.UtcNow.AddMonths(1)).Trunc(DateTruncType.Month);
 
             if (query.GamerStatuses != null)
                 q = q.Where(g => query.GamerStatuses.Contains(g.Status));
@@ -63,6 +57,7 @@ namespace Coffers.Public.Queries.Infrastructure.Gamers
                 g.DateOfBirth.Trunc(DateTruncType.Day),
                 g.Penalties
                     .Where(p => p.CreateDate >= dateFrom || p.PenaltyStatus == PenaltyStatus.Active)
+                    .OrderBy(_ => _.CreateDate)
                     .Select(p => new PenaltyView
                     (
                         p.Id,
@@ -70,9 +65,10 @@ namespace Coffers.Public.Queries.Infrastructure.Gamers
                         p.CreateDate,
                         p.Description,
                         p.PenaltyStatus
-                    )).OrderBy(_ => _.Date).ToList(),
+                    )).ToList(),
                  g.Loans
                      .Where(l => l.CreateDate >= dateFrom || l.LoanStatus == LoanStatus.Active || l.LoanStatus == LoanStatus.Expired || l.ExpiredDate >= dateFrom)
+                     .OrderBy(_=>_.CreateDate)
                      .Select(l => new LoanView
                      (
                          l.Id,
@@ -82,7 +78,7 @@ namespace Coffers.Public.Queries.Infrastructure.Gamers
                          l.Description,
                          l.LoanStatus,
                          l.ExpiredDate
-                     )).OrderBy(_ => _.Date).ToList()
+                     )).ToList()
             ))
             .ToListAsync(cancellationToken))
             .OrderBy(_ => _.Status)

@@ -26,11 +26,6 @@ namespace Coffers.Public.Queries.Infrastructure.Profiles
             return await _context.Gamers
                 .Where(g => g.Id == query.UserId)
                 .AsNoTracking()
-                .Include(_ => _.Penalties)
-                .Include(_ => _.Loans)
-                .Include(_ => _.Characters)
-                .Include(_ => _.DefaultAccount)
-                .ThenInclude(_ => _.FromOperations)
                 .Select(g => new BaseGamerInfoView
                 {
                     UserId = g.Id,
@@ -39,7 +34,7 @@ namespace Coffers.Public.Queries.Infrastructure.Profiles
                     Rank = g.Rank,
                     CharCount = g.Characters.Count(c => c.Status == CharStatus.Active),
                     ActiveLoanAmount = g.Loans.Where(l => l.LoanStatus == LoanStatus.Active)
-                        .Sum(l => (l.Amount)),
+                        .Sum(l => l.Amount),
                     ActiveExpLoanAmount = g.Loans.Where(l => l.LoanStatus == LoanStatus.Active)
                         .Sum(l => l.PenaltyAmount),
                     ActiveLoanTaxAmount = g.Loans.Where(l => l.LoanStatus == LoanStatus.Active)
