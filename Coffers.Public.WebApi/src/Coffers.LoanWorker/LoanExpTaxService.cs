@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Coffers.LoanWorker.Domain;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -21,14 +22,35 @@ namespace Coffers.LoanWorker
         private const Int32 SleepTime = 60 * 60 * 1000;
         private readonly ILogger _logger;
 
-        public LoanExpTaxService(ILogger logger)
+        private readonly ILoanRepository _loanRepository;
+        private readonly LoanTaxService _loanTaxService;
+
+        public LoanExpTaxService(
+                ILogger logger,
+                ILoanRepository loanRepository,
+                LoanTaxService loanTaxService
+            )
         {
             _logger = logger;
+            _loanRepository = loanRepository;
+            _loanTaxService = loanTaxService;
         }
 
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            throw new System.NotImplementedException();
+            _logger.LogInformation("Starting loan service...");
+            while (!stoppingToken.IsCancellationRequested)
+            {
+                foreach (var loan in await _loanRepository.GetExpiredLoans(stoppingToken))
+                {
+                    loan.Expire();
+                    await _loanTaxService.ProcessExpireLoan(loan);
+                    await _loanRepository.SaveLoan(loan);
+                }
+                await Task.Delay(SleepTime, stoppingToken);
+            }
+            _logger.LogInformation("Stop loan service...");
+            return;
         }
     }
 }

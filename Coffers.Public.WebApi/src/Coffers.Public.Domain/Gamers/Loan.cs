@@ -57,24 +57,26 @@ namespace Coffers.Public.Domain.Gamers
         /// Необязательное описание, для чего был взят займ
         /// </summary>
         public String Description { get; private set; }
+
         /// <summary>
         /// Статус займа
         /// </summary>
         public LoanStatus LoanStatus { get; private set; }
-        internal void SetStatus(LoanStatus newStatus)
-        {
-            if (LoanStatus != newStatus)
-            {
-                UpdateDate = DateTime.UtcNow;
-                LoanStatus = newStatus;
-                ConcurrencyTokens = Guid.NewGuid();
-            }
-        }
 
         /// <summary>
         /// Токен конкуренции, предназначен для разруливания согласованности данных, при ассинхроных запросаз
         /// </summary>
         public Guid ConcurrencyTokens { get; private set; }
+
+        internal void SetStatus(LoanStatus newStatus)
+        {
+            if (LoanStatus == newStatus)
+                return;
+
+            UpdateDate = DateTime.UtcNow;
+            LoanStatus = newStatus;
+            ConcurrencyTokens = Guid.NewGuid();
+        }
 
         public Loan(Guid id, Guid tariffId, Decimal amount, Decimal taxAmount,
             String description, DateTime borrowDate, DateTime expiredDate)

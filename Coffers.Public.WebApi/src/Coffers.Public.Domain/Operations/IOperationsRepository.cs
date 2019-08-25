@@ -43,9 +43,31 @@ namespace Coffers.Public.Domain.Operations
         /// <returns></returns>
         Task<ICollection<Operation>> GetOperationWithDocIdAndType(Guid id, OperationType type);
 
+        /// <summary>
+        /// Возвращает штраф по его ID
+        /// </summary>
+        /// <param name="penaltyId"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         Task<Penalty> GetPenalty(Guid penaltyId, CancellationToken cancellationToken);
+        /// <summary>
+        /// Сохраняет штраф
+        /// </summary>
+        /// <param name="penalty"></param>
+        /// <returns></returns>
         Task SavePenalty(Penalty penalty);
+        /// <summary>
+        /// Возвращает займ
+        /// </summary>
+        /// <param name="loanId"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         Task<Loan> GetLoan(Guid loanId, CancellationToken cancellationToken);
+        /// <summary>
+        /// Сохраняет займ
+        /// </summary>
+        /// <param name="loan"></param>
+        /// <returns></returns>
         Task SaveLoan(Loan loan);
     }
 }

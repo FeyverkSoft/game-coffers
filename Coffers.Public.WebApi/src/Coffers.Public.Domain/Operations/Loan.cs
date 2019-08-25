@@ -42,12 +42,11 @@ namespace Coffers.Public.Domain.Operations
 
         internal void SetStatus(LoanStatus newStatus)
         {
-            if (LoanStatus != newStatus)
-            {
-                UpdateDate = DateTime.UtcNow;
-                LoanStatus = newStatus;
-                ConcurrencyTokens = Guid.NewGuid();
-            }
+            if (LoanStatus == newStatus)
+                return;
+            UpdateDate = DateTime.UtcNow;
+            LoanStatus = newStatus;
+            ConcurrencyTokens = Guid.NewGuid();
         }
     }
 }

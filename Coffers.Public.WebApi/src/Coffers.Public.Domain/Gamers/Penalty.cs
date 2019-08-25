@@ -52,12 +52,12 @@ namespace Coffers.Public.Domain.Gamers
 
         internal void SetStatus(PenaltyStatus canceled)
         {
-            if (PenaltyStatus != canceled)
-            {
-                PenaltyStatus = canceled;
-                UpdateDate = DateTime.UtcNow;
-                ConcurrencyTokens = Guid.NewGuid();
-            }
+            if (PenaltyStatus == canceled)
+                return;
+
+            PenaltyStatus = canceled;
+            UpdateDate = DateTime.UtcNow;
+            ConcurrencyTokens = Guid.NewGuid();
         }
     }
 }

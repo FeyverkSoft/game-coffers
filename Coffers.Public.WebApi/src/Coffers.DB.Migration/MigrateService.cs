@@ -68,7 +68,7 @@ namespace Coffers.DB.Migrations
 
                     await Task.Delay(attempt * 1000, stoppingToken);
                 }
-                while (attempt < RetryCount);
+                while (attempt < RetryCount || !stoppingToken.IsCancellationRequested);
             }
 
         }
