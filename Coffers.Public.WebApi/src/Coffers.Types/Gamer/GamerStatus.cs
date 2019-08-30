@@ -2,10 +2,11 @@
 {
     public enum GamerStatus
     {
-        Afk=2,
-        Banned=4,
-        Active=0,
-        Left=3,
-        New=1
+        Active = 0,
+        New = 1,
+        Afk = 2,
+        Spirit = 3,
+        Left = 4,
+        Banned = 5
     }
 }
