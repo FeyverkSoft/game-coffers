@@ -7,19 +7,42 @@ namespace Coffers.DB.Migrations.Entities
         /// <summary>
         /// Гильдия
         /// </summary>
-        public Guild Guild { get; }
+        public Guid GuildId { get; set; }
 
         /// <summary>
         /// Дата
         /// </summary>
-        public DateTime Date { get; }
+        public DateTime Date { get; set; }
 
-        public Decimal Balance { get; }
+        /// <summary>
+        /// Баланс гильдии
+        /// </summary>
+        public Decimal Balance { get; set; }
 
-        public Decimal Tax { get; }
+        /// <summary>
+        /// Сумма налогов собранная на конец отчётного периуда
+        /// </summary>
+        public Decimal Tax { get; set; }
 
-        public Decimal UsersBalance { get; }
+        /// <summary>
+        /// Баланс пользователей
+        /// </summary>
+        public Decimal UsersBalance { get; set; }
 
-        public Decimal LoansBalance { get; }
+        /// <summary>
+        /// Баланс займов
+        /// </summary>
+        public Decimal LoansBalance { get; set; }
+
+        /// <summary>
+        /// Количество юзеров
+        /// </summary>
+        public Int32 UserCount { get; set; }
+
+        /// <summary>
+        /// Сумма штрафов
+        /// </summary>
+        public Int32 PenaltyAmount { get; set; }
+
     }
 }

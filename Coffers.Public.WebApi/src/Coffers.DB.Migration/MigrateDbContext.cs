@@ -398,6 +398,40 @@ namespace Coffers.DB.Migrations
 
             });
 
+            modelBuilder.Entity<OperDay>(b =>
+            {
+                b.ToTable(nameof(OperDay));
+
+                b.HasKey(o => new { o.GuildId, o.Date });
+                b.HasIndex(o => new { o.GuildId, o.Date })
+                    .IsUnique();
+                b.HasIndex(o => o.GuildId);
+
+                b.Property(o => o.Balance)
+                    .HasDefaultValue(0)
+                    .IsRequired();
+
+                b.Property(o => o.LoansBalance)
+                    .HasDefaultValue(0)
+                    .IsRequired();
+
+                b.Property(o => o.PenaltyAmount)
+                    .HasDefaultValue(0)
+                    .IsRequired();
+
+                b.Property(o => o.Tax)
+                    .HasDefaultValue(0)
+                    .IsRequired();
+
+                b.Property(o => o.UserCount)
+                    .HasDefaultValue(0)
+                    .IsRequired();
+
+                b.Property(o => o.UsersBalance)
+                    .HasDefaultValue(0)
+                    .IsRequired();
+            });
+
             base.OnModelCreating(modelBuilder);
         }
     }

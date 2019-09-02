@@ -35,17 +35,25 @@ namespace Coffers.DB.Migrations.Entities
         /// Название гильдии
         /// </summary>
         public String Name { get; set; }
+
         /// <summary>
         /// Статус гильдии
         /// </summary>
         public GuildStatus Status { get; set; }
+
         /// <summary>
         /// Статус набора в гильдию
         /// </summary>
         public RecruitmentStatus RecruitmentStatus { get; set; }
+
         /// <summary>
         /// Список игроков в гильдии
         /// </summary>
         public ICollection<Gamer> Gamers { get; set; }
+
+        /// <summary>
+        /// Опер дни
+        /// </summary>
+        public ICollection<OperDay> OperDays { get; set; }
     }
 }

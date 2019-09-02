@@ -9,6 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20190902172632_operday.cs" />
+    <Compile Remove="Migrations\20190902172632_operday.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.6"></PackageReference>
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="2.2.0"></PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.2.0"></PackageReference>
