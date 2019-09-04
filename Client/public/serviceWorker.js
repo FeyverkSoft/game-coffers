@@ -1,5 +1,6 @@
 const CACHE = 'daddy_and_co-v1';
 const timeout = 5500;
+var assets=[];
 
 const register = () => {
     let isLocalhost = false;
@@ -61,7 +62,7 @@ self.addEventListener('install', (event) => {
                         .filter(key => !key.includes(".map"))
                         .map(f => files[f]);
 
-                    ["./", "./bd"].forEach(x => {
+                    ["./", "./birthday", "./logout", "./auth"].forEach(x => {
                         cashedFiles.push(x);
                     })
 
