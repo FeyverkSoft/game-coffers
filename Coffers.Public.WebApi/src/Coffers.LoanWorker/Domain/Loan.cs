@@ -55,14 +55,28 @@ namespace Coffers.LoanWorker.Domain
 
         public Guid ConcurrencyTokens { get; private set; }
 
+        protected Loan() { }
+
         /// <summary>
-        /// Прерощает суммуштрафа по займу на указанную величину
+        /// Прерощает сумму штрафа по займу на указанную величину
         /// </summary>
         /// <param name="penaltyAmount"></param>
         internal void IncrimentPenaltyAmount(Decimal penaltyAmount)
         {
             PenaltyAmount += penaltyAmount;
             Account.ChangeBalance(penaltyAmount);
+            UpdateDate = DateTime.UtcNow;
+            ConcurrencyTokens = new Guid();
+        }
+
+        /// <summary>
+        /// Прерощает сумму процентов по займу на указанную величину
+        /// </summary>
+        /// <param name="penaltyAmount"></param>
+        internal void IncrimentTaxAmount(Decimal taxAmount)
+        {
+            TaxAmount += taxAmount;
+            Account.ChangeBalance(taxAmount);
             UpdateDate = DateTime.UtcNow;
             ConcurrencyTokens = new Guid();
         }

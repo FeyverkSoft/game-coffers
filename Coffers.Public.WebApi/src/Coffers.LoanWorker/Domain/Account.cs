@@ -19,6 +19,7 @@ namespace Coffers.LoanWorker.Domain
         /// </summary>
         public Guid ConcurrencyTokens { get; private set; }
 
+        protected Account() { }
 
         public void ChangeBalance(Decimal amount)
         {

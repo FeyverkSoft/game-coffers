@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Coffers.Helpers;
 using Coffers.Types.Account;
@@ -33,7 +34,8 @@ namespace Coffers.LoanWorker.Domain
                 return;
             var days = (DateTime.Now.Trunc(DateTruncType.Day) - loan.ExpiredDate.Trunc(DateTruncType.Day)).Days;
 
-            var loanAmount = loan.Account.Balance > loan.Amount ? loan.Amount : loan.Account.Balance;
+            var dd = loan.Account.Balance - loan.PenaltyAmount;
+            var loanAmount = loan.PenaltyAmount == 0 ? loan.Account.Balance : dd > 0 ? dd : loan.Amount;
 
             var penaltyAmount = (loanAmount * (loan.Tariff.ExpiredLoanTax / 100)) * days - loan.PenaltyAmount;
 
@@ -54,7 +56,7 @@ namespace Coffers.LoanWorker.Domain
 
             await _oRepository.Save(new Operation
             (
-                new Guid(timeByte.ToArray()),
+                new Guid(timeByte.Take(16).ToArray()),
                 loan.Id,
                 penaltyAmount,
                 OperationType.Other,
@@ -73,9 +75,11 @@ namespace Coffers.LoanWorker.Domain
             if (loan.LoanStatus != LoanStatus.Active && loan.ExpiredDate < DateTime.Now)
                 return;
 
-            var loanAmount = loan.Account.Balance > loan.Amount ? loan.Amount : loan.Account.Balance;
+            var days = (DateTime.Now.Trunc(DateTruncType.Day) - loan.ExpiredDate.Trunc(DateTruncType.Day)).Days;
 
-            var taxAmount = loanAmount * (loan.Tariff.LoanTax / 100);
+          //  var loanAmount = loan.Account.Balance > loan.Amount ? loan.Amount : loan.Account.Balance;
+
+            var taxAmount = (loan.Amount * (loan.Tariff.LoanTax / 100)) * days - loan.TaxAmount;
 
             //если процент уже был учтён, то скипаем
             if (taxAmount == 0)
@@ -83,9 +87,9 @@ namespace Coffers.LoanWorker.Domain
 
             if (taxAmount < 0)
                 throw new ArgumentOutOfRangeException(nameof(taxAmount), "Сумма процента к начислению отрицательная. Такого быть недолжно");
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
 
-            //loan.IncrimentTaxAmount(taxAmount);
+            loan.IncrimentTaxAmount(taxAmount);
 
             //хитрая логика генерации последовательного GUID.
             //моет конечно и стрельнуть, но пока что при небольших объёмах всё будет пучком
@@ -95,7 +99,7 @@ namespace Coffers.LoanWorker.Domain
 
             await _oRepository.Save(new Operation
             (
-                new Guid(timeByte.ToArray()),
+                new Guid(timeByte.Take(16).ToArray()),
                 loan.Id,
                 taxAmount,
                 OperationType.Other,

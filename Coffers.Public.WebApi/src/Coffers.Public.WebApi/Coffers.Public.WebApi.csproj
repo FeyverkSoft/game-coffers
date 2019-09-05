@@ -44,6 +44,7 @@
     <ProjectReference Include="..\..\Query.Core\Query.Core.csproj" />
     <ProjectReference Include="..\Coffers.DB.Migration\Coffers.DB.Migrations.csproj" />
     <ProjectReference Include="..\Coffers.Helpers\Coffers.Helpers.csproj" />
+    <ProjectReference Include="..\Coffers.LoanWorker\Coffers.LoanWorker.csproj" />
     <ProjectReference Include="..\Coffers.Public.Domain\Coffers.Public.Domain.csproj" />
     <ProjectReference Include="..\Coffers.Public.Infrastructure\Coffers.Public.Infrastructure.csproj" />
     <ProjectReference Include="..\Coffers.Public.Queries.Infrastructure\Coffers.Public.Queries.Infrastructure.csproj" />

@@ -31,6 +31,7 @@ namespace Coffers.LoanWorker
         {
             return await _context.Loans
                 .Include(_ => _.Account)
+                .Include(_=>_.Tariff)
                 .Where(_ => (_.LoanStatus == LoanStatus.Active || _.LoanStatus == LoanStatus.Expired) && _.ExpiredDate < DateTime.UtcNow.Trunc(DateTruncType.Day))
                 .ToListAsync(cancellationToken);
         }

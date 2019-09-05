@@ -54,6 +54,8 @@ namespace Coffers.LoanWorker.Domain
         /// </summary>
         public Guid? DocumentId { get; private set; }
 
+        protected Operation(){}
+
         public Operation(Guid id, Guid documentId, Decimal amount, OperationType type, String description, Account account)
         {
             Id = id;

@@ -33,6 +33,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using Query.Core.FluentExtensions;
+using Coffers.LoanWorker;
 
 namespace Coffers.Public.WebApi
 {
@@ -159,9 +160,14 @@ namespace Coffers.Public.WebApi
             services.AddDbContext<MigrateDbContext>(options =>
                 options.UseMySQL(Configuration.GetConnectionString("CoffersMigration")));
             services.AddHostedService<MigrateService<MigrateDbContext>>();
-
             #endregion
 
+            #region Включение воркера по займам в проект
+            //пока что костыльно
+            services.AddDbContext< LoanWorker.Infrastructure.LoanWorkerDbContext> (options =>
+                options.UseMySQL(Configuration.GetConnectionString("Coffers")));
+            services.AddHostedService<LoanExpTaxService<LoanWorker.Infrastructure.LoanWorkerDbContext>>();
+            #endregion
 
             services.AddSwagger();
         }
