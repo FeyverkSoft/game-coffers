@@ -107,7 +107,7 @@ namespace Coffers.Public.WebApi.Controllers
         [ProducesResponseType(typeof(ICollection<OperationView>), 200)]
         public async Task<ActionResult<ICollection<OperationView>>> AddOperation(
             [FromBody] CreateOperationBinding binding,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default)
         {
             var operation = await _operationsRepository.Get(binding.Id, cancellationToken);
             if (operation != null && (operation.Type != binding.Type || operation.Amount != binding.Amount))
@@ -131,7 +131,8 @@ namespace Coffers.Public.WebApi.Controllers
                              await GetAccountId(binding.FromUserId.Value, cancellationToken),
                              guildAcc.AccountId,
                              binding.Amount,
-                             binding.Description);
+                             binding.Description,
+                             cancellationToken);
                         break;
                     case OperationType.Penalty:
                         await _operationService.AddPenaltyOperation(
@@ -139,7 +140,8 @@ namespace Coffers.Public.WebApi.Controllers
                             guildAcc.AccountId,
                             binding.PenaltyId.Value,
                             binding.Amount,
-                            binding.Description);
+                            binding.Description,
+                            cancellationToken);
                         break;
                     case OperationType.Loan:
                         await _operationService.AddLoanOperation(
@@ -147,7 +149,8 @@ namespace Coffers.Public.WebApi.Controllers
                             guildAcc.AccountId,
                             binding.LoanId.Value,
                             binding.Amount,
-                            binding.Description);
+                            binding.Description,
+                            cancellationToken);
                         break;
                     case OperationType.Exchange:
                         if (binding.Amount < 0)
@@ -156,7 +159,8 @@ namespace Coffers.Public.WebApi.Controllers
                             binding.Id,
                             await GetAccountId(binding.FromUserId.Value, cancellationToken),
                             binding.Amount,
-                            binding.Description);
+                            binding.Description,
+                            cancellationToken);
                         break;
                     case OperationType.Output:
                         await _operationService.DoOutputOperation(
@@ -164,7 +168,8 @@ namespace Coffers.Public.WebApi.Controllers
                             guildAcc.AccountId,
                             await GetAccountId(binding.ToUserId.Value, cancellationToken),
                             binding.Amount,
-                            binding.Description);
+                            binding.Description,
+                            cancellationToken);
                         break;
                     case OperationType.InternalOutput:
                         await _operationService.DoInternalOutputOperation(
@@ -172,14 +177,16 @@ namespace Coffers.Public.WebApi.Controllers
                             guildAcc.AccountId,
                             await GetAccountId(binding.ToUserId.Value, cancellationToken),
                             binding.Amount,
-                            binding.Description);
+                            binding.Description,
+                            cancellationToken);
                         break;
                     case OperationType.Emission:
                         await _operationService.EmissionOperation(
                             binding.Id,
                             guildAcc.AccountId,
                             binding.Amount,
-                            binding.Description);
+                            binding.Description,
+                            cancellationToken);
                         break;
                     case OperationType.InternalEmission:
                         await _operationService.DoInternalEmissionOperation(
@@ -187,14 +194,29 @@ namespace Coffers.Public.WebApi.Controllers
                             await GetAccountId(binding.FromUserId.Value, cancellationToken),
                             guildAcc.AccountId,
                             binding.Amount,
-                            binding.Description);
+                            binding.Description,
+                            cancellationToken);
                         break;
                     case OperationType.Sell:
                         await _operationService.AddSellOperation(
                             binding.Id,
                             guildAcc.AccountId,
                             binding.Amount,
-                            binding.Description);
+                            binding.Description,
+                            cancellationToken);
+                        break;
+                    case OperationType.Deal:
+                        if (binding.ToUserId == null || binding.FromUserId == null)
+                            throw new ApiException(HttpStatusCode.BadRequest, ErrorCodes.IncorrectOperation, "");
+                        await _operationService.AddDealOperation(
+                            binding.Id,
+                            guildAcc.AccountId,
+                            await GetAccountId(binding.FromUserId.Value, cancellationToken),
+                            await GetAccountId(binding.ToUserId.Value, cancellationToken),
+                            binding.Amount,
+                            binding.Description,
+                            cancellationToken
+                        );
                         break;
                     case OperationType.Other:
                         if (binding.ToUserId != null && binding.FromUserId == null)
@@ -203,7 +225,8 @@ namespace Coffers.Public.WebApi.Controllers
                                 binding.Id,
                                 await GetAccountId(binding.ToUserId.Value, cancellationToken),
                                 binding.Amount,
-                                binding.Description);
+                                binding.Description,
+                                cancellationToken);
                         }
                         else if (binding.ToUserId != null && binding.FromUserId != null)
                         {
@@ -212,7 +235,8 @@ namespace Coffers.Public.WebApi.Controllers
                                 await GetAccountId(binding.FromUserId.Value, cancellationToken),
                                 await GetAccountId(binding.ToUserId.Value, cancellationToken),
                                 binding.Amount,
-                                binding.Description);
+                                binding.Description,
+                                cancellationToken);
                         }
                         break;
                     default:
