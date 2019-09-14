@@ -29,12 +29,29 @@ namespace Coffers.LoanWorker
         /// <returns></returns>
         public async Task<IList<Loan>> GetExpiredLoans(CancellationToken cancellationToken)
         {
+            var truncedDate = DateTime.UtcNow.Trunc(DateTruncType.Day);
             return await _context.Loans
                 .Include(_ => _.Account)
-                .Include(_=>_.Tariff)
-                .Where(_ => (_.LoanStatus == LoanStatus.Active || _.LoanStatus == LoanStatus.Expired) && _.ExpiredDate < DateTime.UtcNow.Trunc(DateTruncType.Day))
+                .Include(_ => _.Tariff)
+                .Where(_ => (_.LoanStatus == LoanStatus.Active || _.LoanStatus == LoanStatus.Expired) && _.ExpiredDate < truncedDate)
                 .ToListAsync(cancellationToken);
         }
+
+        /// <summary>
+        /// Возвращает список всех активных займов
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<IList<Loan>> GetActiveLoans(CancellationToken cancellationToken)
+        {
+            var truncedDate = DateTime.UtcNow.Trunc(DateTruncType.Day);
+            return await _context.Loans
+                .Include(_ => _.Account)
+                .Include(_ => _.Tariff)
+                .Where(_ => (_.LoanStatus == LoanStatus.Active) && truncedDate > _.ExpiredDate)
+                .ToListAsync(cancellationToken);
+        }
+
 
         /// <summary>
         /// Сохраняет информацию по займу

@@ -51,6 +51,10 @@ namespace Coffers.LoanWorker
                     loan.Expire();
                     await _loanTaxService.ProcessExpireLoan(loan);
                     await _loanRepository.SaveLoan(loan);
+
+                }
+                foreach (var loan in await _loanRepository.GetActiveLoans(stoppingToken))
+                {
                     await _loanTaxService.ProcessTaxLoan(loan);
                     await _loanRepository.SaveLoan(loan);
                 }

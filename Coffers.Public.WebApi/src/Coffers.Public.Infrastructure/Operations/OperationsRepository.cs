@@ -68,13 +68,13 @@ namespace Coffers.Public.Infrastructure.Operations
         /// <param name="id"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public async Task<ICollection<Operation>> GetOperationWithDocIdAndType(Guid id, OperationType type)
+        public async Task<ICollection<Operation>> GetOperationWithDocIdAndType(Guid id, OperationType type, CancellationToken cancellationToken = default)
         {
             return await _context.Operations
                 .Include(_ => _.FromAccount)
                 .Include(_ => _.ToAccount)
                 .Where(_ => _.DocumentId == id && _.Type == type)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
         }
 
         public async Task<Penalty> GetPenalty(Guid penaltyId, CancellationToken cancellationToken)

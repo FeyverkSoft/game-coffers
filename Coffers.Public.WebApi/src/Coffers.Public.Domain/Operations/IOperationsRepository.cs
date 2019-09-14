@@ -41,7 +41,7 @@ namespace Coffers.Public.Domain.Operations
         /// <param name="id"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        Task<ICollection<Operation>> GetOperationWithDocIdAndType(Guid id, OperationType type);
+        Task<ICollection<Operation>> GetOperationWithDocIdAndType(Guid id, OperationType type, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Возвращает штраф по его ID

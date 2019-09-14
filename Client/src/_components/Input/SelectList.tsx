@@ -23,7 +23,7 @@ interface IBaseSelectProps extends React.Props<any> {
     items?: Array<Item>;
     className?: string;
     onChange?(value: string, isValid?: boolean, path?: string): any;
-   //[id: string]: any;
+    //[id: string]: any;
 }
 
 export class BaseSelect<T> extends React.Component<IBaseSelectProps & T, any> {
@@ -86,6 +86,7 @@ export class BaseSelect<T> extends React.Component<IBaseSelectProps & T, any> {
 
 interface IMaterialSelectProps extends IBaseSelectProps {
     style?: React.CSSProperties;
+    isRequired?: boolean;
     label?: string;
     id?: string;
     isLoading?: boolean;
@@ -99,7 +100,7 @@ class _MaterialSelect extends BaseSelect<IMaterialSelectProps> {
             <div className={`${style['select-wrapper']} ${this.props.className}`}
                 style={$this.props.style}>
                 <select
-                    className={`${style['input']} ${this.state.value ? `${style['full']} ${style['default']}` : style['error']}`}
+                    className={`${style['input']} ${this.state.value || !this.props.isRequired ? `${style['full']} ${style['default']}` : style['error']}`}
                     id={this.props.path}
                     name={$this.props.id}
                     onChange={$this.onChange}

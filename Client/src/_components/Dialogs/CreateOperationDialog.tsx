@@ -83,6 +83,8 @@ class _CreateOperationDialog extends BaseReactComp<IProps, IState> {
                 return `Уплата штрафа игроком ${users.filter(_ => _.value == fromUserId.value)[0].name}: ${description.value}`;
             case 'Loan':
                 return `Погашение в пользу займа (${loans.filter(_ => _.value == loanId.value)[0].name}): ${description.value}`;
+            case 'Sell':
+                return `Операция продажи предметов со склада`;
             default:
                 return description.value || '';
         }
@@ -143,7 +145,7 @@ class _CreateOperationDialog extends BaseReactComp<IProps, IState> {
                             isRequiredMessage={Lang('IsRequired')}
                         />
                     </Col1>
-                    <IF value={type} in={['Tax', 'Exchange', 'InternalEmission', 'Other']}>
+                    <IF value={type} in={['Tax', 'Exchange', 'InternalEmission', 'Other', 'Deal']}>
                         <Col1>
                             <MaterialSelect
                                 items={this.props.users}
@@ -157,7 +159,7 @@ class _CreateOperationDialog extends BaseReactComp<IProps, IState> {
                             />
                         </Col1>
                     </IF>
-                    <IF value={type} in={['Output', 'InternalOutput', 'Other']}>
+                    <IF value={type} in={['Output', 'InternalOutput', 'Other', 'Deal']}>
                         <Col1>
                             <MaterialSelect
                                 items={this.props.users}
