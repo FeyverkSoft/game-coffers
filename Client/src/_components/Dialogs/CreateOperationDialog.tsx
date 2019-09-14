@@ -151,7 +151,7 @@ class _CreateOperationDialog extends BaseReactComp<IProps, IState> {
                                 items={this.props.users}
                                 label={Lang('OPERATION_FROMUSERID')}
                                 onChange={this.onInputVal}
-                                isRequired={type != 'Other'}
+                                isRequired={type != 'Other' || (type == 'Other' && !toUserId.value)}
                                 path='fromUserId'
                                 type='default'
                                 value={fromUserId.value}
@@ -165,7 +165,7 @@ class _CreateOperationDialog extends BaseReactComp<IProps, IState> {
                                 items={this.props.users}
                                 label={Lang('OPERATION_TOUSERID')}
                                 onChange={this.onInputVal}
-                                isRequired={type != 'Other'}
+                                isRequired={type != 'Other' || (type == 'Other' && !fromUserId.value)}
                                 path='toUserId'
                                 type='default'
                                 value={toUserId.value}

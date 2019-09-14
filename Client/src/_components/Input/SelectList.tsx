@@ -114,7 +114,7 @@ class _MaterialSelect extends BaseSelect<IMaterialSelectProps> {
                 </select>
                 <IF value={this.props.label}>
                     <label
-                        className={`${style['label']} ${this.state.value ? style['default'] : style['error']}`}
+                        className={`${style['label']} ${this.state.value || !this.props.isRequired ? style['default'] : style['error']}`}
                         htmlFor={this.props.path}
                     >
                         {$this.props.label}

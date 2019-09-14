@@ -293,7 +293,7 @@ namespace Coffers.Public.Domain.Operations
                 },
                 new Operation
                 {
-                    Id = id,
+                    Id = Guid.NewGuid(),
                     DocumentId = null,
                     Amount = amount,
                     OperationDate = DateTime.UtcNow,
