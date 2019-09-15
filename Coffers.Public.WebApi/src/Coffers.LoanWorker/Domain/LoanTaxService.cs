@@ -52,8 +52,10 @@ namespace Coffers.LoanWorker.Domain
 
             //хитрая логика генерации последовательного GUID.
             //моет конечно и стрельнуть, но пока что при небольших объёмах всё будет пучком
-            var timeByte = new List<byte>(BitConverter.GetBytes(DateTime.UtcNow.Trunc(DateTruncType.Day).Ticks));
-            timeByte.Add((byte)OperationType.Loan);
+            var timeByte = new List<byte>(BitConverter.GetBytes(DateTime.UtcNow.Trunc(DateTruncType.Day).Ticks))
+            {
+                (byte)OperationType.Loan
+            };
             timeByte.AddRange(loan.Id.ToByteArray());
 
             await _oRepository.Save(new Operation
@@ -61,7 +63,7 @@ namespace Coffers.LoanWorker.Domain
                 new Guid(timeByte.Take(16).ToArray()),
                 loan.Id,
                 penaltyAmount,
-                OperationType.Other,
+                OperationType.LoanTax,
                 "loan penalty tax",
                 loan.Account
             ));
@@ -104,7 +106,7 @@ namespace Coffers.LoanWorker.Domain
                 new Guid(timeByte.Take(16).ToArray()),
                 loan.Id,
                 taxAmount,
-                OperationType.Other,
+                OperationType.LoanTax,
                 "loan tax",
                 loan.Account
             ));

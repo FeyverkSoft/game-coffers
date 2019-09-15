@@ -27,9 +27,12 @@ namespace Coffers.Public.Queries.Infrastructure.Operations
             Guid? loanAccId = null;
 
             if (query.Type == OperationType.Loan)
+            {
+                q = q.Where(o => o.DocumentId == query.DocumentId && (o.Type == query.Type || o.Type == OperationType.LoanTax));
                 loanAccId = _context.Loans.AsNoTracking().Where(o => o.Id == query.DocumentId)
                     .Select(_ => _.Account.Id)
                     .FirstOrDefault();
+            }
 
             return await q
                 .OrderBy(o => o.OperationDate)
