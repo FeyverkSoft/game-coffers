@@ -37,7 +37,8 @@ namespace Coffers.LoanWorker.Domain
             if ((DateTime.UtcNow - loan.ExpiredDate).TotalDays > 60)
                 return;
 
-            var loanAmount = loan.Account.Balance;
+            var dd = loan.Account.Balance - loan.PenaltyAmount;
+            var loanAmount = loan.PenaltyAmount == 0 ? loan.Account.Balance : dd > 0 ? dd : loan.Amount;
 
             var penaltyAmount = (loanAmount * (loan.Tariff.ExpiredLoanTax / 100)) * days - loan.PenaltyAmount;
 

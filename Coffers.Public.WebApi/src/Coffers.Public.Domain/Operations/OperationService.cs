@@ -288,7 +288,7 @@ namespace Coffers.Public.Domain.Operations
                     Amount = amount,
                     OperationDate = DateTime.UtcNow,
                     Type = OperationType.Deal,
-                    Description = $"Сделка между игроками через склад гильдии; {description}",
+                    Description = $"Промежуточное пополнение счёта пользователя из внешней системы. Сделка между игроками через склад гильдии; {description}",
                     ToAccount = fromUserAccount,
                 },
                 new Operation
@@ -298,7 +298,7 @@ namespace Coffers.Public.Domain.Operations
                     Amount = amount,
                     OperationDate = DateTime.UtcNow,
                     Type = OperationType.Deal,
-                    Description = $"Сделка между игроками через склад гильдии; {description}",
+                    Description = $"Промежуточное пополнение склада гильдии со счёта пользователя. Сделка между игроками через склад гильдии; {description}",
                     FromAccount = fromUserAccount,
                     ToAccount = guildAccount,
                 },
@@ -309,7 +309,7 @@ namespace Coffers.Public.Domain.Operations
                     Amount = amount,
                     OperationDate = DateTime.UtcNow,
                     Type = OperationType.Deal,
-                    Description =  $"Сделка между игроками через склад гильдии; {description}",
+                    Description =  $"Вывод на счёт получателя. Сделка между игроками через склад гильдии; {description}",
                     FromAccount = guildAccount,
                     ToAccount = toUserAccount
                 },
@@ -320,7 +320,7 @@ namespace Coffers.Public.Domain.Operations
                     Amount = amount,
                     OperationDate = DateTime.UtcNow,
                     Type = OperationType.Deal,
-                    Description =  $"Сделка между игроками через склад гильдии; {description}",
+                    Description =  $"Вывод из казны во внешнюю систему. Сделка между игроками через склад гильдии; {description}",
                     FromAccount = toUserAccount,
                 },
             };
