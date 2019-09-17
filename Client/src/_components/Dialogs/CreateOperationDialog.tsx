@@ -74,13 +74,13 @@ class _CreateOperationDialog extends BaseReactComp<IProps, IState> {
     }
 
     GetDesc = (): string => {
-        let { description, type, fromUserId, loanId } = this.state;
-        let { users, loans } = this.props;
+        let { description, type, fromUserId, loanId, penaltyId } = this.state;
+        let { users, loans, penalties } = this.props;
         switch (type) {
             case 'Tax':
                 return `Уплата налога игроком ${users.filter(_ => _.value == fromUserId.value)[0].name}: ${description.value}`;
             case 'Penalty':
-                return `Уплата штрафа игроком ${users.filter(_ => _.value == fromUserId.value)[0].name}: ${description.value}`;
+                return `Уплата штрафа игроком ${penalties.filter(_ => _.value == penaltyId.value)[0].name}: ${description.value}`;
             case 'Loan':
                 return `Погашение в пользу займа (${loans.filter(_ => _.value == loanId.value)[0].name}): ${description.value}`;
             case 'Sell':

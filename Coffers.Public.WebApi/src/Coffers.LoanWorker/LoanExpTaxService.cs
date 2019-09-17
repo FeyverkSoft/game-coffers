@@ -48,15 +48,28 @@ namespace Coffers.LoanWorker
             {
                 foreach (var loan in await _loanRepository.GetExpiredLoans(stoppingToken))
                 {
-                    loan.Expire();
-                    await _loanTaxService.ProcessExpireLoan(loan);
-                    await _loanRepository.SaveLoan(loan);
-
+                    try
+                    {
+                        loan.Expire();
+                        await _loanTaxService.ProcessExpireLoan(loan);
+                        await _loanRepository.SaveLoan(loan);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex.Message, ex);
+                    }
                 }
                 foreach (var loan in await _loanRepository.GetActiveLoans(stoppingToken))
                 {
-                    await _loanTaxService.ProcessTaxLoan(loan);
-                    await _loanRepository.SaveLoan(loan);
+                    try
+                    {
+                        await _loanTaxService.ProcessTaxLoan(loan);
+                        await _loanRepository.SaveLoan(loan);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex.Message, ex);
+                    }
                 }
                 await Task.Delay(SleepTime, stoppingToken);
             }
