@@ -27,6 +27,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workers", "Workers", "{07CE
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coffers.LoanWorker", "src\Coffers.LoanWorker\Coffers.LoanWorker.csproj", "{CEC9F555-E2FA-4A86-A436-FEFF74FBD97E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coffers.OperDay", "src\Coffers.OperDay\Coffers.OperDay.csproj", "{A45A9C2A-EB49-4304-8FD6-DAC60682FB35}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{CEC9F555-E2FA-4A86-A436-FEFF74FBD97E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEC9F555-E2FA-4A86-A436-FEFF74FBD97E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEC9F555-E2FA-4A86-A436-FEFF74FBD97E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A45A9C2A-EB49-4304-8FD6-DAC60682FB35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A45A9C2A-EB49-4304-8FD6-DAC60682FB35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A45A9C2A-EB49-4304-8FD6-DAC60682FB35}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A45A9C2A-EB49-4304-8FD6-DAC60682FB35}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,6 +95,7 @@ Global
 		{36221D59-045A-4F26-B92C-8E343A62F6F1} = {343B916F-3AA1-4745-B51A-E1A98D3BDE08}
 		{07CE34CC-81F9-4D15-B1E8-B63A28A2255E} = {343B916F-3AA1-4745-B51A-E1A98D3BDE08}
 		{CEC9F555-E2FA-4A86-A436-FEFF74FBD97E} = {07CE34CC-81F9-4D15-B1E8-B63A28A2255E}
+		{A45A9C2A-EB49-4304-8FD6-DAC60682FB35} = {07CE34CC-81F9-4D15-B1E8-B63A28A2255E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2E6C263F-F130-461B-8A90-C9F19C17DC07}
