@@ -44,6 +44,7 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
     constructor(props: IMainProps & DispatchProp<any>) {
         super(props);
         this.state = {
+            filter: "",
             addNewUser: { isDisplayed: false, },
             addChar: {
                 isDisplayed: false,
@@ -188,12 +189,18 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
             }));
     }
 
+    onSearch = (value: string) => {
+        this.setState({ filter: (value || "").toLowerCase() });
+    }
+
     charactersGrid = () => {
         const { gamers, user } = this.props;
+        const { filter } = this.state;
         return <CanvasBlock
             title={Lang("MAIN_PAGE_CHARACTERS_GRID")}
             type="success"
             subType='none'
+            onSearch={(text) => this.onSearch(text)}
             subChildren={
                 <Private roles={['admin', 'leader', 'officer']}>
                     <Button
@@ -204,22 +211,24 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
                 </Private>
             }>
             {
-                gamers.map(g => {
-                    return <GamerRowView
-                        key={g.id}
-                        gamer={g}
-                        isCurrentUser={user.userId == g.id}
-                        onAddChar={user.userId == g.id ? this.onSelfAddChar : this.onAddChar}
-                        onDeleteChar={user.userId == g.id ? this.onSelfDeleteChar : this.onDeleteChar}
-                        onRankChange={this.onSetRank}
-                        onStatusChange={this.onSetStatus}
-                        onAddLoan={this.onAddLoan}
-                        onAddPenalty={this.onAddPenalty}
-                        showLoanInfo={this.showLoanInfo}
-                        showPenaltyInfo={this.showPenaltyInfo}
-                        showBalanceInfo={this.showBalanceInfo}
-                    />;
-                })
+                gamers
+                    .filter(_ => filter == "" || _.name.toLowerCase().includes(filter) || _.characters.filter(c => c.name.toLowerCase().includes(filter)).length > 0)
+                    .map(g => {
+                        return <GamerRowView
+                            key={g.id}
+                            gamer={g}
+                            isCurrentUser={user.userId == g.id}
+                            onAddChar={user.userId == g.id ? this.onSelfAddChar : this.onAddChar}
+                            onDeleteChar={user.userId == g.id ? this.onSelfDeleteChar : this.onDeleteChar}
+                            onRankChange={this.onSetRank}
+                            onStatusChange={this.onSetStatus}
+                            onAddLoan={this.onAddLoan}
+                            onAddPenalty={this.onAddPenalty}
+                            showLoanInfo={this.showLoanInfo}
+                            showPenaltyInfo={this.showPenaltyInfo}
+                            showBalanceInfo={this.showBalanceInfo}
+                        />;
+                    })
             }
         </CanvasBlock>;
     }
