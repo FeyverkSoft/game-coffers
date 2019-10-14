@@ -84,7 +84,7 @@ class _CreateOperationDialog extends BaseReactComp<IProps, IState> {
             case 'Loan':
                 return `Погашение в пользу займа (${loans.filter(_ => _.value == loanId.value)[0].name}): ${description.value}`;
             case 'Sell':
-                return `Операция продажи предметов со склада`;
+                return `Операция продажи предметов со склада: ${description.value}`;
             default:
                 return description.value || '';
         }
