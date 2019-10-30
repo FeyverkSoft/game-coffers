@@ -137,7 +137,7 @@ class Main extends BaseReactComp<IMainProps & DispatchProp<any>, any> {
             }));
     }
 
-    onSelfDeleteChar = (char: string) => {
+    onSelfDeleteChar = (user:string, char: string) => {
         this.props.dispatch(profileInstance.DeleteCharacters({
             gamerId: this.props.user.userId || '',
             name: char,

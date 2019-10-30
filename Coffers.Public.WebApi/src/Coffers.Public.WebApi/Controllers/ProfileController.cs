@@ -77,7 +77,14 @@ namespace Coffers.Public.WebApi.Controllers
 
             await _gamerRepository.Load(gamer, cancellationToken);
 
-            gamer.DeleteCharacter(binding.Name);
+            try
+            {
+                gamer.DeleteCharacter(binding.Name);
+            }
+            catch (CharacterNotFoundException e)
+            {
+                throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.CharacterNotFound, $"Character {e.Message} not found");
+            }
 
             await _gamerRepository.Save(gamer);
 

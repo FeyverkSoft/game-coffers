@@ -26,7 +26,7 @@ namespace Coffers.Public.Domain.Gamers
         /// Счёт игрока по умолчанию
         /// </summary>
         public Account DefaultAccount { get; internal set; }
-        
+
         /// <summary>
         /// Звание игрока
         /// </summary>
@@ -68,28 +68,25 @@ namespace Coffers.Public.Domain.Gamers
             var ch = Characters.FirstOrDefault(x =>
                 x.Name.Equals(_name, StringComparison.CurrentCultureIgnoreCase) &&
                 x.ClassName.Equals(className, StringComparison.CurrentCultureIgnoreCase));
-            if (ch != null)
+
+            if (ch == null)
             {
-                ch.Status = CharStatus.Active;
+                Characters.Add(new Character(Guid.NewGuid(), CharStatus.Active, _name, _className));
+                UpdateDate = DateTime.UtcNow;
                 return;
             }
 
-            //Если персонаж был ранее но с другим классом. То удаляем запись о старом.
-            //Пока что так....
-            if (Characters.Exists(x =>
-                x.Name.Equals(_name, StringComparison.CurrentCultureIgnoreCase) &&
-                !x.ClassName.Equals(_className, StringComparison.CurrentCultureIgnoreCase)))
-                Characters.Remove(Characters.FirstOrDefault(_ =>
-                    _.Name.Equals(_name, StringComparison.CurrentCultureIgnoreCase)));
-
-            Characters.Add(new Character
+            if (ch.ClassName.Equals(_className, StringComparison.InvariantCultureIgnoreCase))
             {
-                Id = new Guid(),
-                Status = CharStatus.Active,
-                Name = _name,
-                ClassName = _className
-            });
+                ch?.MarkAsActive();
+                UpdateDate = DateTime.UtcNow;
+                return;
+            }
+
+            Characters.Remove(ch);
+            Characters.Add(new Character(Guid.NewGuid(), CharStatus.Active, _name, _className));
             UpdateDate = DateTime.UtcNow;
+
         }
 
         /// <summary>
@@ -118,12 +115,15 @@ namespace Coffers.Public.Domain.Gamers
             if (Characters == null)
                 Characters = new List<Character>();
 
-            var ch = Characters.FirstOrDefault(x =>
-                x.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
-            if (ch != null)
-            {
-                ch.Status = CharStatus.Deleted;
-            }
+            var ch = Characters.FirstOrDefault(c =>
+                name.Trim().Equals(c.Name.Trim(), StringComparison.InvariantCultureIgnoreCase)
+                );
+
+            if (ch == null)
+                throw new CharacterNotFoundException(name);
+
+            ch?.MarkAsDeleted();
+
             UpdateDate = DateTime.UtcNow;
         }
 
@@ -204,5 +204,10 @@ namespace Coffers.Public.Domain.Gamers
 
             UpdateDate = DateTime.UtcNow;
         }
+    }
+
+    public class CharacterNotFoundException : NullReferenceException
+    {
+        public CharacterNotFoundException(String message) : base(message) { }
     }
 }
