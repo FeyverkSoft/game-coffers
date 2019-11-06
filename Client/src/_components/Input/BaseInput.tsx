@@ -9,14 +9,14 @@ export interface IBaseInputProps extends React.Props<any> {
     value?: string | number;
     isRequired?: boolean;
     regExp?: string;
-    customValidator?(string: string | number | Date | undefined): boolean;
+    customValidator?(string: string | number | Date | undefined | boolean): boolean;
     [id: string]: any;
 }
 export interface IBaseInputState {
     regExpValid?: boolean;
     isRequedValid?: boolean;
     valid?: boolean;
-    value?: string | number | Date | undefined;
+    value?: string | number | Date | undefined | boolean;
     typingTimeOut?: number;
     timeout?: number;
     path?: string | undefined;
@@ -41,7 +41,7 @@ export class BaseInput<TProps extends IBaseInputProps = {}, TState extends IBase
         if (!event)
             return;
         let $this = this;
-        let val = event.currentTarget.value;
+        let val = event.currentTarget.type != 'checkbox' ? event.currentTarget.value : event.currentTarget.checked;
         let valid = $this.validate(val);
         if (this.props.ignoreInvalidValue && !valid && val != '')
             return;
@@ -60,9 +60,9 @@ export class BaseInput<TProps extends IBaseInputProps = {}, TState extends IBase
         });
     }
 
-    validate = (value?: string | number) => {
+    validate = (value?: string | number | boolean) => {
         let valid = true;
-        let val: string | number | undefined | Date = value || "";
+        let val: string | number | undefined | boolean | Date = value || "";
         val = (val || (this.state || {}).value);
 
         if (this.props.isRequired && (!val || val == "")) {

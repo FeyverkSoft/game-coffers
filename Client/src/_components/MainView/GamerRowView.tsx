@@ -29,11 +29,12 @@ interface ICharacterProps {
     name: string;
     isCurrentUser: boolean;
     className: string;
+    isMain: boolean;
     onDeleteChar(): void;
 }
 
 const Character = React.memo(({ ...props }: ICharacterProps) => {
-    return <div key={props.name} className={style['char_name']}>
+    return <div key={props.name} className={`${style['char_name']} ${props.isMain ? style['main'] : ''}`}>
         <div
             title={props.className}
         >
@@ -70,6 +71,7 @@ export const GamerRowView = React.memo(({ ...props }: IGamerRowViewProps) => {
                     {gamer.characters.map(c => <Character
                         isCurrentUser={isCurrentUser}
                         key={c.name}
+                        isMain={c.isMain}
                         onDeleteChar={() => props.onDeleteChar(props.gamer.id, c.name)}
                         {...c}
                     />)}

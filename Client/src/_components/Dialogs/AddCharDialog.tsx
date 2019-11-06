@@ -5,6 +5,7 @@ import { Dialog, Form, Col1, Input, Button } from "..";
 import { Lang } from "../../_services";
 import { gamerInstance } from "../../_actions";
 import { connect } from "react-redux";
+import { Toggle } from "../Input/Toggle";
 
 interface IProps extends React.Props<any> {
     isDisplayed: boolean;
@@ -18,6 +19,7 @@ interface IProps extends React.Props<any> {
 interface IState {
     name: IStatedField<string | undefined>;
     className: IStatedField<string | undefined>;
+    isMain: IStatedField<boolean | undefined>;
     isLoad: boolean;
 }
 class _AddCharDialog extends BaseReactComp<IProps, IState> {
@@ -27,6 +29,7 @@ class _AddCharDialog extends BaseReactComp<IProps, IState> {
         this.state = {
             name: { value: undefined },
             className: { value: undefined },
+            isMain: { value: false },
             isLoad: false
         }
     }
@@ -47,6 +50,7 @@ class _AddCharDialog extends BaseReactComp<IProps, IState> {
                 gamerId: this.props.userId,
                 name: this.state.name.value || '',
                 className: this.state.className.value || '',
+                isMain: this.state.isMain.value || false,
                 onFailure: () => {
                     this.setState({ isLoad: false });
                 },
@@ -59,7 +63,7 @@ class _AddCharDialog extends BaseReactComp<IProps, IState> {
     }
 
     render() {
-        const { name, className } = this.state;
+        const { name, className, isMain } = this.state;
         return (
             <Dialog
                 isDisplayed={this.props.isDisplayed}
@@ -87,6 +91,16 @@ class _AddCharDialog extends BaseReactComp<IProps, IState> {
                             isRequired={true}
                             path='className'
                             value={className.value}
+                            isRequiredMessage={Lang('IsRequired')}
+                        />
+                    </Col1>
+                    <Col1>
+                        <Toggle
+                            label={Lang('IS_MAIN_CHAR')}
+                            onChange={this.onInputVal}
+                            isRequired={true}
+                            path='isMain'
+                            value={`${isMain.value}`}
                             isRequiredMessage={Lang('IsRequired')}
                         />
                     </Col1>

@@ -73,7 +73,7 @@ export class gamerService {
      * @param name 
      * @param className 
      */
-    static async AddNewChar(gamerId: string, name: string, className: string): Promise<void> {
+    static async AddNewChar(gamerId: string, name: string, className: string, isMain: boolean): Promise<void> {
         let session = authService.getCurrentSession();
         const requestOptions: RequestInit = {
             method: 'PUT',

@@ -6,6 +6,7 @@ import { Dictionary } from "../../core";
 
 export interface ICharacter {
     name: string;
+    isMain: boolean;
     className: string;
 }
 

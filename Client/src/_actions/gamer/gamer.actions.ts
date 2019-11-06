@@ -23,6 +23,7 @@ interface AddCharProps extends ICallback<any> {
     gamerId: string;
     name: string;
     className: string;
+    isMain: boolean;
 }
 
 interface DeleteCharProps extends ICallback<any> {
@@ -62,10 +63,10 @@ export class GamerActions {
     AddCharacters(props: AddCharProps): Function {
         return (dispatch: Function) => {
             dispatch(request(props.gamerId));
-            gamerService.AddNewChar(props.gamerId, props.name, props.className)
+            gamerService.AddNewChar(props.gamerId, props.name, props.className, props.isMain)
                 .then(
                     data => {
-                        dispatch(success(props.gamerId, props.name, props.className));
+                        dispatch(success(props.gamerId, props.name, props.className, props.isMain));
                         if (props.onSuccess)
                             props.onSuccess(data);
                     })
@@ -78,7 +79,7 @@ export class GamerActions {
                     });
         }
         function request(gamerId: string) { return { type: GamerActionsType.PROC_ADD_NEW_CHARS, gamerId } }
-        function success(gamerId: string, name: string, className: string) { return { type: GamerActionsType.SUCC_ADD_NEW_CHARS, gamerId, name, className } }
+        function success(gamerId: string, name: string, className: string, isMain: boolean) { return { type: GamerActionsType.SUCC_ADD_NEW_CHARS, gamerId, name, className, isMain } }
         function failure(gamerId: string) { return { type: GamerActionsType.FAILED_ADD_NEW_CHARS, gamerId } }
     }
 

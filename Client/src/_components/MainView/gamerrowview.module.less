@@ -53,6 +53,8 @@
             .flex();
             padding-left: .25rem;
             flex-wrap   : wrap;
+            flex-direction: row;
+            align-items: center;
 
             @media screen and (max-width: @mobile-L) {
                 justify-content: center;
@@ -60,11 +62,16 @@
                 flex-direction : column;
             }
 
+            .main {
+                font-weight: 500;
+            }
+
             .char_name {
                 .flex();
                 position     : relative;
                 padding-right: .2rem;
                 align-items  : center;
+                flex: 0 1 0;
 
                 &:focus,
                 &:hover {
