@@ -25,7 +25,12 @@ namespace Coffers.Public.Domain.Gamers
         /// </summary>
         public CharStatus Status { get; private set; }
 
-        public Character(Guid id, CharStatus status, string name, string className) => (Id, Status, Name, ClassName) = (id, status, name, className);
+        /// <summary>
+        /// Признак основы
+        /// </summary>
+        public Boolean IsMain { get; private set; } = false;
+
+        public Character(Guid id, CharStatus status, string name, string className, Boolean isMain) => (Id, Status, Name, ClassName, IsMain) = (id, status, name, className, isMain);
 
         public void Ban()
         {

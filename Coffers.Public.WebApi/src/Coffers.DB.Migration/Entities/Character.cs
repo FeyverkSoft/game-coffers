@@ -21,6 +21,11 @@ namespace Coffers.DB.Migrations.Entities
         public String ClassName { get; set; }
 
         /// <summary>
+        /// Признак того что это основной перс
+        /// </summary>
+        public Boolean IsMain { get; set; }
+
+        /// <summary>
         /// Статус персонажа
         /// </summary>
         public CharStatus Status { get; set; }

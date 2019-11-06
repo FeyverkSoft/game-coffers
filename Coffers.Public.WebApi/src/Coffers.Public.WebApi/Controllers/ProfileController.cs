@@ -59,7 +59,7 @@ namespace Coffers.Public.WebApi.Controllers
 
             await _gamerRepository.Load(gamer, cancellationToken);
 
-            gamer.AddCharacters(binding.Name, binding.ClassName);
+            gamer.AddCharacters(binding.Name, binding.ClassName, binding.IsMain);
 
             await _gamerRepository.Save(gamer);
 

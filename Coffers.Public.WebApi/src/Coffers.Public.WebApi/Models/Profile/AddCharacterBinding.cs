@@ -14,6 +14,11 @@ namespace Coffers.Public.WebApi.Models.Profile
         /// Character class name
         /// </summary>
         public String ClassName { get; set; }
+
+        /// <summary>
+        /// Is main character
+        /// </summary>
+        public Boolean IsMain { get; set; } = false;
     }
     public class AddCharacterBindingValidator : AbstractValidator<AddCharacterBinding>
     {

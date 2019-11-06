@@ -50,7 +50,7 @@ namespace Coffers.Public.Queries.Infrastructure.Gamers
                 g.Characters
                     .Where(c => c.Status == CharStatus.Active)
                     .OrderBy(c => c.Name)
-                    .Select(x => new CharacterView(x.Name, x.ClassName))
+                    .Select(x => new CharacterView(x.Name, x.ClassName, x.IsMain))
                     .ToList(),
                 g.Rank,
                 g.Status,

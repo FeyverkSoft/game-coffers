@@ -1,4 +1,6 @@
-﻿namespace Coffers.Public.Queries.Gamers
+﻿using System;
+
+namespace Coffers.Public.Queries.Gamers
 {
     /// <summary>
     /// Описание персонажа
@@ -8,17 +10,18 @@
         /// <summary>
         /// Имя персонажа
         /// </summary>
-        public string Name { get; }
+        public String Name { get; }
 
         /// <summary>
         /// Класс персонажа
         /// </summary>
-        public string ClassName { get; }
+        public String ClassName { get; }
 
-        public CharacterView(string name, string className)
-        {
-            Name = name;
-            ClassName = className;
-        }
+        /// <summary>
+        /// Признак основного персонажа
+        /// </summary>
+        public Boolean IsMain { get; }
+
+        public CharacterView(String name, String className, Boolean isMain) => (Name, ClassName, IsMain) = (name, className, isMain);
     }
 }

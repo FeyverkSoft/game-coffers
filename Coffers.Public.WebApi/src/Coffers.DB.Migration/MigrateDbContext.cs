@@ -195,6 +195,9 @@ namespace Coffers.DB.Migrations
                 b.Property(g => g.Name)
                     .HasMaxLength(64)
                     .IsRequired();
+                b.Property(t => t.IsMain)
+                    .HasDefaultValue(false)
+                    .IsRequired();
 
                 b.Property(g => g.Status)
                     .HasMaxLength(32)

@@ -9,6 +9,7 @@ namespace Coffers.Public.Queries.Infrastructure.Guilds
         /// Идентификатор персонажа
         /// </summary>
         public Guid Id { get; private set; }
+
         /// <summary>
         /// Статус персонажа
         /// </summary>

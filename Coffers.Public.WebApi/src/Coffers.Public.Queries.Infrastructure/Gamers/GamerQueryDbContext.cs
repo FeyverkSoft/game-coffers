@@ -87,6 +87,11 @@ namespace Coffers.Public.Queries.Infrastructure.Gamers
                 b.Property(t => t.Status)
                     .HasConversion<String>()
                     .IsRequired();
+                b.Property(t => t.IsMain)
+                    .HasDefaultValue(false)
+                    .IsRequired();
+                b.Property(t => t.Name);
+                b.Property(t => t.ClassName);
             });
 
             modelBuilder.Entity<Loan>(b =>

@@ -21,6 +21,11 @@ namespace Coffers.Public.Queries.Infrastructure.Gamers
         public String ClassName { get; private set; }
 
         /// <summary>
+        /// Признак того что это основной перс
+        /// </summary>
+        public Boolean IsMain { get; private set; } = false;
+
+        /// <summary>
         /// Статус персонажа
         /// </summary>
         public CharStatus Status { get; private set; }

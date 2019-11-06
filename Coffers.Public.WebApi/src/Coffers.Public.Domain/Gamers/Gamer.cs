@@ -58,7 +58,7 @@ namespace Coffers.Public.Domain.Gamers
         /// </summary>
         /// <param name="name"></param>
         /// <param name="className"></param>
-        public void AddCharacters(String name, String className)
+        public void AddCharacters(String name, String className, Boolean isMain)
         {
             if (Characters == null)
                 Characters = new List<Character>();
@@ -71,7 +71,7 @@ namespace Coffers.Public.Domain.Gamers
 
             if (ch == null)
             {
-                Characters.Add(new Character(Guid.NewGuid(), CharStatus.Active, _name, _className));
+                Characters.Add(new Character(Guid.NewGuid(), CharStatus.Active, _name, _className, isMain));
                 UpdateDate = DateTime.UtcNow;
                 return;
             }
@@ -84,7 +84,7 @@ namespace Coffers.Public.Domain.Gamers
             }
 
             Characters.Remove(ch);
-            Characters.Add(new Character(Guid.NewGuid(), CharStatus.Active, _name, _className));
+            Characters.Add(new Character(Guid.NewGuid(), CharStatus.Active, _name, _className, isMain));
             UpdateDate = DateTime.UtcNow;
 
         }
