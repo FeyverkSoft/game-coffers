@@ -247,8 +247,7 @@ namespace Coffers.Public.WebApi.Controllers
                 new GetGamersQuery
                 {
                     GuildId = id,
-                    DateFrom = binding.DateFrom?.Trunc(DateTruncType.Day),
-                    DateTo = binding.DateTo?.Trunc(DateTruncType.Day),
+                    Month = binding.DateMonth?.Trunc(DateTruncType.Day),
                     GamerStatuses = binding.GamerStatuses
                 }, cancellationToken
                 ));

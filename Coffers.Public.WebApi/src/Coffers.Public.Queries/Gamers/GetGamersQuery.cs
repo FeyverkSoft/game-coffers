@@ -17,11 +17,7 @@ namespace Coffers.Public.Queries.Gamers
         /// <summary>
         /// Date to
         /// </summary>
-        public DateTime? DateFrom { get; set; }
-        /// <summary>
-        /// Date from
-        /// </summary>
-        public DateTime? DateTo { get; set; }
+        public DateTime? Month { get; set; }
         /// <summary>
         /// Gamer statuses list
         /// </summary>

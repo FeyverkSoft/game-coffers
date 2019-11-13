@@ -11,11 +11,8 @@ namespace Coffers.Public.WebApi.Models.Guild
         /// <summary>
         /// Date to
         /// </summary>
-        public DateTime? DateFrom { get; set; }
-        /// <summary>
-        /// Date from
-        /// </summary>
-        public DateTime? DateTo { get; set; }
+        public DateTime? DateMonth { get; set; }
+
         /// <summary>
         /// Gamer statuses list
         /// </summary>
@@ -26,10 +23,10 @@ namespace Coffers.Public.WebApi.Models.Guild
     {
         public GetGamersBindingValidator()
         {
-            When(x => x.DateFrom != null && x.DateTo != null, () =>
+            When(x => x.DateMonth != null, () =>
                 {
-                    RuleFor(y => y.DateFrom)
-                        .LessThan(y => y.DateTo);
+                    RuleFor(y => y.DateMonth)
+                        .LessThan(DateTime.Now);
                 });
         }
     }

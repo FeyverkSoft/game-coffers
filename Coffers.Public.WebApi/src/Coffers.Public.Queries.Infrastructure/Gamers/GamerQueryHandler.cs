@@ -28,8 +28,8 @@ namespace Coffers.Public.Queries.Infrastructure.Gamers
                 .AsNoTracking()
                 .Where(g => g.GuildId == query.GuildId);
 
-            var dateFrom = (query.DateFrom ?? DateTime.UtcNow).Trunc(DateTruncType.Month);
-            var dateTo = (query.DateTo ?? DateTime.UtcNow.AddMonths(1)).Trunc(DateTruncType.Month);
+            var dateFrom = (query.Month?.AddMonths(-1) ?? DateTime.UtcNow).Trunc(DateTruncType.Month);
+            var dateTo = (query.Month ?? DateTime.UtcNow.AddMonths(1)).Trunc(DateTruncType.Month);
 
             if (query.GamerStatuses != null)
                 q = q.Where(g => query.GamerStatuses.Contains(g.Status));
@@ -68,7 +68,7 @@ namespace Coffers.Public.Queries.Infrastructure.Gamers
                     )).ToList(),
                  g.Loans
                      .Where(l => l.CreateDate >= dateFrom || l.LoanStatus == LoanStatus.Active || l.LoanStatus == LoanStatus.Expired || l.ExpiredDate >= dateFrom)
-                     .OrderBy(_=>_.CreateDate)
+                     .OrderBy(_ => _.CreateDate)
                      .Select(l => new LoanView
                      (
                          l.Id,
