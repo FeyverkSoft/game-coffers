@@ -6,7 +6,7 @@ namespace Coffers.DB.Migrations.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<short>(
+            migrationBuilder.AddColumn<bool>(
                 name: "IsMain",
                 table: "Character",
                 nullable: false,

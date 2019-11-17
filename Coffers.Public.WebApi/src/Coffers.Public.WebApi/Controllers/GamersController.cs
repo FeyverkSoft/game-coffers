@@ -92,6 +92,30 @@ namespace Coffers.Public.WebApi.Controllers
         }
 
         /// <summary>
+        /// This method update character info for gamer.
+        /// this method is available only to the officer or leader
+        /// </summary>
+        [HttpPut("{gamerId}/characters/{name}")]
+        [PermissionRequired("admin", "officer", "leader")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> EditCharacter(
+            [FromRoute]Guid gamerId,
+            [FromRoute]String name,
+            [FromBody] EditCharacterBinding binding,
+            CancellationToken cancellationToken)
+        {
+            var character = await _characterRepository.Get(HttpContext.GuildId(), gamerId, name, cancellationToken);
+
+            if (character == null)
+                throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.GamerNotFound, $"Character {name} not found");
+
+            await _characterRepository.Save(character);
+
+            return Ok(new { });
+        }
+
+
+        /// <summary>
         /// This method changed gamer status
         /// </summary>
         [HttpPatch("{gamerId}/status")]

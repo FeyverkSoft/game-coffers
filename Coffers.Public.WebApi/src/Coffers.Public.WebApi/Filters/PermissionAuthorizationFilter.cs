@@ -28,6 +28,7 @@ namespace Coffers.Public.WebApi.Filters
         {
             if (context.HttpContext.Request.Method.Equals(HttpMethod.Options.Method))
                 return;
+
             if (context.HttpContext.IsAdmin())
                 return;
 

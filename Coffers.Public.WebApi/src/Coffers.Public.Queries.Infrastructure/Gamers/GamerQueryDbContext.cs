@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Coffers.Public.Queries.Infrastructure.Gamers
 {
@@ -88,8 +89,10 @@ namespace Coffers.Public.Queries.Infrastructure.Gamers
                     .HasConversion<String>()
                     .IsRequired();
                 b.Property(t => t.IsMain)
+                    .HasConversion(new BoolToZeroOneConverter<Int16>())
                     .HasDefaultValue(false)
                     .IsRequired();
+
                 b.Property(t => t.Name);
                 b.Property(t => t.ClassName);
             });
