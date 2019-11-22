@@ -33,11 +33,11 @@ services:
     restart: always
 
   coffers-mysql:
-    image: mysql:8.0.17
+    image: mariadb:10.4.10
 #    ports:
 #       - "3306:3306"
     volumes:
-      - /docker-data/coffers/mysql:/var/lib/mysql
+      - /docker-data/coffers/mariadb:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=${SQL_ROOT_USER_PASSWORD}
       - MYSQL_USER=${SQL_USER}
