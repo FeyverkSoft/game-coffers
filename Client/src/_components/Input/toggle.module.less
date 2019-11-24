@@ -1,0 +1,71 @@
+@import "../../../assets/_variables.less"; // variables to override above
+
+.toggle-wrapper {
+    position: relative;
+    padding: .25rem;
+    label {
+        .transition(~'all');
+        position: relative;
+        display: block;
+        height: 1.5rem;
+        width: 3rem;
+        background: @defaultColor;
+        border-radius: 6em;
+        cursor: pointer;
+        box-shadow: inset 0 2px 4px rgba(9, 59, 47, 0.15), inset 0 2px 2px rgba(2, 14, 11, 0.25);
+        &:after {
+            .transition(~'all');
+            position: absolute;
+            display: block;
+            top: -.1rem;
+            left: 0;
+            display: block;
+            width: 1.7rem;
+            height: 1.7rem;
+            border-radius: 6rem;
+            background: @lightFontColor;
+            box-shadow: 0 2px 4px rgba(9, 59, 47, 0.15), 0 0px 2px rgba(2, 14, 11, 0.25);
+            content: '';
+        }
+        &:active {
+            label {
+                &:after {
+                    transform: scale(1.15, 0.95);
+                }
+            }
+        }
+        &:disabled {
+            cursor: default;
+            &::after {
+                background: fade(@lightFontColor, 50%);
+            }
+        }
+    }
+    input[type=checkbox] {
+        position: absolute;
+        z-index: -5;
+        height: 1px;
+        width: 1px;
+        left: 50%;
+        top: 50%;
+        bottom: 50%;
+        &:checked {
+            &~label {
+                background: fade(@defaultColor + 20, 70%);
+                &:after {
+                    left: 1.5rem;
+                    background: @defaultColor;
+                }
+            }
+        }
+        &:disabled {
+            &~label {
+                background: #D5D5D5;
+                pointer-events: none;
+                &:after {
+                    background: #BCBDBC;
+                }
+            }
+        }
+    }
+}
