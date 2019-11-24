@@ -1,6 +1,6 @@
 ﻿import * as React from 'react';
 import memoize from 'lodash.memoize';
-import { Lang } from '../_services';
+import { Lang, IGamersListView } from '../_services';
 import { Page, Crumbs, Grid, Col3, CanvasBlock, Form, Col1, Button } from '../_components';
 import { connect, DispatchProp } from 'react-redux';
 import { IStore } from '../_helpers';
@@ -74,7 +74,7 @@ export class _BirthdayController extends React.Component<IMainProps & DispatchPr
 const MemGamers = memoize(gamersList => {
     let d = new Date();
     return Object.keys(gamersList)
-        .map(k => gamersList[k])
+        .map<IGamersListView>(k => gamersList[k])
         .filter(g => !(g.status == 'Banned' || g.status == 'Left'))
         .map((_): IGamerView => {
             let f: any = new Date(_.dateOfBirth.getFullYear(), d.getMonth(), d.getDate());
@@ -83,7 +83,7 @@ const MemGamers = memoize(gamersList => {
             var mo = _.dateOfBirth.getMonth() + 1;
             return {
                 id: _.id,
-                name: _.name,
+                name: `${_.name} - ${(_.characters.filter(_=>_.isMain)[0] || _.characters[0]).name}`,
                 birthday: `${_.dateOfBirth.getDate() > 9 ? _.dateOfBirth.getDate() : '0' + _.dateOfBirth.getDate()}-${mo > 9 ? mo : '0' + mo}`,
                 count: res > 0 ? 365 - res : -1 * res
             }
