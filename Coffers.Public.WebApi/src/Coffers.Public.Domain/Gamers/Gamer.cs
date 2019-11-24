@@ -149,6 +149,17 @@ namespace Coffers.Public.Domain.Gamers
             UpdateDate = DateTime.UtcNow;
         }
 
+        public void UpdateCharacter(string oldName, string newName, string className, bool isMain)
+        {
+            var ch = Characters.FirstOrDefault(c =>
+                oldName.Trim().Equals(c.Name.Trim(), StringComparison.InvariantCultureIgnoreCase));
+
+            if (ch == null)
+                throw new CharacterNotFoundException(oldName);
+            ch.Update(newName, className, isMain);
+            UpdateDate = DateTime.UtcNow;
+        }
+
         /// <summary>
         /// Добавляет игроку новый займ
         /// </summary>

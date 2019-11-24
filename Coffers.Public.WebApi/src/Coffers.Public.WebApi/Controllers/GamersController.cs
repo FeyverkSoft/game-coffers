@@ -99,17 +99,20 @@ namespace Coffers.Public.WebApi.Controllers
         [PermissionRequired("admin", "officer", "leader")]
         [ProducesResponseType(200)]
         public async Task<IActionResult> EditCharacter(
+            [FromServices] IGamerRepository gamerRepository,
             [FromRoute]Guid gamerId,
             [FromRoute]String name,
             [FromBody] EditCharacterBinding binding,
             CancellationToken cancellationToken)
         {
-            var character = await _characterRepository.Get(HttpContext.GuildId(), gamerId, name, cancellationToken);
+            var gamer = await gamerRepository.Get(gamerId, cancellationToken);
 
-            if (character == null)
+            if (gamer == null || gamer.GuildId != HttpContext.GuildId())
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.GamerNotFound, $"Character {name} not found");
 
-            await _characterRepository.Save(character);
+            gamer.UpdateCharacter(name, binding.Name, binding.ClassName, binding.IsMain);
+
+            await gamerRepository.Save(gamer);
 
             return Ok(new { });
         }

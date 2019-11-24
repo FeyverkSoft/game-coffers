@@ -47,5 +47,12 @@ namespace Coffers.Public.Domain.Gamers
         {
             Status = CharStatus.Active;
         }
+
+        internal void Update(string newName, string className, bool isMain)
+        {
+            Name = newName;
+            ClassName = className;
+            IsMain = isMain;
+        }
     }
 }
