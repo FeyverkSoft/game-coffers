@@ -5,10 +5,6 @@ import { Lang } from '../_services';
 import style from './auth.module.less';
 
 export class AuthController extends React.Component {
-    handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-
-    };
-
     render() {
         return (
             <div className={style['auth']}>

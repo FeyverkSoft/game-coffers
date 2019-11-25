@@ -8,6 +8,7 @@ import { Private } from './_components/Private';
 import { history, TryCatch } from './_helpers';
 import { PrivateRoute } from './_components/PrivateRoute';
 import { NotFoundController } from './controller/NotFoundController';
+import { BirthdayController } from './controller/BirthdayController';
 import { AuthController } from './controller/AuthController';
 import { Lang } from './_services';
 import { HeaderLink } from './_components/Header/HeaderLink';
@@ -27,17 +28,16 @@ export const App = ({ ...props }) => {
           </Link>
           <Private>
             <Menu
-              defaultSelectedKeys={['1']}
-              defaultOpenKeys={['sub1']}
+              defaultSelectedKeys={['/']}
               mode="horizontal"
               theme="light"
             >
-              <Menu.Item key="1">
+              <Menu.Item key="/">
                 <HeaderLink to="/" exact>
                   {Lang('COFFERS')}
                 </HeaderLink>
               </Menu.Item>
-              <Menu.Item key="2">
+              <Menu.Item key="/birthday">
                 <HeaderLink to="/birthday" exact>
                   {Lang('BD')}
                 </HeaderLink>
@@ -51,9 +51,9 @@ export const App = ({ ...props }) => {
             <Switch>
               <Route path='/auth' component={AuthController} />
               {/*<Route path='/auth' component={AuthController} />
-              <PrivateRoute path='/logout' component={LogOutController} />
+              <PrivateRoute path='/logout' component={LogOutController} />*/}
               <PrivateRoute path='/birthday' component={BirthdayController} />
-  <PrivateRoute path="/" component={MainController} />*/}
+              {/* <PrivateRoute path="/" component={MainController} />*/}
               <Route component={NotFoundController} />
             </Switch>
           </TryCatch>

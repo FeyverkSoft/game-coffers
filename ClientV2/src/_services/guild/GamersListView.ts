@@ -7,6 +7,7 @@ import { Dictionary } from "../../core";
 export interface ICharacter {
     name: string;
     className: string;
+    isMain: boolean;
 }
 
 export interface IGamersListView {
