@@ -1,0 +1,53 @@
+@import "../../../assets/_variables.less"; // variables to override above
+
+.header {
+    .flex();
+    align-items    : center;
+    justify-content: space-between;
+    position       : fixed;
+    z-index        : 10;
+    width          : @width-100pr;
+    contain        : layout;
+    box-shadow     : @box-shadow-1;
+    min-height     : 2em;
+    background     : @headerColor;
+    
+    .logo {
+        .flex();
+        min-height     : 3rem;
+        justify-content: center;
+        align-items    : center;
+        padding        : 0 0.5rem;
+
+        @media screen and (max-width: @tablet) {
+            min-height: 3rem;
+        }
+
+        sup {
+            text-transform: lowercase;
+        }
+
+        >.title {
+            user-select   : none !important;
+            color         : @mainFontColor;
+            font-size     : @22px;
+            text-transform: uppercase;
+
+            @media screen and (max-width: @tablet) {
+                display: none;
+            }
+        }
+
+        >.small-title {
+            user-select   : none !important;
+            color         : @mainFontColor;
+            font-size     : @12px;
+            font-weight   : 500;
+            text-transform: uppercase;
+
+            @media screen and (min-width: @tablet) {
+                display: none;
+            }
+        }
+    }
+}
