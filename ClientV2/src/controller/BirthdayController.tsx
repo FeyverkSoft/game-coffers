@@ -9,6 +9,8 @@ import { ColumnProps } from "antd/lib/table";
 import style from './bd.module.less';
 import { Content } from "../_components/Content/Content";
 import { Link } from "react-router-dom";
+import Search from "antd/lib/input/Search";
+import { string } from "prop-types";
 
 interface IGamerView {
     id: string;
@@ -22,6 +24,9 @@ interface IMainProps {
     isLoading: boolean;
     gamers: Array<IGamerView>;
     loadData: Function;
+}
+interface IBDState {
+    filter: string;
 }
 
 const columns: ColumnProps<IGamerView>[] = [
@@ -70,12 +75,21 @@ const columns: ColumnProps<IGamerView>[] = [
     },
 ];
 
-export class _BirthdayController extends React.Component<IMainProps> {
+export class _BirthdayController extends React.Component<IMainProps, IBDState> {
+    constructor(props: IMainProps) {
+        super(props);
+        this.state = {
+            filter: ''
+        }
+    }
+
     componentDidMount() {
         this.props.loadData();
     }
+
     render() {
         const { gamers, isLoading } = this.props;
+        const { filter } = this.state;
         return (
             <Content>
                 <Breadcrumb>
@@ -96,21 +110,30 @@ export class _BirthdayController extends React.Component<IMainProps> {
                         loading={isLoading}
                         className={style['ant-card']}
                     >
+                        <Search
+                            placeholder="введите текст для поиска"
+                            enterButton='search'
+                            onSearch={(value: string) => {
+                                this.setState({ filter: value });
+                            }}
+                        />
                         <Table
                             size='middle'
                             rowKey="id"
                             columns={columns}
                             pagination={false}
                             bordered={false}
-                            dataSource={gamers.map(_ => {
-                                return {
-                                    name: _.name,
-                                    birthday: _.birthday,
-                                    count: _.count,
-                                    color: _.color,
-                                    id: _.id
-                                }
-                            })}
+                            dataSource={gamers
+                                .filter(_ => _.name.toLowerCase().includes(filter.toLowerCase()))
+                                .map(_ => {
+                                    return {
+                                        name: _.name,
+                                        birthday: _.birthday,
+                                        count: _.count,
+                                        color: _.color,
+                                        id: _.id
+                                    }
+                                })}
                         />
                     </Card>
                 </div>
