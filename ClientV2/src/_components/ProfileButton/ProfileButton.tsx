@@ -3,7 +3,7 @@ import React from "react";
 import { IStore } from "../../_helpers";
 import { connect } from "react-redux";
 import { gamerInstance } from "../../_actions";
-import { Button } from "antd";
+import { Button, Icon } from "antd";
 
 interface ProfileButtonProps extends React.Props<any> {
     isLoading: boolean,
@@ -11,7 +11,6 @@ interface ProfileButtonProps extends React.Props<any> {
     GetCurrentGamer(): void,
 }
 class _profileButton extends React.Component<ProfileButtonProps> {
-
     componentDidMount() {
         if (this.props.name == '' && !this.props.isLoading)
             this.props.GetCurrentGamer();
@@ -21,7 +20,12 @@ class _profileButton extends React.Component<ProfileButtonProps> {
             <NavLink to="/logout"
                 exact
             >
-                <Button> {this.props.name}</Button>
+                <Button
+                    loading={this.props.isLoading}
+                >
+                    <Icon type="user" />
+                    {this.props.name}
+                </Button>
             </NavLink>
         );
     }

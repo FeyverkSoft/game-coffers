@@ -1,7 +1,6 @@
 import React from 'react';
 import { Router, Route, Switch, Link } from 'react-router-dom';
 import 'antd/dist/antd.css';
-import './App.css';
 import { Menu, Layout } from 'antd';
 import { Logo, Header } from './_components/Header/Header';
 import { Private } from './_components/Private';
@@ -13,6 +12,7 @@ import { AuthController } from './controller/AuthController';
 import { Lang } from './_services';
 import { HeaderLink } from './_components/Header/HeaderLink';
 import { ProfileButton } from './_components/ProfileButton/ProfileButton';
+import { LogOutController } from './controller/LogOutController';
 
 
 const { Content, Footer } = Layout;
@@ -46,12 +46,11 @@ export const App = ({ ...props }) => {
             <ProfileButton />
           </Private>
         </Header>
-        <Content >
+        <Content style={{ display: 'flex', flexDirection: 'row', flex: '1 1 100%', width: '90wv' }}>
           <TryCatch>
             <Switch>
               <Route path='/auth' component={AuthController} />
-              {/*<Route path='/auth' component={AuthController} />
-              <PrivateRoute path='/logout' component={LogOutController} />*/}
+              <PrivateRoute path='/logout' component={LogOutController} />
               <PrivateRoute path='/birthday' component={BirthdayController} />
               {/* <PrivateRoute path="/" component={MainController} />*/}
               <Route component={NotFoundController} />

@@ -1,22 +1,25 @@
 ﻿import * as React from 'react';
-import { store } from '../_helpers';
+import { store, IStore } from '../_helpers';
+import { connect } from 'react-redux';
+import { SessionInfo } from '../_services';
 
 /**
  * Вся логика по разграничению прав на стороне фронта тут
  */
-interface IPrivateProps extends React.Props<any> {
+interface _IPrivateProps extends React.Props<any> {
+    session: SessionInfo;
     roles?: Array<string>;
     skipRoleTest?: Boolean;
 }
 
-class _Private extends React.Component<IPrivateProps> {
-    constructor(props: IPrivateProps) {
+class _Private extends React.Component<_IPrivateProps> {
+    constructor(props: _IPrivateProps) {
         super(props);
     }
 
     defIsHidden: Function = (): boolean => {
         let flag = true;
-        const { session } = store.getState();
+        const { session } = this.props;
         flag = session == undefined || !session.isActive();
         if (!this.props.skipRoleTest && this.props.roles && this.props.roles.length > 0) {
             for (let i = 0; i < this.props.roles.length; i++) {
@@ -37,5 +40,19 @@ class _Private extends React.Component<IPrivateProps> {
         return this.props.children;
     }
 }
+interface IPrivateProps extends React.Props<any> {
+    roles?: Array<string>;
+    skipRoleTest?: Boolean;
+}
 
-export const Private = React.memo(({ ...props }: IPrivateProps) => <_Private {...props} />)
+const connectedPrivate = connect<IPrivateProps, any, any, IStore>(
+    (state: IStore, props: IPrivateProps): _IPrivateProps => {
+        const { session } = state;
+        return {
+            session: session,
+            roles: props.roles,
+            skipRoleTest: props.skipRoleTest
+        };
+    })(_Private);
+
+export { connectedPrivate as Private };

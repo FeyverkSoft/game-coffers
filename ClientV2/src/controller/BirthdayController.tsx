@@ -1,12 +1,14 @@
 import React from "react";
 import { Lang, IGamersListView, ICharacter } from '../_services';
-import { Card, Table } from 'antd';
+import { Card, Table, Breadcrumb, Icon } from 'antd';
 import { memoize } from "lodash";
 import { connect } from "react-redux";
 import { IStore, BlendColor } from "../_helpers";
 import { gamerInstance } from "../_actions";
 import { ColumnProps } from "antd/lib/table";
 import style from './bd.module.less';
+import { Content } from "../_components/Content/Content";
+import { Link } from "react-router-dom";
 
 interface IGamerView {
     id: string;
@@ -75,30 +77,44 @@ export class _BirthdayController extends React.Component<IMainProps> {
     render() {
         const { gamers, isLoading } = this.props;
         return (
-            <div className={style['bd']}>
-                <Card
-                    title={Lang("BIRTHDAY_PAGE")}
-                    loading={isLoading}
-                    className={style['ant-card']}
-                >
-                    <Table
-                        size='middle'
-                        rowKey="id"
-                        columns={columns}
-                        pagination={false}
-                        bordered={false}
-                        dataSource={gamers.map(_ => {
-                            return {
-                                name: _.name,
-                                birthday: _.birthday,
-                                count: _.count,
-                                color: _.color,
-                                id: _.id
-                            }
-                        })}
-                    />
-                </Card>
-            </div>
+            <Content>
+                <Breadcrumb>
+                    <Breadcrumb.Item>
+                        <Link to={"/"} >
+                            <Icon type="home" />
+                        </Link>
+                    </Breadcrumb.Item>
+                    <Breadcrumb.Item>
+                        <Link to={"/birthday"}>
+                            {Lang("BIRTHDAY_PAGE")}
+                        </Link>
+                    </Breadcrumb.Item>
+                </Breadcrumb>
+                <div className={style['bd']}>
+                    <Card
+                        title={Lang("BIRTHDAY_PAGE")}
+                        loading={isLoading}
+                        className={style['ant-card']}
+                    >
+                        <Table
+                            size='middle'
+                            rowKey="id"
+                            columns={columns}
+                            pagination={false}
+                            bordered={false}
+                            dataSource={gamers.map(_ => {
+                                return {
+                                    name: _.name,
+                                    birthday: _.birthday,
+                                    count: _.count,
+                                    color: _.color,
+                                    id: _.id
+                                }
+                            })}
+                        />
+                    </Card>
+                </div>
+            </Content>
         );
     }
 }
