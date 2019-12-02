@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>8.0</LangVersion>
+    <ApplicationIcon />
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Coffers.Helpers\Coffers.Helpers.csproj" />
+    <ProjectReference Include="..\Coffers.Types\Coffers.Types.csproj" />
+  </ItemGroup>
+
+</Project>

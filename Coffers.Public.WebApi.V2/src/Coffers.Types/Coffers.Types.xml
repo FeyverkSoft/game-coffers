@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Coffers.Types</name>
+    </assembly>
+    <members>
+        <member name="F:Coffers.Types.Account.OperationType.Tax">
+            <summary>
+            Налог
+            </summary>
+        </member>
+        <member name="F:Coffers.Types.Account.OperationType.Sell">
+            <summary>
+            Продажа в пользу ги
+            </summary>
+        </member>
+        <member name="F:Coffers.Types.Account.OperationType.Penalty">
+            <summary>
+            Штраф
+            </summary>
+        </member>
+        <member name="F:Coffers.Types.Account.OperationType.Loan">
+            <summary>
+            Займ
+            </summary>
+        </member>
+        <member name="F:Coffers.Types.Account.OperationType.Exchange">
+            <summary>
+            Обмен между своими персонажами
+            </summary>
+        </member>
+        <member name="F:Coffers.Types.Account.OperationType.Reward">
+            <summary>
+            Награда
+            </summary>
+        </member>
+        <member name="F:Coffers.Types.Account.OperationType.Salary">
+            <summary>
+            ЗП
+            </summary>
+        </member>
+        <member name="F:Coffers.Types.Account.OperationType.Other">
+            <summary>
+            Иное
+            </summary>
+        </member>
+        <member name="T:Coffers.Types.Gamer.LoanStatus">
+            <summary>
+            Статус займов 
+            </summary>
+        </member>
+        <member name="F:Coffers.Types.Guilds.RecruitmentStatus.Open">
+            <summary>
+            Набор открыт
+            </summary>
+        </member>
+        <member name="F:Coffers.Types.Guilds.RecruitmentStatus.Close">
+            <summary>
+            Набор закрыт
+            </summary>
+        </member>
+        <member name="F:Coffers.Types.Guilds.RecruitmentStatus.Internal">
+            <summary>
+            Набор только по приглошению
+            </summary>
+        </member>
+    </members>
+</doc>
