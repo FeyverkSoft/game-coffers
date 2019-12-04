@@ -22,10 +22,6 @@ namespace Coffers.Public.WebApi.Authorization
         {
             return Guid.Parse(httpContext.User.FindFirst(x => x.Type.Equals(ClaimType.GuildId)).Value);
         }
-        public static Boolean IsAdmin(this HttpContext httpContext)
-        {
-            return httpContext.User.FindFirst(x => x.Type.Equals(ClaimTypes.Role)).Value?.Split(",").Any(_ => _.Equals("Admin")) == true;
-        }
         public static Guid GetSessionId(this HttpContext httpContext)
         {
             return Guid.Parse(httpContext.User.FindFirst(x => x.Type.Equals(ClaimTypes.NameIdentifier)).Value);

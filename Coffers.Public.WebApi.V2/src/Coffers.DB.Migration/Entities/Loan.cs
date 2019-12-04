@@ -17,7 +17,7 @@ namespace Coffers.DB.Migrations.Entities
         /// <summary>
         /// Идентификатор игрока
         /// </summary>
-        public Gamer Gamer { get; set; }
+        public User User { get; set; }
 
         /// <summary>
         /// Тариф по которому проходит займ

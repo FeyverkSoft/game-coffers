@@ -6,8 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Coffers.Helpers;
 using Coffers.Public.Domain.Guilds;
-using Coffers.Public.Queries.Gamers;
-using Coffers.Public.Queries.Guilds;
 using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Exceptions;
 using Coffers.Public.WebApi.Models.Guild;
@@ -44,9 +42,6 @@ namespace Coffers.Public.WebApi.Controllers
         [ProducesResponseType(201)]
         public async Task<IActionResult> Create([FromBody]GuildCreateBinding binding, CancellationToken cancellationToken)
         {
-            if (!HttpContext.IsAdmin())
-                throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");
-
             var existGuild = await _guildRepository.Get(binding.Id, cancellationToken);
 
             if (existGuild != null)
@@ -70,42 +65,21 @@ namespace Coffers.Public.WebApi.Controllers
         }
 
         /// <summary>
-        /// This method get Guilds list
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        [AllowAnonymous]
-        [HttpGet]
-        [ProducesResponseType(typeof(ICollection<GuildView>), 200)]
-        [ProducesResponseType(404)]
-        public async Task<IActionResult> Get(CancellationToken cancellationToken)
-        {
-
-            var guild = await _queryProcessor.Process<GuildsQuery, ICollection<GuildView>>(
-                new GuildsQuery(), cancellationToken);
-
-            return Ok(guild);
-        }
-
-        /// <summary>
         /// This method get Guild info
         /// </summary>
         /// <param name="id"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [Authorize]
-        [HttpGet("{id}", Name = "GetGuild")]
+        [HttpGet(Name = "GetGuild")]
         [ProducesResponseType(typeof(GuildView), 200)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> Get([FromRoute] Guid id, CancellationToken cancellationToken)
+        public async Task<IActionResult> Get(CancellationToken cancellationToken)
         {
-            if (!HttpContext.IsAdmin() && id != HttpContext.GuildId())
-                throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");
-
             var guild = await _queryProcessor.Process<GuildQuery, GuildView>(
                 new GuildQuery
                 {
-                    Id = id
+                    Id = HttpContext.GuildId()
                 }, cancellationToken);
 
             if (guild == null)
@@ -121,18 +95,15 @@ namespace Coffers.Public.WebApi.Controllers
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [Authorize]
-        [HttpGet("{id}/balance")]
+        [HttpGet("balance")]
         [ProducesResponseType(typeof(GuildBalanceView), 200)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetBalance([FromRoute] Guid id, CancellationToken cancellationToken)
         {
-            if (!HttpContext.IsAdmin() && id != HttpContext.GuildId())
-                throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");
-
             var guild = await _queryProcessor.Process<GuildBalanceQuery, GuildBalanceView>(
                 new GuildBalanceQuery
                 {
-                    GuildId = id
+                    GuildId = HttpContext.GuildId()
                 }, cancellationToken);
 
             if (guild == null)
@@ -149,16 +120,14 @@ namespace Coffers.Public.WebApi.Controllers
         /// <returns></returns>
         [Authorize]
         [PermissionRequired("admin", "officer", "leader")]
-        [HttpPost("{id}/Gamers")]
+        [HttpPost("Gamers")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> AddNewGamer([FromRoute]Guid id,
+        public async Task<IActionResult> AddNewGamer(
             [FromBody] GamerCreateBinding binding,
             CancellationToken cancellationToken)
         {
-            if (!HttpContext.IsAdmin() && id != HttpContext.GuildId())
-                throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");
 
-            var guild = await _guildRepository.Get(id, cancellationToken);
+            var guild = await _guildRepository.Get(HttpContext.GuildId() , cancellationToken);
 
             if (guild == null)
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.GuildNotFound, "Guild not found");
@@ -192,16 +161,14 @@ namespace Coffers.Public.WebApi.Controllers
         /// <returns></returns>
         [Authorize]
         [PermissionRequired("admin", "officer", "leader")]
-        [HttpPatch("{id}/Tariff")]
+        [HttpPatch("Tariff")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> SetOrUpdateGuildTax([FromRoute]Guid id,
+        public async Task<IActionResult> SetOrUpdateGuildTax(
             [FromBody] UpdateTariffBinding binding,
             CancellationToken cancellationToken)
         {
-            if (!HttpContext.IsAdmin() && id != HttpContext.GuildId())
-                throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");
 
-            var guild = await _guildRepository.Get(id, cancellationToken);
+            var guild = await _guildRepository.Get(HttpContext.GuildId(), cancellationToken);
 
             if (guild == null)
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.GuildNotFound, "Guild not found");
@@ -234,19 +201,16 @@ namespace Coffers.Public.WebApi.Controllers
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [Authorize]
-        [HttpGet("{id}/gamers")]
+        [HttpGet("gamers")]
         [ProducesResponseType(typeof(ICollection<GamersListView>), 200)]
-        public async Task<ActionResult<GamersListView>> GetGamers([FromRoute]Guid id,
+        public async Task<ActionResult<GamersListView>> GetGamers(
             [FromQuery] GetGamersBinding binding,
             CancellationToken cancellationToken)
         {
-            if (!HttpContext.IsAdmin() && id != HttpContext.GuildId())
-                throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");
-
             return Ok(await _queryProcessor.Process<GetGamersQuery, ICollection<GamersListView>>(
                 new GetGamersQuery
                 {
-                    GuildId = id,
+                    GuildId = HttpContext.GuildId(),
                     Month = binding.DateMonth?.Trunc(DateTruncType.Day),
                     GamerStatuses = binding.GamerStatuses
                 }, cancellationToken

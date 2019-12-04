@@ -4,7 +4,7 @@ using Coffers.Types.Gamer;
 
 namespace Coffers.DB.Migrations.Entities
 {
-    internal sealed class Gamer
+    internal sealed class User
     {
         /// <summary>
         /// Идентификатор игрока

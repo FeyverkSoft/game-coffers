@@ -13,7 +13,6 @@ namespace Coffers.DB.Migrations
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
             modelBuilder.Entity<Guild>(b =>
             {
                 b.ToTable(nameof(Guild));
@@ -50,15 +49,15 @@ namespace Coffers.DB.Migrations
                     .WithMany()
                     .HasPrincipalKey(_ => _.Id);
 
-                b.HasMany(g => g.Gamers)
+                b.HasMany(g => g.Users)
                     .WithOne(_ => _.Guild)
                     .HasPrincipalKey(_ => _.Id);
 
-                b.HasOne(g => g.GuildAccount)
-                    .WithMany()
+                b.HasMany(g => g.Operations)
+                    .WithOne()
+                    .HasForeignKey(_ => _.GuildId)
                     .HasPrincipalKey(_ => _.Id)
                     .IsRequired();
-
             });
 
             modelBuilder.Entity<Tariff>(b =>
@@ -116,9 +115,9 @@ namespace Coffers.DB.Migrations
 
             });
 
-            modelBuilder.Entity<Gamer>(b =>
+            modelBuilder.Entity<User>(b =>
             {
-                b.ToTable(nameof(Gamer));
+                b.ToTable(nameof(User));
 
                 b.HasIndex(g => g.Id)
                     .IsUnique();
@@ -167,14 +166,11 @@ namespace Coffers.DB.Migrations
                     .WithOne()
                     .HasPrincipalKey(_ => _.Id);
 
-                b.HasOne(g => g.DefaultAccount)
-                    .WithMany()
+                b.HasMany(g => g.Operations)
+                    .WithOne()
+                    .HasForeignKey(_ => _.UserId)
                     .HasPrincipalKey(_ => _.Id)
                     .IsRequired();
-
-                b.HasMany(g => g.Histories)
-                    .WithOne()
-                    .HasPrincipalKey(_ => _.Id);
 
             });
 
@@ -242,12 +238,7 @@ namespace Coffers.DB.Migrations
                     .IsRequired()
                     .IsConcurrencyToken();
 
-                b.HasOne(g => g.Account)
-                    .WithMany()
-                    .HasPrincipalKey(_ => _.Id)
-                    .IsRequired();
-
-                b.HasOne(l => l.Gamer)
+                b.HasOne(l => l.User)
                     .WithMany(_ => _.Loans)
                     .HasPrincipalKey(_ => _.Id);
 
@@ -281,7 +272,7 @@ namespace Coffers.DB.Migrations
                     .HasConversion<String>()
                     .HasMaxLength(32);
 
-                b.HasOne(p => p.Gamer)
+                b.HasOne(p => p.User)
                     .WithMany(_ => _.Penalties)
                     .HasPrincipalKey(_ => _.Id);
 
@@ -289,56 +280,6 @@ namespace Coffers.DB.Migrations
                     .IsRequired()
                     .IsConcurrencyToken();
 
-            });
-
-            modelBuilder.Entity<History>(b =>
-            {
-                b.ToTable(nameof(History));
-
-                b.HasIndex(h => h.Id)
-                    .IsUnique();
-                b.HasKey(h => h.Id);
-                b.Property(h => h.Id)
-                    .HasColumnName("Id")
-                    .IsRequired();
-
-                b.Property(h => h.CreateDate)
-                    .IsRequired();
-                b.Property(h => h.Action)
-                    .HasMaxLength(1024)
-                    .IsRequired();
-
-                b.HasOne(p => p.Gamer)
-                    .WithMany(_ => _.Histories)
-                    .HasPrincipalKey(_ => _.Id);
-
-            });
-
-            modelBuilder.Entity<Account>(b =>
-            {
-                b.ToTable(nameof(Account));
-
-                b.HasIndex(a => a.Id)
-                    .IsUnique();
-                b.HasKey(a => a.Id);
-                b.Property(a => a.Id)
-                    .HasColumnName("Id")
-                    .IsRequired();
-
-                b.Property(a => a.Balance)
-                    .HasDefaultValue(0)
-                    .IsRequired();
-
-                b.Property(a => a.ConcurrencyTokens)
-                    .IsConcurrencyToken()
-                    .IsRequired();
-
-                b.HasMany(a => a.FromOperations)
-                    .WithOne(_ => _.FromAccount)
-                    .HasPrincipalKey(_ => _.Id);
-                b.HasMany(a => a.ToOperations)
-                    .WithOne(_ => _.ToAccount)
-                    .HasPrincipalKey(_ => _.Id);
             });
 
             modelBuilder.Entity<Operation>(b =>
@@ -354,8 +295,6 @@ namespace Coffers.DB.Migrations
 
                 b.Property(o => o.CreateDate)
                     .IsRequired();
-                b.Property(o => o.OperationDate)
-                    .IsRequired();
                 b.Property(o => o.DocumentId);
                 b.Property(o => o.Amount)
                     .HasDefaultValue(0)
@@ -366,12 +305,12 @@ namespace Coffers.DB.Migrations
                     .HasConversion<String>()
                     .HasMaxLength(32);
 
-                b.HasOne(g => g.FromAccount)
-                    .WithMany(_ => _.FromOperations)
+                b.HasOne(g => g.ParentOperation)
+                    .WithMany()
                     .HasPrincipalKey(_ => _.Id);
-
-                b.HasOne(g => g.ToAccount)
-                    .WithMany(_ => _.ToOperations)
+                b.HasOne(g => g.User)
+                    .WithMany()
+                    .HasForeignKey(_ => _.UserId)
                     .HasPrincipalKey(_ => _.Id);
             });
 
@@ -400,41 +339,6 @@ namespace Coffers.DB.Migrations
                     .HasMaxLength(128);
 
             });
-
-            modelBuilder.Entity<OperDay>(b =>
-            {
-                b.ToTable(nameof(OperDay));
-
-                b.HasKey(o => new { o.GuildId, o.Date });
-                b.HasIndex(o => new { o.GuildId, o.Date })
-                    .IsUnique();
-                b.HasIndex(o => o.GuildId);
-
-                b.Property(o => o.Balance)
-                    .HasDefaultValue(0)
-                    .IsRequired();
-
-                b.Property(o => o.LoansBalance)
-                    .HasDefaultValue(0)
-                    .IsRequired();
-
-                b.Property(o => o.PenaltyAmount)
-                    .HasDefaultValue(0)
-                    .IsRequired();
-
-                b.Property(o => o.Tax)
-                    .HasDefaultValue(0)
-                    .IsRequired();
-
-                b.Property(o => o.UserCount)
-                    .HasDefaultValue(0)
-                    .IsRequired();
-
-                b.Property(o => o.UsersBalance)
-                    .HasDefaultValue(0)
-                    .IsRequired();
-            });
-
             base.OnModelCreating(modelBuilder);
         }
     }

@@ -38,21 +38,6 @@ namespace Coffers.Public.WebApi.Authorization
             if (!authorization.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
                 throw new ApiException(HttpStatusCode.Unauthorized, ErrorCodes.Unauthorized, "Session not found");
 
-#if DEBUG
-#warning //костыль для первой инициализации проекта. Пока что нет админки
-            if (authorization.Equals("Bearer G$Ujf%Oz@ZMXRobN"))
-            {
-                return AuthenticateResult.Success(new AuthenticationTicket(
-                    new ClaimsPrincipal(
-                        new ClaimsIdentity(new List<Claim>
-                        {
-                            new Claim(ClaimTypes.NameIdentifier, Guid.Empty.ToString(), ClaimValueTypes.String),
-                            new Claim(ClaimTypes.Role, "Admin", ClaimValueTypes.String),
-                        }, "Token")),
-                    null,
-                    "Token"));
-            }
-#endif
 
             if (!Guid.TryParse(authorization.Substring("Bearer ".Length).Trim(), out var sessionId))
                 throw new ApiException(HttpStatusCode.Unauthorized, ErrorCodes.Unauthorized, "Session not found");

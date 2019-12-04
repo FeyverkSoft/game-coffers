@@ -16,10 +16,7 @@ namespace Coffers.DB.Migrations.Entities
         /// </summary>
         public GuildTariff Tariff { get; set; }
 
-        /// <summary>
-        /// Счёт гильдии
-        /// </summary>
-        public Account GuildAccount { get; set; }
+        public List<Operation> Operations { get; set; }
 
         /// <summary>
         /// Дата создания записи
@@ -49,6 +46,6 @@ namespace Coffers.DB.Migrations.Entities
         /// <summary>
         /// Список игроков в гильдии
         /// </summary>
-        public ICollection<Gamer> Gamers { get; set; }
+        public ICollection<User> Users { get; set; }
     }
 }

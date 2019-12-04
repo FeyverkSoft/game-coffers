@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Coffers.Types.Gamer;
 
 namespace Coffers.DB.Migrations.Entities
@@ -13,7 +14,8 @@ namespace Coffers.DB.Migrations.Entities
         /// <summary>
         /// Игрок
         /// </summary>
-        public Gamer Gamer { get; set; }
+        public User User { get; set; }
+        public List<Operation> Operations { get; set; }
 
         /// <summary>
         /// Сумма штрафа

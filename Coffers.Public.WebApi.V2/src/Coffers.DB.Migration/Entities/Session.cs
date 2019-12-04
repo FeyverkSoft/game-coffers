@@ -11,7 +11,7 @@ namespace Coffers.DB.Migrations.Entities
         /// <summary>
         /// Игрок которому принадлежит сессия
         /// </summary>
-        public Gamer Gamer { get; private set; }
+        public User Gamer { get; private set; }
         /// <summary>
         /// Дата создания сессии
         /// </summary>

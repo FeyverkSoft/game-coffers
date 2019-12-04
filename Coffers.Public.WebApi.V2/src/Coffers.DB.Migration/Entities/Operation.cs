@@ -14,16 +14,21 @@ namespace Coffers.DB.Migrations.Entities
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Ссылка на родительскую проводку
-        /// </summary>
-        public Operation ParrentOperation { get; set; }
-
-        /// <summary>
         /// Идентификатор гильдии
         /// </summary>
         public Guid GuildId { get; set; }
 
+        /// <summary>
+        /// Пользователь выполнивший операцию
+        /// </summary>
+        public Guid UserId { get; set; }
+        public User User { get; set; }
 
+        /// <summary>
+        /// Ссылка на родительскую проводку
+        /// </summary>
+        public Operation ParentOperation { get; set; }
+        
         /// <summary>
         /// Дата создания записи
         /// </summary>

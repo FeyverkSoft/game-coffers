@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using System.Net;
 using Coffers.DB.Migrations;
 using Coffers.Public.Domain.Authorization;
@@ -7,13 +5,7 @@ using Coffers.Public.Domain.Gamers;
 using Coffers.Public.Domain.Guilds;
 using Coffers.Public.Domain.Operations;
 using Coffers.Public.Infrastructure.Authorization;
-using Coffers.Public.Infrastructure.Gamers;
 using Coffers.Public.Infrastructure.Guilds;
-using Coffers.Public.Infrastructure.Operations;
-using Coffers.Public.Queries.Infrastructure.Gamers;
-using Coffers.Public.Queries.Infrastructure.Guilds;
-using Coffers.Public.Queries.Infrastructure.Operations;
-using Coffers.Public.Queries.Infrastructure.Profiles;
 using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Extensions;
 using Coffers.Public.WebApi.Filters;
@@ -22,7 +14,6 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
@@ -81,20 +72,10 @@ namespace Coffers.Public.WebApi
             {
                 options.UseMySQL(Configuration.GetConnectionString("Coffers"));
             });
-            services.AddDbContext<GamerDbContext>(options =>
-            {
-                options.UseMySQL(Configuration.GetConnectionString("Coffers"));
-            });
-            services.AddDbContext<OperationsDbContext>(options =>
-            {
-                options.UseMySQL(Configuration.GetConnectionString("Coffers"));
-            });
 
 
             services.AddScoped<IGuildRepository, GuildRepository>();
             services.AddScoped<IAuthorizationRepository, AuthorizationRepository>();
-            services.AddScoped<IGamerRepository, GamerRepository>();
-            services.AddScoped<IOperationsRepository, OperationsRepository>();
 
 
             services.AddScoped<GamerSecurityService>();
@@ -102,30 +83,8 @@ namespace Coffers.Public.WebApi
             services.AddScoped<OperationService>();
 
 
-
-            services.AddDbContextPool<GuildsQueryDbContext>(options =>
-            {
-                options.UseMySql(Configuration.GetConnectionString("Coffers"));
-            });
-            services.AddDbContextPool<GamerQueryDbContext>(options =>
-            {
-                options.UseMySql(Configuration.GetConnectionString("Coffers"));
-            });
-            services.AddDbContextPool<OperationsQueriesDbContext>(options =>
-            {
-                options.UseMySql(Configuration.GetConnectionString("Coffers"));
-            });
-            services.AddDbContextPool<ProfilesQueryDbContext>(options =>
-            {
-                options.UseMySql(Configuration.GetConnectionString("Coffers"));
-            });
-
             services.RegQueryProcessor(registry =>
             {
-                registry.Register<GuildsQueryHandler>();
-                registry.Register<GamerQueryHandler>();
-                registry.Register<OperationsQueryHandler>();
-                registry.Register<ProfilesQueryHandler>();
             });
 
 
