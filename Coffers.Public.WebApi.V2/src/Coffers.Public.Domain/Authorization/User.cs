@@ -3,7 +3,7 @@ using Coffers.Types.Gamer;
 
 namespace Coffers.Public.Domain.Authorization
 {
-    public sealed class Gamer
+    public sealed class User
     {
         /// <summary>
         /// Идентификатор игрока
@@ -41,7 +41,7 @@ namespace Coffers.Public.Domain.Authorization
 
         public GamerRank Rank { get; private set; }
 
-        internal Gamer() { }
+        internal User() { }
 
         public void SetPassword(String hash)
         {

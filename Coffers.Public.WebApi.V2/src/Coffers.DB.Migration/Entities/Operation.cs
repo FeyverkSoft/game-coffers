@@ -17,7 +17,7 @@ namespace Coffers.DB.Migrations.Entities
         /// Идентификатор гильдии
         /// </summary>
         public Guid GuildId { get; set; }
-
+        public Guild Guild { get; set; }
         /// <summary>
         /// Пользователь выполнивший операцию
         /// </summary>
@@ -28,7 +28,7 @@ namespace Coffers.DB.Migrations.Entities
         /// Ссылка на родительскую проводку
         /// </summary>
         public Operation ParentOperation { get; set; }
-        
+        public Guid? ParentOperationId { get; set; }
         /// <summary>
         /// Дата создания записи
         /// </summary>

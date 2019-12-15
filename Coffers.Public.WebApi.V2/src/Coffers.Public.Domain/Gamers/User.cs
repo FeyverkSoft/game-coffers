@@ -5,7 +5,7 @@ using Coffers.Types.Gamer;
 
 namespace Coffers.Public.Domain.Gamers
 {
-    public sealed class Gamer
+    public sealed class User
     {
         /// <summary>
         /// Идентификатор игрока
@@ -51,7 +51,7 @@ namespace Coffers.Public.Domain.Gamers
 
         public List<Penalty> Penalties { get; set; }
 
-        internal Gamer() { }
+        internal User() { }
 
         /// <summary>
         /// Данный метод добавляет нового персонажа игроку, если такого не было

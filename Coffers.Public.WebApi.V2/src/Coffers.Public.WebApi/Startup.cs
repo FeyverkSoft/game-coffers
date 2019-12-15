@@ -66,11 +66,11 @@ namespace Coffers.Public.WebApi
 
             services.AddDbContext<GuildsDbContext>(options =>
             {
-                options.UseMySQL(Configuration.GetConnectionString("Coffers"));
+                options.UseMySql(Configuration.GetConnectionString("Coffers"));
             });
             services.AddDbContext<AuthorizationDbContext>(options =>
             {
-                options.UseMySQL(Configuration.GetConnectionString("Coffers"));
+                options.UseMySql(Configuration.GetConnectionString("Coffers"));
             });
 
 
@@ -78,7 +78,7 @@ namespace Coffers.Public.WebApi
             services.AddScoped<IAuthorizationRepository, AuthorizationRepository>();
 
 
-            services.AddScoped<GamerSecurityService>();
+            services.AddScoped<UserSecurityService>();
             services.AddScoped<LoanFactory>();
             services.AddScoped<OperationService>();
 

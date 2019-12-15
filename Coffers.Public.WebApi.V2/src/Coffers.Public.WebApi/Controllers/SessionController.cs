@@ -12,7 +12,6 @@ using Coffers.Public.WebApi.Exceptions;
 using Coffers.Public.WebApi.Models.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Coffers.Public.WebApi.Controllers
 {
@@ -36,7 +35,7 @@ namespace Coffers.Public.WebApi.Controllers
         [ProducesResponseType(typeof(TokenView), 200)]
         public async Task<IActionResult> Post(
             [FromBody] AuthBinding binding,
-            [FromServices] GamerSecurityService gamerSecurityService,
+            [FromServices] UserSecurityService gamerSecurityService,
             CancellationToken cancellationToken)
         {
             var gamer = await _authorizationRepository.FindGamer(binding.Login, cancellationToken);
@@ -62,15 +61,11 @@ namespace Coffers.Public.WebApi.Controllers
             if (gamer.Roles != null)
                 roles.AddRange(gamer.Roles);
             roles.Add(gamer.Rank.ToString().ToLower());
-#warning костыль роли admin
-            if (gamer.Login.Equals("Feyverk"))
-                roles.Add("Admin");
-
             return Ok(new TokenView
             {
                 Token = sessionId,
                 GuildId = gamer.GuildId,
-                Roles = roles.Distinct((x, y) => x.Equals(y, StringComparison.InvariantCultureIgnoreCase)).ToArray()
+                Roles = roles.Distinct(StringComparer.InvariantCultureIgnoreCase).ToArray()
             });
         }
 

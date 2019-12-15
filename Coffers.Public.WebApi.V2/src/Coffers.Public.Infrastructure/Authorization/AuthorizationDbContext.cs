@@ -9,7 +9,7 @@ namespace Coffers.Public.Infrastructure.Authorization
     public class AuthorizationDbContext : DbContext
     {
         public DbSet<Session> Sessions { get; set; }
-        public DbSet<Gamer> Gamers { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public AuthorizationDbContext(DbContextOptions<AuthorizationDbContext> options) : base(options) { }
 
@@ -36,15 +36,15 @@ namespace Coffers.Public.Infrastructure.Authorization
                 b.Property(o => o.Ip)
                     .HasMaxLength(128);
 
-                b.HasOne(g => g.Gamer)
+                b.HasOne(g => g.User)
                     .WithMany()
                     .HasPrincipalKey(_ => _.Id);
 
             });
 
-            modelBuilder.Entity<Gamer>(b =>
+            modelBuilder.Entity<User>(b =>
             {
-                b.ToTable(nameof(Gamer));
+                b.ToTable(nameof(User));
 
                 b.HasIndex(o => o.Id)
                     .IsUnique();

@@ -63,9 +63,9 @@ namespace Coffers.Public.WebApi.Authorization
             IEnumerable<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, session.SessionId.ToString(), ClaimValueTypes.String),
-                new Claim(ClaimType.UserId, session.Gamer.Id.ToString(), ClaimValueTypes.String),
-                new Claim(ClaimType.GuildId, session.Gamer.GuildId.ToString(), ClaimValueTypes.String),
-                new Claim(ClaimTypes.Role, String.Join(",", session.Gamer.Roles ?? new[]{ "" }), ClaimValueTypes.String),
+                new Claim(ClaimType.UserId, session.User.Id.ToString(), ClaimValueTypes.String),
+                new Claim(ClaimType.GuildId, session.User.GuildId.ToString(), ClaimValueTypes.String),
+                new Claim(ClaimTypes.Role, String.Join(",", session.User.Roles ?? new[]{ "" }), ClaimValueTypes.String),
             };
 
             var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, "Token"));

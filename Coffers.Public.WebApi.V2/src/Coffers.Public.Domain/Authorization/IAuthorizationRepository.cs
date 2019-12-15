@@ -18,9 +18,9 @@ namespace Coffers.Public.Domain.Authorization
         /// <param name="login"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Gamer> FindGamer(String login, CancellationToken cancellationToken);
+        Task<User> FindGamer(String login, CancellationToken cancellationToken);
 
-        Task<Gamer> GetGamer(Guid userId, CancellationToken cancellationToken);
-        Task Save(Gamer gamer);
+        Task<User> GetGamer(Guid userId, CancellationToken cancellationToken);
+        Task Save(User gamer);
     }
 }

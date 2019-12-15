@@ -4,12 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Coffers.DB.Migrations
 {
-    public class MigrateDbContext
-        : DbContext
+    public class MigrateDbContext : DbContext
     {
-        public MigrateDbContext(DbContextOptions<MigrateDbContext> options) : base(options)
-        {
-        }
+        public MigrateDbContext(DbContextOptions<MigrateDbContext> options)
+            : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -58,6 +56,16 @@ namespace Coffers.DB.Migrations
                     .HasForeignKey(_ => _.GuildId)
                     .HasPrincipalKey(_ => _.Id)
                     .IsRequired();
+
+                b.HasData(new Guild
+                {
+                    Id = new Guid("00000000-0000-4000-0000-000000000001"),
+                    RecruitmentStatus = Types.Guilds.RecruitmentStatus.Close,
+                    Name = "Admins",
+                    CreateDate = DateTime.UtcNow,
+                    UpdateDate = DateTime.UtcNow,
+                    Status = Types.Guilds.GuildStatus.Active
+                });
             });
 
             modelBuilder.Entity<Tariff>(b =>
@@ -172,6 +180,20 @@ namespace Coffers.DB.Migrations
                     .HasPrincipalKey(_ => _.Id)
                     .IsRequired();
 
+                b.HasData(new User
+                {
+                    Id = Guid.NewGuid(),
+                    Login = "Admin",
+                    Rank = Types.Gamer.GamerRank.Leader,
+                    GuildId = new Guid("00000000-0000-4000-0000-000000000001"),
+                    Roles = "[\"admin\"]",
+                    Name = "Admin",
+                    Status = Types.Gamer.GamerStatus.Active,
+                    CreateDate = DateTime.UtcNow,
+                    UpdateDate = DateTime.UtcNow,
+                    DateOfBirth = DateTime.UtcNow
+                });
+
             });
 
             modelBuilder.Entity<Character>(b =>
@@ -232,7 +254,7 @@ namespace Coffers.DB.Migrations
                     .HasDefaultValue(0)
                     .IsRequired();
                 b.Property(l => l.Description)
-                    .HasMaxLength(512);
+                    .HasMaxLength(1024);
 
                 b.Property(l => l.ConcurrencyTokens)
                     .IsRequired()
@@ -295,19 +317,31 @@ namespace Coffers.DB.Migrations
 
                 b.Property(o => o.CreateDate)
                     .IsRequired();
-                b.Property(o => o.DocumentId);
+                b.Property(o => o.DocumentId)
+                .IsRequired(false);
                 b.Property(o => o.Amount)
                     .HasDefaultValue(0)
                     .IsRequired();
                 b.Property(o => o.Description)
-                    .HasMaxLength(512);
+                    .HasMaxLength(1024);
                 b.Property(o => o.Type)
                     .HasConversion<String>()
                     .HasMaxLength(32);
 
+                b.Property(o => o.GuildId)
+                    .IsRequired();
+                b.HasOne(_ => _.Guild)
+                    .WithMany()
+                    .HasPrincipalKey(_ => _.Id)
+                    .HasForeignKey(_ => _.GuildId);
+
+                b.Property(o => o.ParentOperationId)
+                    .IsRequired(false);
                 b.HasOne(g => g.ParentOperation)
                     .WithMany()
+                    .HasForeignKey(_ => _.ParentOperationId)
                     .HasPrincipalKey(_ => _.Id);
+
                 b.HasOne(g => g.User)
                     .WithMany()
                     .HasForeignKey(_ => _.UserId)
@@ -326,14 +360,16 @@ namespace Coffers.DB.Migrations
                     .IsRequired();
 
                 b.Property(o => o.CreateDate)
-
                     .IsRequired();
                 b.Property(o => o.ExpireDate)
                     .IsRequired();
+                b.Property(o => o.UserId)
+                    .IsRequired();
 
-                b.HasOne(g => g.Gamer)
+                b.HasOne(g => g.User)
                     .WithMany()
-                    .HasPrincipalKey(_ => _.Id);
+                    .HasPrincipalKey(_ => _.Id)
+                    .HasForeignKey(_ => _.UserId);
 
                 b.Property(o => o.Ip)
                     .HasMaxLength(128);

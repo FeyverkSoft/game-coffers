@@ -11,8 +11,8 @@ namespace Coffers.Public.Domain.Authorization
         /// <summary>
         /// Игрок которому принадлежит сессия
         /// </summary>
-        public Gamer Gamer { get; private set; }
-        public Guid GamerId { get; private set; }
+        public Guid UserId { get; private set; }
+        public User User { get; private set; }
         /// <summary>
         /// Дата создания сессии
         /// </summary>
@@ -22,7 +22,7 @@ namespace Coffers.Public.Domain.Authorization
         /// </summary>
         public DateTime ExpireDate { get; private set; }
         /// <summary>
-        /// IP адрес с которого была получена сессиия
+        /// IP адресс с которого была получена сессиия
         /// </summary>
         public String Ip { get; private set; }
 
@@ -35,10 +35,10 @@ namespace Coffers.Public.Domain.Authorization
 
         internal Session() { }
 
-        public Session(Guid sessionId, Guid gamerId, Int32 lifetime, String ip)
+        public Session(Guid sessionId, Guid userId, Int32 lifetime, String ip)
         {
             SessionId = sessionId;
-            GamerId = gamerId;
+            UserId = userId;
             Ip = ip;
             ExpireDate = DateTime.UtcNow.AddMinutes(lifetime);
             CreateDate = DateTime.UtcNow;

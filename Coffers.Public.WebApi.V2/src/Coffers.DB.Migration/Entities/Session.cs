@@ -11,7 +11,8 @@ namespace Coffers.DB.Migrations.Entities
         /// <summary>
         /// Игрок которому принадлежит сессия
         /// </summary>
-        public User Gamer { get; private set; }
+        public Guid UserId { get; private set; }
+        public User User { get; private set; }
         /// <summary>
         /// Дата создания сессии
         /// </summary>
@@ -24,5 +25,6 @@ namespace Coffers.DB.Migrations.Entities
         /// IP адресс с которого была получена сессиия
         /// </summary>
         public String Ip { get; private set; }
+
     }
 }

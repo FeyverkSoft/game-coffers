@@ -15,6 +15,7 @@ namespace Coffers.DB.Migrations.Entities
         /// гильдия к которой принадлежит игрок
         /// </summary>
         public Guild Guild { get; set; }
+        public Guid GuildId { get; set; }
 
         /// <summary>
         /// Список чаров игрока

@@ -18,7 +18,7 @@ namespace Coffers.Public.Infrastructure.Authorization
         public async Task<Session> Get(Guid id, CancellationToken cancellationToken)
         {
             return await _context.Sessions
-                .Include(_ => _.Gamer)
+                .Include(_ => _.User)
                 .FirstOrDefaultAsync(session => session.SessionId == id, cancellationToken);
         }
         public async Task Save(Session session)
@@ -30,23 +30,23 @@ namespace Coffers.Public.Infrastructure.Authorization
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Gamer> FindGamer(String login, CancellationToken cancellationToken)
+        public async Task<User> FindGamer(String login, CancellationToken cancellationToken)
         {
-            return await _context.Gamers
+            return await _context.Users
                 .FirstOrDefaultAsync(gamer => gamer.Login == login, cancellationToken);
         }
 
-        public async Task<Gamer> GetGamer(Guid userId, CancellationToken cancellationToken)
+        public async Task<User> GetGamer(Guid userId, CancellationToken cancellationToken)
         {
-            return await _context.Gamers
+            return await _context.Users
                 .FirstOrDefaultAsync(gamer => gamer.Id == userId, cancellationToken);
         }
 
-        public async Task Save(Gamer gamer)
+        public async Task Save(User gamer)
         {
             var entry = _context.Entry(gamer);
             if (entry.State == EntityState.Detached)
-                _context.Gamers.Add(gamer);
+                _context.Users.Add(gamer);
 
             await _context.SaveChangesAsync();
         }
