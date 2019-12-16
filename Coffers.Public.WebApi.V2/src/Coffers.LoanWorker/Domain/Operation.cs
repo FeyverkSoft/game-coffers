@@ -28,15 +28,6 @@ namespace Coffers.LoanWorker.Domain
         /// </summary>
         public Decimal Amount { get; private set; }
 
-        /// <summary>
-        /// Счёт с которого списываются бабки
-        /// </summary>
-        public Account FromAccount { get; private set; }
-
-        /// <summary>
-        /// Счёт на который зачисляются бабки
-        /// </summary>
-        public Account ToAccount { get; private set; }
 
         /// <summary>
         /// Тип операции
@@ -55,14 +46,13 @@ namespace Coffers.LoanWorker.Domain
 
         protected Operation(){}
 
-        public Operation(Guid id, Guid documentId, Decimal amount, OperationType type, String description, Account account)
+        public Operation(Guid id, Guid documentId, Decimal amount, OperationType type, String description)
         {
             Id = id;
             DocumentId = documentId;
             Amount = amount;
             Type = type;
             Description = description;
-            ToAccount = account;
             CreateDate = DateTime.UtcNow;
             OperationDate = DateTime.UtcNow;
         }

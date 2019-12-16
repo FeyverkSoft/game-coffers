@@ -38,8 +38,12 @@ namespace Coffers.Public.Infrastructure.Authorization
 
                 b.HasOne(g => g.User)
                     .WithMany()
-                    .HasPrincipalKey(_ => _.Id);
+                    .HasPrincipalKey(_ => _.Id)
+                    .HasForeignKey(_ => _.UserId);
 
+                b.Property(o => o.ConcurrencyTokens)
+                    .IsConcurrencyToken()
+                    .IsRequired();
             });
 
             modelBuilder.Entity<User>(b =>
@@ -72,11 +76,15 @@ namespace Coffers.Public.Infrastructure.Authorization
                         converterForm => converterForm == null ? new String[] { } : converterForm.ParseJson<String[]>()
                         )
                     .HasMaxLength(512);
+
                 b.Property(o => o.Status)
                     .HasConversion<String>()
                     .HasMaxLength(32)
                     .IsRequired();
 
+                b.Property(o => o.ConcurrencyTokens)
+                    .IsConcurrencyToken()
+                    .IsRequired();
             });
 
         }

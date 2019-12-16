@@ -33,8 +33,6 @@ namespace Coffers.Public.WebApi.Filters
 
             var gamer = await _authorizationRepository.GetUser(userId, CancellationToken.None);
 
-            /* if (user.IsGod)
-                 return;*/
             if (!_roles.Any())
                 return;
 

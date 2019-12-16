@@ -8,7 +8,7 @@ namespace Coffers.Public.Domain.Authorization
         /// <summary>
         /// Идентификатор игрока
         /// </summary>
-        public Guid Id { get; private set; }
+        public Guid Id { get; }
 
         /// <summary>
         /// Дата обновления записи
@@ -18,17 +18,17 @@ namespace Coffers.Public.Domain.Authorization
         /// <summary>
         /// Статус игрока в гильдии
         /// </summary>
-        public GamerStatus Status { get; private set; }
+        public GamerStatus Status { get; }
 
         /// <summary>
         /// Права доступа игрока
         /// </summary>
-        public String[] Roles { get; private set; }
+        public String[] Roles { get; }
 
         /// <summary>
         /// Логин для авторизации
         /// </summary>
-        public String Login { get; private set; }
+        public String Login { get; }
 
         /// <summary>
         /// Пароль для авторизации
@@ -37,13 +37,14 @@ namespace Coffers.Public.Domain.Authorization
         /// <summary>
         /// ID гильдии пользователя
         /// </summary>
-        public Guid GuildId { get; private set; }
+        public Guid GuildId { get; }
 
-        public GamerRank Rank { get; private set; }
+        public GamerRank Rank { get; }
+        public Guid ConcurrencyTokens { get; } = Guid.NewGuid();
 
         internal User() { }
 
-        public void SetPassword(String hash)
+        internal void SetPassword(String hash)
         {
             if (String.IsNullOrEmpty(hash))
                 throw new ArgumentException($"Argument: {nameof(hash)} cannot be null or empty.");

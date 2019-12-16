@@ -16,7 +16,7 @@ namespace Coffers.Public.WebApi.Controllers
     [Route("[controller]")]
     [ApiController]
     [ProducesResponseType(401)]
-    [PermissionRequired("admin")]
+    [PermissionRequired(new[] { "admin" })]
     public class AdminController : ControllerBase
     {
         private readonly IGuildRepository _guildRepository;
@@ -36,7 +36,6 @@ namespace Coffers.Public.WebApi.Controllers
         /// <param name="binding"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        [Authorize]
         [HttpPost("guilds")]
         [ProducesResponseType(201)]
         public async Task<IActionResult> Create(
@@ -66,7 +65,6 @@ namespace Coffers.Public.WebApi.Controllers
         /// <param name="id"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        [Authorize]
         [HttpGet(template: "guilds/{id}", Name = "GetGuild")]
         [ProducesResponseType(typeof(GuildView), 200)]
         [ProducesResponseType(404)]

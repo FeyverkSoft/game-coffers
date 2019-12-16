@@ -28,11 +28,6 @@ namespace Coffers.LoanWorker.Domain
         public Decimal Amount { get; private set; }
 
         /// <summary>
-        /// Счёт займа
-        /// </summary>
-        public Account Account { get; private set; }
-
-        /// <summary>
         /// Сумма комиссии 
         /// </summary>
         public Decimal TaxAmount { get; private set; }
@@ -64,7 +59,6 @@ namespace Coffers.LoanWorker.Domain
         internal void IncrimentPenaltyAmount(Decimal penaltyAmount)
         {
             PenaltyAmount += penaltyAmount;
-            Account.ChangeBalance(penaltyAmount);
             UpdateDate = DateTime.UtcNow;
             ConcurrencyTokens = new Guid();
         }
@@ -76,7 +70,6 @@ namespace Coffers.LoanWorker.Domain
         internal void IncrimentTaxAmount(Decimal taxAmount)
         {
             TaxAmount += taxAmount;
-            Account.ChangeBalance(taxAmount);
             UpdateDate = DateTime.UtcNow;
             ConcurrencyTokens = new Guid();
         }
@@ -87,8 +80,6 @@ namespace Coffers.LoanWorker.Domain
         internal void Expire()
         {
             if (LoanStatus == LoanStatus.Expired)
-                return;
-            if (Account.Balance == 0)
                 return;
             LoanStatus = LoanStatus.Expired;
             UpdateDate = DateTime.UtcNow;

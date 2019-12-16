@@ -16,7 +16,7 @@ namespace Coffers.Public.Domain.Authorization
         /// <summary>
         /// Дата создания сессии
         /// </summary>
-        public DateTime CreateDate { get; }
+        public DateTime CreateDate { get; } = DateTime.UtcNow;
         /// <summary>
         /// Дата стухания сессии
         /// </summary>
@@ -28,20 +28,20 @@ namespace Coffers.Public.Domain.Authorization
 
         public Boolean IsExpired => ExpireDate <= DateTime.UtcNow;
 
+        public Guid ConcurrencyTokens { get; private set; } = Guid.NewGuid();
+
         public void ExtendSession(Int32 lifetime)
         {
+            if (IsExpired)
+                throw new InvalidOperationException("Session expired");
             ExpireDate = DateTime.UtcNow.AddMinutes(lifetime);
+            ConcurrencyTokens = Guid.NewGuid();
         }
 
         internal Session() { }
 
         public Session(Guid sessionId, Guid userId, Int32 lifetime, String ip)
-        {
-            SessionId = sessionId;
-            UserId = userId;
-            Ip = ip;
-            ExpireDate = DateTime.UtcNow.AddMinutes(lifetime);
-            CreateDate = DateTime.UtcNow;
-        }
+            => (SessionId, UserId, ExpireDate, Ip)
+            = (sessionId, userId, DateTime.UtcNow.AddMinutes(lifetime), ip);
     }
 }

@@ -1,14 +1,19 @@
 ﻿using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Coffers.Public.WebApi.Filters
 {
-    public class AuthorizationApiFilter : IAuthorizationFilter
+    public class AuthorizationApiFilter : IAsyncAuthorizationFilter
     {
-        public void OnAuthorization(AuthorizationFilterContext context)
+        public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
+            if (context.HttpContext.Request.Method.Equals(HttpMethod.Options.Method))
+                return;
+
             if (context.Filters.All(f => f.GetType() != typeof(AuthorizeFilter)) ||
                 context.Filters.Any(f => f.GetType() == typeof(AllowAnonymousFilter)))
             {

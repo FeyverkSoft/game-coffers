@@ -31,7 +31,6 @@ namespace Coffers.LoanWorker
         {
             var truncedDate = DateTime.UtcNow.Trunc(DateTruncType.Day);
             return await _context.Loans
-                .Include(_ => _.Account)
                 .Include(_ => _.Tariff)
                 .Where(_ => (_.LoanStatus == LoanStatus.Active || _.LoanStatus == LoanStatus.Expired) && _.ExpiredDate < truncedDate)
                 .ToListAsync(cancellationToken);
@@ -46,7 +45,6 @@ namespace Coffers.LoanWorker
         {
             var truncedDate = DateTime.UtcNow.Trunc(DateTruncType.Day);
             return await _context.Loans
-                .Include(_ => _.Account)
                 .Include(_ => _.Tariff)
                 .Where(_ => (_.LoanStatus == LoanStatus.Active) && truncedDate > _.ExpiredDate)
                 .ToListAsync(cancellationToken);

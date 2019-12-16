@@ -30,9 +30,6 @@ namespace Coffers.LoanWorker.Infrastructure
                     .HasConversion<String>()
                     .IsRequired();
 
-                b.HasOne(_ => _.Account)
-                    .WithMany()
-                    .HasPrincipalKey(_ => _.Id);
                 b.Property(l => l.ConcurrencyTokens)
                     .IsRequired()
                     .IsConcurrencyToken();
@@ -55,26 +52,6 @@ namespace Coffers.LoanWorker.Infrastructure
                 b.Property(g => g.DocumentId);
 
                 b.Property(g => g.CreateDate)
-                    .IsRequired();
-            });
-
-            modelBuilder.Entity<Account>(b =>
-            {
-                b.ToTable(nameof(Account));
-
-                b.HasIndex(a => a.Id)
-                    .IsUnique();
-                b.HasKey(a => a.Id);
-                b.Property(a => a.Id)
-                    .HasColumnName("Id")
-                    .IsRequired();
-
-                b.Property(a => a.Balance)
-                    .HasDefaultValue(0)
-                    .IsRequired();
-
-                b.Property(a => a.ConcurrencyTokens)
-                    .IsConcurrencyToken()
                     .IsRequired();
             });
 

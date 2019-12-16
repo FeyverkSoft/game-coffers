@@ -22,6 +22,7 @@ namespace Coffers.LoanWorker.Domain
 
         internal async Task ProcessExpireLoan(Loan loan)
         {
+           /*
             //если просрочка займа не облагается штрафом, то скипаем займ
             if (loan.Tariff.ExpiredLoanTax <= 0)
                 return;
@@ -67,12 +68,12 @@ namespace Coffers.LoanWorker.Domain
                 OperationType.LoanTax,
                 "loan penalty tax",
                 loan.Account
-            ));
+            ));*/
         }
 
         internal async Task ProcessTaxLoan(Loan loan)
         {
-            //если просрочка займа не облагается штрафом, то скипаем займ
+            /*//если просрочка займа не облагается штрафом, то скипаем займ
             if (loan.Tariff.LoanTax <= 0)
                 return;
 
@@ -110,7 +111,7 @@ namespace Coffers.LoanWorker.Domain
                 OperationType.LoanTax,
                 "loan tax",
                 loan.Account
-            ));
+            ));*/
         }
     }
 }
