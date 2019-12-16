@@ -25,6 +25,6 @@ namespace Coffers.DB.Migrations.Entities
         /// IP адресс с которого была получена сессиия
         /// </summary>
         public String Ip { get; private set; }
-
+        public Guid ConcurrencyTokens { get; set; }
     }
 }

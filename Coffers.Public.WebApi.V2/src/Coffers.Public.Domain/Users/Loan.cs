@@ -1,72 +1,66 @@
 ﻿using System;
 using Coffers.Types.Gamer;
 
-namespace Coffers.Public.Domain.Gamers
+namespace Coffers.Public.Domain.Users
 {
     /// <summary>
     /// Сущность хранит займ игрока
     /// </summary>
     public sealed class Loan
     {
-
         /// <summary>
         /// Идентификатор займа
         /// </summary>
-        public Guid Id { get; private set; }
+        public Guid Id { get; set; }
 
         /// <summary>
-        /// Сумма займа
+        /// Идентификатор игрока
         /// </summary>
-        public Decimal Amount { get; private set; }
+        public User User { get; set; }
 
-        public Account Account { get; private set; }
-
-        public Guid TariffId { get; private set; }
+        public User UserId { get; set; }
 
         /// <summary>
-        /// Дата стухания займа
+        /// Тариф по которому проходит займ
         /// </summary>
-        public DateTime ExpiredDate { get; private set; }
+        public Guid TariffId { get; set; }
 
         /// <summary>
-        /// Дата создания займа
+        /// Дата создания записи
         /// </summary>
-        public DateTime CreateDate { get; private set; }
-
-        /// <summary>
-        /// Дата обновления записи
-        /// </summary>
-        public DateTime UpdateDate { get; private set; }
-
-        /// <summary>
-        /// Сумма комиссии 
-        /// </summary>
-        public Decimal TaxAmount { get; private set; }
-
-        /// <summary>
-        /// Сумма штрафа 
-        /// </summary>
-        public Decimal PenaltyAmount { get; private set; }
-
-        /// <summary>
-        /// Дата займа
-        /// </summary>
-        public DateTime BorrowDate { get; private set; }
+        public DateTime CreateDate { get; set; }
 
         /// <summary>
         /// Необязательное описание, для чего был взят займ
         /// </summary>
-        public String Description { get; private set; }
+        public String Description { get; set; }
 
         /// <summary>
-        /// Статус займа
+        /// Дата обновления записи
         /// </summary>
-        public LoanStatus LoanStatus { get; private set; }
+        public DateTime UpdateDate { get; set; }
+
+        /// <summary>
+        /// Дата займа
+        /// </summary>
+        public DateTime BorrowDate { get; set; }
+
+        /// <summary>
+        /// Дата стухания займа
+        /// </summary>
+        public DateTime ExpiredDate { get; set; }
+
+        /// <summary>
+        /// Сумма займа
+        /// </summary>
+        public Decimal Amount { get; set; }
+
+        public LoanStatus LoanStatus { get; set; }
 
         /// <summary>
         /// Токен конкуренции, предназначен для разруливания согласованности данных, при ассинхроных запросаз
         /// </summary>
-        public Guid ConcurrencyTokens { get; private set; }
+        public Guid ConcurrencyTokens { get; set; }
 
         internal void SetStatus(LoanStatus newStatus)
         {
@@ -78,7 +72,7 @@ namespace Coffers.Public.Domain.Gamers
             ConcurrencyTokens = Guid.NewGuid();
         }
 
-        public Loan(Guid id, Guid tariffId, Decimal amount, Decimal taxAmount,
+        public Loan(Guid id, Guid tariffId, Decimal amount,
             String description, DateTime borrowDate, DateTime expiredDate)
         {
             CreateDate = DateTime.UtcNow;
@@ -86,10 +80,8 @@ namespace Coffers.Public.Domain.Gamers
             LoanStatus = LoanStatus.Active;
             ConcurrencyTokens = Guid.NewGuid();
             Id = id;
-            Account = new Account();
             TariffId = tariffId;
             Amount = amount;
-            TaxAmount = taxAmount;
             Description = description;
             BorrowDate = borrowDate;
             ExpiredDate = expiredDate;

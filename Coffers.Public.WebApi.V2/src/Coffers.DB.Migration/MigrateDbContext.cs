@@ -45,7 +45,8 @@ namespace Coffers.DB.Migrations
 
                 b.HasOne(t => t.Tariff)
                     .WithMany()
-                    .HasPrincipalKey(_ => _.Id);
+                    .HasPrincipalKey(_ => _.Id)
+                    .HasForeignKey(_=>_.TariffId);
 
                 b.HasMany(g => g.Users)
                     .WithOne(_ => _.Guild)
@@ -56,6 +57,10 @@ namespace Coffers.DB.Migrations
                     .HasForeignKey(_ => _.GuildId)
                     .HasPrincipalKey(_ => _.Id)
                     .IsRequired();
+
+                b.Property(l => l.ConcurrencyTokens)
+                    .IsRequired()
+                    .IsConcurrencyToken();
 
                 b.HasData(new Guild
                 {
@@ -179,6 +184,9 @@ namespace Coffers.DB.Migrations
                     .HasForeignKey(_ => _.UserId)
                     .HasPrincipalKey(_ => _.Id)
                     .IsRequired();
+                b.Property(l => l.ConcurrencyTokens)
+                    .IsRequired()
+                    .IsConcurrencyToken();
 
                 b.HasData(new User
                 {
@@ -262,11 +270,16 @@ namespace Coffers.DB.Migrations
 
                 b.HasOne(l => l.User)
                     .WithMany(_ => _.Loans)
-                    .HasPrincipalKey(_ => _.Id);
+                    .HasPrincipalKey(_ => _.Id)
+                    .HasForeignKey(_ => _.UserId);
 
                 b.HasOne(l => l.Tariff)
                     .WithMany()
-                    .HasPrincipalKey(_ => _.Id);
+                    .HasPrincipalKey(_ => _.Id)
+                    .HasForeignKey(_ => _.TariffId);
+                b.Property(l => l.ConcurrencyTokens)
+                    .IsRequired()
+                    .IsConcurrencyToken();
             });
 
             modelBuilder.Entity<Penalty>(b =>
@@ -373,6 +386,9 @@ namespace Coffers.DB.Migrations
 
                 b.Property(o => o.Ip)
                     .HasMaxLength(128);
+                b.Property(l => l.ConcurrencyTokens)
+                    .IsRequired()
+                    .IsConcurrencyToken();
 
             });
             base.OnModelCreating(modelBuilder);

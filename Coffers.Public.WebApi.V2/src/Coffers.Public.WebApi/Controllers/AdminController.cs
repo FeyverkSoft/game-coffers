@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Coffers.Helpers;
-using Coffers.Public.Domain.Guilds;
+using Coffers.Public.Domain.GuildCreate;
 using Coffers.Public.Queries.Guilds;
 using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Exceptions;
 using Coffers.Public.WebApi.Models.Guild;
-using Coffers.Types.Gamer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Query.Core;
@@ -57,11 +53,7 @@ namespace Coffers.Public.WebApi.Controllers
                 throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.GuildAlreadyExists, "Гильдия уже существует");
             }
 
-            var guild = new Guild(
-                id: binding.Id,
-                name: binding.Name,
-                status: binding.Status,
-                recruitmentStatus: binding.RecruitmentStatus);
+            var guild = new Guild(id: binding.Id, name: binding.Name, status: binding.Status, recruitmentStatus: binding.RecruitmentStatus);
 
             await _guildRepository.Save(guild);
 

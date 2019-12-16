@@ -1,11 +1,8 @@
 using System.Net;
 using Coffers.DB.Migrations;
 using Coffers.Public.Domain.Authorization;
-using Coffers.Public.Domain.Gamers;
-using Coffers.Public.Domain.Guilds;
 using Coffers.Public.Domain.Operations;
 using Coffers.Public.Infrastructure.Authorization;
-using Coffers.Public.Infrastructure.Guilds;
 using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Extensions;
 using Coffers.Public.WebApi.Filters;
@@ -21,6 +18,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Query.Core.FluentExtensions;
 using Coffers.LoanWorker;
+using Coffers.Public.Domain.Users;
 
 namespace Coffers.Public.WebApi
 {
@@ -64,18 +62,21 @@ namespace Coffers.Public.WebApi
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
-            services.AddDbContext<GuildsDbContext>(options =>
-            {
-                options.UseMySql(Configuration.GetConnectionString("Coffers"));
-            });
             services.AddDbContext<AuthorizationDbContext>(options =>
             {
                 options.UseMySql(Configuration.GetConnectionString("Coffers"));
             });
 
+            #region  GuildCreate
 
-            services.AddScoped<IGuildRepository, GuildRepository>();
+            services.AddDbContext<Infrastructure.GuildCreate.GuildsDbContext>(options =>
+            {
+                options.UseMySql(Configuration.GetConnectionString("Coffers"));
+            });
+            services.AddScoped<Domain.GuildCreate.IGuildRepository, Infrastructure.GuildCreate.GuildRepository>();
             services.AddScoped<IAuthorizationRepository, AuthorizationRepository>();
+
+            #endregion
 
 
             services.AddScoped<UserSecurityService>();
@@ -110,8 +111,8 @@ namespace Coffers.Public.WebApi
 
             #region Включение воркера по займам в проект
             //пока что костыльно
-            services.AddDbContext< LoanWorker.Infrastructure.LoanWorkerDbContext> (options =>
-                options.UseMySql(Configuration.GetConnectionString("Coffers")));
+            services.AddDbContext<LoanWorker.Infrastructure.LoanWorkerDbContext>(options =>
+              options.UseMySql(Configuration.GetConnectionString("Coffers")));
             services.AddHostedService<LoanExpTaxService<LoanWorker.Infrastructure.LoanWorkerDbContext>>();
             #endregion
 

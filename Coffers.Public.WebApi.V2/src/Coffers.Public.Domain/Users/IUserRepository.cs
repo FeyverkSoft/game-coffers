@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Coffers.Public.Domain.Gamers
+namespace Coffers.Public.Domain.Users
 {
     public interface IUserRepository
     {

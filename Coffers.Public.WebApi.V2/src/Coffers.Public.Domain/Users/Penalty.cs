@@ -1,7 +1,7 @@
 ﻿using System;
 using Coffers.Types.Gamer;
 
-namespace Coffers.Public.Domain.Gamers
+namespace Coffers.Public.Domain.Users
 {
     public sealed class Penalty
     {

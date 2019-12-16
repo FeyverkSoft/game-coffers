@@ -38,14 +38,14 @@ namespace Coffers.Public.WebApi.Controllers
             [FromServices] UserSecurityService gamerSecurityService,
             CancellationToken cancellationToken)
         {
-            var gamer = await _authorizationRepository.FindGamer(binding.Login, cancellationToken);
+            var gamer = await _authorizationRepository.GetUser(binding.Login, cancellationToken);
             if (gamer == null)
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.Forbidden, "");
 
             if (String.IsNullOrEmpty(gamer.Password))
             {
                 gamerSecurityService.CreatePassword(gamer, binding.Password);
-                await _authorizationRepository.Save(gamer);
+                await _authorizationRepository.SaveUser(gamer);
             }
             else
             {
@@ -55,7 +55,7 @@ namespace Coffers.Public.WebApi.Controllers
 
             var sessionId = Guid.NewGuid();
 
-            await _authorizationRepository.Save(new Session(sessionId, gamer.Id, 60 * 26, HttpContext.GetIp()));
+            await _authorizationRepository.SaveSession(new Session(sessionId, gamer.Id, 60 * 26, HttpContext.GetIp()));
 
             var roles = new List<String>();
             if (gamer.Roles != null)
@@ -74,9 +74,9 @@ namespace Coffers.Public.WebApi.Controllers
         [ProducesResponseType(200)]
         public async Task<IActionResult> Delete([FromRoute] Guid id, CancellationToken cancellationToken)
         {
-            var session = await _authorizationRepository.Get(HttpContext.GetSessionId(), cancellationToken);
+            var session = await _authorizationRepository.GetSession(HttpContext.GetSessionId(), cancellationToken);
             session.ExtendSession(-1 * 60 * 27);
-            await _authorizationRepository.Save(session);
+            await _authorizationRepository.SaveSession(session);
             return Ok(new { });
         }
     }

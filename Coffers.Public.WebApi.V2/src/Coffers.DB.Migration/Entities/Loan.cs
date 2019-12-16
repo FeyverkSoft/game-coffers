@@ -15,14 +15,20 @@ namespace Coffers.DB.Migrations.Entities
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Идентификатор игрока
+        /// игрок
         /// </summary>
         public User User { get; set; }
+
+        /// <summary>
+        /// Идентификатор игрока
+        /// </summary>
+        public Guid UserId { get; set; }
 
         /// <summary>
         /// Тариф по которому проходит займ
         /// </summary>
         public Tariff Tariff { get; set; }
+        public Guid TariffId { get; set; }
 
         /// <summary>
         /// Дата создания записи

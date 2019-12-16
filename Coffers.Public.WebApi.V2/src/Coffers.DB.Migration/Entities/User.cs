@@ -87,5 +87,6 @@ namespace Coffers.DB.Migrations.Entities
         /// Права доступа игрока, JSON строка
         /// </summary>
         public String Roles { get; set; }
+        public Guid ConcurrencyTokens { get; set; }
     }
 }

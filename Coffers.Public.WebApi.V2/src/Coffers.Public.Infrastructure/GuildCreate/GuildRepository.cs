@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Coffers.Public.Domain.Guilds;
+using Coffers.Public.Domain.GuildCreate;
 using Microsoft.EntityFrameworkCore;
 
-namespace Coffers.Public.Infrastructure.Guilds
+namespace Coffers.Public.Infrastructure.GuildCreate
 {
     public class GuildRepository : IGuildRepository
     {
@@ -20,13 +20,9 @@ namespace Coffers.Public.Infrastructure.Guilds
             if (asNonTr)
                 return await _context.Guilds
                     .AsNoTracking()
-                    .Include(x => x.Gamers)
-                    .Include(g => g.Tariff)
                     .FirstOrDefaultAsync(guild => guild.Id == id, cancellationToken);
 
             return await _context.Guilds
-                .Include(x => x.Gamers)
-                .Include(g => g.Tariff)
                 .FirstOrDefaultAsync(guild => guild.Id == id, cancellationToken);
         }
 

@@ -31,7 +31,7 @@ namespace Coffers.Public.WebApi.Filters
 
             var userId = context.HttpContext.GetUserId();
 
-            var gamer = await _authorizationRepository.GetGamer(userId, CancellationToken.None);
+            var gamer = await _authorizationRepository.GetUser(userId, CancellationToken.None);
 
             /* if (user.IsGod)
                  return;*/

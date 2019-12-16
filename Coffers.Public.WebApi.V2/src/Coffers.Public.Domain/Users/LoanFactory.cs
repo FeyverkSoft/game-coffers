@@ -2,17 +2,16 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Coffers.Helpers;
-using Coffers.Public.Domain.Guilds;
 using Coffers.Types.Gamer;
 
-namespace Coffers.Public.Domain.Gamers
+namespace Coffers.Public.Domain.Users
 {
     /// <summary>
     /// Фабрика порождающая объекты займов
     /// </summary>
     public sealed class LoanFactory
     {
-        private readonly IGuildRepository _guildRepository;
+      /*  private readonly IGuildRepository _guildRepository;
 
         public LoanFactory(IGuildRepository guildRepository)
         {
@@ -45,11 +44,11 @@ namespace Coffers.Public.Domain.Gamers
                     throw new ArgumentOutOfRangeException(nameof(rank), rank, null);
             }
             return new Loan(id,
-                t.Id, amount,
-                amount * (t.LoanTax / 100),
+                t.Id,
+                amount,
                 description,
                 borrowDate.Trunc(DateTruncType.Day),
                 expiredDate.Trunc(DateTruncType.Day));
-        }
+        }*/
     }
 }

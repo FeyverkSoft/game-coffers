@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Coffers.DB.Migrations.Migrations
 {
     [DbContext(typeof(MigrateDbContext))]
-    [Migration("20191215151822_init")]
+    [Migration("20191216135220_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -66,6 +66,10 @@ namespace Coffers.DB.Migrations.Migrations
                         .HasColumnName("Id")
                         .HasColumnType("char(36)");
 
+                    b.Property<Guid>("ConcurrencyTokens")
+                        .IsConcurrencyToken()
+                        .HasColumnType("char(36)");
+
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime(6)");
 
@@ -106,11 +110,12 @@ namespace Coffers.DB.Migrations.Migrations
                         new
                         {
                             Id = new Guid("00000000-0000-4000-0000-000000000001"),
-                            CreateDate = new DateTime(2019, 12, 15, 15, 18, 21, 452, DateTimeKind.Utc).AddTicks(2151),
+                            ConcurrencyTokens = new Guid("00000000-0000-0000-0000-000000000000"),
+                            CreateDate = new DateTime(2019, 12, 16, 13, 52, 19, 781, DateTimeKind.Utc).AddTicks(9746),
                             Name = "Admins",
                             RecruitmentStatus = "Close",
                             Status = "Active",
-                            UpdateDate = new DateTime(2019, 12, 15, 15, 18, 21, 452, DateTimeKind.Utc).AddTicks(2784)
+                            UpdateDate = new DateTime(2019, 12, 16, 13, 52, 19, 782, DateTimeKind.Utc).AddTicks(310)
                         });
                 });
 
@@ -196,7 +201,7 @@ namespace Coffers.DB.Migrations.Migrations
                         .HasColumnType("decimal(65,30)")
                         .HasDefaultValue(0m);
 
-                    b.Property<Guid?>("TariffId")
+                    b.Property<Guid>("TariffId")
                         .HasColumnType("char(36)");
 
                     b.Property<decimal>("TaxAmount")
@@ -207,7 +212,7 @@ namespace Coffers.DB.Migrations.Migrations
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
@@ -343,6 +348,10 @@ namespace Coffers.DB.Migrations.Migrations
                         .HasColumnName("SessionId")
                         .HasColumnType("char(36)");
 
+                    b.Property<Guid>("ConcurrencyTokens")
+                        .IsConcurrencyToken()
+                        .HasColumnType("char(36)");
+
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime(6)");
 
@@ -405,6 +414,10 @@ namespace Coffers.DB.Migrations.Migrations
                         .HasColumnName("Id")
                         .HasColumnType("char(36)");
 
+                    b.Property<Guid>("ConcurrencyTokens")
+                        .IsConcurrencyToken()
+                        .HasColumnType("char(36)");
+
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime(6)");
 
@@ -461,16 +474,17 @@ namespace Coffers.DB.Migrations.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("c29f250e-d450-4826-b3e1-de61ea7c84d1"),
-                            CreateDate = new DateTime(2019, 12, 15, 15, 18, 21, 472, DateTimeKind.Utc).AddTicks(2832),
-                            DateOfBirth = new DateTime(2019, 12, 15, 15, 18, 21, 472, DateTimeKind.Utc).AddTicks(4640),
+                            Id = new Guid("3d478362-dccf-4620-80cf-523abde2194f"),
+                            ConcurrencyTokens = new Guid("00000000-0000-0000-0000-000000000000"),
+                            CreateDate = new DateTime(2019, 12, 16, 13, 52, 19, 799, DateTimeKind.Utc).AddTicks(8578),
+                            DateOfBirth = new DateTime(2019, 12, 16, 13, 52, 19, 799, DateTimeKind.Utc).AddTicks(9644),
                             GuildId = new Guid("00000000-0000-4000-0000-000000000001"),
                             Login = "Admin",
                             Name = "Admin",
                             Rank = "Leader",
                             Roles = "[\"admin\"]",
                             Status = "Active",
-                            UpdateDate = new DateTime(2019, 12, 15, 15, 18, 21, 472, DateTimeKind.Utc).AddTicks(3791)
+                            UpdateDate = new DateTime(2019, 12, 16, 13, 52, 19, 799, DateTimeKind.Utc).AddTicks(9129)
                         });
                 });
 
@@ -515,11 +529,15 @@ namespace Coffers.DB.Migrations.Migrations
                 {
                     b.HasOne("Coffers.DB.Migrations.Entities.Tariff", "Tariff")
                         .WithMany()
-                        .HasForeignKey("TariffId");
+                        .HasForeignKey("TariffId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Coffers.DB.Migrations.Entities.User", "User")
                         .WithMany("Loans")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Coffers.DB.Migrations.Entities.Operation", b =>

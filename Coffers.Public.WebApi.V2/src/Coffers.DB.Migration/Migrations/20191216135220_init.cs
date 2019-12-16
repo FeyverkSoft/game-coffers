@@ -78,7 +78,8 @@ namespace Coffers.DB.Migrations.Migrations
                     UpdateDate = table.Column<DateTime>(nullable: false),
                     Name = table.Column<string>(maxLength: 512, nullable: false),
                     Status = table.Column<string>(maxLength: 32, nullable: false),
-                    RecruitmentStatus = table.Column<string>(maxLength: 32, nullable: false)
+                    RecruitmentStatus = table.Column<string>(maxLength: 32, nullable: false),
+                    ConcurrencyTokens = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -106,7 +107,8 @@ namespace Coffers.DB.Migrations.Migrations
                     DateOfBirth = table.Column<DateTime>(nullable: false, defaultValue: new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)),
                     Login = table.Column<string>(maxLength: 64, nullable: false),
                     Password = table.Column<string>(maxLength: 128, nullable: true),
-                    Roles = table.Column<string>(maxLength: 512, nullable: true)
+                    Roles = table.Column<string>(maxLength: 512, nullable: true),
+                    ConcurrencyTokens = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -146,8 +148,8 @@ namespace Coffers.DB.Migrations.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: true),
-                    TariffId = table.Column<Guid>(nullable: true),
+                    UserId = table.Column<Guid>(nullable: false),
+                    TariffId = table.Column<Guid>(nullable: false),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     Description = table.Column<string>(maxLength: 1024, nullable: true),
                     UpdateDate = table.Column<DateTime>(nullable: false),
@@ -167,13 +169,13 @@ namespace Coffers.DB.Migrations.Migrations
                         column: x => x.TariffId,
                         principalTable: "Tariff",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Loan_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -208,7 +210,8 @@ namespace Coffers.DB.Migrations.Migrations
                     UserId = table.Column<Guid>(nullable: false),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     ExpireDate = table.Column<DateTime>(nullable: false),
-                    Ip = table.Column<string>(maxLength: 128, nullable: true)
+                    Ip = table.Column<string>(maxLength: 128, nullable: true),
+                    ConcurrencyTokens = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -288,13 +291,13 @@ namespace Coffers.DB.Migrations.Migrations
 
             migrationBuilder.InsertData(
                 table: "Guild",
-                columns: new[] { "Id", "CreateDate", "Name", "RecruitmentStatus", "Status", "TariffId", "UpdateDate" },
-                values: new object[] { new Guid("00000000-0000-4000-0000-000000000001"), new DateTime(2019, 12, 15, 15, 18, 21, 452, DateTimeKind.Utc).AddTicks(2151), "Admins", "Close", "Active", null, new DateTime(2019, 12, 15, 15, 18, 21, 452, DateTimeKind.Utc).AddTicks(2784) });
+                columns: new[] { "Id", "ConcurrencyTokens", "CreateDate", "Name", "RecruitmentStatus", "Status", "TariffId", "UpdateDate" },
+                values: new object[] { new Guid("00000000-0000-4000-0000-000000000001"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2019, 12, 16, 13, 52, 19, 781, DateTimeKind.Utc).AddTicks(9746), "Admins", "Close", "Active", null, new DateTime(2019, 12, 16, 12, 52, 19, 782, DateTimeKind.Utc).AddTicks(310) });
 
             migrationBuilder.InsertData(
                 table: "User",
-                columns: new[] { "Id", "CreateDate", "DateOfBirth", "DeletedDate", "GuildId", "Login", "Name", "Password", "Rank", "Roles", "Status", "UpdateDate" },
-                values: new object[] { new Guid("c29f250e-d450-4826-b3e1-de61ea7c84d1"), new DateTime(2019, 12, 15, 15, 18, 21, 472, DateTimeKind.Utc).AddTicks(2832), new DateTime(2019, 12, 15, 15, 18, 21, 472, DateTimeKind.Utc).AddTicks(4640), null, new Guid("00000000-0000-4000-0000-000000000001"), "Admin", "Admin", null, "Leader", "[\"admin\"]", "Active", new DateTime(2019, 12, 15, 15, 18, 21, 472, DateTimeKind.Utc).AddTicks(3791) });
+                columns: new[] { "Id", "ConcurrencyTokens", "CreateDate", "DateOfBirth", "DeletedDate", "GuildId", "Login", "Name", "Password", "Rank", "Roles", "Status", "UpdateDate" },
+                values: new object[] { new Guid("3d478362-dccf-4620-80cf-523abde2194f"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2019, 12, 16, 13, 52, 19, 799, DateTimeKind.Utc).AddTicks(8578), new DateTime(2019, 12, 16, 12, 52, 19, 799, DateTimeKind.Utc).AddTicks(9644), null, new Guid("00000000-0000-4000-0000-000000000001"), "Admin", "Admin", null, "Leader", "[\"admin\"]", "Active", new DateTime(2019, 12, 16, 12, 52, 19, 799, DateTimeKind.Utc).AddTicks(9129) });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Character_Id",

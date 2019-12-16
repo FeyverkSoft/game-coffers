@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Coffers.Helpers;
-using Coffers.Public.Domain.Guilds;
 using Coffers.Public.Queries.Guilds;
 using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Exceptions;
@@ -22,12 +20,10 @@ namespace Coffers.Public.WebApi.Controllers
     [ProducesResponseType(401)]
     public class GuildsController : ControllerBase
     {
-        private readonly IGuildRepository _guildRepository;
         private readonly IQueryProcessor _queryProcessor;
 
-        public GuildsController(IGuildRepository guildRepository, IQueryProcessor queryProcessor)
+        public GuildsController(IQueryProcessor queryProcessor)
         {
-            _guildRepository = guildRepository;
             _queryProcessor = queryProcessor;
         }
 
@@ -51,70 +47,52 @@ namespace Coffers.Public.WebApi.Controllers
             return Ok(guild);
         }
 
-        /* /// <summary>
-         /// This method get Guild balance info
-         /// </summary>
-         /// <param name="id"></param>
-         /// <param name="cancellationToken"></param>
-         /// <returns></returns>
-         [Authorize]
-         [HttpGet("balance")]
-         [ProducesResponseType(typeof(GuildBalanceView), 200)]
-         [ProducesResponseType(404)]
-         public async Task<IActionResult> GetBalance([FromRoute] Guid id, CancellationToken cancellationToken)
-         {
-             var guild = await _queryProcessor.Process<GuildBalanceQuery, GuildBalanceView>(
-                 new GuildBalanceQuery
-                 {
-                     GuildId = HttpContext.GuildId()
-                 }, cancellationToken);
-
-             if (guild == null)
-                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.GuildNotFound, "Guild not found");
-
-             return Ok(guild);
-         }*/
-
         /// <summary>
-        /// This method register new Gamer in guild
+        /// This method get Guild balance info
         /// </summary>
-        /// <param name="binding"></param>
+        /// <param name="id"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [Authorize]
-        [PermissionRequired("admin", "officer", "leader")]
-        [HttpPost("Gamers")]
-        [ProducesResponseType(200)]
-        public async Task<IActionResult> AddNewGamer(
-            [FromBody] GamerCreateBinding binding,
-            CancellationToken cancellationToken)
+        [HttpGet("balance")]
+        [ProducesResponseType(typeof(GuildBalanceView), 200)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> GetBalance(CancellationToken cancellationToken)
         {
-
-            var guild = await _guildRepository.Get(HttpContext.GuildId(), cancellationToken);
+            var guild = await _queryProcessor.Process<GuildBalanceQuery, GuildBalanceView>(
+                new GuildBalanceQuery(HttpContext.GuildId()), cancellationToken);
 
             if (guild == null)
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.GuildNotFound, "Guild not found");
 
-            if (guild.Gamers.Any(g =>
-                g.Login.Equals(binding.Login, StringComparison.InvariantCultureIgnoreCase) &&
-                !new[] { GamerStatus.Banned, GamerStatus.Left }.Contains(g.Status))
-            )
-                throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.GamerAlreadyExists, "Gamer already exists");
-
-
-            if (guild.Gamers.Any(g =>
-                g.Login.Equals(binding.Login, StringComparison.InvariantCultureIgnoreCase) &&
-                new[] { GamerStatus.Banned, GamerStatus.Left }.Contains(g.Status))
-            )
-                guild.AddGamer(binding.Login);
-            else
-                guild.AddGamer(binding.Id, binding.Name, binding.Login, binding.DateOfBirth.Trunc(DateTruncType.Day), binding.Status, binding.Rank);
-
-            await _guildRepository.Save(guild);
-
-            return Ok(new { });
+            return Ok(guild);
         }
 
+        /*
+       /// <summary>
+       /// This method register new Gamer in guild
+       /// </summary>
+       /// <param name="binding"></param>
+       /// <param name="cancellationToken"></param>
+       /// <returns></returns>
+       [Authorize]
+       [PermissionRequired("admin", "officer", "leader")]
+       [HttpPost("gamers")]
+       [ProducesResponseType(200)]
+       public async Task<IActionResult> AddNewGamer(
+           [FromBody] GamerCreateBinding binding,
+           CancellationToken cancellationToken)
+       {
+           var guild = await _guildRepository.Get(HttpContext.GuildId(), cancellationToken);
+
+           if (guild == null)
+               throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.GuildNotFound, "Guild not found");
+
+           await _guildRepository.Save(guild);
+
+           return Ok(new { });
+       }
+       */
         /*
         /// <summary>
         /// This method update guild tariff

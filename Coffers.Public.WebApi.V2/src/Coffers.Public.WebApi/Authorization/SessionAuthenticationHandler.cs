@@ -42,7 +42,7 @@ namespace Coffers.Public.WebApi.Authorization
             if (!Guid.TryParse(authorization.Substring("Bearer ".Length).Trim(), out var sessionId))
                 throw new ApiException(HttpStatusCode.Unauthorized, ErrorCodes.Unauthorized, "Session not found");
 
-            var session = await _authorizationRepository.Get(sessionId, CancellationToken.None);
+            var session = await _authorizationRepository.GetSession(sessionId, CancellationToken.None);
 
             if (session == null)
                 throw new ApiException(HttpStatusCode.Unauthorized, ErrorCodes.Unauthorized, "Session not found");
@@ -58,7 +58,7 @@ namespace Coffers.Public.WebApi.Authorization
 #endif
             session.ExtendSession(60 * 26);
 
-            await _authorizationRepository.Save(session);
+            await _authorizationRepository.SaveSession(session);
 
             IEnumerable<Claim> claims = new List<Claim>
             {

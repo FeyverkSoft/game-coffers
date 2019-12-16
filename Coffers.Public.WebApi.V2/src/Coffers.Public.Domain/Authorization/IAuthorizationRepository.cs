@@ -9,8 +9,8 @@ namespace Coffers.Public.Domain.Authorization
     /// </summary>
     public interface IAuthorizationRepository
     {
-        Task<Session> Get(Guid sessionId, CancellationToken cancellationToken);
-        Task Save(Session session);
+        Task<Session> GetSession(Guid sessionId, CancellationToken cancellationToken);
+        Task SaveSession(Session session);
 
         /// <summary>
         /// Возвращает информацию о пользователе по его логину
@@ -18,9 +18,9 @@ namespace Coffers.Public.Domain.Authorization
         /// <param name="login"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<User> FindGamer(String login, CancellationToken cancellationToken);
+        Task<User> GetUser(String login, CancellationToken cancellationToken);
 
-        Task<User> GetGamer(Guid userId, CancellationToken cancellationToken);
-        Task Save(User gamer);
+        Task<User> GetUser(Guid userId, CancellationToken cancellationToken);
+        Task SaveUser(User gamer);
     }
 }

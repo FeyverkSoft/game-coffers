@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Coffers.Types.Gamer;
 
-namespace Coffers.Public.Domain.Gamers
+namespace Coffers.Public.Domain.Users
 {
     public sealed class User
     {
@@ -21,12 +21,7 @@ namespace Coffers.Public.Domain.Gamers
         /// Дата когда игрок удалился из гильдии
         /// </summary>
         public DateTime? DeletedDate { get; internal set; }
-
-        /// <summary>
-        /// Счёт игрока по умолчанию
-        /// </summary>
-        public Account DefaultAccount { get; internal set; }
-
+        
         /// <summary>
         /// Звание игрока
         /// </summary>
@@ -145,6 +140,7 @@ namespace Coffers.Public.Domain.Gamers
 
             if (Penalties.Any(x => x.Id == Id && x.Amount == amount))
                 return;
+
             Penalties.Add(new Penalty(id, amount, description));
             UpdateDate = DateTime.UtcNow;
         }
