@@ -2,7 +2,7 @@
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Coffers.Public.Domain.GuildCreate;
+using Coffers.Public.Domain.Admin.GuildCreate;
 using Coffers.Public.Queries.Guilds;
 using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Exceptions;
@@ -11,18 +11,18 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Query.Core;
 
-namespace Coffers.Public.WebApi.Controllers
+namespace Coffers.Public.WebApi.Controllers.Admin
 {
     [Route("[controller]")]
     [ApiController]
     [ProducesResponseType(401)]
     [PermissionRequired(new[] { "admin" })]
-    public class AdminController : ControllerBase
+    public class GuildsController : ControllerBase
     {
         private readonly IGuildRepository _guildRepository;
         private readonly IQueryProcessor _queryProcessor;
 
-        public AdminController(
+        public GuildsController(
             IGuildRepository guildRepository,
             IQueryProcessor queryProcessor)
         {
@@ -36,7 +36,7 @@ namespace Coffers.Public.WebApi.Controllers
         /// <param name="binding"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        [HttpPost("guilds")]
+        [HttpPost("admin/guilds")]
         [ProducesResponseType(201)]
         public async Task<IActionResult> Create(
             [FromBody]GuildCreateBinding binding,
@@ -65,7 +65,7 @@ namespace Coffers.Public.WebApi.Controllers
         /// <param name="id"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        [HttpGet(template: "guilds/{id}", Name = "GetGuild")]
+        [HttpGet(template: "admin/guilds/{id}", Name = "GetGuild")]
         [ProducesResponseType(typeof(GuildView), 200)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> Get(

@@ -69,11 +69,11 @@ namespace Coffers.Public.WebApi
 
             #region  GuildCreate
 
-            services.AddDbContext<Infrastructure.GuildCreate.GuildsDbContext>(options =>
+            services.AddDbContext<Infrastructure.Admin.GuildCreate.GuildsDbContext>(options =>
             {
                 options.UseMySql(Configuration.GetConnectionString("Coffers"));
             });
-            services.AddScoped<Domain.GuildCreate.IGuildRepository, Infrastructure.GuildCreate.GuildRepository>();
+            services.AddScoped<Domain.Admin.GuildCreate.IGuildRepository, Infrastructure.Admin.GuildCreate.GuildRepository>();
             services.AddScoped<IAuthorizationRepository, AuthorizationRepository>();
 
             #endregion

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Coffers.Public.Domain.GuildCreate;
+using Coffers.Public.Domain.Admin.GuildCreate;
 using Microsoft.EntityFrameworkCore;
 
-namespace Coffers.Public.Infrastructure.GuildCreate
+namespace Coffers.Public.Infrastructure.Admin.GuildCreate
 {
     public class GuildRepository : IGuildRepository
     {

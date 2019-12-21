@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Coffers.Public.Domain.GuildCreate
+namespace Coffers.Public.Domain.Admin.GuildCreate
 {
     public interface IGuildRepository
     {

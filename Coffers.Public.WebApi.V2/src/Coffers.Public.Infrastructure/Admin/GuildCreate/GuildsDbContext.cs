@@ -1,8 +1,8 @@
 ﻿using System;
-using Coffers.Public.Domain.GuildCreate;
+using Coffers.Public.Domain.Admin.GuildCreate;
 using Microsoft.EntityFrameworkCore;
 
-namespace Coffers.Public.Infrastructure.GuildCreate
+namespace Coffers.Public.Infrastructure.Admin.GuildCreate
 {
     public class GuildsDbContext : DbContext
     {

@@ -5,7 +5,7 @@ using Coffers.Public.WebApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Coffers.Public.WebApi.Controllers
+namespace Coffers.Public.WebApi.Controllers.Admin
 {
     [Route("[controller]")]
     [ApiController]
