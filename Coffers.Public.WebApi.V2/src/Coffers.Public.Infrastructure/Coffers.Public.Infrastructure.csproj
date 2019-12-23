@@ -12,4 +12,7 @@
     <ProjectReference Include="..\Coffers.Public.Domain\Coffers.Public.Domain.csproj" />
     <ProjectReference Include="..\Coffers.Public.Queries\Coffers.Public.Queries.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Guilds\" />
+  </ItemGroup>
 </Project>

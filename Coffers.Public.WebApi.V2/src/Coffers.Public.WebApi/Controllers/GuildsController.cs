@@ -1,14 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Coffers.Helpers;
+using Coffers.Public.Domain.Guilds;
 using Coffers.Public.Queries.Guilds;
 using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Exceptions;
 using Coffers.Public.WebApi.Models.Guild;
-using Coffers.Types.Gamer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Query.Core;
@@ -50,7 +47,6 @@ namespace Coffers.Public.WebApi.Controllers
         /// <summary>
         /// This method get Guild balance info
         /// </summary>
-        /// <param name="id"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [Authorize]
@@ -68,32 +64,7 @@ namespace Coffers.Public.WebApi.Controllers
             return Ok(guild);
         }
 
-        /*
-       /// <summary>
-       /// This method register new Gamer in guild
-       /// </summary>
-       /// <param name="binding"></param>
-       /// <param name="cancellationToken"></param>
-       /// <returns></returns>
-       [Authorize]
-       [PermissionRequired("admin", "officer", "leader")]
-       [HttpPost("gamers")]
-       [ProducesResponseType(200)]
-       public async Task<IActionResult> AddNewGamer(
-           [FromBody] GamerCreateBinding binding,
-           CancellationToken cancellationToken)
-       {
-           var guild = await _guildRepository.Get(HttpContext.GuildId(), cancellationToken);
 
-           if (guild == null)
-               throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.GuildNotFound, "Guild not found");
-
-           await _guildRepository.Save(guild);
-
-           return Ok(new { });
-       }
-       */
-        /*
         /// <summary>
         /// This method update guild tariff
         /// </summary>
@@ -101,40 +72,37 @@ namespace Coffers.Public.WebApi.Controllers
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [Authorize]
-        [PermissionRequired("admin", "officer", "leader")]
-        [HttpPatch("Tariff")]
+        [PermissionRequired("officer", "leader")]
+        [HttpPatch("tariff")]
         [ProducesResponseType(200)]
         public async Task<IActionResult> SetOrUpdateGuildTax(
             [FromBody] UpdateTariffBinding binding,
+            [FromServices] IGuildRepository guildRepository,
+            [FromServices] TaxFactory taxFactory,
             CancellationToken cancellationToken)
         {
 
-            var guild = await _guildRepository.Get(HttpContext.GuildId(), cancellationToken);
+            var guild = await guildRepository.Get(HttpContext.GuildId(), cancellationToken);
 
             if (guild == null)
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.GuildNotFound, "Guild not found");
 
-            if (binding.BeginnerTariff != null)
-                guild.UpdateBeginnerTariff(binding.BeginnerTariff.LoanTax,
-                    binding.BeginnerTariff.ExpiredLoanTax, binding.BeginnerTariff.Tax);
-            if (binding.OfficerTariff != null)
-                guild.UpdateOfficerTariff(binding.OfficerTariff.LoanTax,
-                    binding.OfficerTariff.ExpiredLoanTax, binding.OfficerTariff.Tax);
-            if (binding.LeaderTariff != null)
-                guild.UpdateLeaderTariff(binding.LeaderTariff.LoanTax,
-                    binding.LeaderTariff.ExpiredLoanTax, binding.LeaderTariff.Tax);
-            if (binding.VeteranTariff != null)
-                guild.UpdateVeteranTariff(binding.VeteranTariff.LoanTax,
-                    binding.VeteranTariff.ExpiredLoanTax, binding.VeteranTariff.Tax);
-            if (binding.SoldierTariff != null)
-                guild.UpdateSoldierTariff(binding.SoldierTariff.LoanTax,
-                    binding.SoldierTariff.ExpiredLoanTax, binding.SoldierTariff.Tax);
+            var tax = taxFactory
+                .Beginner(binding.BeginnerTariff.LoanTax, binding.BeginnerTariff.ExpiredLoanTax, binding.BeginnerTariff.Tax)
+                .Officer(binding.OfficerTariff.LoanTax, binding.OfficerTariff.ExpiredLoanTax, binding.OfficerTariff.Tax)
+                .Veteran(binding.VeteranTariff.LoanTax, binding.VeteranTariff.ExpiredLoanTax, binding.VeteranTariff.Tax)
+                .Soldier(binding.SoldierTariff.LoanTax, binding.SoldierTariff.ExpiredLoanTax, binding.SoldierTariff.Tax)
+                .Leader(binding.LeaderTariff.LoanTax, binding.LeaderTariff.ExpiredLoanTax, binding.LeaderTariff.Tax)
+                .Build();
 
-            await _guildRepository.Save(guild);
+            guild.SetTax(tax);
+
+            guildRepository.Save(guild);
 
             return Ok(new { });
         }
 
+        /*
         /// <summary>
         /// This method return gamer list
         /// </summary>

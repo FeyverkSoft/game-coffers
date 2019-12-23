@@ -18,7 +18,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Query.Core.FluentExtensions;
 using Coffers.LoanWorker;
-using Coffers.Public.Domain.Users;
+using Coffers.Public.Domain.Guilds;
+using Coffers.Public.Domain.UserRegistration;
 
 namespace Coffers.Public.WebApi
 {
@@ -78,9 +79,24 @@ namespace Coffers.Public.WebApi
 
             #endregion
 
+            #region  UserRegistration
+
+            services.AddDbContext<Infrastructure.UserRegistration.UserDbContext>(options =>
+            {
+                options.UseMySql(Configuration.GetConnectionString("Coffers"));
+            });
+            services.AddScoped<Domain.UserRegistration.IUserRepository, Infrastructure.UserRegistration.UserRepository>();
+            services.AddScoped<UserFactory>();
+
+            #endregion
+
+            #region  Guild
+
+            services.AddScoped<TaxFactory>();
+
+            #endregion
 
             services.AddScoped<UserSecurityService>();
-            services.AddScoped<LoanFactory>();
             services.AddScoped<OperationService>();
 
 

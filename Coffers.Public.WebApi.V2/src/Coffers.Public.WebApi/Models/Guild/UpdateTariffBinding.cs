@@ -40,6 +40,16 @@ namespace Coffers.Public.WebApi.Models.Guild
     {
         public UpdateTariffBindingValidator()
         {
+            RuleFor(b => b.BeginnerTariff)
+                .NotNull();
+            RuleFor(b => b.OfficerTariff)
+                .NotNull();
+            RuleFor(b => b.SoldierTariff)
+                .NotNull();
+            RuleFor(b => b.VeteranTariff)
+                .NotNull();
+            RuleFor(b => b.LeaderTariff)
+                .NotNull();
             When(x => x.BeginnerTariff != null, () =>
             {
                 RuleForEach(b => b.BeginnerTariff.Tax)

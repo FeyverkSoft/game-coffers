@@ -15,7 +15,7 @@ namespace Coffers.Public.Infrastructure.Admin.GuildCreate
             _context = context;
         }
         
-        public async Task<Guild> Get(Guid id, CancellationToken cancellationToken, Boolean asNonTr = false)
+        public async Task<Domain.Admin.GuildCreate.Guild> Get(Guid id, CancellationToken cancellationToken, Boolean asNonTr = false)
         {
             if (asNonTr)
                 return await _context.Guilds
@@ -26,7 +26,7 @@ namespace Coffers.Public.Infrastructure.Admin.GuildCreate
                 .FirstOrDefaultAsync(guild => guild.Id == id, cancellationToken);
         }
 
-        public async Task Save(Guild guild)
+        public async Task Save(Domain.Admin.GuildCreate.Guild guild)
         {
             var entry = _context.Entry(guild);
             if (entry.State == EntityState.Detached)

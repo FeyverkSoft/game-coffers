@@ -2,12 +2,11 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Coffers.Public.Domain.Users
+namespace Coffers.Public.Domain.UserRegistration
 {
     public interface IUserRepository
     {
         Task<User> Get(Guid userId, CancellationToken none);
-        Task Save(User gamer);
-        Task Load(User gamer, CancellationToken cancellationToken);
+        void Save(User gamer);
     }
 }

@@ -6,7 +6,7 @@ namespace Coffers.Public.Infrastructure.Admin.GuildCreate
 {
     public class GuildsDbContext : DbContext
     {
-        public DbSet<Guild> Guilds { get; set; }
+        public DbSet<Domain.Admin.GuildCreate.Guild> Guilds { get; set; }
 
         public GuildsDbContext(DbContextOptions<GuildsDbContext> options) : base(options) { }
 
@@ -14,7 +14,7 @@ namespace Coffers.Public.Infrastructure.Admin.GuildCreate
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Guild>(b =>
+            modelBuilder.Entity<Domain.Admin.GuildCreate.Guild>(b =>
             {
                 b.ToTable(nameof(Guild));
 
