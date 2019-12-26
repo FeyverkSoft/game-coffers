@@ -10,10 +10,10 @@ namespace Coffers.Public.Queries.Guilds
         public RecruitmentStatus RecruitmentStatus { get; }
         public Int32 GamersCount { get; }
         public Int32 CharactersCount { get; }
-        public Decimal Balance { get; }
+        GuildView() { }
         public GuildView(Guid id, String name, RecruitmentStatus recruitmentStatus,
-           Int32 gamersCount, Int32 charactersCount, Decimal balance) =>
-            (Id, Name, RecruitmentStatus, GamersCount, CharactersCount, Balance) =
-            (id, name, recruitmentStatus, gamersCount, charactersCount, balance);
+           Int32 gamersCount, Int32 charactersCount) =>
+            (Id, Name, RecruitmentStatus, GamersCount, CharactersCount) =
+            (id, name, recruitmentStatus, gamersCount, charactersCount);
     }
 }

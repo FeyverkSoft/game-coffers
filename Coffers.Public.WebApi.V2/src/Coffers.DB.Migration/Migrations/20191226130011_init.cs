@@ -126,11 +126,11 @@ namespace Coffers.DB.Migrations.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(maxLength: 64, nullable: false),
                     ClassName = table.Column<string>(maxLength: 64, nullable: false),
                     IsMain = table.Column<bool>(nullable: false, defaultValue: false),
-                    Status = table.Column<string>(maxLength: 32, nullable: false),
-                    UserId = table.Column<Guid>(nullable: true)
+                    Status = table.Column<string>(maxLength: 32, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -140,7 +140,7 @@ namespace Coffers.DB.Migrations.Migrations
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -183,7 +183,7 @@ namespace Coffers.DB.Migrations.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: true),
+                    UserId = table.Column<Guid>(nullable: false),
                     Amount = table.Column<decimal>(nullable: false, defaultValue: 0m),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     UpdateDate = table.Column<DateTime>(nullable: false),
@@ -199,7 +199,7 @@ namespace Coffers.DB.Migrations.Migrations
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -237,10 +237,8 @@ namespace Coffers.DB.Migrations.Migrations
                     Type = table.Column<string>(maxLength: 32, nullable: false),
                     DocumentId = table.Column<Guid>(nullable: true),
                     Description = table.Column<string>(maxLength: 1024, nullable: true),
-                    GuildId1 = table.Column<Guid>(nullable: true),
                     LoanId = table.Column<Guid>(nullable: true),
-                    PenaltyId = table.Column<Guid>(nullable: true),
-                    UserId1 = table.Column<Guid>(nullable: true)
+                    PenaltyId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -252,21 +250,9 @@ namespace Coffers.DB.Migrations.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Operation_Guild_GuildId1",
-                        column: x => x.GuildId1,
-                        principalTable: "Guild",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_Operation_Loan_LoanId",
                         column: x => x.LoanId,
                         principalTable: "Loan",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Operation_Operation_ParentOperationId",
-                        column: x => x.ParentOperationId,
-                        principalTable: "Operation",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -281,23 +267,17 @@ namespace Coffers.DB.Migrations.Migrations
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Operation_User_UserId1",
-                        column: x => x.UserId1,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
                 table: "Guild",
                 columns: new[] { "Id", "ConcurrencyTokens", "CreateDate", "Name", "RecruitmentStatus", "Status", "TariffId", "UpdateDate" },
-                values: new object[] { new Guid("00000000-0000-4000-0000-000000000001"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2019, 12, 16, 13, 52, 19, 781, DateTimeKind.Utc).AddTicks(9746), "Admins", "Close", "Active", null, new DateTime(2019, 12, 16, 12, 52, 19, 782, DateTimeKind.Utc).AddTicks(310) });
+                values: new object[] { new Guid("00000000-0000-4000-0000-000000000001"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2019, 12, 26, 13, 0, 11, 105, DateTimeKind.Utc).AddTicks(7058), "Admins", "Close", "Active", null, new DateTime(2019, 12, 26, 13, 0, 11, 105, DateTimeKind.Utc).AddTicks(7723) });
 
             migrationBuilder.InsertData(
                 table: "User",
                 columns: new[] { "Id", "ConcurrencyTokens", "CreateDate", "DateOfBirth", "DeletedDate", "GuildId", "Login", "Name", "Password", "Rank", "Roles", "Status", "UpdateDate" },
-                values: new object[] { new Guid("3d478362-dccf-4620-80cf-523abde2194f"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2019, 12, 16, 13, 52, 19, 799, DateTimeKind.Utc).AddTicks(8578), new DateTime(2019, 12, 16, 12, 52, 19, 799, DateTimeKind.Utc).AddTicks(9644), null, new Guid("00000000-0000-4000-0000-000000000001"), "Admin", "Admin", null, "Leader", "[\"admin\"]", "Active", new DateTime(2019, 12, 16, 12, 52, 19, 799, DateTimeKind.Utc).AddTicks(9129) });
+                values: new object[] { new Guid("8dccedf3-40b4-4a18-acaa-6b0f97361368"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2019, 12, 26, 13, 0, 11, 129, DateTimeKind.Utc).AddTicks(6961), new DateTime(2019, 12, 26, 13, 0, 11, 129, DateTimeKind.Utc).AddTicks(8197), null, new Guid("00000000-0000-4000-0000-000000000001"), "Admin", "Admin", null, "Leader", "[\"admin\"]", "Active", new DateTime(2019, 12, 26, 13, 0, 11, 129, DateTimeKind.Utc).AddTicks(7630) });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Character_Id",
@@ -374,11 +354,6 @@ namespace Coffers.DB.Migrations.Migrations
                 column: "GuildId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Operation_GuildId1",
-                table: "Operation",
-                column: "GuildId1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Operation_Id",
                 table: "Operation",
                 column: "Id",
@@ -390,11 +365,6 @@ namespace Coffers.DB.Migrations.Migrations
                 column: "LoanId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Operation_ParentOperationId",
-                table: "Operation",
-                column: "ParentOperationId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Operation_PenaltyId",
                 table: "Operation",
                 column: "PenaltyId");
@@ -403,11 +373,6 @@ namespace Coffers.DB.Migrations.Migrations
                 name: "IX_Operation_UserId",
                 table: "Operation",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Operation_UserId1",
-                table: "Operation",
-                column: "UserId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Penalty_Id",

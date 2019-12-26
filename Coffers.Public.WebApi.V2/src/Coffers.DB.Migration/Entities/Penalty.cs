@@ -15,6 +15,7 @@ namespace Coffers.DB.Migrations.Entities
         /// Игрок
         /// </summary>
         public User User { get; set; }
+        public Guid UserId { get; }
         public List<Operation> Operations { get; set; }
 
         /// <summary>

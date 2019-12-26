@@ -52,5 +52,7 @@
     <ProjectReference Include="..\Coffers.Public.Queries\Coffers.Public.Queries.csproj" />
   </ItemGroup>
 
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1production_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
 </Project>
 

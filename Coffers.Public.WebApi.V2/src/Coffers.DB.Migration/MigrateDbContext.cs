@@ -55,8 +55,7 @@ namespace Coffers.DB.Migrations
                 b.HasMany(g => g.Operations)
                     .WithOne()
                     .HasForeignKey(_ => _.GuildId)
-                    .HasPrincipalKey(_ => _.Id)
-                    .IsRequired();
+                    .HasPrincipalKey(_ => _.Id);
 
                 b.Property(l => l.ConcurrencyTokens)
                     .IsRequired()
@@ -136,7 +135,6 @@ namespace Coffers.DB.Migrations
                     .IsUnique();
                 b.HasKey(g => g.Id);
                 b.Property(g => g.Id)
-                    .HasColumnName("Id")
                     .IsRequired();
 
                 b.Property(g => g.CreateDate)
@@ -169,21 +167,24 @@ namespace Coffers.DB.Migrations
 
                 b.HasMany(g => g.Characters)
                     .WithOne()
-                    .HasPrincipalKey(_ => _.Id);
+                    .HasPrincipalKey(_ => _.Id)
+                    .HasForeignKey(_=>_.UserId);
 
                 b.HasMany(g => g.Loans)
                     .WithOne()
-                    .HasPrincipalKey(_ => _.Id);
+                    .HasPrincipalKey(_ => _.Id)
+                    .HasForeignKey(_ => _.UserId);
 
                 b.HasMany(g => g.Penalties)
                     .WithOne()
-                    .HasPrincipalKey(_ => _.Id);
+                    .HasPrincipalKey(_ => _.Id)
+                    .HasForeignKey(_ => _.UserId);
 
                 b.HasMany(g => g.Operations)
                     .WithOne()
                     .HasForeignKey(_ => _.UserId)
-                    .HasPrincipalKey(_ => _.Id)
-                    .IsRequired();
+                    .HasPrincipalKey(_ => _.Id);
+
                 b.Property(l => l.ConcurrencyTokens)
                     .IsRequired()
                     .IsConcurrencyToken();
@@ -309,7 +310,8 @@ namespace Coffers.DB.Migrations
 
                 b.HasOne(p => p.User)
                     .WithMany(_ => _.Penalties)
-                    .HasPrincipalKey(_ => _.Id);
+                    .HasPrincipalKey(_ => _.Id)
+                    .HasForeignKey(_ => _.UserId);
 
                 b.Property(l => l.ConcurrencyTokens)
                     .IsRequired()
@@ -343,22 +345,11 @@ namespace Coffers.DB.Migrations
 
                 b.Property(o => o.GuildId)
                     .IsRequired();
-                b.HasOne(_ => _.Guild)
-                    .WithMany()
-                    .HasPrincipalKey(_ => _.Id)
-                    .HasForeignKey(_ => _.GuildId);
+                b.Property(o => o.UserId)
+                    .IsRequired();
 
                 b.Property(o => o.ParentOperationId)
                     .IsRequired(false);
-                b.HasOne(g => g.ParentOperation)
-                    .WithMany()
-                    .HasForeignKey(_ => _.ParentOperationId)
-                    .HasPrincipalKey(_ => _.Id);
-
-                b.HasOne(g => g.User)
-                    .WithMany()
-                    .HasForeignKey(_ => _.UserId)
-                    .HasPrincipalKey(_ => _.Id);
             });
 
             modelBuilder.Entity<Session>(b =>

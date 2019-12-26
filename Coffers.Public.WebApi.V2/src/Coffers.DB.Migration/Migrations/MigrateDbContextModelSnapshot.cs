@@ -44,7 +44,7 @@ namespace Coffers.DB.Migrations.Migrations
                         .HasColumnType("varchar(32) CHARACTER SET utf8mb4")
                         .HasMaxLength(32);
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
@@ -109,11 +109,11 @@ namespace Coffers.DB.Migrations.Migrations
                         {
                             Id = new Guid("00000000-0000-4000-0000-000000000001"),
                             ConcurrencyTokens = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreateDate = new DateTime(2019, 12, 16, 13, 52, 19, 781, DateTimeKind.Utc).AddTicks(9746),
+                            CreateDate = new DateTime(2019, 12, 26, 13, 0, 11, 105, DateTimeKind.Utc).AddTicks(7058),
                             Name = "Admins",
                             RecruitmentStatus = "Close",
                             Status = "Active",
-                            UpdateDate = new DateTime(2019, 12, 16, 13, 52, 19, 782, DateTimeKind.Utc).AddTicks(310)
+                            UpdateDate = new DateTime(2019, 12, 26, 13, 0, 11, 105, DateTimeKind.Utc).AddTicks(7723)
                         });
                 });
 
@@ -250,9 +250,6 @@ namespace Coffers.DB.Migrations.Migrations
                     b.Property<Guid>("GuildId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid?>("GuildId1")
-                        .HasColumnType("char(36)");
-
                     b.Property<Guid?>("LoanId")
                         .HasColumnType("char(36)");
 
@@ -270,27 +267,18 @@ namespace Coffers.DB.Migrations.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid?>("UserId1")
-                        .HasColumnType("char(36)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("GuildId");
-
-                    b.HasIndex("GuildId1");
 
                     b.HasIndex("Id")
                         .IsUnique();
 
                     b.HasIndex("LoanId");
 
-                    b.HasIndex("ParentOperationId");
-
                     b.HasIndex("PenaltyId");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("Operation");
                 });
@@ -326,7 +314,7 @@ namespace Coffers.DB.Migrations.Migrations
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
@@ -409,7 +397,6 @@ namespace Coffers.DB.Migrations.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("Id")
                         .HasColumnType("char(36)");
 
                     b.Property<Guid>("ConcurrencyTokens")
@@ -472,17 +459,17 @@ namespace Coffers.DB.Migrations.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("3d478362-dccf-4620-80cf-523abde2194f"),
+                            Id = new Guid("8dccedf3-40b4-4a18-acaa-6b0f97361368"),
                             ConcurrencyTokens = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreateDate = new DateTime(2019, 12, 16, 13, 52, 19, 799, DateTimeKind.Utc).AddTicks(8578),
-                            DateOfBirth = new DateTime(2019, 12, 16, 13, 52, 19, 799, DateTimeKind.Utc).AddTicks(9644),
+                            CreateDate = new DateTime(2019, 12, 26, 13, 0, 11, 129, DateTimeKind.Utc).AddTicks(6961),
+                            DateOfBirth = new DateTime(2019, 12, 26, 13, 0, 11, 129, DateTimeKind.Utc).AddTicks(8197),
                             GuildId = new Guid("00000000-0000-4000-0000-000000000001"),
                             Login = "Admin",
                             Name = "Admin",
                             Rank = "Leader",
                             Roles = "[\"admin\"]",
                             Status = "Active",
-                            UpdateDate = new DateTime(2019, 12, 16, 13, 52, 19, 799, DateTimeKind.Utc).AddTicks(9129)
+                            UpdateDate = new DateTime(2019, 12, 26, 13, 0, 11, 129, DateTimeKind.Utc).AddTicks(7630)
                         });
                 });
 
@@ -490,7 +477,9 @@ namespace Coffers.DB.Migrations.Migrations
                 {
                     b.HasOne("Coffers.DB.Migrations.Entities.User", null)
                         .WithMany("Characters")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Coffers.DB.Migrations.Entities.Guild", b =>
@@ -540,44 +529,34 @@ namespace Coffers.DB.Migrations.Migrations
 
             modelBuilder.Entity("Coffers.DB.Migrations.Entities.Operation", b =>
                 {
-                    b.HasOne("Coffers.DB.Migrations.Entities.Guild", "Guild")
-                        .WithMany()
+                    b.HasOne("Coffers.DB.Migrations.Entities.Guild", null)
+                        .WithMany("Operations")
                         .HasForeignKey("GuildId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Coffers.DB.Migrations.Entities.Guild", null)
-                        .WithMany("Operations")
-                        .HasForeignKey("GuildId1");
 
                     b.HasOne("Coffers.DB.Migrations.Entities.Loan", null)
                         .WithMany("Operations")
                         .HasForeignKey("LoanId");
 
-                    b.HasOne("Coffers.DB.Migrations.Entities.Operation", "ParentOperation")
-                        .WithMany()
-                        .HasForeignKey("ParentOperationId");
-
                     b.HasOne("Coffers.DB.Migrations.Entities.Penalty", null)
                         .WithMany("Operations")
                         .HasForeignKey("PenaltyId");
 
-                    b.HasOne("Coffers.DB.Migrations.Entities.User", "User")
-                        .WithMany()
+                    b.HasOne("Coffers.DB.Migrations.Entities.User", null)
+                        .WithMany("Operations")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Coffers.DB.Migrations.Entities.User", null)
-                        .WithMany("Operations")
-                        .HasForeignKey("UserId1");
                 });
 
             modelBuilder.Entity("Coffers.DB.Migrations.Entities.Penalty", b =>
                 {
                     b.HasOne("Coffers.DB.Migrations.Entities.User", "User")
                         .WithMany("Penalties")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Coffers.DB.Migrations.Entities.Session", b =>

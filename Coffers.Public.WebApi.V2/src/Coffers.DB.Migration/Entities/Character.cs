@@ -11,6 +11,11 @@ namespace Coffers.DB.Migrations.Entities
         public Guid Id { get; set; }
 
         /// <summary>
+        /// Идентификатор пользователя
+        /// </summary>
+        public Guid UserId { get; set; }
+
+        /// <summary>
         /// Имя персонажа
         /// </summary>
         public String Name { get; set; }

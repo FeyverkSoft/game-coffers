@@ -1,8 +1,14 @@
+using System.Data;
 using System.Net;
+using System.Text.Json.Serialization;
 using Coffers.DB.Migrations;
+using Coffers.LoanWorker;
 using Coffers.Public.Domain.Authorization;
+using Coffers.Public.Domain.Guilds;
 using Coffers.Public.Domain.Operations;
+using Coffers.Public.Domain.UserRegistration;
 using Coffers.Public.Infrastructure.Authorization;
+using Coffers.Public.Queries.Infrastructure.Guilds;
 using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Extensions;
 using Coffers.Public.WebApi.Filters;
@@ -16,10 +22,8 @@ using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MySql.Data.MySqlClient;
 using Query.Core.FluentExtensions;
-using Coffers.LoanWorker;
-using Coffers.Public.Domain.Guilds;
-using Coffers.Public.Domain.UserRegistration;
 
 namespace Coffers.Public.WebApi
 {
@@ -60,6 +64,7 @@ namespace Coffers.Public.WebApi
                 {
                     options.JsonSerializerOptions.IgnoreNullValues = true;
                     options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
@@ -99,9 +104,11 @@ namespace Coffers.Public.WebApi
             services.AddScoped<UserSecurityService>();
             services.AddScoped<OperationService>();
 
+            services.AddScoped<IDbConnection, MySqlConnection>(_ => new MySqlConnection(Configuration.GetConnectionString("Coffers")));
 
             services.RegQueryProcessor(registry =>
             {
+                registry.Register<GuildsQueryHandler>();
             });
 
 

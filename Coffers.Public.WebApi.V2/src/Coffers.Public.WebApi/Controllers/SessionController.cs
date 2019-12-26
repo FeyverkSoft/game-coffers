@@ -69,10 +69,10 @@ namespace Coffers.Public.WebApi.Controllers
             });
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
         [Authorize]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> Delete([FromRoute] Guid id, CancellationToken cancellationToken)
+        public async Task<IActionResult> Delete(CancellationToken cancellationToken)
         {
             var session = await _authorizationRepository.GetSession(HttpContext.GetSessionId(), cancellationToken);
             session.ExtendSession(-1 * 60 * 27);

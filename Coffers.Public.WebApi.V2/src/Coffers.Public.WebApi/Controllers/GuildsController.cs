@@ -95,7 +95,7 @@ namespace Coffers.Public.WebApi.Controllers
                 .Leader(binding.LeaderTariff.LoanTax, binding.LeaderTariff.ExpiredLoanTax, binding.LeaderTariff.Tax)
                 .Build();
 
-            guild.SetTax(tax);
+            //guild.SetTax(tax);
 
             guildRepository.Save(guild);
 
