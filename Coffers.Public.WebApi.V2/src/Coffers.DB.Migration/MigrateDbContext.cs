@@ -43,14 +43,16 @@ namespace Coffers.DB.Migrations
                     .HasMaxLength(32)
                     .IsRequired();
 
-                b.HasOne(t => t.Tariff)
-                    .WithMany()
-                    .HasPrincipalKey(_ => _.Id)
-                    .HasForeignKey(_=>_.TariffId);
 
                 b.HasMany(g => g.Users)
                     .WithOne(_ => _.Guild)
-                    .HasPrincipalKey(_ => _.Id);
+                    .HasPrincipalKey(_ => _.Id)
+                    .HasForeignKey(_ => _.GuildId);
+
+                b.HasMany(g => g.Roles)
+                    .WithOne()
+                    .HasPrincipalKey(_ => _.Id)
+                    .HasForeignKey(_ => _.GuildId);
 
                 b.HasMany(g => g.Operations)
                     .WithOne()
@@ -95,36 +97,22 @@ namespace Coffers.DB.Migrations
                     .IsRequired();
             });
 
-            modelBuilder.Entity<GuildTariff>(b =>
+            modelBuilder.Entity<UserRole>(b =>
             {
-                b.ToTable(nameof(GuildTariff));
+                b.ToTable(nameof(UserRole));
 
-                b.HasIndex(gt => gt.Id)
+                b.HasIndex(gt => new { gt.UserRoleId, gt.GuildId })
                     .IsUnique();
-                b.HasKey(gt => gt.Id);
-                b.Property(gt => gt.Id)
+                b.HasKey(gt => new { gt.UserRoleId, gt.GuildId });
+                b.Property(gt => gt.UserRoleId)
                     .HasColumnName("Id")
                     .IsRequired();
 
-                b.Property(t => t.CreateDate)
+                b.Property(t => t.GuildId)
                     .IsRequired();
 
-                b.HasOne(t => t.BeginnerTariff)
-                    .WithMany()
-                    .HasPrincipalKey(_ => _.Id);
-                b.HasOne(t => t.LeaderTariff)
-                    .WithMany()
-                    .HasPrincipalKey(_ => _.Id);
-                b.HasOne(t => t.OfficerTariff)
-                    .WithMany()
-                    .HasPrincipalKey(_ => _.Id);
-                b.HasOne(t => t.SoldierTariff)
-                    .WithMany()
-                    .HasPrincipalKey(_ => _.Id);
-                b.HasOne(t => t.VeteranTariff)
-                    .WithMany()
-                    .HasPrincipalKey(_ => _.Id);
-
+                b.Property(t => t.TariffId)
+                    .IsRequired();
             });
 
             modelBuilder.Entity<User>(b =>
@@ -149,9 +137,11 @@ namespace Coffers.DB.Migrations
 
                 b.Property(g => g.Name)
                     .HasMaxLength(64);
+
                 b.Property(g => g.Rank)
                     .HasConversion<String>()
                     .HasMaxLength(32);
+
                 b.Property(g => g.Status)
                     .HasConversion<String>()
                     .HasMaxLength(32);
@@ -161,6 +151,7 @@ namespace Coffers.DB.Migrations
                     .HasMaxLength(64);
                 b.Property(g => g.Password)
                     .HasMaxLength(128);
+
                 b.Property(g => g.Roles)
                     .HasMaxLength(512);
 
@@ -168,7 +159,7 @@ namespace Coffers.DB.Migrations
                 b.HasMany(g => g.Characters)
                     .WithOne()
                     .HasPrincipalKey(_ => _.Id)
-                    .HasForeignKey(_=>_.UserId);
+                    .HasForeignKey(_ => _.UserId);
 
                 b.HasMany(g => g.Loans)
                     .WithOne()

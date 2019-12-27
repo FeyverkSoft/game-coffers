@@ -7,7 +7,6 @@ using Coffers.Public.Queries.Guilds;
 using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Exceptions;
 using Coffers.Public.WebApi.Models.Guild;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Query.Core;
 
@@ -36,7 +35,7 @@ namespace Coffers.Public.WebApi.Controllers.Admin
         /// <param name="binding"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        [HttpPost("admin/guilds")]
+        [HttpPost("/admin/guilds")]
         [ProducesResponseType(201)]
         public async Task<IActionResult> Create(
             [FromBody]GuildCreateBinding binding,
@@ -65,7 +64,7 @@ namespace Coffers.Public.WebApi.Controllers.Admin
         /// <param name="id"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        [HttpGet(template: "admin/guilds/{id}", Name = "GetGuild")]
+        [HttpGet(template: "/admin/guilds/{id}", Name = "GetGuild")]
         [ProducesResponseType(typeof(GuildView), 200)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> Get(

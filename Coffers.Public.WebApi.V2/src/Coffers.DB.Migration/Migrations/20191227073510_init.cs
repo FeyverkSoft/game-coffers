@@ -8,67 +8,6 @@ namespace Coffers.DB.Migrations.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Tariff",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    LoanTax = table.Column<decimal>(nullable: false, defaultValue: 0m),
-                    ExpiredLoanTax = table.Column<decimal>(nullable: false, defaultValue: 0m),
-                    Tax = table.Column<string>(maxLength: 4096, nullable: false, defaultValue: "{}")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Tariff", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "GuildTariff",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    CreateDate = table.Column<DateTime>(nullable: false),
-                    LeaderTariffId = table.Column<Guid>(nullable: true),
-                    OfficerTariffId = table.Column<Guid>(nullable: true),
-                    VeteranTariffId = table.Column<Guid>(nullable: true),
-                    SoldierTariffId = table.Column<Guid>(nullable: true),
-                    BeginnerTariffId = table.Column<Guid>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GuildTariff", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_GuildTariff_Tariff_BeginnerTariffId",
-                        column: x => x.BeginnerTariffId,
-                        principalTable: "Tariff",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_GuildTariff_Tariff_LeaderTariffId",
-                        column: x => x.LeaderTariffId,
-                        principalTable: "Tariff",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_GuildTariff_Tariff_OfficerTariffId",
-                        column: x => x.OfficerTariffId,
-                        principalTable: "Tariff",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_GuildTariff_Tariff_SoldierTariffId",
-                        column: x => x.SoldierTariffId,
-                        principalTable: "Tariff",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_GuildTariff_Tariff_VeteranTariffId",
-                        column: x => x.VeteranTariffId,
-                        principalTable: "Tariff",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Guild",
                 columns: table => new
                 {
@@ -84,12 +23,20 @@ namespace Coffers.DB.Migrations.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Guild", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Guild_GuildTariff_TariffId",
-                        column: x => x.TariffId,
-                        principalTable: "GuildTariff",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Tariff",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    LoanTax = table.Column<decimal>(nullable: false, defaultValue: 0m),
+                    ExpiredLoanTax = table.Column<decimal>(nullable: false, defaultValue: 0m),
+                    Tax = table.Column<string>(maxLength: 4096, nullable: false, defaultValue: "{}")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tariff", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -115,6 +62,25 @@ namespace Coffers.DB.Migrations.Migrations
                     table.PrimaryKey("PK_User", x => x.Id);
                     table.ForeignKey(
                         name: "FK_User_Guild_GuildId",
+                        column: x => x.GuildId,
+                        principalTable: "Guild",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserRole",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false),
+                    GuildId = table.Column<Guid>(nullable: false),
+                    TariffId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRole", x => new { x.Id, x.GuildId });
+                    table.ForeignKey(
+                        name: "FK_UserRole_Guild_GuildId",
                         column: x => x.GuildId,
                         principalTable: "Guild",
                         principalColumn: "Id",
@@ -272,12 +238,12 @@ namespace Coffers.DB.Migrations.Migrations
             migrationBuilder.InsertData(
                 table: "Guild",
                 columns: new[] { "Id", "ConcurrencyTokens", "CreateDate", "Name", "RecruitmentStatus", "Status", "TariffId", "UpdateDate" },
-                values: new object[] { new Guid("00000000-0000-4000-0000-000000000001"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2019, 12, 26, 13, 0, 11, 105, DateTimeKind.Utc).AddTicks(7058), "Admins", "Close", "Active", null, new DateTime(2019, 12, 26, 13, 0, 11, 105, DateTimeKind.Utc).AddTicks(7723) });
+                values: new object[] { new Guid("00000000-0000-4000-0000-000000000001"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2019, 12, 27, 7, 35, 9, 697, DateTimeKind.Utc).AddTicks(8813), "Admins", "Close", "Active", null, new DateTime(2019, 12, 27, 7, 35, 9, 697, DateTimeKind.Utc).AddTicks(9423) });
 
             migrationBuilder.InsertData(
                 table: "User",
                 columns: new[] { "Id", "ConcurrencyTokens", "CreateDate", "DateOfBirth", "DeletedDate", "GuildId", "Login", "Name", "Password", "Rank", "Roles", "Status", "UpdateDate" },
-                values: new object[] { new Guid("8dccedf3-40b4-4a18-acaa-6b0f97361368"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2019, 12, 26, 13, 0, 11, 129, DateTimeKind.Utc).AddTicks(6961), new DateTime(2019, 12, 26, 13, 0, 11, 129, DateTimeKind.Utc).AddTicks(8197), null, new Guid("00000000-0000-4000-0000-000000000001"), "Admin", "Admin", null, "Leader", "[\"admin\"]", "Active", new DateTime(2019, 12, 26, 13, 0, 11, 129, DateTimeKind.Utc).AddTicks(7630) });
+                values: new object[] { new Guid("d9676ccc-1a40-4cd7-9fe6-cdc3666bbdc4"), new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2019, 12, 27, 7, 35, 9, 733, DateTimeKind.Utc).AddTicks(7871), new DateTime(2019, 12, 27, 7, 35, 9, 734, DateTimeKind.Utc).AddTicks(4209), null, new Guid("00000000-0000-4000-0000-000000000001"), "Admin", "Admin", null, "Leader", "[\"admin\"]", "Active", new DateTime(2019, 12, 27, 7, 35, 9, 734, DateTimeKind.Utc).AddTicks(1291) });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Character_Id",
@@ -295,42 +261,6 @@ namespace Coffers.DB.Migrations.Migrations
                 table: "Guild",
                 column: "Id",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Guild_TariffId",
-                table: "Guild",
-                column: "TariffId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_GuildTariff_BeginnerTariffId",
-                table: "GuildTariff",
-                column: "BeginnerTariffId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_GuildTariff_Id",
-                table: "GuildTariff",
-                column: "Id",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_GuildTariff_LeaderTariffId",
-                table: "GuildTariff",
-                column: "LeaderTariffId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_GuildTariff_OfficerTariffId",
-                table: "GuildTariff",
-                column: "OfficerTariffId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_GuildTariff_SoldierTariffId",
-                table: "GuildTariff",
-                column: "SoldierTariffId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_GuildTariff_VeteranTariffId",
-                table: "GuildTariff",
-                column: "VeteranTariffId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Loan_Id",
@@ -412,6 +342,17 @@ namespace Coffers.DB.Migrations.Migrations
                 table: "User",
                 column: "Id",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRole_GuildId",
+                table: "UserRole",
+                column: "GuildId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRole_Id_GuildId",
+                table: "UserRole",
+                columns: new[] { "Id", "GuildId" },
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -426,22 +367,22 @@ namespace Coffers.DB.Migrations.Migrations
                 name: "Session");
 
             migrationBuilder.DropTable(
+                name: "UserRole");
+
+            migrationBuilder.DropTable(
                 name: "Loan");
 
             migrationBuilder.DropTable(
                 name: "Penalty");
 
             migrationBuilder.DropTable(
+                name: "Tariff");
+
+            migrationBuilder.DropTable(
                 name: "User");
 
             migrationBuilder.DropTable(
                 name: "Guild");
-
-            migrationBuilder.DropTable(
-                name: "GuildTariff");
-
-            migrationBuilder.DropTable(
-                name: "Tariff");
         }
     }
 }

@@ -11,10 +11,6 @@ namespace Coffers.DB.Migrations.Entities
         /// </summary>
         public Guid Id { get; set; }
 
-        /// <summary>
-        /// тариф гильдии, действующий на данный момент
-        /// </summary>
-        public GuildTariff Tariff { get; set; }
         public Guid? TariffId { get; set; }
 
         public List<Operation> Operations { get; set; }
@@ -48,6 +44,11 @@ namespace Coffers.DB.Migrations.Entities
         /// Список игроков в гильдии
         /// </summary>
         public ICollection<User> Users { get; set; }
+
+        /// <summary>
+        /// Список ролей игроков в гильдии
+        /// </summary>
+        public ICollection<UserRole> Roles { get; set; }
         public Guid ConcurrencyTokens { get; set; }
     }
 }

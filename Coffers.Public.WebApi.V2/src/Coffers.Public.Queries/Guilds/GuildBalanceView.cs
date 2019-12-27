@@ -30,7 +30,9 @@ namespace Coffers.Public.Queries.Guilds
         /// </summary>
         public Decimal GamersBalance { get; }
 
-        protected GuildBalanceView() { }
+        public GuildBalanceView(Guid guildId, Decimal balance, Decimal expectedTaxAmount, Decimal taxAmount, Decimal activeLoansAmount, Decimal repaymentLoansAmount, Decimal gamersBalance)
+            => (GuildId, Balance, ExpectedTaxAmount, TaxAmount, ActiveLoansAmount, RepaymentLoansAmount, GamersBalance)
+            = (guildId, balance, expectedTaxAmount, taxAmount, activeLoansAmount, repaymentLoansAmount, gamersBalance);
 
     }
 }

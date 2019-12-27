@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Coffers.Public.Domain.Guilds;
+using Coffers.Public.Domain.Roles;
 using Coffers.Public.Queries.Guilds;
 using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Exceptions;
@@ -66,36 +67,26 @@ namespace Coffers.Public.WebApi.Controllers
 
 
         /// <summary>
-        /// This method update guild tariff
+        /// This method update user roles
         /// </summary>
         /// <param name="binding"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [Authorize]
         [PermissionRequired("officer", "leader")]
-        [HttpPatch("tariff")]
+        [HttpPatch("roles")]
         [ProducesResponseType(200)]
         public async Task<IActionResult> SetOrUpdateGuildTax(
-            [FromBody] UpdateTariffBinding binding,
+            [FromBody] UpdateUserRoleBinding binding,
             [FromServices] IGuildRepository guildRepository,
-            [FromServices] TaxFactory taxFactory,
             CancellationToken cancellationToken)
         {
-
             var guild = await guildRepository.Get(HttpContext.GuildId(), cancellationToken);
 
             if (guild == null)
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.GuildNotFound, "Guild not found");
 
-            var tax = taxFactory
-                .Beginner(binding.BeginnerTariff.LoanTax, binding.BeginnerTariff.ExpiredLoanTax, binding.BeginnerTariff.Tax)
-                .Officer(binding.OfficerTariff.LoanTax, binding.OfficerTariff.ExpiredLoanTax, binding.OfficerTariff.Tax)
-                .Veteran(binding.VeteranTariff.LoanTax, binding.VeteranTariff.ExpiredLoanTax, binding.VeteranTariff.Tax)
-                .Soldier(binding.SoldierTariff.LoanTax, binding.SoldierTariff.ExpiredLoanTax, binding.SoldierTariff.Tax)
-                .Leader(binding.LeaderTariff.LoanTax, binding.LeaderTariff.ExpiredLoanTax, binding.LeaderTariff.Tax)
-                .Build();
-
-            //guild.SetTax(tax);
+            guild.AddOrUpdateRole();
 
             guildRepository.Save(guild);
 
