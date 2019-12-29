@@ -1,30 +1,20 @@
 ﻿using System;
+using Coffers.Types.Gamer;
 using FluentValidation;
 
 namespace Coffers.Public.WebApi.Models.Guild
 {
-    public class UpdateTariffBinding
+    public class UpdateUserRoleBinding
     {
         /// <summary>
-        /// Тариф для главы
+        /// Ранг игрока
         /// </summary>
-        public TariffBinding LeaderTariff { get; set; }
+        public GamerRank Rank { get; set; }
+
         /// <summary>
-        /// Тариф для офицера
+        /// Тариф для игрока с этим рангом
         /// </summary>
-        public TariffBinding OfficerTariff { get; set; }
-        /// <summary>
-        /// Тариф для ветерана
-        /// </summary>
-        public TariffBinding VeteranTariff { get; set; }
-        /// <summary>
-        /// Тариф для солдата
-        /// </summary>
-        public TariffBinding SoldierTariff { get; set; }
-        /// <summary>
-        /// Тариф для духа
-        /// </summary>
-        public TariffBinding BeginnerTariff { get; set; }
+        public TariffBinding Tariff { get; set; }
     }
 
     public class TariffBinding
@@ -36,63 +26,20 @@ namespace Coffers.Public.WebApi.Models.Guild
         public Decimal[] Tax { get; set; }
     }
 
-    public class UpdateTariffBindingValidator : AbstractValidator<UpdateTariffBinding>
+    public class UpdateTariffBindingValidator : AbstractValidator<UpdateUserRoleBinding>
     {
         public UpdateTariffBindingValidator()
         {
-            RuleFor(b => b.BeginnerTariff)
+            RuleFor(b => b.Tariff)
                 .NotNull();
-            RuleFor(b => b.OfficerTariff)
-                .NotNull();
-            RuleFor(b => b.SoldierTariff)
-                .NotNull();
-            RuleFor(b => b.VeteranTariff)
-                .NotNull();
-            RuleFor(b => b.LeaderTariff)
-                .NotNull();
-            When(x => x.BeginnerTariff != null, () =>
+
+            When(x => x.Tariff != null, () =>
             {
-                RuleForEach(b => b.BeginnerTariff.Tax)
+                RuleForEach(b => b.Tariff.Tax)
                     .GreaterThanOrEqualTo(0);
-                RuleFor(b => b.BeginnerTariff.LoanTax)
+                RuleFor(b => b.Tariff.LoanTax)
                     .GreaterThanOrEqualTo(0);
-                RuleFor(b => b.BeginnerTariff.ExpiredLoanTax)
-                    .GreaterThanOrEqualTo(0);
-            });
-            When(x => x.SoldierTariff != null, () =>
-            {
-                RuleForEach(b => b.SoldierTariff.Tax)
-                    .GreaterThanOrEqualTo(0);
-                RuleFor(b => b.SoldierTariff.LoanTax)
-                    .GreaterThanOrEqualTo(0);
-                RuleFor(b => b.SoldierTariff.ExpiredLoanTax)
-                    .GreaterThanOrEqualTo(0);
-            });
-            When(x => x.VeteranTariff != null, () =>
-            {
-                RuleForEach(b => b.VeteranTariff.Tax)
-                    .GreaterThanOrEqualTo(0);
-                RuleFor(b => b.VeteranTariff.LoanTax)
-                    .GreaterThanOrEqualTo(0);
-                RuleFor(b => b.VeteranTariff.ExpiredLoanTax)
-                    .GreaterThanOrEqualTo(0);
-            });
-            When(x => x.OfficerTariff != null, () =>
-            {
-                RuleForEach(b => b.OfficerTariff.Tax)
-                    .GreaterThanOrEqualTo(0);
-                RuleFor(b => b.OfficerTariff.LoanTax)
-                    .GreaterThanOrEqualTo(0);
-                RuleFor(b => b.OfficerTariff.ExpiredLoanTax)
-                    .GreaterThanOrEqualTo(0);
-            });
-            When(x => x.LeaderTariff != null, () =>
-            {
-                RuleForEach(b => b.LeaderTariff.Tax)
-                    .GreaterThanOrEqualTo(0);
-                RuleFor(b => b.LeaderTariff.LoanTax)
-                    .GreaterThanOrEqualTo(0);
-                RuleFor(b => b.LeaderTariff.ExpiredLoanTax)
+                RuleFor(b => b.Tariff.ExpiredLoanTax)
                     .GreaterThanOrEqualTo(0);
             });
         }

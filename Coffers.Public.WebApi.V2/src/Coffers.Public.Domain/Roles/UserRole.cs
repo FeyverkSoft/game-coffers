@@ -9,8 +9,9 @@ namespace Coffers.Public.Domain.Roles
         public Guid GuildId { get; }
         public Guid TariffId { get; }
         public Tariff Tariff { get; }
+        private UserRole() { }
         public UserRole(GamerRank userRoleId, Tariff tariff)
-            => (UserRoleId, Tariff) 
-            =  (userRoleId, tariff);
+            => (UserRoleId, Tariff)
+            = (userRoleId, tariff);
     }
 }

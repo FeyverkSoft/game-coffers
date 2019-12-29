@@ -86,7 +86,7 @@ namespace Coffers.Public.WebApi.Controllers
             if (guild == null)
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.GuildNotFound, "Guild not found");
 
-            guild.AddOrUpdateRole();
+            guild.AddOrUpdateRole(binding.Rank, binding.Tariff.LoanTax, binding.Tariff.ExpiredLoanTax, binding.Tariff.Tax);
 
             guildRepository.Save(guild);
 

@@ -95,10 +95,16 @@ namespace Coffers.Public.WebApi
 
             #endregion
 
-            #region  Guild
+            #region Guild
 
-            services.AddScoped<TaxFactory>();
+            #endregion
 
+            #region Roles
+            services.AddDbContext<Infrastructure.Roles.GuildsDbContext>(options =>
+            {
+                options.UseMySql(Configuration.GetConnectionString("Coffers"));
+            });
+            services.AddScoped<Domain.Roles.IGuildRepository, Infrastructure.Roles.GuildRepository>();
             #endregion
 
             services.AddScoped<UserSecurityService>();

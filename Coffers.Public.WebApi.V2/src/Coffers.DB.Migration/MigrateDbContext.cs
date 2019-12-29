@@ -105,6 +105,8 @@ namespace Coffers.DB.Migrations
                     .IsUnique();
                 b.HasKey(gt => new { gt.UserRoleId, gt.GuildId });
                 b.Property(gt => gt.UserRoleId)
+                    .HasConversion<String>()
+                    .HasMaxLength(32)
                     .HasColumnName("Id")
                     .IsRequired();
 

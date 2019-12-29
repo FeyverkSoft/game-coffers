@@ -8,7 +8,7 @@ namespace Coffers.Public.Domain.Roles
         public Decimal LoanTax { get; }
         public Decimal ExpiredLoanTax { get; }
         public String Tax { get; }
-
+        private Tariff() { }
         public Tariff(decimal loanTax, decimal expiredLoanTax, string tax)
         => (LoanTax, ExpiredLoanTax, Tax)
         =  (loanTax, expiredLoanTax, tax);

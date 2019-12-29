@@ -72,7 +72,7 @@ namespace Coffers.DB.Migrations.Migrations
                 name: "UserRole",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false),
+                    Id = table.Column<String>(nullable: false),
                     GuildId = table.Column<Guid>(nullable: false),
                     TariffId = table.Column<Guid>(nullable: false)
                 },
