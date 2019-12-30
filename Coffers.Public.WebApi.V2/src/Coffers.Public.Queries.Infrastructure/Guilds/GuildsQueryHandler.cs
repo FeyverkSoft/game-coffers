@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading;
@@ -13,7 +14,8 @@ namespace Coffers.Public.Queries.Infrastructure.Guilds
 {
     public class GuildsQueryHandler :
         IQueryHandler<GuildQuery, GuildView>,
-        IQueryHandler<GuildBalanceQuery, GuildBalanceView>
+        IQueryHandler<GuildBalanceQuery, GuildBalanceView>,
+        IQueryHandler<GuildRoleListQuery, ICollection<GuildRoleView>>
     {
         private readonly IDbConnection _db;
 
@@ -24,19 +26,8 @@ namespace Coffers.Public.Queries.Infrastructure.Guilds
 
         public async Task<GuildView> Handle(GuildQuery query, CancellationToken cancellationToken)
         {
-            var sql = @"
-SELECT
-    g.`Id`, 
-    g.`Name`, 
-    g.`RecruitmentStatus`, 
-    count(u.`id`)  AS GamersCount, 
-    count(ch.`id`) AS CharactersCount 
-FROM `Guild` g
-LEFT JOIN `User` u ON u.`GuildId` = g.`id` AND u.`Status` NOT IN ( 'Banned', 'Left' ) 
-LEFT JOIN `Character` ch ON u.`Id` = ch.`UserId` AND ch.`Status` = 'Active' 
-WHERE g.`id` = @GuildId
-";
-            return await _db.QuerySingleAsync<GuildView>(sql, new { GuildId = query.GuildId });
+            var result = await _db.QuerySingleAsync<Guild>(Guild.Sql, new { GuildId = query.GuildId });
+            return new GuildView(result.Id, result.Name, result.RecruitmentStatus, result.GamersCount, result.CharactersCount);
         }
 
         public async Task<GuildBalanceView> Handle(GuildBalanceQuery query, CancellationToken cancellationToken)
@@ -57,6 +48,12 @@ WHERE g.`id` = @GuildId
                 guildBalance.ActiveLoansAmount,
                 guildBalance.RepaymentLoansAmount,
                 guildBalance.GamersBalance);
+        }
+
+        public async Task<ICollection<GuildRoleView>> Handle(GuildRoleListQuery query, CancellationToken cancellationToken)
+        {
+            var result = await _db.QueryAsync<GuildRole>(GuildRole.Sql, new { GuildId = query.GuildId });
+            return result.Select(_ => new GuildRoleView(_.UserRoleId, _.LoanTax, _.ExpiredLoanTax, _.Tax?.TryParseJson<Decimal[]>())).ToList();
         }
     }
 }
