@@ -4,7 +4,7 @@ using Query.Core;
 
 namespace Coffers.Public.Queries.Guilds
 {
-    public sealed class GuildRoleListQuery : IQuery<ICollection<RoleView>>
+    public sealed class GuildRoleListQuery : IQuery<ICollection<GuildRoleView>>
     {
         public Guid GuildId { get; }
 
