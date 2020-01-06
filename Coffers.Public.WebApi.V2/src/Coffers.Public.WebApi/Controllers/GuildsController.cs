@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Coffers.Public.Domain.Guilds;
@@ -91,6 +93,23 @@ namespace Coffers.Public.WebApi.Controllers
             guildRepository.Save(guild);
 
             return Ok(new { });
+        }
+
+        /// <summary>
+        /// This method return user roles for current guild
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [Authorize]
+        [PermissionRequired("officer", "leader")]
+        [HttpPatch("roles")]
+        [ProducesResponseType(typeof(ICollection<RoleView>), 200)]
+        public async Task<IActionResult> GetUserRoles(CancellationToken cancellationToken)
+        {
+            var roles = await _queryProcessor.Process<GuildRoleListQuery, ICollection<RoleView>>(
+                new GuildRoleListQuery(HttpContext.GuildId()), cancellationToken);
+
+            return Ok(roles);
         }
 
         /*
