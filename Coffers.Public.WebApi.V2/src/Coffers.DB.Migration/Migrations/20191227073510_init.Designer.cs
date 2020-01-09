@@ -434,7 +434,7 @@ namespace Coffers.DB.Migrations.Migrations
                 {
                     b.Property<int>("UserRoleId")
                         .HasColumnName("Id")
-                        .HasColumnType("int");
+                        .HasColumnType("varchar(32) CHARACTER SET utf8mb4");
 
                     b.Property<Guid>("GuildId")
                         .HasColumnType("char(36)");
