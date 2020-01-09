@@ -3,7 +3,6 @@
     public enum CharStatus
     {
         Deleted,
-        Active,
-        Left
+        Active
     }
 }

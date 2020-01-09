@@ -1,13 +1,17 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Coffers.Public.Domain.UserRegistration;
+using Coffers.Public.Domain.Users;
 using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Exceptions;
 using Coffers.Public.WebApi.Models.Guild;
+using Coffers.Public.WebApi.Models.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Query.Core;
+using IUserRepository = Coffers.Public.Domain.UserRegistration.IUserRepository;
 
 namespace Coffers.Public.WebApi.Controllers
 {
@@ -23,10 +27,9 @@ namespace Coffers.Public.WebApi.Controllers
             _queryProcessor = queryProcessor;
         }
 
-
         [Authorize]
         [PermissionRequired("admin", "officer", "leader")]
-        [HttpPost("gamers")]
+        [HttpPost("guild/gamers")]
         [ProducesResponseType(200)]
         public async Task<IActionResult> AddNewGamer(
             [FromBody] GamerCreateBinding binding,
@@ -50,29 +53,34 @@ namespace Coffers.Public.WebApi.Controllers
 
             return Ok(new { });
         }
-        /*
-                /// <summary>
-                /// This method return gamer list
-                /// </summary>
-                /// <param name="binding"></param>
-                /// <param name="cancellationToken"></param>
-                /// <returns></returns>
-                [Authorize]
-                [HttpGet("gamers")]
-                [ProducesResponseType(typeof(ICollection<GamersListView>), 200)]
-                public async Task<ActionResult<GamersListView>> GetGamers(
-                    [FromQuery] GetGamersBinding binding,
-                    CancellationToken cancellationToken)
-                {
-                    return Ok(await _queryProcessor.Process<GetGamersQuery, ICollection<GamersListView>>(
-                        new GetGamersQuery
-                        {
-                            GuildId = HttpContext.GuildId(),
-                            Month = binding.DateMonth?.Trunc(DateTruncType.Day),
-                            GamerStatuses = binding.GamerStatuses
-                        }, cancellationToken
-                        ));
 
-                }*/
+        [Authorize]
+        [PermissionRequired("admin", "officer", "leader")]
+        [HttpPost("gamers/{id}/characters")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> AddCharacter(
+            [FromRoute] Guid id,
+            [FromBody] AddCharacterBinding binding,
+            [FromServices] Domain.Users.IUserRepository userRepository,
+            CancellationToken cancellationToken)
+        {
+            var user = await userRepository.Get(id, HttpContext.GuildId(), cancellationToken);
+
+            if (user == null)
+                throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.GamerNotFound, "Gamer not found");
+
+            try
+            {
+                user.AddCharacter(binding.Name, binding.ClassName, binding.IsMain);
+            }
+            catch (CharacterAlreadyExists e)
+            {
+                throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.CharacterAlreadyExists, e.Message, e.Character.ToDetail());
+            }
+
+            userRepository.Save(user);
+            return Ok(new { });
+        }
+
     }
 }
