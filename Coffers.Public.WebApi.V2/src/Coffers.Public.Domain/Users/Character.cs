@@ -8,7 +8,7 @@ namespace Coffers.Public.Domain.Users
         /// <summary>
         /// Идентификатор персонажа
         /// </summary>
-        public Guid Id { get; }
+        public Guid Id { get; } = Guid.NewGuid();
 
         /// <summary>
         /// Идентификатор пользователя
@@ -33,6 +33,20 @@ namespace Coffers.Public.Domain.Users
         /// <summary>
         /// Статус персонажа
         /// </summary>
-        public CharStatus Status { get; }
+        public CharStatus Status { get; private set; } = CharStatus.Active;
+
+        public Boolean IsActive => Status == CharStatus.Active;
+
+        public Character(String name, String className, Boolean isMain)
+        {
+            Name = name?.Trim();
+            ClassName = className?.Trim();
+            IsMain = isMain;
+        }
+
+        internal void MarkAsDeleted()
+        {
+            Status = CharStatus.Deleted;
+        }
     }
 }

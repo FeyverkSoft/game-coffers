@@ -4,7 +4,6 @@ using System.Text.Json.Serialization;
 using Coffers.DB.Migrations;
 using Coffers.LoanWorker;
 using Coffers.Public.Domain.Authorization;
-using Coffers.Public.Domain.Guilds;
 using Coffers.Public.Domain.Operations;
 using Coffers.Public.Domain.UserRegistration;
 using Coffers.Public.Infrastructure.Authorization;
@@ -94,6 +93,18 @@ namespace Coffers.Public.WebApi
             services.AddScoped<UserFactory>();
 
             #endregion
+
+            #region  UserRegistration
+
+            services.AddDbContext<Infrastructure.Users.UserDbContext>(options =>
+            {
+                options.UseMySql(Configuration.GetConnectionString("Coffers"));
+            });
+            services.AddScoped<Domain.Users.IUserRepository, Infrastructure.Users.UserRepository>();
+            services.AddScoped<UserFactory>();
+
+            #endregion
+            
 
             #region Guild
 

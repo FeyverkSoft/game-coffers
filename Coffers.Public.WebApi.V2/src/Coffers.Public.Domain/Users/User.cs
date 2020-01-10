@@ -40,18 +40,35 @@ namespace Coffers.Public.Domain.Users
 
         public ICollection<Character> Characters { get; }
 
-        private Guid ConcurrencyTokens { get; set; }
+        public Guid ConcurrencyTokens { get; private set; }
         internal User() { }
 
         public void AddCharacter(String name, String className, Boolean isMain)
         {
-            if (Characters.Any(_ => _.Name == name && _.ClassName == className))
+            if (Characters
+                .Any(_ => _.Name == name
+                          && _.ClassName == className
+                          && _.IsActive))
                 return;
 
-            if (Characters.Any(_ => _.Name == name && _.ClassName != className))
-                throw new CharacterAlreadyExists(Characters.First(_ => _.Name == name));
+            if (Characters.Any(_ => _.Name == name
+                                    && _.IsActive
+                                    && _.ClassName != className))
+                throw new CharacterAlreadyExists(Characters.First(_ => _.Name == name
+                                                                       && _.IsActive));
 
             Characters.Add(new Character(name, className, isMain));
+            ConcurrencyTokens = Guid.NewGuid();
+        }
+
+        public void CharacterRemove(Guid characterId)
+        {
+            var ch = Characters.FirstOrDefault(_ => _.Id == characterId) ?? throw new CharacterNotFound(characterId);
+
+            if (!ch.IsActive)
+                return;
+
+            ch.MarkAsDeleted();
             ConcurrencyTokens = Guid.NewGuid();
         }
     }

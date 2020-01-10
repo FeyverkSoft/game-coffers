@@ -47,10 +47,7 @@ namespace Coffers.Public.WebApi.Filters
                     resp.Status = apiException.GetHttpStatusCode();
 
                     if (apiException.Fields != null)
-                        foreach (var apiExceptionField in apiException.Fields.Keys)
-                        {
-                            resp.Extensions.Add(apiExceptionField, apiException.Fields[apiExceptionField]);
-                        }
+                        resp.Extensions.Add("data", apiException.Fields);
 
                     execution.Result = new ObjectResult(resp)
                     {
