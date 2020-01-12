@@ -28,11 +28,10 @@ namespace Coffers.Public.Infrastructure.UserRegistration
                     .IsRequired();
 
                 b.Property(o => o.Login)
-                    .HasColumnName("Login")
-                    .IsRequired();
+                    .IsRequired()
+                    .HasMaxLength(64);
 
                 b.Property(o => o.GuildId)
-                    .HasColumnName("GuildId")
                     .IsRequired();
 
                 b.Property(g => g.Rank)
@@ -44,7 +43,12 @@ namespace Coffers.Public.Infrastructure.UserRegistration
                     .HasMaxLength(32)
                     .IsRequired();
 
+                b.Property(g => g.Name)
+                    .HasMaxLength(64);
+
                 b.Property(g => g.CreateDate)
+                    .IsRequired();
+                b.Property(g => g.DateOfBirth)
                     .IsRequired();
 
                 b.Property(g => g.UpdateDate)

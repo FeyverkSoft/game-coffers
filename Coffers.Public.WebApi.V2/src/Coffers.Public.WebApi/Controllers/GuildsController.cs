@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Coffers.Helpers;
 using Coffers.Public.Domain.Roles;
 using Coffers.Public.Queries.Guilds;
 using Coffers.Public.WebApi.Authorization;
@@ -110,7 +111,7 @@ namespace Coffers.Public.WebApi.Controllers
             return Ok(roles);
         }
 
-        /*
+
         /// <summary>
         /// This method return gamer list
         /// </summary>
@@ -125,14 +126,11 @@ namespace Coffers.Public.WebApi.Controllers
             CancellationToken cancellationToken)
         {
             return Ok(await _queryProcessor.Process<GetGamersQuery, ICollection<GamersListView>>(
-                new GetGamersQuery
-                {
-                    GuildId = HttpContext.GuildId(),
-                    Month = binding.DateMonth?.Trunc(DateTruncType.Day),
-                    GamerStatuses = binding.GamerStatuses
-                }, cancellationToken
-                ));
-
-        }*/
+                new GetGamersQuery(
+                    HttpContext.GuildId(),
+                    binding.DateMonth?.Trunc(DateTruncType.Day),
+                    binding.GamerStatuses), 
+                cancellationToken));
+        }
     }
 }
