@@ -52,7 +52,8 @@ namespace Coffers.Public.Queries.Guilds
         /// </summary>
         public String Name { get; }
 
-        public GamersListView(Guid id, String name, Decimal balance, List<CharacterView> characters, GamerRank rank, GamerStatus status, DateTime dateOfBirth, List<PenaltyView> penalties, List<LoanView> loans)
+        public GamersListView(Guid id, String name, Decimal balance, List<CharacterView> characters, GamerRank rank, GamerStatus status, 
+            DateTime dateOfBirth, List<PenaltyView> penalties, List<LoanView> loans)
             => (Id, Name, Balance, Characters, Rank, Status, DateOfBirth, Penalties, Loans)
             = (id, name, balance, characters, rank, status, dateOfBirth, penalties, loans);
     }

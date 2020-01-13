@@ -8,6 +8,11 @@ namespace Coffers.Public.Queries.Guilds
     public class CharacterView
     {
         /// <summary>
+        /// Character id
+        /// </summary>
+        public Guid Id { get; }
+
+        /// <summary>
         /// Имя персонажа
         /// </summary>
         public String Name { get; }
@@ -22,6 +27,8 @@ namespace Coffers.Public.Queries.Guilds
         /// </summary>
         public Boolean IsMain { get; }
 
-        public CharacterView(String name, String className, Boolean isMain) => (Name, ClassName, IsMain) = (name, className, isMain);
+        public CharacterView(Guid id, String name, String className, Boolean isMain) 
+            => (Id, Name, ClassName, IsMain) 
+            =  (id, name, className, isMain);
     }
 }
