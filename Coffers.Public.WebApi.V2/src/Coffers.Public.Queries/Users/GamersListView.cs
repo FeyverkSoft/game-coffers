@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Coffers.Types.Gamer;
 
-namespace Coffers.Public.Queries.Guilds
+namespace Coffers.Public.Queries.Users
 {
     /// <summary>
     /// base gamers info

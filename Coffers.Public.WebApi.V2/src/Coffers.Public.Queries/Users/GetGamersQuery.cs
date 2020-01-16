@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Coffers.Types.Gamer;
 using Query.Core;
 
-namespace Coffers.Public.Queries.Guilds
+namespace Coffers.Public.Queries.Users
 {
     public sealed class GetGamersQuery : IQuery<ICollection<GamersListView>>
     {
@@ -20,6 +20,6 @@ namespace Coffers.Public.Queries.Guilds
 
         public GetGamersQuery(Guid guildId, DateTime? dateMonth, ICollection<GamerStatus> gamerStatuses)
             => (GuildId, DateMonth, GamerStatuses)
-            =  (guildId, dateMonth, gamerStatuses);
+            =  (guildId, dateMonth, gamerStatuses ?? new List<GamerStatus>());
     }
 }

@@ -8,6 +8,7 @@ using Coffers.Public.Domain.Operations;
 using Coffers.Public.Domain.UserRegistration;
 using Coffers.Public.Infrastructure.Authorization;
 using Coffers.Public.Queries.Infrastructure.Guilds;
+using Coffers.Public.Queries.Infrastructure.Users;
 using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Extensions;
 using Coffers.Public.WebApi.Filters;
@@ -126,6 +127,7 @@ namespace Coffers.Public.WebApi
             services.RegQueryProcessor(registry =>
             {
                 registry.Register<GuildsQueryHandler>();
+                registry.Register<UserQueryHandler>();
             });
 
 

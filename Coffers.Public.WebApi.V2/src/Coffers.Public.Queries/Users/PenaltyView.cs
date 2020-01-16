@@ -1,7 +1,7 @@
 ﻿using System;
 using Coffers.Types.Gamer;
 
-namespace Coffers.Public.Queries.Guilds
+namespace Coffers.Public.Queries.Users
 {
     public sealed class PenaltyView
     {

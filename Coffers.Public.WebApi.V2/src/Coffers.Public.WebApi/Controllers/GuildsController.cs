@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Coffers.Helpers;
 using Coffers.Public.Domain.Roles;
 using Coffers.Public.Queries.Guilds;
+using Coffers.Public.Queries.Users;
 using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Exceptions;
 using Coffers.Public.WebApi.Models.Guild;

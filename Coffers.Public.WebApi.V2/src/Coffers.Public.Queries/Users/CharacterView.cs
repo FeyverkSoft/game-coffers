@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Coffers.Public.Queries.Guilds
+namespace Coffers.Public.Queries.Users
 {
     /// <summary>
     /// Описание персонажа
