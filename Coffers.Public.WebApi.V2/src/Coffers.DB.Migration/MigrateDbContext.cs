@@ -276,6 +276,43 @@ namespace Coffers.DB.Migrations
                     .IsConcurrencyToken();
             });
 
+            modelBuilder.Entity<Tax>(b =>
+            {
+                b.ToTable(nameof(Tax));
+
+                b.HasIndex(l => l.Id)
+                    .IsUnique();
+                b.HasKey(l => l.Id);
+                b.Property(l => l.Id)
+                    .HasColumnName("Id")
+                    .IsRequired();
+
+                b.Property(l => l.CreateDate)
+                    .IsRequired();
+                b.Property(o => o.Amount)
+                    .HasDefaultValue(0)
+                    .IsRequired();
+                b.Property(l => l.Status)
+                    .HasConversion<String>()
+                    .HasMaxLength(32)
+                    .IsRequired();
+                b.Property(l => l.TaxTariff)
+                    .HasMaxLength(4096)
+                    .HasDefaultValue("{}")
+                    .IsRequired();
+
+                b.HasOne(l => l.User)
+                    .WithMany(_ => _.Taxs)
+                    .HasPrincipalKey(_ => _.Id)
+                    .HasForeignKey(_ => _.UserId);
+
+
+                b.Property(l => l.ConcurrencyTokens)
+                    .IsRequired()
+                    .IsConcurrencyToken();
+
+            });
+
             modelBuilder.Entity<Penalty>(b =>
             {
                 b.ToTable(nameof(Penalty));

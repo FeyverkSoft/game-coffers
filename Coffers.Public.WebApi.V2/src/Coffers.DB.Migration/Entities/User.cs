@@ -28,6 +28,11 @@ namespace Coffers.DB.Migrations.Entities
         public List<Loan> Loans { get; set; }
 
         /// <summary>
+        /// Список налогов юзера
+        /// </summary>
+        public List<Tax> Taxs { get; set; }
+
+        /// <summary>
         /// Список штрафов игрока
         /// </summary>
         public List<Penalty> Penalties { get; set; }
