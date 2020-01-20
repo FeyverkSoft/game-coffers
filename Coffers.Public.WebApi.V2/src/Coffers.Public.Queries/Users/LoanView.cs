@@ -12,11 +12,6 @@ namespace Coffers.Public.Queries.Users
         public Guid Id { get; }
 
         /// <summary>
-        /// Дата когда был взят займ
-        /// </summary>
-        public DateTime CreateDate { get; }
-
-        /// <summary>
         /// Сумма займа
         /// </summary>
         public Decimal Amount { get; }
@@ -35,13 +30,11 @@ namespace Coffers.Public.Queries.Users
             decimal amount,
             string description,
             LoanStatus loanStatus,
-            DateTime createDate,
             DateTime expiredDate)
         {
             Id = id;
             Amount = amount;
             Description = description;
-            CreateDate = createDate;
             LoanStatus = expiredDate < DateTime.UtcNow &&
                 !((IList)new[] { LoanStatus.Paid, LoanStatus.Canceled, LoanStatus.Expired }).Contains(loanStatus)
                     ? LoanStatus.Expired

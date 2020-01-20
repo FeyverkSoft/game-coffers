@@ -13,10 +13,11 @@ select
     p.Description,
     p.`PenaltyStatus` as Status,
     p.Amount,
-    p.UserId
+    p.UserId,
+    p.CreateDate
 from `Penalty` p
 where 1 = 1
-and p.UserId in @Ids
+and p.UserId in @UserIds
 and (
     (@Date >= p.CreateDate
     and p.CreateDate < ADDDATE(@Date, INTERVAL 1 MONTH))
@@ -26,6 +27,7 @@ and (
 
         public Guid Id { get; }
         public Guid UserId { get; }
+        public DateTime CreateDate { get; }
         public PenaltyStatus Status { get; }
         public Decimal Amount { get; }
         public String Description { get; }

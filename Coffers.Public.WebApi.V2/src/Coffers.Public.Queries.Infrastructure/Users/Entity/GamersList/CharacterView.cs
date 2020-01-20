@@ -13,12 +13,12 @@ select
 from `Character`c
 where 1 = 1
 and c.UserId in @UserIds
-and c.Status in @Status
+and c.Status in @Statuses
 ";
         public Guid Id { get; }
         public Guid UserId { get; }
         public String Name { get; }
         public String ClassName { get; }
-        public String IsMain { get; }
+        public Boolean IsMain { get; }
     }
 }

@@ -17,7 +17,7 @@ namespace Coffers.Public.Queries.Users
         /// <summary>
         /// Characters list
         /// </summary>
-        public ICollection<CharacterView> Characters { get; }
+        public IEnumerable<CharacterView> Characters { get; }
 
         /// <summary>
         /// User balance
@@ -27,12 +27,12 @@ namespace Coffers.Public.Queries.Users
         /// <summary>
         /// Список штрафов
         /// </summary>
-        public List<PenaltyView> Penalties { get; }
+        public IEnumerable<PenaltyView> Penalties { get; }
 
         /// <summary>
         /// Список займов
         /// </summary>
-        public List<LoanView> Loans { get; }
+        public IEnumerable<LoanView> Loans { get; }
 
         /// <summary>
         /// Rank
@@ -52,8 +52,9 @@ namespace Coffers.Public.Queries.Users
         /// </summary>
         public String Name { get; }
 
-        public GamersListView(Guid id, String name, Decimal balance, List<CharacterView> characters, GamerRank rank, GamerStatus status, 
-            DateTime dateOfBirth, List<PenaltyView> penalties, List<LoanView> loans)
+        public GamersListView(Guid id, String name, Decimal balance,
+            IEnumerable<CharacterView> characters, GamerRank rank, GamerStatus status,
+            DateTime dateOfBirth, IEnumerable<PenaltyView> penalties, IEnumerable<LoanView> loans)
             => (Id, Name, Balance, Characters, Rank, Status, DateOfBirth, Penalties, Loans)
             = (id, name, balance, characters, rank, status, dateOfBirth, penalties, loans);
     }

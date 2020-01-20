@@ -23,6 +23,7 @@ WHERE 1 = 1
     AND u.CreateDate < ADDDATE(@DeleteDate, INTERVAL 1 MONTH)
     AND u.Status IN @Statuses
 GROUP BY u.Id
+ORDER BY u.Rank, u.Status, u.Name
 ";
 
         public Guid Id { get; }

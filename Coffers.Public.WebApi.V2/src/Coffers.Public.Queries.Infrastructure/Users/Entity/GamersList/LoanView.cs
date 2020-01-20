@@ -11,19 +11,21 @@ select
     l.Description,
     l.LoanStatus as Status,
     l.Amount,
-    l.UserId
+    l.UserId,
+    l.ExpiredDate
 from `Loan`l
 where 1 = 1
-and l.UserId in @Ids
+and l.UserId in @UserIds
 and (
-    (@Date >= uo.CreateDate
-    and uo.CreateDate < ADDDATE(@Date, INTERVAL 1 MONTH))
+    (@Date >= l.CreateDate
+    and l.CreateDate < ADDDATE(@Date, INTERVAL 1 MONTH))
     or l.LoanStatus in ('Active', 'Expired')
 )
 ";
 
         public Guid Id { get; }
         public Guid UserId { get; }
+        public DateTime ExpiredDate { get; }
         public LoanStatus Status { get; }
         public Decimal Amount { get; }
         public String Description { get; }

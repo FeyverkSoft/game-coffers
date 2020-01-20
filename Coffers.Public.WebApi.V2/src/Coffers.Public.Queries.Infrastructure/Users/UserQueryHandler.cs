@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Coffers.Helpers;
-using Coffers.Public.Queries.Infrastructure.Users.Entity;
 using Coffers.Public.Queries.Users;
 using Coffers.Types.Gamer;
 using Query.Core;
@@ -32,11 +31,11 @@ namespace Coffers.Public.Queries.Infrastructure.Users
                 Statuses = query.GamerStatuses.Any() ? query.GamerStatuses.Select(_ => _.ToString()) : Enum.GetNames(typeof(GamerStatus))
             });
 
-            var userIds = users.Select(_ => _.Name);
+            var userIds = users.Select(_ => _.Id);
             var characters = await _db.QueryAsync<Entity.GamersList.CharacterView>(Entity.GamersList.CharacterView.Sql, new
             {
                 UserIds = userIds,
-                Statuses = new[] { CharStatus.Active }
+                Statuses = new[] { CharStatus.Active.ToString() }
             });
             var loans = await _db.QueryAsync<Entity.GamersList.LoanView>(Entity.GamersList.LoanView.Sql, new
             {
@@ -46,9 +45,28 @@ namespace Coffers.Public.Queries.Infrastructure.Users
             var penalties = await _db.QueryAsync<Entity.GamersList.PenaltyView>(Entity.GamersList.PenaltyView.Sql, new
             {
                 UserIds = userIds,
-                Date = query.DateMonth
+                Date = query.DateMonth ?? DateTime.UtcNow.Trunc(DateTruncType.Month),
             });
-            return null;
+
+            var result = new List<GamersListView>();
+            foreach (var user in users)
+            {
+                result.Add(new GamersListView(
+                    user.Id,
+                    user.Name,
+                    user.Balance,
+                    characters.Where(_ => _.UserId == user.Id)
+                        .Select(_ => new CharacterView(_.Id, _.Name, _.ClassName, _.IsMain)),
+                    user.Rank,
+                    user.Status,
+                    user.DateOfBirth,
+                    penalties.Where(_ => _.UserId == user.Id)
+                        .Select(_ => new PenaltyView(_.Id, _.Amount, _.CreateDate, _.Description, _.Status)),
+                    loans.Where(_ => _.UserId == user.Id)
+                        .Select(_ => new LoanView(_.Id, _.Amount, _.Description, _.Status, _.ExpiredDate))
+                    ));
+            }
+            return result;
         }
     }
 }
