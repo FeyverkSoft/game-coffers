@@ -11,6 +11,7 @@ namespace Coffers.Public.Domain.Penalties
         public Guid Id { get; }
 
         public Guid UserId { get; }
+        public User User { get; }
 
         /// <summary>
         /// Сумма штрафа

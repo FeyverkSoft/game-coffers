@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 
@@ -17,7 +16,7 @@ namespace Coffers.Public.WebApi.Authorization
                    httpContext.Request.Headers["X-Forwarded-For"].ToString() ??
                    httpContext.Request.Headers["X-Real-IP"].ToString();
         }
-        public static Guid GuildId(this HttpContext httpContext)
+        public static Guid GetGuildId(this HttpContext httpContext)
         {
             return Guid.Parse(httpContext.User.FindFirst(x => x.Type.Equals(ClaimType.GuildId)).Value);
         }

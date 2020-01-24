@@ -40,7 +40,7 @@ namespace Coffers.Public.WebApi.Controllers
         public async Task<IActionResult> Get(CancellationToken cancellationToken)
         {
             var guild = await _queryProcessor.Process<GuildQuery, GuildView>(
-                new GuildQuery(HttpContext.GuildId()), cancellationToken);
+                new GuildQuery(HttpContext.GetGuildId()), cancellationToken);
 
             if (guild == null)
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.GuildNotFound, "Guild not found");
@@ -60,7 +60,7 @@ namespace Coffers.Public.WebApi.Controllers
         public async Task<IActionResult> GetBalance(CancellationToken cancellationToken)
         {
             var guild = await _queryProcessor.Process<GuildBalanceQuery, GuildBalanceView>(
-                new GuildBalanceQuery(HttpContext.GuildId()), cancellationToken);
+                new GuildBalanceQuery(HttpContext.GetGuildId()), cancellationToken);
 
             if (guild == null)
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.GuildNotFound, "Guild not found");
@@ -84,7 +84,7 @@ namespace Coffers.Public.WebApi.Controllers
             [FromServices] IGuildRepository guildRepository,
             CancellationToken cancellationToken)
         {
-            var guild = await guildRepository.Get(HttpContext.GuildId(), cancellationToken);
+            var guild = await guildRepository.Get(HttpContext.GetGuildId(), cancellationToken);
 
             if (guild == null)
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.GuildNotFound, "Guild not found");
@@ -108,7 +108,7 @@ namespace Coffers.Public.WebApi.Controllers
         public async Task<IActionResult> GetGuildTax(CancellationToken cancellationToken)
         {
             var roles = await _queryProcessor.Process<GuildRoleListQuery, ICollection<GuildRoleView>>(
-                new GuildRoleListQuery(HttpContext.GuildId()), cancellationToken);
+                new GuildRoleListQuery(HttpContext.GetGuildId()), cancellationToken);
             return Ok(roles);
         }
 
@@ -128,7 +128,7 @@ namespace Coffers.Public.WebApi.Controllers
         {
             return Ok(await _queryProcessor.Process<GetGamersQuery, ICollection<GamersListView>>(
                 new GetGamersQuery(
-                    HttpContext.GuildId(),
+                    HttpContext.GetGuildId(),
                     binding.DateMonth?.Trunc(DateTruncType.Day),
                     binding.GamerStatuses), 
                 cancellationToken));

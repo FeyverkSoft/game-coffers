@@ -14,7 +14,7 @@ namespace Coffers.Public.Infrastructure.Penalties
         {
             _context = context;
         }
-
+        
         public async Task<Penalty> Get(Guid id, CancellationToken cancellationToken)
         {
             return await _context.Penalties
@@ -24,7 +24,7 @@ namespace Coffers.Public.Infrastructure.Penalties
         public async Task<Penalty> Get(Guid id, Guid userId, CancellationToken cancellationToken)
         {
             return await _context.Penalties
-                .FirstOrDefaultAsync(_ =>
+                .FirstOrDefaultAsync(_ => 
                     _.Id == id &&
                     _.UserId == userId, cancellationToken);
         }

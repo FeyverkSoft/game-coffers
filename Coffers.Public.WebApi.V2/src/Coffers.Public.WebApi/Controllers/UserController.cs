@@ -39,7 +39,7 @@ namespace Coffers.Public.WebApi.Controllers
                 else
                     throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.GamerAlreadyExists, "Gamer already exists");
 
-            user = await gamerFactory.Create(binding.Id, HttpContext.GuildId(), binding.Login, binding.Name, binding.DateOfBirth, binding.Rank, binding.Status);
+            user = await gamerFactory.Create(binding.Id, HttpContext.GetGuildId(), binding.Login, binding.Name, binding.DateOfBirth, binding.Rank, binding.Status);
 
             userRepository.Save(user);
 
@@ -56,7 +56,7 @@ namespace Coffers.Public.WebApi.Controllers
             [FromServices] Domain.Users.IUserRepository userRepository,
             CancellationToken cancellationToken)
         {
-            var user = await userRepository.Get(id, HttpContext.GuildId(), cancellationToken);
+            var user = await userRepository.Get(id, HttpContext.GetGuildId(), cancellationToken);
 
             if (user == null)
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.GamerNotFound, "Gamer not found");
@@ -91,7 +91,7 @@ namespace Coffers.Public.WebApi.Controllers
             [FromServices] Domain.Users.IUserRepository userRepository,
             CancellationToken cancellationToken)
         {
-            var user = await userRepository.Get(userId, HttpContext.GuildId(), cancellationToken);
+            var user = await userRepository.Get(userId, HttpContext.GetGuildId(), cancellationToken);
 
             if (user == null)
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.GamerNotFound, "Gamer not found");
@@ -123,7 +123,7 @@ namespace Coffers.Public.WebApi.Controllers
             [FromServices] Domain.Users.IUserRepository userRepository,
             CancellationToken cancellationToken)
         {
-            var user = await userRepository.Get(HttpContext.GetUserId(), HttpContext.GuildId(), cancellationToken);
+            var user = await userRepository.Get(HttpContext.GetUserId(), HttpContext.GetGuildId(), cancellationToken);
             try
             {
                 user.CharacterRemove(characterId);
@@ -145,7 +145,7 @@ namespace Coffers.Public.WebApi.Controllers
             [FromServices] Domain.Users.IUserRepository userRepository,
             CancellationToken cancellationToken)
         {
-            var user = await userRepository.Get(HttpContext.GetUserId(), HttpContext.GuildId(), cancellationToken);
+            var user = await userRepository.Get(HttpContext.GetUserId(), HttpContext.GetGuildId(), cancellationToken);
 
             try
             {

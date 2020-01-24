@@ -15,7 +15,8 @@ namespace Coffers.Public.WebApi.Exceptions
         public const String PenaltyNotFound = "penalty_not_found";
         public const String PenaltyAlreadyProcessing = "penalty_already_processing";
         public const String IncorrectOperation = "incorrect_operation";
-        public const String OperationAlreadyExists = "operation-already_exists";
+        public const String OperationAlreadyExists = "operation_already_exists";
         public const String CharacterNotFound = "character_not_found";
+        public const String PenaltyAlreadyExists = " penalty_already_exists";
     }
 }
