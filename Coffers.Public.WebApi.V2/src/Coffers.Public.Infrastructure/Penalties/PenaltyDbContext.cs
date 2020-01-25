@@ -8,6 +8,7 @@ namespace Coffers.Public.Infrastructure.Penalties
     public class PenaltyDbContext : DbContext
     {
         public DbSet<Penalty> Penalties { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public PenaltyDbContext(DbContextOptions<PenaltyDbContext> options) : base(options) { }
 
@@ -27,6 +28,8 @@ namespace Coffers.Public.Infrastructure.Penalties
                     .IsRequired();
 
                 b.Property(p => p.CreateDate)
+                    .IsRequired();
+                b.Property(p => p.UpdateDate)
                     .IsRequired();
 
                 b.Property(o => o.Amount)

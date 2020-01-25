@@ -105,7 +105,6 @@ namespace Coffers.Public.WebApi
             services.AddScoped<UserFactory>();
 
             #endregion
-            
 
             #region Guild
 
@@ -117,6 +116,15 @@ namespace Coffers.Public.WebApi
                 options.UseMySql(Configuration.GetConnectionString("Coffers"));
             });
             services.AddScoped<Domain.Roles.IGuildRepository, Infrastructure.Roles.GuildRepository>();
+            #endregion
+
+            #region Roles
+            services.AddDbContext<Infrastructure.Penalties.PenaltyDbContext>(options =>
+            {
+                options.UseMySql(Configuration.GetConnectionString("Coffers"));
+            });
+            services.AddScoped<Domain.Penalties.IPenaltyRepository, Infrastructure.Penalties.PenaltyRepository>();
+            services.AddScoped<Domain.Penalties.IUserRepository, Infrastructure.Penalties.UserRepository>();
             #endregion
 
             services.AddScoped<UserSecurityService>();

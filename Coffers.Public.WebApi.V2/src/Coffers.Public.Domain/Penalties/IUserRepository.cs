@@ -8,6 +8,6 @@ namespace Coffers.Public.Domain.Penalties
     {
         Task<User> Get(Guid id, Guid guildId, CancellationToken cancellationToken);
 
-        void Save(User user);
+        Task Save(User user);
     }
 }

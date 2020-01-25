@@ -6,6 +6,7 @@ using Coffers.Helpers;
 using Coffers.Public.Domain.Penalties;
 using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Exceptions;
+using Coffers.Public.WebApi.Models.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,6 +24,7 @@ namespace Coffers.Public.WebApi.Controllers
         public async Task<IActionResult> AddNewPenalty(
             [FromServices] IUserRepository repository,
             [FromRoute] Guid userId,
+            [FromBody] AddPenaltyBinding binding,
             CancellationToken cancellationToken)
         {
             var user = await repository.Get(userId, HttpContext.GetGuildId(), cancellationToken);
@@ -33,6 +35,7 @@ namespace Coffers.Public.WebApi.Controllers
             try
             {
                 user.AddPenalty(binding.Id, binding.Amount, binding.Description);
+                await repository.Save(user);
             }
             catch (PenaltyAlreadyExistsException e)
             {
