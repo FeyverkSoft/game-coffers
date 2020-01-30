@@ -2,7 +2,7 @@
 
 namespace Coffers.Public.Domain.Loans
 {
-    internal sealed class Guild
+    public sealed class Guild
     {
         /// <summary>
         /// Id гильдии

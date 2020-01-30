@@ -9,46 +9,52 @@ namespace Coffers.DB.Migrations.Entities
         /// <summary>
         /// Id гильдии
         /// </summary>
-        public Guid Id { get; set; }
+        public Guid Id { get; }
 
-        public Guid? TariffId { get; set; }
+        public Guid? TariffId { get; }
+        public Tariff Tariff { get; }
 
-        public List<Operation> Operations { get; set; }
+        public List<Operation> Operations { get; }
 
         /// <summary>
         /// Дата создания записи
         /// </summary>
-        public DateTime CreateDate { get; set; }
+        public DateTime CreateDate { get; }
 
         /// <summary>
         /// Дата обновления записи
         /// </summary>
-        public DateTime UpdateDate { get; set; }
+        public DateTime UpdateDate { get; }
 
         /// <summary>
         /// Название гильдии
         /// </summary>
-        public String Name { get; set; }
+        public String Name { get; }
 
         /// <summary>
         /// Статус гильдии
         /// </summary>
-        public GuildStatus Status { get; set; }
+        public GuildStatus Status { get; }
 
         /// <summary>
         /// Статус набора в гильдию
         /// </summary>
-        public RecruitmentStatus RecruitmentStatus { get; set; }
+        public RecruitmentStatus RecruitmentStatus { get; }
 
         /// <summary>
         /// Список игроков в гильдии
         /// </summary>
-        public ICollection<User> Users { get; set; }
+        public ICollection<User> Users { get; }
 
         /// <summary>
         /// Список ролей игроков в гильдии
         /// </summary>
-        public ICollection<UserRole> Roles { get; set; }
-        public Guid ConcurrencyTokens { get; set; }
+        public ICollection<UserRole> Roles { get; }
+        public Guid ConcurrencyTokens { get; }
+
+        protected Guild() { }
+        public Guild(Guid id, RecruitmentStatus recruitmentStatus, string name, DateTime createDate, DateTime updateDate, GuildStatus status)
+            => (Id, RecruitmentStatus, Name, CreateDate, UpdateDate, Status) 
+            = (id, recruitmentStatus, name, createDate, updateDate, status);
     }
 }

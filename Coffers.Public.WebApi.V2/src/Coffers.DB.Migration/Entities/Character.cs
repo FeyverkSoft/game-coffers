@@ -8,31 +8,31 @@ namespace Coffers.DB.Migrations.Entities
         /// <summary>
         /// Идентификатор персонажа
         /// </summary>
-        public Guid Id { get; set; }
+        public Guid Id { get; }
 
         /// <summary>
         /// Идентификатор пользователя
         /// </summary>
-        public Guid UserId { get; set; }
+        public Guid UserId { get; }
 
         /// <summary>
         /// Имя персонажа
         /// </summary>
-        public String Name { get; set; }
+        public String Name { get; }
 
         /// <summary>
         /// Игровой класс персонажа
         /// </summary>
-        public String ClassName { get; set; }
+        public String ClassName { get; }
 
         /// <summary>
         /// Признак того что это основной перс
         /// </summary>
-        public Boolean IsMain { get; set; }
+        public Boolean IsMain { get; }
 
         /// <summary>
         /// Статус персонажа
         /// </summary>
-        public CharStatus Status { get; set; }
+        public CharStatus Status { get; }
     }
 }

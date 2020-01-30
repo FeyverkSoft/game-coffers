@@ -9,40 +9,40 @@ namespace Coffers.DB.Migrations.Entities
         /// <summary>
         /// Идентификатор налога
         /// </summary>
-        public Guid Id { get; set; }
+        public Guid Id { get; }
 
         /// <summary>
         /// игрок
         /// </summary>
-        public User User { get; set; }
+        public User User { get; }
 
         /// <summary>
         /// Идентификатор игрока
         /// </summary>
-        public Guid UserId { get; set; }
+        public Guid UserId { get; }
 
         /// <summary>
         /// Тариф по которому проходит налог
         /// </summary>
-        public String TaxTariff { get; set; }
+        public String TaxTariff { get; }
 
         /// <summary>
         /// Дата создания записи
         /// </summary>
-        public DateTime CreateDate { get; set; }
+        public DateTime CreateDate { get; }
 
         /// <summary>
         /// Сумма налога
         /// </summary>
-        public Decimal Amount { get; set; }
+        public Decimal Amount { get; }
 
-        public List<Operation> Operations { get; set; }
+        public List<Operation> Operations { get; }
 
-        public TaxStatus Status { get; set; }
+        public TaxStatus Status { get; }
 
         /// <summary>
         /// Токен конкуренции, предназначен для разруливания согласованности данных, при ассинхроных запросов
         /// </summary>
-        public Guid ConcurrencyTokens { get; set; }
+        public Guid ConcurrencyTokens { get; }
     }
 }

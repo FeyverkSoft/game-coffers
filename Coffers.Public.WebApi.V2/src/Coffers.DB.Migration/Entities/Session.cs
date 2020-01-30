@@ -7,24 +7,24 @@ namespace Coffers.DB.Migrations.Entities
         /// <summary>
         /// Идентификатор сессии
         /// </summary>
-        public Guid SessionId { get; private set; }
+        public Guid SessionId { get; }
         /// <summary>
         /// Игрок которому принадлежит сессия
         /// </summary>
-        public Guid UserId { get; private set; }
-        public User User { get; private set; }
+        public Guid UserId { get; }
+        public User User { get; }
         /// <summary>
         /// Дата создания сессии
         /// </summary>
-        public DateTime CreateDate { get; private set; }
+        public DateTime CreateDate { get; }
         /// <summary>
         /// Дата стухания сессии
         /// </summary>
-        public DateTime ExpireDate { get; private set; }
+        public DateTime ExpireDate { get; }
         /// <summary>
         /// IP адресс с которого была получена сессиия
         /// </summary>
-        public String Ip { get; private set; }
-        public Guid ConcurrencyTokens { get; set; }
+        public String Ip { get; }
+        public Guid ConcurrencyTokens { get; }
     }
 }

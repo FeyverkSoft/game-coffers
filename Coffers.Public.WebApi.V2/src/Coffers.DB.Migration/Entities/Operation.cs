@@ -11,45 +11,45 @@ namespace Coffers.DB.Migrations.Entities
         /// <summary>
         /// Идентификатор операци
         /// </summary>
-        public Guid Id { get; set; }
+        public Guid Id { get; }
 
         /// <summary>
         /// Идентификатор гильдии
         /// </summary>
-        public Guid GuildId { get; set; }
+        public Guid GuildId { get; }
         /// <summary>
         /// Пользователь выполнивший операцию
         /// </summary>
-        public Guid UserId { get; set; }
+        public Guid UserId { get; }
 
         /// <summary>
         /// Ссылка на родительскую проводку
         /// </summary>
-        public Guid? ParentOperationId { get; set; }
+        public Guid? ParentOperationId { get; }
         /// <summary>
         /// Дата создания записи
         /// </summary>
-        public DateTime CreateDate { get; set; }
+        public DateTime CreateDate { get; }
 
         /// <summary>
         /// Сумма операции
         /// </summary>
-        public Decimal Amount { get; set; }
+        public Decimal Amount { get; }
 
         /// <summary>
         /// Тип операции
         /// </summary>
-        public OperationType Type { get; set; }
+        public OperationType Type { get; }
 
         /// <summary>
         /// Основание для проведения операции
         /// </summary>
-        public Guid? DocumentId { get; set; }
+        public Guid? DocumentId { get; }
 
         /// <summary>
         /// Описание операции
         /// </summary>
-        public String Description { get; set; }
+        public String Description { get; }
 
     }
 }

@@ -25,6 +25,7 @@ namespace Coffers.DB.Migrations
                 b.Property(g => g.CreateDate)
                     .IsRequired();
                 b.Property(g => g.UpdateDate);
+                b.Property(g => g.TariffId);
 
                 b.Property(g => g.Name)
                     .HasColumnName("Name")
@@ -43,7 +44,6 @@ namespace Coffers.DB.Migrations
                     .HasMaxLength(32)
                     .IsRequired();
 
-
                 b.HasMany(g => g.Users)
                     .WithOne(_ => _.Guild)
                     .HasPrincipalKey(_ => _.Id)
@@ -59,19 +59,23 @@ namespace Coffers.DB.Migrations
                     .HasForeignKey(_ => _.GuildId)
                     .HasPrincipalKey(_ => _.Id);
 
+                b.HasOne(l => l.Tariff)
+                    .WithMany()
+                    .HasPrincipalKey(_ => _.Id)
+                    .HasForeignKey(_ => _.TariffId);
+
                 b.Property(l => l.ConcurrencyTokens)
                     .IsRequired()
                     .IsConcurrencyToken();
 
-                b.HasData(new Guild
-                {
-                    Id = new Guid("00000000-0000-4000-0000-000000000001"),
-                    RecruitmentStatus = Types.Guilds.RecruitmentStatus.Close,
-                    Name = "Admins",
-                    CreateDate = DateTime.UtcNow,
-                    UpdateDate = DateTime.UtcNow,
-                    Status = Types.Guilds.GuildStatus.Active
-                });
+                b.HasData(new Guild(
+                    id: new Guid("00000000-0000-4000-0000-000000000001"),
+                    recruitmentStatus: Types.Guilds.RecruitmentStatus.Close,
+                    name: "Admins",
+                    createDate: new DateTime(2020, 01, 30, 7, 35, 9, DateTimeKind.Utc),
+                    updateDate: new DateTime(2020, 01, 30, 7, 35, 9, DateTimeKind.Utc),
+                    status: Types.Guilds.GuildStatus.Active
+                ));
             });
 
             modelBuilder.Entity<Tariff>(b =>
@@ -182,19 +186,18 @@ namespace Coffers.DB.Migrations
                     .IsRequired()
                     .IsConcurrencyToken();
 
-                b.HasData(new User
-                {
-                    Id = Guid.NewGuid(),
-                    Login = "Admin",
-                    Rank = Types.Gamer.GamerRank.Leader,
-                    GuildId = new Guid("00000000-0000-4000-0000-000000000001"),
-                    Roles = "[\"admin\"]",
-                    Name = "Admin",
-                    Status = Types.Gamer.GamerStatus.Active,
-                    CreateDate = DateTime.UtcNow,
-                    UpdateDate = DateTime.UtcNow,
-                    DateOfBirth = DateTime.UtcNow
-                });
+                b.HasData(new User(
+                    id: Guid.NewGuid(),
+                    login: "Admin",
+                    rank: Types.Gamer.GamerRank.Leader,
+                    guildId: new Guid("00000000-0000-4000-0000-000000000001"),
+                    roles: "[\"admin\"]",
+                    name: "Admin",
+                    status: Types.Gamer.GamerStatus.Active,
+                    createDate: new DateTime(2020, 01, 30, 7, 35, 9, DateTimeKind.Utc),
+                    updateDate: new DateTime(2020, 01, 30, 7, 35, 9, DateTimeKind.Utc),
+                    dateOfBirth: new DateTime(2020, 01, 30, 7, 35, 9, DateTimeKind.Utc)
+                ));
 
             });
 

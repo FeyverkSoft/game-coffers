@@ -9,39 +9,39 @@ namespace Coffers.DB.Migrations.Entities
         /// <summary>
         /// Идентификатор штрафа
         /// </summary>
-        public Guid Id { get; set; }
+        public Guid Id { get; }
 
         /// <summary>
         /// Игрок
         /// </summary>
-        public User User { get; set; }
+        public User User { get; }
         public Guid UserId { get; }
-        public List<Operation> Operations { get; set; }
+        public List<Operation> Operations { get; }
 
         /// <summary>
         /// Сумма штрафа
         /// </summary>
-        public Decimal Amount { get; set; }
+        public Decimal Amount { get; }
 
         /// <summary>
         /// Дата создания
         /// </summary>
-        public DateTime CreateDate { get; set; }
+        public DateTime CreateDate { get; }
 
         /// <summary>
         /// Дата обновления
         /// </summary>
-        public DateTime UpdateDate { get; set; }
+        public DateTime UpdateDate { get; }
 
         /// <summary>
         /// Статус штрафа
         /// </summary>
-        public PenaltyStatus PenaltyStatus { get; set; }
+        public PenaltyStatus PenaltyStatus { get; }
 
         /// <summary>
         /// Причина
         /// </summary>
-        public String Description { get; set; }
+        public String Description { get; }
 
         public Guid ConcurrencyTokens { get; internal set; }
     }

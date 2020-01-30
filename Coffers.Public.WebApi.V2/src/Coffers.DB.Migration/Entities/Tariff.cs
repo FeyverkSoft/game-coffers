@@ -4,12 +4,12 @@ namespace Coffers.DB.Migrations.Entities
 {
     internal class Tariff
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; }
 
-        public Decimal LoanTax { get; set; }
+        public Decimal LoanTax { get; }
 
-        public Decimal ExpiredLoanTax { get; set; }
+        public Decimal ExpiredLoanTax { get; }
 
-        public String Tax { get; set; }
+        public String Tax { get; }
     }
 }

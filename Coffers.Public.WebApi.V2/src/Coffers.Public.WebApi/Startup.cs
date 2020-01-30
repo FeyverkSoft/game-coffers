@@ -118,13 +118,23 @@ namespace Coffers.Public.WebApi
             services.AddScoped<Domain.Roles.IGuildRepository, Infrastructure.Roles.GuildRepository>();
             #endregion
 
-            #region Roles
+            #region Penalty
             services.AddDbContext<Infrastructure.Penalties.PenaltyDbContext>(options =>
             {
                 options.UseMySql(Configuration.GetConnectionString("Coffers"));
             });
             services.AddScoped<Domain.Penalties.IPenaltyRepository, Infrastructure.Penalties.PenaltyRepository>();
             services.AddScoped<Domain.Penalties.IUserRepository, Infrastructure.Penalties.UserRepository>();
+            #endregion
+
+            #region Loan
+            services.AddDbContext<Infrastructure.Loans.LoanDbContext>(options =>
+            {
+                options.UseMySql(Configuration.GetConnectionString("Coffers"));
+            });
+            services.AddScoped<Domain.Loans.ILoanRepository, Infrastructure.Loans.LoanRepository>();
+            services.AddScoped<Domain.Loans.IGuildRepository, Infrastructure.Loans.GuildRepository>();
+            services.AddScoped<Domain.Loans.LoanCreationService>();
             #endregion
 
             services.AddScoped<UserSecurityService>();
