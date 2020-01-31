@@ -1,9 +1,9 @@
 ﻿using System;
 using Coffers.Types.Gamer;
 
-namespace Coffers.DB.Migrations.Entities
+namespace Coffers.Public.Domain.Loans
 {
-    internal sealed class UserRole
+    public sealed class UserRole
     {
         public GamerRank UserRoleId { get; }
         public Guid GuildId { get; }

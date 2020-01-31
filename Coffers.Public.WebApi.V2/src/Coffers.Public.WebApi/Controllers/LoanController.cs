@@ -23,8 +23,8 @@ namespace Coffers.Public.WebApi.Controllers
         [ProducesResponseType(200)]
         public async Task<IActionResult> AddNewLoan(
             [FromBody] AddLoanBinding binding,
-            LoanCreationService creator,
-            ILoanRepository repository,
+            [FromServices] LoanCreationService creator,
+            [FromServices] ILoanRepository repository,
             CancellationToken cancellationToken)
         {
             try

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Coffers.DB.Migrations.Migrations
 {
     [DbContext(typeof(MigrateDbContext))]
-    [Migration("20191227073510_init")]
+    [Migration("20200131131147_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -91,9 +91,6 @@ namespace Coffers.DB.Migrations.Migrations
                         .HasColumnType("varchar(32) CHARACTER SET utf8mb4")
                         .HasMaxLength(32);
 
-                    b.Property<Guid?>("TariffId")
-                        .HasColumnType("char(36)");
-
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime(6)");
 
@@ -109,11 +106,11 @@ namespace Coffers.DB.Migrations.Migrations
                         {
                             Id = new Guid("00000000-0000-4000-0000-000000000001"),
                             ConcurrencyTokens = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreateDate = new DateTime(2019, 12, 27, 7, 35, 9, 697, DateTimeKind.Utc).AddTicks(8813),
+                            CreateDate = new DateTime(2020, 1, 30, 7, 35, 9, 0, DateTimeKind.Utc),
                             Name = "Admins",
                             RecruitmentStatus = "Close",
                             Status = "Active",
-                            UpdateDate = new DateTime(2019, 12, 27, 7, 35, 9, 697, DateTimeKind.Utc).AddTicks(9423)
+                            UpdateDate = new DateTime(2020, 1, 30, 7, 35, 9, 0, DateTimeKind.Utc)
                         });
                 });
 
@@ -156,7 +153,7 @@ namespace Coffers.DB.Migrations.Migrations
                         .HasColumnType("decimal(65,30)")
                         .HasDefaultValue(0m);
 
-                    b.Property<Guid>("TariffId")
+                    b.Property<Guid?>("TariffId")
                         .HasColumnType("char(36)");
 
                     b.Property<decimal>("TaxAmount")
@@ -216,6 +213,9 @@ namespace Coffers.DB.Migrations.Migrations
                     b.Property<Guid?>("PenaltyId")
                         .HasColumnType("char(36)");
 
+                    b.Property<Guid?>("TaxId")
+                        .HasColumnType("char(36)");
+
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("varchar(32) CHARACTER SET utf8mb4")
@@ -234,6 +234,8 @@ namespace Coffers.DB.Migrations.Migrations
                     b.HasIndex("LoanId");
 
                     b.HasIndex("PenaltyId");
+
+                    b.HasIndex("TaxId");
 
                     b.HasIndex("UserId");
 
@@ -267,9 +269,6 @@ namespace Coffers.DB.Migrations.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(32) CHARACTER SET utf8mb4")
                         .HasMaxLength(32);
-
-                    b.Property<DateTime>("UpdateDate")
-                        .HasColumnType("datetime(6)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
@@ -350,6 +349,50 @@ namespace Coffers.DB.Migrations.Migrations
                     b.ToTable("Tariff");
                 });
 
+            modelBuilder.Entity("Coffers.DB.Migrations.Entities.Tax", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("Id")
+                        .HasColumnType("char(36)");
+
+                    b.Property<decimal>("Amount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(65,30)")
+                        .HasDefaultValue(0m);
+
+                    b.Property<Guid>("ConcurrencyTokens")
+                        .IsConcurrencyToken()
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("varchar(32) CHARACTER SET utf8mb4")
+                        .HasMaxLength(32);
+
+                    b.Property<string>("TaxTariff")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4")
+                        .HasMaxLength(4096)
+                        .HasDefaultValue("{}");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Tax");
+                });
+
             modelBuilder.Entity("Coffers.DB.Migrations.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -416,25 +459,26 @@ namespace Coffers.DB.Migrations.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d9676ccc-1a40-4cd7-9fe6-cdc3666bbdc4"),
+                            Id = new Guid("1e3a3d5a-3655-433b-bda3-02634ee64ec3"),
                             ConcurrencyTokens = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreateDate = new DateTime(2019, 12, 27, 7, 35, 9, 733, DateTimeKind.Utc).AddTicks(7871),
-                            DateOfBirth = new DateTime(2019, 12, 27, 7, 35, 9, 734, DateTimeKind.Utc).AddTicks(4209),
+                            CreateDate = new DateTime(2020, 1, 30, 7, 35, 9, 0, DateTimeKind.Utc),
+                            DateOfBirth = new DateTime(2020, 1, 30, 7, 35, 9, 0, DateTimeKind.Utc),
                             GuildId = new Guid("00000000-0000-4000-0000-000000000001"),
                             Login = "Admin",
                             Name = "Admin",
                             Rank = "Leader",
                             Roles = "[\"admin\"]",
                             Status = "Active",
-                            UpdateDate = new DateTime(2019, 12, 27, 7, 35, 9, 734, DateTimeKind.Utc).AddTicks(1291)
+                            UpdateDate = new DateTime(2020, 1, 30, 7, 35, 9, 0, DateTimeKind.Utc)
                         });
                 });
 
             modelBuilder.Entity("Coffers.DB.Migrations.Entities.UserRole", b =>
                 {
-                    b.Property<int>("UserRoleId")
+                    b.Property<string>("UserRoleId")
                         .HasColumnName("Id")
-                        .HasColumnType("varchar(32) CHARACTER SET utf8mb4");
+                        .HasColumnType("varchar(32) CHARACTER SET utf8mb4")
+                        .HasMaxLength(32);
 
                     b.Property<Guid>("GuildId")
                         .HasColumnType("char(36)");
@@ -445,6 +489,8 @@ namespace Coffers.DB.Migrations.Migrations
                     b.HasKey("UserRoleId", "GuildId");
 
                     b.HasIndex("GuildId");
+
+                    b.HasIndex("TariffId");
 
                     b.HasIndex("UserRoleId", "GuildId")
                         .IsUnique();
@@ -465,9 +511,7 @@ namespace Coffers.DB.Migrations.Migrations
                 {
                     b.HasOne("Coffers.DB.Migrations.Entities.Tariff", "Tariff")
                         .WithMany()
-                        .HasForeignKey("TariffId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TariffId");
 
                     b.HasOne("Coffers.DB.Migrations.Entities.User", "User")
                         .WithMany("Loans")
@@ -491,6 +535,10 @@ namespace Coffers.DB.Migrations.Migrations
                     b.HasOne("Coffers.DB.Migrations.Entities.Penalty", null)
                         .WithMany("Operations")
                         .HasForeignKey("PenaltyId");
+
+                    b.HasOne("Coffers.DB.Migrations.Entities.Tax", null)
+                        .WithMany("Operations")
+                        .HasForeignKey("TaxId");
 
                     b.HasOne("Coffers.DB.Migrations.Entities.User", null)
                         .WithMany("Operations")
@@ -517,6 +565,15 @@ namespace Coffers.DB.Migrations.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Coffers.DB.Migrations.Entities.Tax", b =>
+                {
+                    b.HasOne("Coffers.DB.Migrations.Entities.User", "User")
+                        .WithMany("Taxs")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Coffers.DB.Migrations.Entities.User", b =>
                 {
                     b.HasOne("Coffers.DB.Migrations.Entities.Guild", "Guild")
@@ -531,6 +588,12 @@ namespace Coffers.DB.Migrations.Migrations
                     b.HasOne("Coffers.DB.Migrations.Entities.Guild", null)
                         .WithMany("Roles")
                         .HasForeignKey("GuildId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Coffers.DB.Migrations.Entities.Tariff", "Tariff")
+                        .WithMany()
+                        .HasForeignKey("TariffId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

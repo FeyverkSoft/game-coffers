@@ -22,7 +22,7 @@ namespace Coffers.Public.Domain.Loans
         /// </summary>
         public User User { get; }
 
-        public Guid TariffId { get; }
+        public Guid? TariffId { get; }
 
         /// <summary>
         /// Дата создания записи
@@ -71,7 +71,8 @@ namespace Coffers.Public.Domain.Loans
         /// </summary>
         public Guid ConcurrencyTokens { get; } = Guid.NewGuid();
 
-        public Loan(Guid id, Guid userId, Guid tariffId, string description, DateTime expiredDate, decimal amount, decimal taxAmount)
+        protected Loan() { }
+        public Loan(Guid id, Guid userId, Guid? tariffId, string description, DateTime expiredDate, decimal amount, decimal taxAmount)
         {
             if (amount < 0)
                 throw new ArgumentOutOfRangeException(nameof(amount), "Non-negative number required");

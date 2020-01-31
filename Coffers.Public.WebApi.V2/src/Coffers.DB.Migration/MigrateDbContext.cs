@@ -25,7 +25,6 @@ namespace Coffers.DB.Migrations
                 b.Property(g => g.CreateDate)
                     .IsRequired();
                 b.Property(g => g.UpdateDate);
-                b.Property(g => g.TariffId);
 
                 b.Property(g => g.Name)
                     .HasColumnName("Name")
@@ -58,12 +57,7 @@ namespace Coffers.DB.Migrations
                     .WithOne()
                     .HasForeignKey(_ => _.GuildId)
                     .HasPrincipalKey(_ => _.Id);
-
-                b.HasOne(l => l.Tariff)
-                    .WithMany()
-                    .HasPrincipalKey(_ => _.Id)
-                    .HasForeignKey(_ => _.TariffId);
-
+                
                 b.Property(l => l.ConcurrencyTokens)
                     .IsRequired()
                     .IsConcurrencyToken();
@@ -119,6 +113,11 @@ namespace Coffers.DB.Migrations
 
                 b.Property(t => t.TariffId)
                     .IsRequired();
+
+                b.HasOne(l => l.Tariff)
+                    .WithMany()
+                    .HasPrincipalKey(_ => _.Id)
+                    .HasForeignKey(_ => _.TariffId);
             });
 
             modelBuilder.Entity<User>(b =>

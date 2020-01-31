@@ -11,9 +11,6 @@ namespace Coffers.DB.Migrations.Entities
         /// </summary>
         public Guid Id { get; }
 
-        public Guid? TariffId { get; }
-        public Tariff Tariff { get; }
-
         public List<Operation> Operations { get; }
 
         /// <summary>

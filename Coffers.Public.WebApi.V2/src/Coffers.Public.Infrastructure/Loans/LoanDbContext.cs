@@ -8,25 +8,31 @@ namespace Coffers.Public.Infrastructure.Loans
     public class LoanDbContext : DbContext
     {
         public DbSet<Loan> Loans { get; set; }
-        public DbSet<Guild> Guilds { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public LoanDbContext(DbContextOptions<LoanDbContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Guild>(b =>
+            modelBuilder.Entity<UserRole>(b =>
             {
-                b.ToTable(nameof(Guild));
+                b.ToTable(nameof(UserRole));
 
-                b.HasIndex(g => g.Id)
+                b.HasIndex(gt => new { gt.UserRoleId, gt.GuildId })
                     .IsUnique();
-                b.HasKey(g => g.Id);
-                b.Property(g => g.Id)
+                b.HasKey(gt => new { gt.UserRoleId, gt.GuildId });
+                b.Property(gt => gt.UserRoleId)
+                    .HasConversion<String>()
+                    .HasMaxLength(32)
                     .HasColumnName("Id")
                     .IsRequired();
 
-                b.Property(g => g.TariffId);
+                b.Property(t => t.GuildId)
+                    .IsRequired();
+
+                b.Property(t => t.TariffId)
+                    .IsRequired();
 
                 b.HasOne(l => l.Tariff)
                     .WithMany()
@@ -43,8 +49,18 @@ namespace Coffers.Public.Infrastructure.Loans
                 b.HasKey(g => g.Id);
                 b.Property(g => g.Id)
                     .IsRequired();
-                b.Property(g => g.GuildId)
+                b.Property(t => t.GuildId)
                     .IsRequired();
+
+                b.Property(t => t.Rank)
+                    .HasConversion<String>()
+                    .HasMaxLength(32)
+                    .IsRequired();
+
+                b.HasOne(_ => _.UserRole)
+                    .WithMany()
+                    .HasPrincipalKey(_ => _.UserRoleId)
+                    .HasForeignKey(_ => _.Rank);
             });
 
             modelBuilder.Entity<Tariff>(b =>
@@ -80,6 +96,8 @@ namespace Coffers.Public.Infrastructure.Loans
                 b.Property(l => l.Id)
                     .HasColumnName("Id")
                     .IsRequired();
+
+                b.Property(l => l.TariffId);
 
                 b.Property(l => l.CreateDate)
                     .IsRequired();

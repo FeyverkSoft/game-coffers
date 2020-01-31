@@ -28,7 +28,7 @@ namespace Coffers.DB.Migrations.Entities
         /// Тариф по которому проходит займ
         /// </summary>
         public Tariff Tariff { get; }
-        public Guid TariffId { get; }
+        public Guid? TariffId { get; }
 
         /// <summary>
         /// Дата создания записи

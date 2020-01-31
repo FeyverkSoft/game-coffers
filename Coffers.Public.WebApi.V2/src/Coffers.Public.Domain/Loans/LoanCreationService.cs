@@ -23,7 +23,7 @@ namespace Coffers.Public.Domain.Loans
             CancellationToken cancellationToken = default(CancellationToken))
         {
             var tariff = await _guildRepository.GetTariff(guildId, cancellationToken);
-            return new Loan(id, userId, tariff.Id, description?.Trim(), DateTime.UtcNow.AddDays(loanPeriod), amount, 0);
+            return new Loan(id, userId, tariff?.Id, description?.Trim(), DateTime.UtcNow.AddDays(loanPeriod), amount, 0);
         }
     }
 }
