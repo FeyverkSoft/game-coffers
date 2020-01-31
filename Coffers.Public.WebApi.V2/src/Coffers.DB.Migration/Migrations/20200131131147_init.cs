@@ -157,6 +157,7 @@ namespace Coffers.DB.Migrations.Migrations
                     UserId = table.Column<Guid>(nullable: false),
                     Amount = table.Column<decimal>(nullable: false, defaultValue: 0m),
                     CreateDate = table.Column<DateTime>(nullable: false),
+                    UpdateDate = table.Column<DateTime>(nullable: false),
                     PenaltyStatus = table.Column<string>(maxLength: 32, nullable: false),
                     Description = table.Column<string>(maxLength: 2048, nullable: true),
                     ConcurrencyTokens = table.Column<Guid>(nullable: false)

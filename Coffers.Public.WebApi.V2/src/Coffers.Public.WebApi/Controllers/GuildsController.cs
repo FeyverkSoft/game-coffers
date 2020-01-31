@@ -29,12 +29,12 @@ namespace Coffers.Public.WebApi.Controllers
         }
 
         /// <summary>
-        /// This method get Guild info
+        /// This method get current Guild info
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [Authorize]
-        [HttpGet("current")]
+        [HttpGet("/Guild")]
         [ProducesResponseType(typeof(GuildView), 200)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> Get(CancellationToken cancellationToken)
@@ -49,12 +49,12 @@ namespace Coffers.Public.WebApi.Controllers
         }
 
         /// <summary>
-        /// This method get Guild balance info
+        /// This method get current Guild balance info
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [Authorize]
-        [HttpGet("balance")]
+        [HttpGet("/Guild/balance")]
         [ProducesResponseType(typeof(GuildBalanceView), 200)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetBalance(CancellationToken cancellationToken)
@@ -77,7 +77,7 @@ namespace Coffers.Public.WebApi.Controllers
         /// <returns></returns>
         [Authorize]
         [PermissionRequired("officer", "leader")]
-        [HttpPatch("roles")]
+        [HttpPatch("/Guild/roles")]
         [ProducesResponseType(200)]
         public async Task<IActionResult> SetOrUpdateGuildTax(
             [FromBody] UpdateUserRoleBinding binding,
@@ -103,7 +103,7 @@ namespace Coffers.Public.WebApi.Controllers
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [Authorize]
-        [HttpGet("roles")]
+        [HttpGet("/Guild/roles")]
         [ProducesResponseType(typeof(ICollection<GuildRoleView>), 200)]
         public async Task<IActionResult> GetGuildTax(CancellationToken cancellationToken)
         {
@@ -120,7 +120,7 @@ namespace Coffers.Public.WebApi.Controllers
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [Authorize]
-        [HttpGet("gamers")]
+        [HttpGet("/Guild/gamers")]
         [ProducesResponseType(typeof(ICollection<GamersListView>), 200)]
         public async Task<ActionResult<GamersListView>> GetGamers(
             [FromQuery] GetGamersBinding binding,

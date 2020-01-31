@@ -328,6 +328,8 @@ namespace Coffers.DB.Migrations
 
                 b.Property(p => p.CreateDate)
                     .IsRequired();
+                b.Property(p => p.UpdateDate)
+                    .IsRequired();
 
                 b.Property(o => o.Amount)
                     .HasDefaultValue(0)

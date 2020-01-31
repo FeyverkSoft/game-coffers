@@ -17,7 +17,8 @@ namespace Coffers.Public.Infrastructure.Loans
 
         public async Task<Tariff> GetTariff(Guid guildId, CancellationToken cancellationToken)
         {
-            return (await _context.Users.FirstOrDefaultAsync(_ => _.Id == guildId, cancellationToken))?.UserRole?.Tariff;
+            return (await _context.Users.FirstOrDefaultAsync(_ => _.Id == guildId, cancellationToken))
+                ?.UserRole?.Tariff;
         }
     }
 }

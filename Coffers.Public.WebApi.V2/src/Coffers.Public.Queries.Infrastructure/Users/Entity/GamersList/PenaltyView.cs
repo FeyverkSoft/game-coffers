@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Coffers.Types.Gamer;
 
 namespace Coffers.Public.Queries.Infrastructure.Users.Entity.GamersList

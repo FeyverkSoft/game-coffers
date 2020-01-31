@@ -271,6 +271,9 @@ namespace Coffers.DB.Migrations.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
 
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime(6)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Id")

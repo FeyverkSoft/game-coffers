@@ -13,6 +13,7 @@ namespace Coffers.Public.WebApi.Exceptions
         public const String Unauthorized = "unauthorized";
         public const String CharacterAlreadyExists = "character_already_exists";
         public const String PenaltyNotFound = "penalty_not_found";
+        public const String LoanNotFound = "loan_not_found";
         public const String PenaltyAlreadyProcessing = "penalty_already_processing";
         public const String IncorrectOperation = "incorrect_operation";
         public const String OperationAlreadyExists = "operation_already_exists";

@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Coffers.Public.Infrastructure.Loans
 {
-
     public class LoanDbContext : DbContext
     {
         public DbSet<Loan> Loans { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Operation> Operations { get; set; }
 
         public LoanDbContext(DbContextOptions<LoanDbContext> options) : base(options) { }
 
@@ -132,6 +132,25 @@ namespace Coffers.Public.Infrastructure.Loans
                     .IsConcurrencyToken();
             });
 
+            modelBuilder.Entity<Operation>(b =>
+            {
+                b.ToTable(nameof(Operation));
+
+                b.HasIndex(o => o.Id)
+                    .IsUnique();
+                b.HasKey(o => o.Id);
+                b.Property(o => o.Id)
+                    .HasColumnName("Id")
+                    .IsRequired();
+                b.Property(o => o.DocumentId)
+                .IsRequired(false);
+                b.Property(o => o.Amount)
+                    .HasDefaultValue(0)
+                    .IsRequired();
+                b.Property(o => o.Type)
+                    .HasConversion<String>()
+                    .HasMaxLength(32);
+            });
         }
     }
 }

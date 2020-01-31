@@ -1,6 +1,5 @@
 ﻿using System;
 using Coffers.Public.Domain.Roles;
-using Coffers.Types.Gamer;
 using Microsoft.EntityFrameworkCore;
 
 namespace Coffers.Public.Infrastructure.Roles

@@ -37,7 +37,7 @@ namespace Coffers.Public.Domain.Loans
         /// <summary>
         /// Дата обновления записи
         /// </summary>
-        public DateTime UpdateDate { get; } = DateTime.UtcNow;
+        public DateTime UpdateDate { get; private set; } = DateTime.UtcNow;
 
         /// <summary>
         /// Дата займа
@@ -64,12 +64,14 @@ namespace Coffers.Public.Domain.Loans
         /// </summary>
         public Decimal PenaltyAmount { get; } = 0;
 
-        public LoanStatus LoanStatus { get; } = LoanStatus.Active;
+        public LoanStatus LoanStatus { get; private set; } = LoanStatus.Active;
 
         /// <summary>
         /// Токен конкуренции, предназначен для разруливания согласованности данных, при ассинхроных запросаз
         /// </summary>
-        public Guid ConcurrencyTokens { get; } = Guid.NewGuid();
+        public Guid ConcurrencyTokens { get; private set; } = Guid.NewGuid();
+        public Boolean IsActive => LoanStatus == LoanStatus.Active ||
+                                   LoanStatus == LoanStatus.Expired;
 
         protected Loan() { }
         public Loan(Guid id, Guid userId, Guid? tariffId, string description, DateTime expiredDate, decimal amount, decimal taxAmount)
@@ -86,6 +88,30 @@ namespace Coffers.Public.Domain.Loans
             ExpiredDate = expiredDate;
             Amount = amount;
             TaxAmount = taxAmount;
+        }
+
+        public void MakeCancel()
+        {
+            if (LoanStatus == LoanStatus.Canceled)
+                return;
+
+            if (!IsActive)
+                throw new InvalidOperationException($"Incorrect cuccent loan state; State:{LoanStatus}; Id:{Id}");
+
+            LoanStatus = LoanStatus.Canceled;
+            UpdateDate = DateTime.UtcNow;
+            ConcurrencyTokens = Guid.NewGuid();
+        }
+
+
+        internal void MakePaid()
+        {
+            if (IsActive)
+                throw new InvalidOperationException($"Incorrect cuccent loan state; State:{LoanStatus}; Id:{Id}");
+
+            LoanStatus = LoanStatus.Paid;
+            UpdateDate = DateTime.UtcNow;
+            ConcurrencyTokens = Guid.NewGuid();
         }
     }
 }

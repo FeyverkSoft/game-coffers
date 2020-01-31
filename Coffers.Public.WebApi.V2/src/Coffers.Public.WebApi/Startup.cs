@@ -125,6 +125,8 @@ namespace Coffers.Public.WebApi
             });
             services.AddScoped<Domain.Penalties.IPenaltyRepository, Infrastructure.Penalties.PenaltyRepository>();
             services.AddScoped<Domain.Penalties.IUserRepository, Infrastructure.Penalties.UserRepository>();
+            services.AddScoped<Domain.Penalties.IOperationRepository, Infrastructure.Penalties.OperationRepository>();
+            services.AddScoped<Domain.Penalties.PenaltyProcessor>();
             #endregion
 
             #region Loan
@@ -134,7 +136,9 @@ namespace Coffers.Public.WebApi
             });
             services.AddScoped<Domain.Loans.ILoanRepository, Infrastructure.Loans.LoanRepository>();
             services.AddScoped<Domain.Loans.IGuildRepository, Infrastructure.Loans.GuildRepository>();
+            services.AddScoped<Domain.Loans.IOperationRepository, Infrastructure.Loans.OperationRepository>();
             services.AddScoped<Domain.Loans.LoanCreationService>();
+            services.AddScoped<Domain.Loans.LoanProcessor>();
             #endregion
 
             services.AddScoped<UserSecurityService>();

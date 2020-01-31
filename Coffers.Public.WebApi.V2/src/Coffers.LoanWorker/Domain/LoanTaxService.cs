@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Coffers.Helpers;
-using Coffers.Types.Account;
-using Coffers.Types.Gamer;
+﻿using System.Threading.Tasks;
 
 namespace Coffers.LoanWorker.Domain
 {
