@@ -126,6 +126,10 @@ namespace Coffers.Public.Infrastructure.Loans
                     .WithMany()
                     .HasForeignKey(_ => _.UserId)
                     .HasPrincipalKey(_ => _.Id);
+                b.HasOne(_ => _.Tariff)
+                    .WithMany()
+                    .HasForeignKey(_ => _.TariffId)
+                    .HasPrincipalKey(_ => _.Id);
 
                 b.Property(l => l.ConcurrencyTokens)
                     .IsRequired()

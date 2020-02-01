@@ -24,7 +24,6 @@ namespace Coffers.Public.Domain.Loans
 
             if (operations.Sum(_ => _.Amount) >= loanAmount)
                 loan.MakePaid();
-
         }
     }
 }

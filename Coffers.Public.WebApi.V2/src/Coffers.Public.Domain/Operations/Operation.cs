@@ -11,52 +11,46 @@ namespace Coffers.Public.Domain.Operations
         /// <summary>
         /// Идентификатор операци
         /// </summary>
-        public Guid Id { get;  set; }
+        public Guid Id { get; }
 
+        /// <summary>
+        /// Идентификатор гильдии
+        /// </summary>
+        public Guid GuildId { get; }
+        /// <summary>
+        /// Пользователь выполнивший операцию
+        /// </summary>
+        public Guid UserId { get; }
+
+        /// <summary>
+        /// Ссылка на родительскую проводку
+        /// </summary>
+        public Guid? ParentOperationId { get; }
         /// <summary>
         /// Дата создания записи
         /// </summary>
-        public DateTime CreateDate { get; private set; }
-
-        /// <summary>
-        /// Дата проведения операции
-        /// </summary>
-        public DateTime OperationDate { get; set; }
+        public DateTime CreateDate { get; }
 
         /// <summary>
         /// Сумма операции
         /// </summary>
-        public Decimal Amount { get; set; }
-
-        /// <summary>
-        /// Счёт с которого списываются бабки
-        /// </summary>
-        public Account FromAccount { get; set; }
-
-        /// <summary>
-        /// Счёт на который зачисляются бабки
-        /// </summary>
-        public Account ToAccount { get; set; }
+        public Decimal Amount { get; }
 
         /// <summary>
         /// Тип операции
         /// </summary>
-        public OperationType Type { get; set; }
-
-        /// <summary>
-        /// Описание операции
-        /// </summary>
-        public String Description { get; set; }
+        public OperationType Type { get; }
 
         /// <summary>
         /// Основание для проведения операции
         /// </summary>
-        public Guid? DocumentId { get; set; }
+        public Guid? DocumentId { get; }
 
-        public Operation()
-        {
-            CreateDate = DateTime.UtcNow;
-        }
+        /// <summary>
+        /// Описание операции
+        /// </summary>
+        public String Description { get; }
 
+        protected Operation() { }
     }
 }

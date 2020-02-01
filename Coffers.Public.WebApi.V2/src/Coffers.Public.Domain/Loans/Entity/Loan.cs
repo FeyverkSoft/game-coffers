@@ -23,6 +23,7 @@ namespace Coffers.Public.Domain.Loans
         public User User { get; }
 
         public Guid? TariffId { get; }
+        public Tariff Tariff { get; }
 
         /// <summary>
         /// Дата создания записи
@@ -57,12 +58,12 @@ namespace Coffers.Public.Domain.Loans
         /// <summary>
         /// Сумма комиссии 
         /// </summary>
-        public Decimal TaxAmount { get; }
+        public Decimal TaxAmount { get; private set; }
 
         /// <summary>
         /// Сумма штрафа 
         /// </summary>
-        public Decimal PenaltyAmount { get; } = 0;
+        public Decimal PenaltyAmount { get; private set; } = 0;
 
         public LoanStatus LoanStatus { get; private set; } = LoanStatus.Active;
 
@@ -112,6 +113,26 @@ namespace Coffers.Public.Domain.Loans
             LoanStatus = LoanStatus.Paid;
             UpdateDate = DateTime.UtcNow;
             ConcurrencyTokens = Guid.NewGuid();
+        }
+
+        internal void SetPenaltyAmount(Decimal penaltyAmount)
+        {
+            if (penaltyAmount < 0)
+                throw new ArgumentOutOfRangeException(nameof(penaltyAmount), "Non-negative number required");
+
+            PenaltyAmount = penaltyAmount;
+            ConcurrencyTokens = Guid.NewGuid();
+            UpdateDate = DateTime.UtcNow;
+        }
+
+        internal void SetTaxAmount(Decimal taxAmount)
+        {
+            if (taxAmount < 0)
+                throw new ArgumentOutOfRangeException(nameof(taxAmount), "Non-negative number required");
+
+            TaxAmount = taxAmount;
+            ConcurrencyTokens = Guid.NewGuid();
+            UpdateDate = DateTime.UtcNow;
         }
     }
 }
