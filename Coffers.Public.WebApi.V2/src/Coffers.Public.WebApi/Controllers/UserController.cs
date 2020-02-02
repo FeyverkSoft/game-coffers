@@ -6,7 +6,6 @@ using Coffers.Public.Domain.UserRegistration;
 using Coffers.Public.Domain.Users;
 using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Exceptions;
-using Coffers.Public.WebApi.Models.Guild;
 using Coffers.Public.WebApi.Models.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -155,6 +154,60 @@ namespace Coffers.Public.WebApi.Controllers
             {
                 throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.CharacterAlreadyExists, e.Message, e.Character.ToDictionary(), e);
             }
+
+            userRepository.Save(user);
+            return Ok(new { });
+        }
+
+        /// <summary>
+        /// Change user rank
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [Authorize]
+        [PermissionRequired("admin", "officer", "leader")]
+        [HttpPatch("/gamers/{userId}/rank")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> ChangeRank(
+            [FromRoute] Guid userId,
+            [FromBody] ChangeRankBinding binding,
+            [FromServices] Domain.Users.IUserRepository userRepository,
+            CancellationToken cancellationToken)
+        {
+            var user = await userRepository.Get(userId, HttpContext.GetGuildId(), cancellationToken);
+
+            if (user == null)
+                throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.GamerNotFound, "Gamer not found");
+
+            user.ChangeRank(binding.Rank);
+
+            userRepository.Save(user);
+            return Ok(new { });
+        }
+
+        /// <summary>
+        /// Change user status
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [Authorize]
+        [PermissionRequired("admin", "officer", "leader")]
+        [HttpPatch("/gamers/{userId}/rank")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> ChangeStatus(
+            [FromRoute] Guid userId,
+            [FromBody] ChangeStatusBinding binding,
+            [FromServices] Domain.Users.IUserRepository userRepository,
+            CancellationToken cancellationToken)
+        {
+            var user = await userRepository.Get(userId, HttpContext.GetGuildId(), cancellationToken);
+
+            if (user == null)
+                throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.GamerNotFound, "Gamer not found");
+
+            user.ChangeStatus(binding.Status);
 
             userRepository.Save(user);
             return Ok(new { });

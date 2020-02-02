@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace Coffers.Public.WebApi.Models.User
 {
-    public class AddCharacterBinding
+    public sealed class AddCharacterBinding
     {
         /// <summary>
         /// Character name
@@ -20,7 +20,7 @@ namespace Coffers.Public.WebApi.Models.User
         /// </summary>
         public Boolean IsMain { get; set; }
     }
-    public class AddCharacterBindingValidator : AbstractValidator<AddCharacterBinding>
+    public sealed class AddCharacterBindingValidator : AbstractValidator<AddCharacterBinding>
     {
         public AddCharacterBindingValidator()
         {

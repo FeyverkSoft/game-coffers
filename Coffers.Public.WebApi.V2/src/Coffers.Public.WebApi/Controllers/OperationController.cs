@@ -18,6 +18,7 @@ namespace Coffers.Public.WebApi.Controllers
         [ProducesResponseType(200)]
         public async Task<IActionResult> AddNewOperation(
             [FromServices] IOperationsRepository operationsRepository,
+            [FromBody] AddOperationBinding binding,
             CancellationToken cancellationToken)
         {
             return Ok(new { });

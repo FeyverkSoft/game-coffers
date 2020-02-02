@@ -16,7 +16,7 @@ namespace Coffers.Public.Domain.Users
         /// <summary>
         /// Дата обновления записи
         /// </summary>
-        public DateTime UpdateDate { get; }
+        public DateTime UpdateDate { get; private set; }
 
         /// <summary>
         /// Имя игрока
@@ -26,12 +26,12 @@ namespace Coffers.Public.Domain.Users
         /// <summary>
         /// Звание игрока
         /// </summary>
-        public GamerRank Rank { get; }
+        public GamerRank Rank { get; private set; }
 
         /// <summary>
         /// Статус игрока в гильдии
         /// </summary>
-        public GamerStatus Status { get; }
+        public GamerStatus Status { get; private set; }
 
         /// <summary>
         /// Дата рождения
@@ -70,6 +70,24 @@ namespace Coffers.Public.Domain.Users
 
             ch.MarkAsDeleted();
             ConcurrencyTokens = Guid.NewGuid();
+        }
+
+        public void ChangeRank(GamerRank rank)
+        {
+            if (Rank == rank)
+                return;
+            Rank = rank;
+            ConcurrencyTokens = Guid.NewGuid();
+            UpdateDate = DateTime.UtcNow;
+        }
+
+        public void ChangeStatus(GamerStatus status)
+        {
+            if (Status == status)
+                return;
+            Status = status;
+            ConcurrencyTokens = Guid.NewGuid();
+            UpdateDate = DateTime.UtcNow;
         }
     }
 }

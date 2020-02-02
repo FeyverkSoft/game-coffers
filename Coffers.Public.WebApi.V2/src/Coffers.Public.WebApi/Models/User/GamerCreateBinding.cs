@@ -2,7 +2,7 @@
 using Coffers.Types.Gamer;
 using FluentValidation;
 
-namespace Coffers.Public.WebApi.Models.Guild
+namespace Coffers.Public.WebApi.Models.User
 {
     public class GamerCreateBinding
     {
