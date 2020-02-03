@@ -134,5 +134,19 @@ namespace Coffers.Public.Domain.Loans
             ConcurrencyTokens = Guid.NewGuid();
             UpdateDate = DateTime.UtcNow;
         }
+
+        public void MakeExpired()
+        {
+            if (LoanStatus == LoanStatus.Expired)
+                return;
+
+            if (LoanStatus == LoanStatus.Paid ||
+                LoanStatus == LoanStatus.Canceled)
+                throw new InvalidOperationException($"Incorrect cuccent loan state; State:{LoanStatus}; Id:{Id}");
+
+            LoanStatus = LoanStatus.Expired;
+            UpdateDate = DateTime.UtcNow;
+            ConcurrencyTokens = Guid.NewGuid();
+        }
     }
 }

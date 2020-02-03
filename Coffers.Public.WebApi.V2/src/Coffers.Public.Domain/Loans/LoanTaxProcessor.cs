@@ -1,15 +1,14 @@
 ﻿using System;
 using Coffers.Helpers;
+using Coffers.Types.Gamer;
 
 namespace Coffers.Public.Domain.Loans
 {
     public sealed class LoanTaxProcessor
     {
-        internal void ProcessExpireLoan(Loan loan)
+        public void ProcessExpireLoan(Loan loan)
         {
-            // если займ уже погашен, или время не наступило, то пропускаем
-            // такого быть не должно... но...
-            if (!loan.IsActive || loan.ExpiredDate > DateTime.UtcNow)
+            if (loan.LoanStatus != LoanStatus.Expired)
                 return;
 
             // если просрочка займа не облагается штрафом, то скипаем займ
@@ -31,7 +30,7 @@ namespace Coffers.Public.Domain.Loans
             loan.SetPenaltyAmount(days * amountPerDay);
         }
 
-        internal void ProcessLoanTax(Loan loan)
+        public void ProcessLoanTax(Loan loan)
         {
             // если займ уже погашен, или стух, то пропускаем
             if (!loan.IsActive || loan.ExpiredDate < DateTime.UtcNow)
