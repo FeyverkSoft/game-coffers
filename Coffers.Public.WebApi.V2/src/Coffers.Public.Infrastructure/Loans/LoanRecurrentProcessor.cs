@@ -17,7 +17,7 @@ namespace Coffers.Public.Infrastructure.Loans
         private readonly LoanProcessor _loanProcessor;
         public LoanRecurrentProcessor(
             IServiceScopeFactory scopeFactory,
-            ILogger logger)
+            ILogger<LoanRecurrentProcessor> logger)
         {
             _logger = logger;
             _repository = scopeFactory.CreateScope().ServiceProvider.GetService<ILoanRepository>();
@@ -43,7 +43,7 @@ namespace Coffers.Public.Infrastructure.Loans
         {
             try
             {
-                var loans = await _repository.GetAllUnprocessedExpiredLoan();
+                var loans = await _repository.GetAllUnprocessedExpiredLoan(cancellationToken);
                 foreach (var loan in loans)
                 {
                     if (cancellationToken.IsCancellationRequested)
@@ -57,14 +57,14 @@ namespace Coffers.Public.Infrastructure.Loans
                     }
                     catch (Exception e)
                     {
-                        _logger.LogError(e.Message, e);
+                        _logger.LogError(e, $"ExpireWorker: {e.Message}");
                     }
                 }
 
             }
             catch (Exception e)
             {
-                _logger.LogError(e.Message, e);
+                _logger.LogError(e, $"ExpireWorker: {e.Message}");
             }
         }
 
@@ -72,7 +72,7 @@ namespace Coffers.Public.Infrastructure.Loans
         {
             try
             {
-                var loans = await _repository.GetExpiredLoan();
+                var loans = await _repository.GetExpiredLoan(cancellationToken);
                 foreach (var loan in loans)
                 {
                     if (cancellationToken.IsCancellationRequested)
@@ -86,14 +86,14 @@ namespace Coffers.Public.Infrastructure.Loans
                     }
                     catch (Exception e)
                     {
-                        _logger.LogError(e.Message, e);
+                        _logger.LogError(e, $"LoanExpireTaxWorker: {e.Message}");
                     }
                 }
 
             }
             catch (Exception e)
             {
-                _logger.LogError(e.Message, e);
+                _logger.LogError(e, $"LoanExpireTaxWorker: {e.Message}");
             }
         }
 
@@ -101,7 +101,7 @@ namespace Coffers.Public.Infrastructure.Loans
         {
             try
             {
-                var loans = await _repository.GetActiveLoan();
+                var loans = await _repository.GetActiveLoan(cancellationToken);
                 foreach (var loan in loans)
                 {
                     if (cancellationToken.IsCancellationRequested)
@@ -115,14 +115,14 @@ namespace Coffers.Public.Infrastructure.Loans
                     }
                     catch (Exception e)
                     {
-                        _logger.LogError(e.Message, e);
+                        _logger.LogError(e, $"LoanActiveTaxWorker: {e.Message}");
                     }
                 }
 
             }
             catch (Exception e)
             {
-                _logger.LogError(e.Message, e);
+                _logger.LogError(e, $"LoanActiveTaxWorker: {e.Message}");
             }
         }
 
@@ -130,7 +130,7 @@ namespace Coffers.Public.Infrastructure.Loans
         {
             try
             {
-                var loans = await _repository.GetActiveLoan();
+                var loans = await _repository.GetActiveLoan(cancellationToken);
                 foreach (var loan in loans)
                 {
                     if (cancellationToken.IsCancellationRequested)
@@ -144,14 +144,14 @@ namespace Coffers.Public.Infrastructure.Loans
                     }
                     catch (Exception e)
                     {
-                        _logger.LogError(e.Message, e);
+                        _logger.LogError(e, $"LoanWorker: {e.Message}");
                     }
                 }
 
             }
             catch (Exception e)
             {
-                _logger.LogError(e.Message, e);
+                _logger.LogError(e, $"LoanWorker: {e.Message}");
             }
         }
     }

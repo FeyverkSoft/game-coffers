@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Coffers.Public.Domain.Operations;
 using Coffers.Public.WebApi.Authorization;
+using Coffers.Public.WebApi.Models.Operation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

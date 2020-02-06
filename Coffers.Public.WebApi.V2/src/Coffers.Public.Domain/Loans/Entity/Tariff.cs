@@ -9,7 +9,5 @@ namespace Coffers.Public.Domain.Loans
         public Decimal LoanTax { get; set; }
 
         public Decimal ExpiredLoanTax { get; set; }
-
-        public String Tax { get; set; }
     }
 }

@@ -18,8 +18,8 @@ namespace Coffers.Public.Domain.Loans
             Loan loan,
             CancellationToken cancellationToken)
         {
-            if (loan.LoanStatus == LoanStatus.Paid || 
-                loan.LoanStatus == LoanStatus.Canceled || 
+            if (loan.LoanStatus == LoanStatus.Paid ||
+                loan.LoanStatus == LoanStatus.Canceled ||
                 loan.LoanStatus == LoanStatus.Expired)
                 return;
 
@@ -29,7 +29,7 @@ namespace Coffers.Public.Domain.Loans
             if (operations.Sum(_ => _.Amount) >= loanAmount)
                 return;
 
-            if (loan.ExpiredDate<= DateTime.UtcNow)
+            if (loan.ExpiredDate <= DateTime.UtcNow)
                 loan.MakeExpired();
         }
     }

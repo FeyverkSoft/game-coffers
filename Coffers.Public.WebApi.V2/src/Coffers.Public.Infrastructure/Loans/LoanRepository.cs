@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Coffers.Public.Domain.Loans;
+using Coffers.Types.Gamer;
 using Microsoft.EntityFrameworkCore;
 
 namespace Coffers.Public.Infrastructure.Loans
@@ -19,6 +22,31 @@ namespace Coffers.Public.Infrastructure.Loans
         {
             return await _context.Loans
                 .FirstOrDefaultAsync(_ => _.Id == id, cancellationToken);
+        }
+
+        public async Task<IEnumerable<Loan>> GetActiveLoan(CancellationToken cancellationToken)
+        {
+            return await _context.Loans
+                .Include(_ => _.Tariff)
+                .Where(_ => _.ExpiredDate > DateTime.UtcNow &&
+                            _.LoanStatus == LoanStatus.Active)
+                .ToListAsync(cancellationToken);
+        }
+
+        public async Task<IEnumerable<Loan>> GetAllUnprocessedExpiredLoan(CancellationToken cancellationToken)
+        {
+            return await _context.Loans
+                .Where(_ => _.ExpiredDate <= DateTime.UtcNow &&
+                            _.LoanStatus == LoanStatus.Active)
+                .ToListAsync(cancellationToken);
+        }
+
+        public async Task<IEnumerable<Loan>> GetExpiredLoan(CancellationToken cancellationToken)
+        {
+            return await _context.Loans
+                .Include(_ => _.Tariff)
+                .Where(_ => _.LoanStatus == LoanStatus.Expired)
+                .ToListAsync(cancellationToken);
         }
 
         public async Task Save(Loan loan)

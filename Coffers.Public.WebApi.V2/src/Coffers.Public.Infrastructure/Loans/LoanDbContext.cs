@@ -80,10 +80,6 @@ namespace Coffers.Public.Infrastructure.Loans
                 b.Property(t => t.LoanTax)
                     .HasDefaultValue(0)
                     .IsRequired();
-                b.Property(t => t.Tax)
-                    .HasMaxLength(4096)
-                    .HasDefaultValue("{}")
-                    .IsRequired();
             });
 
             modelBuilder.Entity<Loan>(b =>

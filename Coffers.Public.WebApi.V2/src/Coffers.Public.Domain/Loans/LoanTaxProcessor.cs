@@ -37,7 +37,7 @@ namespace Coffers.Public.Domain.Loans
                 return;
 
             // если просрочка займа не облагается штрафом, то скипаем займ
-            if (loan.Tariff.LoanTax <= 0)
+            if (loan.Tariff == null || loan.Tariff.LoanTax <= 0)
                 return;
 
             // Вычисляем сколько дней он уже существует

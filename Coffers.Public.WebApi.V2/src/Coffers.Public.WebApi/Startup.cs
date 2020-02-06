@@ -2,7 +2,6 @@ using System.Data;
 using System.Net;
 using System.Text.Json.Serialization;
 using Coffers.DB.Migrations;
-using Coffers.LoanWorker;
 using Coffers.Public.Domain.Authorization;
 using Coffers.Public.Domain.Operations;
 using Coffers.Public.Domain.UserRegistration;
@@ -138,11 +137,15 @@ namespace Coffers.Public.WebApi
             services.AddScoped<Domain.Loans.IGuildRepository, Infrastructure.Loans.GuildRepository>();
             services.AddScoped<Domain.Loans.IOperationRepository, Infrastructure.Loans.OperationRepository>();
             services.AddScoped<Domain.Loans.LoanCreationService>();
+
+            services.AddScoped<Domain.Loans.LoanExpireProcessor>();
+            services.AddScoped<Domain.Loans.LoanTaxProcessor>();
             services.AddScoped<Domain.Loans.LoanProcessor>();
+
+
             #endregion
 
             services.AddScoped<UserSecurityService>();
-            services.AddScoped<OperationService>();
 
             services.AddScoped<IDbConnection, MySqlConnection>(_ => new MySqlConnection(Configuration.GetConnectionString("Coffers")));
 
@@ -173,13 +176,7 @@ namespace Coffers.Public.WebApi
             services.AddHostedService<MigrateService<MigrateDbContext>>();
             #endregion
 
-            #region Включение воркера по займам в проект
-            //пока что костыльно
-            services.AddDbContext<LoanWorker.Infrastructure.LoanWorkerDbContext>(options =>
-              options.UseMySql(Configuration.GetConnectionString("Coffers")));
-            services.AddHostedService<LoanExpTaxService<LoanWorker.Infrastructure.LoanWorkerDbContext>>();
-            #endregion
-
+            services.AddHostedService<Infrastructure.Loans.LoanRecurrentProcessor>();
             services.AddSwagger();
         }
 

@@ -194,7 +194,7 @@ namespace Coffers.Public.WebApi.Controllers
         /// <returns></returns>
         [Authorize]
         [PermissionRequired("admin", "officer", "leader")]
-        [HttpPatch("/gamers/{userId}/rank")]
+        [HttpPatch("/gamers/{userId}/status")]
         [ProducesResponseType(200)]
         public async Task<IActionResult> ChangeStatus(
             [FromRoute] Guid userId,

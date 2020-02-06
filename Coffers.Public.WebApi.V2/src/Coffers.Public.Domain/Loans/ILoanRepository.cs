@@ -10,8 +10,8 @@ namespace Coffers.Public.Domain.Loans
         Task<Loan> Get(Guid id, CancellationToken cancellationToken);
 
         Task Save(Loan loan);
-        Task<IEnumerable<Loan>> GetAllUnprocessedExpiredLoan();
-        Task<IEnumerable<Loan>> GetExpiredLoan();
-        Task<IEnumerable<Loan>> GetActiveLoan();
+        Task<IEnumerable<Loan>> GetAllUnprocessedExpiredLoan(CancellationToken cancellationToken);
+        Task<IEnumerable<Loan>> GetExpiredLoan(CancellationToken cancellationToken);
+        Task<IEnumerable<Loan>> GetActiveLoan(CancellationToken cancellationToken);
     }
 }
