@@ -11,6 +11,7 @@ namespace Coffers.Public.WebApi.Models.Operation
         /// </summary>
         public Guid Id { get; set; }
 
+        public Guid UserId { get; set; }
         /// <summary>
         /// Ссылка на родительскую проводку
         /// </summary>
