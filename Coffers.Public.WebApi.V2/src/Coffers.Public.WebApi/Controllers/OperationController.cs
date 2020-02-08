@@ -39,7 +39,16 @@ namespace Coffers.Public.WebApi.Controllers
                         new { operation.Id, operation.Amount, operation.Description, operation.Type, operation.UserId }.ToDictionary());
             }
 
-            operation = await operationCreator.Create();
+            operation = await operationCreator.Create(
+                binding.Id,
+                HttpContext.GetGuildId(),
+                binding.UserId,
+                binding.DocumentId,
+                binding.Amount,
+                binding.Type,
+                binding.Description,
+                binding.ParentOperationId,
+                cancellationToken);
             await operationsRepository.Save(operation);
             return Ok(operation);
         }
