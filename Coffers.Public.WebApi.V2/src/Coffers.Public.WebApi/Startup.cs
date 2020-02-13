@@ -2,9 +2,6 @@ using System.Data;
 using System.Net;
 using System.Text.Json.Serialization;
 using Coffers.DB.Migrations;
-using Coffers.Public.Domain.Authorization;
-using Coffers.Public.Domain.Operations;
-using Coffers.Public.Domain.UserRegistration;
 using Coffers.Public.Infrastructure.Authorization;
 using Coffers.Public.Queries.Infrastructure.Guilds;
 using Coffers.Public.Queries.Infrastructure.Users;
@@ -79,7 +76,7 @@ namespace Coffers.Public.WebApi
                 options.UseMySql(Configuration.GetConnectionString("Coffers"));
             });
             services.AddScoped<Domain.Admin.GuildCreate.IGuildRepository, Infrastructure.Admin.GuildCreate.GuildRepository>();
-            services.AddScoped<IAuthorizationRepository, AuthorizationRepository>();
+            services.AddScoped<Domain.Authorization.IAuthorizationRepository, Infrastructure.Authorization.AuthorizationRepository>();
 
             #endregion
 
@@ -90,18 +87,17 @@ namespace Coffers.Public.WebApi
                 options.UseMySql(Configuration.GetConnectionString("Coffers"));
             });
             services.AddScoped<Domain.UserRegistration.IUserRepository, Infrastructure.UserRegistration.UserRepository>();
-            services.AddScoped<UserFactory>();
+            services.AddScoped<Domain.UserRegistration.UserFactory>();
 
             #endregion
 
-            #region  UserRegistration
+            #region  Users
 
             services.AddDbContext<Infrastructure.Users.UserDbContext>(options =>
             {
                 options.UseMySql(Configuration.GetConnectionString("Coffers"));
             });
             services.AddScoped<Domain.Users.IUserRepository, Infrastructure.Users.UserRepository>();
-            services.AddScoped<UserFactory>();
 
             #endregion
 
@@ -145,7 +141,18 @@ namespace Coffers.Public.WebApi
 
             #endregion
 
-            services.AddScoped<UserSecurityService>();
+            #region Operations
+
+            services.AddDbContext<Infrastructure.Operations.OperationDbContext>(options =>
+            {
+                options.UseMySql(Configuration.GetConnectionString("Coffers"));
+            });
+            services.AddScoped<Domain.Operations.IOperationsRepository, Infrastructure.Operations.OperationRepository>();
+            services.AddScoped<Domain.Operations.IDocumentRepository, Infrastructure.Operations.DocumentRepository>();
+            services.AddScoped<Domain.Operations.OperationCreator>();
+            #endregion
+
+            services.AddScoped<Domain.Authorization.UserSecurityService>();
 
             services.AddScoped<IDbConnection, MySqlConnection>(_ => new MySqlConnection(Configuration.GetConnectionString("Coffers")));
 

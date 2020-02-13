@@ -20,5 +20,6 @@ namespace Coffers.Public.WebApi.Exceptions
         public const String CharacterNotFound = "character_not_found";
         public const String PenaltyAlreadyExists = "penalty_already_exists";
         public const String LoanAlreadyExists = "loan_already_exists";
+        public const String DocumentNotFound = "document_not_found";
     }
 }

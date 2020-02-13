@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Coffers.Types.Gamer;
 
-namespace Coffers.Public.Domain.Penalties
+namespace Coffers.Public.Domain.Penalties.Entity
 {
     public sealed class Penalty
     {

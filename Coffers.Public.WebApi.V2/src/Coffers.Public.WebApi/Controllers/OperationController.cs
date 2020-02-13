@@ -39,16 +39,24 @@ namespace Coffers.Public.WebApi.Controllers
                         new { operation.Id, operation.Amount, operation.Description, operation.Type, operation.UserId }.ToDictionary());
             }
 
-            operation = await operationCreator.Create(
-                binding.Id,
-                HttpContext.GetGuildId(),
-                binding.UserId,
-                binding.DocumentId,
-                binding.Amount,
-                binding.Type,
-                binding.Description,
-                binding.ParentOperationId,
-                cancellationToken);
+            try
+            {
+                operation = await operationCreator.Create(
+                    binding.Id,
+                    HttpContext.GetGuildId(),
+                    binding.UserId,
+                    binding.DocumentId,
+                    binding.Amount,
+                    binding.Type,
+                    binding.Description,
+                    binding.ParentOperationId,
+                    cancellationToken);
+            }
+            catch (DocumentNotFoundException e)
+            {
+                throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.DocumentNotFound, e.Message);
+            }
+
             await operationsRepository.Save(operation);
             return Ok(operation);
         }

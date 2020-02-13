@@ -1,5 +1,6 @@
 ﻿using System;
 using Coffers.DB.Migrations.Entities;
+using Coffers.Types.Account;
 using Microsoft.EntityFrameworkCore;
 
 namespace Coffers.DB.Migrations
@@ -57,7 +58,7 @@ namespace Coffers.DB.Migrations
                     .WithOne()
                     .HasForeignKey(_ => _.GuildId)
                     .HasPrincipalKey(_ => _.Id);
-                
+
                 b.Property(l => l.ConcurrencyTokens)
                     .IsRequired()
                     .IsConcurrencyToken();
@@ -273,6 +274,7 @@ namespace Coffers.DB.Migrations
                     .WithMany()
                     .HasPrincipalKey(_ => _.Id)
                     .HasForeignKey(_ => _.TariffId);
+
                 b.Property(l => l.ConcurrencyTokens)
                     .IsRequired()
                     .IsConcurrencyToken();
@@ -307,7 +309,6 @@ namespace Coffers.DB.Migrations
                     .WithMany(_ => _.Taxs)
                     .HasPrincipalKey(_ => _.Id)
                     .HasForeignKey(_ => _.UserId);
-
 
                 b.Property(l => l.ConcurrencyTokens)
                     .IsRequired()
@@ -367,7 +368,7 @@ namespace Coffers.DB.Migrations
                 b.Property(o => o.CreateDate)
                     .IsRequired();
                 b.Property(o => o.DocumentId)
-                .IsRequired(false);
+                    .IsRequired(false);
                 b.Property(o => o.Amount)
                     .HasDefaultValue(0)
                     .IsRequired();

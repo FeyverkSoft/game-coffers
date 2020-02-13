@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Coffers.Types.Gamer;
 
 namespace Coffers.Public.Domain.Authorization
@@ -23,7 +24,7 @@ namespace Coffers.Public.Domain.Authorization
         /// <summary>
         /// Права доступа игрока
         /// </summary>
-        public String[] Roles { get; }
+        public IEnumerable<String> Roles { get; }
 
         /// <summary>
         /// Логин для авторизации

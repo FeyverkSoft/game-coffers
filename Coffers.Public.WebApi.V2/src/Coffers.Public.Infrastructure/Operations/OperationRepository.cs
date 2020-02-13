@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Coffers.Public.Domain.Operations;
+using Coffers.Public.Domain.Operations.Entity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Coffers.Public.Infrastructure.Operations

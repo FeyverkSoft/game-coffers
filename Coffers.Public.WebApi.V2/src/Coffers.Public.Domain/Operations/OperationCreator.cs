@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Coffers.Public.Domain.Operations.Entity;
 using Coffers.Types.Account;
 
 namespace Coffers.Public.Domain.Operations
@@ -17,14 +18,12 @@ namespace Coffers.Public.Domain.Operations
             Guid guildId,
             Guid userId,
             Guid? documentId,
-            decimal amount,
+            Decimal amount,
             OperationType type,
-            string description,
+            String description,
             Guid? parentOperationId,
             CancellationToken cancellationToken)
         {
-            if (amount < 0)
-                throw new ArgumentOutOfRangeException(nameof(amount), "OperationCreator: Non-negative number required");
             if (Guid.Empty == id)
                 throw new ArgumentException("OperationCreator: Value mustn't be empty", nameof(id));
             if (Guid.Empty == guildId)
@@ -37,16 +36,16 @@ namespace Coffers.Public.Domain.Operations
                 switch (type)
                 {
                     case OperationType.Loan:
-                        if (!await documentRepository.IsLoanExists(documentId, userId, cancellationToken))
-                            throw new InvalidOperationException($"Document: {documentId} of type {type} not found");
+                        if (!await _documentRepository.IsLoanExists(documentId.Value, userId, cancellationToken))
+                            throw new DocumentNotFoundException($"Document: {documentId} of type {type} not found");
                         break;
                     case OperationType.Penalty:
-                        if (!await documentRepository.IsPenaltyExists(documentId, userId, cancellationToken))
-                            throw new InvalidOperationException($"Document: {documentId} of type {type} not found");
+                        if (!await _documentRepository.IsPenaltyExists(documentId.Value, userId, cancellationToken))
+                            throw new DocumentNotFoundException($"Document: {documentId} of type {type} not found");
                         break;
                     case OperationType.Tax:
-                        if (!await documentRepository.IsTaxExists(documentId, userId, cancellationToken))
-                            throw new InvalidOperationException($"Document: {documentId} of type {type} not found");
+                        if (!await _documentRepository.IsTaxExists(documentId.Value, userId, cancellationToken))
+                            throw new DocumentNotFoundException($"Document: {documentId} of type {type} not found");
                         break;
                 }
             }

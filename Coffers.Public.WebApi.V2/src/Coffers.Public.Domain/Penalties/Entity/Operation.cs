@@ -1,7 +1,7 @@
 ﻿using System;
 using Coffers.Types.Account;
 
-namespace Coffers.Public.Domain.Penalties
+namespace Coffers.Public.Domain.Penalties.Entity
 {
     /// <summary>
     /// Операция над счетами

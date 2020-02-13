@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Coffers.Types.Gamer;
 
-namespace Coffers.Public.Domain.Penalties
+namespace Coffers.Public.Domain.Penalties.Entity
 {
     public sealed class User
     {

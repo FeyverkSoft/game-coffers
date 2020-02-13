@@ -1,4 +1,5 @@
 ﻿using System;
+using Coffers.Public.Domain.Penalties.Entity;
 
 namespace Coffers.Public.Domain.Penalties
 {

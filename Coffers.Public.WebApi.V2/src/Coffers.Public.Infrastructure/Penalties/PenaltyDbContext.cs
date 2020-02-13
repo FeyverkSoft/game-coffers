@@ -1,5 +1,5 @@
 ﻿using System;
-using Coffers.Public.Domain.Penalties;
+using Coffers.Public.Domain.Penalties.Entity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Coffers.Public.Infrastructure.Penalties

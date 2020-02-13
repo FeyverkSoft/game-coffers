@@ -12,4 +12,7 @@
     <ProjectReference Include="..\Coffers.Helpers\Coffers.Helpers.csproj" />
     <ProjectReference Include="..\Coffers.Types\Coffers.Types.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Taxes\" />
+  </ItemGroup>
 </Project>

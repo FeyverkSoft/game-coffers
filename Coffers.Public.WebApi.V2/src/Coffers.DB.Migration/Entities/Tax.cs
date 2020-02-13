@@ -36,8 +36,6 @@ namespace Coffers.DB.Migrations.Entities
         /// </summary>
         public Decimal Amount { get; }
 
-        public List<Operation> Operations { get; }
-
         public TaxStatus Status { get; }
 
         /// <summary>

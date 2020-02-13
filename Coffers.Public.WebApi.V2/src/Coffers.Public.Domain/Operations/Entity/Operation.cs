@@ -1,7 +1,7 @@
 ﻿using System;
 using Coffers.Types.Account;
 
-namespace Coffers.Public.Domain.Operations
+namespace Coffers.Public.Domain.Operations.Entity
 {
     /// <summary>
     /// Операция над счетами
@@ -52,5 +52,9 @@ namespace Coffers.Public.Domain.Operations
         public String Description { get; }
 
         protected Operation() { }
+
+        public Operation(Guid id, Guid guildId, Guid userId, Decimal amount, Guid? documentId, OperationType type, Guid? parentOperationId, String description)
+        => (Id, GuildId, UserId, Amount, DocumentId, Type, ParentOperationId, Description)
+            = (id, guildId, userId, amount, documentId, type, parentOperationId, description);
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Coffers.Public.Domain.Penalties;
+using Coffers.Public.Domain.Penalties.Entity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Coffers.Public.Infrastructure.Penalties

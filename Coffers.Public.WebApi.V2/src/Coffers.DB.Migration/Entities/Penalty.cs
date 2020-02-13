@@ -16,7 +16,6 @@ namespace Coffers.DB.Migrations.Entities
         /// </summary>
         public User User { get; }
         public Guid UserId { get; }
-        public List<Operation> Operations { get; }
 
         /// <summary>
         /// Сумма штрафа

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Coffers.DB.Migrations.Migrations
 {
     [DbContext(typeof(MigrateDbContext))]
-    [Migration("20200131131147_init")]
+    [Migration("20200213181229_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -204,16 +204,7 @@ namespace Coffers.DB.Migrations.Migrations
                     b.Property<Guid>("GuildId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid?>("LoanId")
-                        .HasColumnType("char(36)");
-
                     b.Property<Guid?>("ParentOperationId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid?>("PenaltyId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid?>("TaxId")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Type")
@@ -230,12 +221,6 @@ namespace Coffers.DB.Migrations.Migrations
 
                     b.HasIndex("Id")
                         .IsUnique();
-
-                    b.HasIndex("LoanId");
-
-                    b.HasIndex("PenaltyId");
-
-                    b.HasIndex("TaxId");
 
                     b.HasIndex("UserId");
 
@@ -269,6 +254,9 @@ namespace Coffers.DB.Migrations.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(32) CHARACTER SET utf8mb4")
                         .HasMaxLength(32);
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
@@ -459,7 +447,7 @@ namespace Coffers.DB.Migrations.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("1e3a3d5a-3655-433b-bda3-02634ee64ec3"),
+                            Id = new Guid("b60e10fe-6fc1-4d42-86ab-6be978f29527"),
                             ConcurrencyTokens = new Guid("00000000-0000-0000-0000-000000000000"),
                             CreateDate = new DateTime(2020, 1, 30, 7, 35, 9, 0, DateTimeKind.Utc),
                             DateOfBirth = new DateTime(2020, 1, 30, 7, 35, 9, 0, DateTimeKind.Utc),
@@ -527,18 +515,6 @@ namespace Coffers.DB.Migrations.Migrations
                         .HasForeignKey("GuildId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Coffers.DB.Migrations.Entities.Loan", null)
-                        .WithMany("Operations")
-                        .HasForeignKey("LoanId");
-
-                    b.HasOne("Coffers.DB.Migrations.Entities.Penalty", null)
-                        .WithMany("Operations")
-                        .HasForeignKey("PenaltyId");
-
-                    b.HasOne("Coffers.DB.Migrations.Entities.Tax", null)
-                        .WithMany("Operations")
-                        .HasForeignKey("TaxId");
 
                     b.HasOne("Coffers.DB.Migrations.Entities.User", null)
                         .WithMany("Operations")

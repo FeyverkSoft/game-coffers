@@ -143,7 +143,7 @@ namespace Coffers.Public.Infrastructure.Loans
                     .HasColumnName("Id")
                     .IsRequired();
                 b.Property(o => o.DocumentId)
-                .IsRequired(false);
+                    .IsRequired(false);
                 b.Property(o => o.Amount)
                     .HasDefaultValue(0)
                     .IsRequired();

@@ -60,8 +60,6 @@ namespace Coffers.DB.Migrations.Entities
         /// </summary>
         public Decimal Amount { get; }
 
-        public List<Operation> Operations { get; }
-
         /// <summary>
         /// Сумма комиссии 
         /// </summary>

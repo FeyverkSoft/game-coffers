@@ -47,6 +47,10 @@ namespace Coffers.Public.WebApi.Controllers
                     cancellationToken);
                 await repository.Save(loan);
             }
+            catch (UserNotFoundException e)
+            {
+                throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.GamerNotFound, e.Message);
+            }
             catch (LoanAlreadyExistsException e)
             {
                 throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.LoanAlreadyExists, $"Loan {binding.LoanId} already exists", e.Detail.ToDictionary());
