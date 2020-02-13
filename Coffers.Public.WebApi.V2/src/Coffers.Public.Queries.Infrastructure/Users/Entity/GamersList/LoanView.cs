@@ -17,7 +17,7 @@ from `Loan`l
 where 1 = 1
 and l.UserId in @UserIds
 and (
-    (@Date >= l.CreateDate
+    (l.CreateDate >= @Date
     and l.CreateDate < ADDDATE(@Date, INTERVAL 1 MONTH))
     or l.LoanStatus in ('Active', 'Expired')
 )

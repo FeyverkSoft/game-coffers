@@ -97,7 +97,7 @@ namespace Coffers.Public.Domain.Loans
                 return;
 
             if (!IsActive)
-                throw new InvalidOperationException($"Incorrect cuccent loan state; State:{LoanStatus}; Id:{Id}");
+                throw new InvalidOperationException($"Incorrect current loan state; State:{LoanStatus}; Id:{Id}");
 
             LoanStatus = LoanStatus.Canceled;
             UpdateDate = DateTime.UtcNow;
@@ -107,8 +107,8 @@ namespace Coffers.Public.Domain.Loans
 
         internal void MakePaid()
         {
-            if (IsActive)
-                throw new InvalidOperationException($"Incorrect cuccent loan state; State:{LoanStatus}; Id:{Id}");
+            if (!IsActive)
+                throw new InvalidOperationException($"Incorrect current loan state; State:{LoanStatus}; Id:{Id}");
 
             LoanStatus = LoanStatus.Paid;
             UpdateDate = DateTime.UtcNow;
@@ -142,7 +142,7 @@ namespace Coffers.Public.Domain.Loans
 
             if (LoanStatus == LoanStatus.Paid ||
                 LoanStatus == LoanStatus.Canceled)
-                throw new InvalidOperationException($"Incorrect cuccent loan state; State:{LoanStatus}; Id:{Id}");
+                throw new InvalidOperationException($"Incorrect current loan state; State:{LoanStatus}; Id:{Id}");
 
             LoanStatus = LoanStatus.Expired;
             UpdateDate = DateTime.UtcNow;

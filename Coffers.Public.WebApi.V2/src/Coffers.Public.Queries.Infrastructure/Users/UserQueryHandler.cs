@@ -24,10 +24,12 @@ namespace Coffers.Public.Queries.Infrastructure.Users
 
         public async Task<ICollection<GamersListView>> Handle(GetGamersQuery query, CancellationToken cancellationToken)
         {
+            var dateMonth = (query.DateMonth ?? DateTime.UtcNow).Trunc(DateTruncType.Month);
+
             var users = await _db.QueryAsync<Entity.GamersList.GamerView>(Entity.GamersList.GamerView.Sql, new
             {
                 GuildId = query.GuildId,
-                DeleteDate = query.DateMonth ?? DateTime.UtcNow.Trunc(DateTruncType.Month),
+                DeleteDate = dateMonth,
                 Statuses = query.GamerStatuses.Any() ? query.GamerStatuses.Select(_ => _.ToString()) : Enum.GetNames(typeof(GamerStatus))
             });
 
@@ -40,12 +42,12 @@ namespace Coffers.Public.Queries.Infrastructure.Users
             var loans = await _db.QueryAsync<Entity.GamersList.LoanView>(Entity.GamersList.LoanView.Sql, new
             {
                 UserIds = userIds,
-                Date = query.DateMonth
+                Date = dateMonth
             });
             var penalties = await _db.QueryAsync<Entity.GamersList.PenaltyView>(Entity.GamersList.PenaltyView.Sql, new
             {
                 UserIds = userIds,
-                Date = query.DateMonth ?? DateTime.UtcNow.Trunc(DateTruncType.Month),
+                Date = dateMonth,
             });
 
             var result = new List<GamersListView>();
