@@ -130,6 +130,9 @@ namespace Coffers.Public.Infrastructure.Loans
                 b.Property(l => l.ConcurrencyTokens)
                     .IsRequired()
                     .IsConcurrencyToken();
+
+                b.Ignore(_ => _.IsActive);
+                b.Ignore(_ => _.IsExpired);
             });
 
             modelBuilder.Entity<Operation>(b =>

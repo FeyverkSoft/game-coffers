@@ -8,10 +8,10 @@ namespace Coffers.Public.Domain.Operations
 {
     public sealed class OperationCreator
     {
-        private readonly IDocumentRepository _documentRepository;
-        public OperationCreator(IDocumentRepository documentRepository)
+        private readonly DocumentValidator _validator;
+        public OperationCreator(DocumentValidator validator)
         {
-            _documentRepository = documentRepository;
+            _validator = validator;
         }
         public async Task<Operation> Create(
             Guid id,
@@ -32,23 +32,7 @@ namespace Coffers.Public.Domain.Operations
                 throw new ArgumentException("OperationCreator: Value mustn't be empty", nameof(userId));
 
             if (documentId != null)
-            {
-                switch (type)
-                {
-                    case OperationType.Loan:
-                        if (!await _documentRepository.IsLoanExists(documentId.Value, userId, cancellationToken))
-                            throw new DocumentNotFoundException($"Document: {documentId} of type {type} not found");
-                        break;
-                    case OperationType.Penalty:
-                        if (!await _documentRepository.IsPenaltyExists(documentId.Value, userId, cancellationToken))
-                            throw new DocumentNotFoundException($"Document: {documentId} of type {type} not found");
-                        break;
-                    case OperationType.Tax:
-                        if (!await _documentRepository.IsTaxExists(documentId.Value, userId, cancellationToken))
-                            throw new DocumentNotFoundException($"Document: {documentId} of type {type} not found");
-                        break;
-                }
-            }
+                await _validator.Validate(type, documentId.Value, userId, cancellationToken);
 
             return new Operation(
                   id,

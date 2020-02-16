@@ -1,13 +1,18 @@
-﻿using System.Net;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Coffers.Helpers;
 using Coffers.Public.Domain.Operations;
+using Coffers.Public.Queries.Operations;
 using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Exceptions;
 using Coffers.Public.WebApi.Models.Operation;
+using Coffers.Types.Account;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Query.Core;
 
 namespace Coffers.Public.WebApi.Controllers
 {
@@ -59,6 +64,63 @@ namespace Coffers.Public.WebApi.Controllers
 
             await operationsRepository.Save(operation);
             return Ok(operation);
+        }
+
+        [Authorize]
+        [PermissionRequired("admin", "officer", "leader", "veteran")]
+        [HttpPut("/operations/{id}/document")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> AttachDocument(
+            [FromRoute] Guid id,
+            [FromServices] IOperationsRepository operationsRepository,
+            [FromServices] DocumentSetter setter,
+            [FromBody] AddOperationDocumentBinding binding,
+            CancellationToken cancellationToken)
+        {
+            var operation = await operationsRepository.Get(id, cancellationToken);
+
+            if (operation == null)
+                throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.OperationNotFound, $"Operation {id} not found");
+
+            switch (binding.Type)
+            {
+                case OperationType.Tax:
+                    await setter.SetTax(operation, binding.DocumentId, cancellationToken);
+                    break;
+                case OperationType.Penalty:
+                    await setter.SetPenalty(operation, binding.DocumentId, cancellationToken);
+                    break;
+                case OperationType.Loan:
+                    await setter.SetLoan(operation, binding.DocumentId, cancellationToken);
+                    break;
+                default:
+                    throw new ApiException(HttpStatusCode.BadRequest, "Unsupported operation", "Unsupported operation");
+            }
+
+            await operationsRepository.Save(operation);
+
+            return Ok(operation);
+        }
+
+        /// <summary>
+        /// This method return gamer operation list from per
+        /// </summary>
+        /// <param name="binding"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet("/Guild/operations")]
+        [ProducesResponseType(typeof(ICollection<OperationListView>), 200)]
+        public async Task<ActionResult<OperationListView>> GetOperations(
+            [FromQuery] GetOperationsBinding binding,
+            [FromServices] QueryProcessor queryProcessor,
+            CancellationToken cancellationToken)
+        {
+            return Ok(await queryProcessor.Process<GetOperationsQuery, ICollection<OperationListView>>(
+                new GetOperationsQuery(
+                    HttpContext.GetGuildId(),
+                    binding.DateMonth?.Trunc(DateTruncType.Day)),
+                cancellationToken));
         }
     }
 }

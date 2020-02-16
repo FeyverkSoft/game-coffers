@@ -39,12 +39,12 @@ namespace Coffers.Public.Domain.Operations.Entity
         /// <summary>
         /// Тип операции
         /// </summary>
-        public OperationType Type { get; }
+        public OperationType Type { get; private set; }
 
         /// <summary>
         /// Основание для проведения операции
         /// </summary>
-        public Guid? DocumentId { get; }
+        public Guid? DocumentId { get; private set; }
 
         /// <summary>
         /// Описание операции
@@ -56,5 +56,11 @@ namespace Coffers.Public.Domain.Operations.Entity
         public Operation(Guid id, Guid guildId, Guid userId, Decimal amount, Guid? documentId, OperationType type, Guid? parentOperationId, String description)
         => (Id, GuildId, UserId, Amount, DocumentId, Type, ParentOperationId, Description)
             = (id, guildId, userId, amount, documentId, type, parentOperationId, description);
+
+        internal void SetDocument(OperationType type, Guid documentId)
+        {
+            Type = type;
+            DocumentId = documentId;
+        }
     }
 }

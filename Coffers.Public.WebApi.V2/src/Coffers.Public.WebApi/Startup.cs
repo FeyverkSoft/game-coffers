@@ -150,6 +150,10 @@ namespace Coffers.Public.WebApi
             services.AddScoped<Domain.Operations.IOperationsRepository, Infrastructure.Operations.OperationRepository>();
             services.AddScoped<Domain.Operations.IDocumentRepository, Infrastructure.Operations.DocumentRepository>();
             services.AddScoped<Domain.Operations.OperationCreator>();
+            services.AddScoped<Domain.Operations.DocumentValidator>();
+            services.AddScoped<Domain.Operations.DocumentSetter>();
+            
+
             #endregion
 
             services.AddScoped<Domain.Authorization.UserSecurityService>();

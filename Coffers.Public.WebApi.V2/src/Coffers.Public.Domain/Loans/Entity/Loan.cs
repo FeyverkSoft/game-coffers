@@ -1,4 +1,5 @@
 ﻿using System;
+using Coffers.Helpers;
 using Coffers.Types.Gamer;
 
 namespace Coffers.Public.Domain.Loans
@@ -73,6 +74,29 @@ namespace Coffers.Public.Domain.Loans
         public Guid ConcurrencyTokens { get; private set; } = Guid.NewGuid();
         public Boolean IsActive => LoanStatus == LoanStatus.Active ||
                                    LoanStatus == LoanStatus.Expired;
+        /// <summary>
+        /// Займ стух?
+        /// </summary>
+        public Boolean IsExpired => ExpiredDate < DateTime.UtcNow ||
+                                    LoanStatus == LoanStatus.Expired;
+        /// <summary>
+        /// Займ без налога?
+        /// </summary>
+        /// <returns></returns>
+        internal Boolean IsFreeTax => Tariff == null || Tariff.LoanTax <= 0;
+
+        /// <summary>
+        /// Время существования займа
+        /// </summary>
+        internal Int32 Lifetime =>
+           (Int32)Math.Floor((DateTime.UtcNow.Trunc(DateTruncType.Day) - (IsActive ? CreateDate : UpdateDate).Trunc(DateTruncType.Day)).TotalDays);
+        /// <summary>
+        /// Время просрочки в днях
+        /// </summary>
+        internal Int32 ExpireLifetime =>
+            (Int32)Math.Floor((DateTime.UtcNow.Trunc(DateTruncType.Day) - ExpiredDate.Trunc(DateTruncType.Day))
+                .TotalDays);
+
 
         protected Loan() { }
         public Loan(Guid id, Guid userId, Guid? tariffId, string description, DateTime expiredDate, decimal amount, decimal taxAmount)
@@ -148,5 +172,16 @@ namespace Coffers.Public.Domain.Loans
             UpdateDate = DateTime.UtcNow;
             ConcurrencyTokens = Guid.NewGuid();
         }
+
+        /// <summary>
+        /// Сума налога в день
+        /// </summary>
+        /// <returns></returns>
+        internal Decimal GetTaxAmountPerDay() => IsFreeTax ? 0 : Amount * (Tariff.ExpiredLoanTax / 100);
+        /// <summary>
+        /// Сумма штрафа за просрочку в день
+        /// </summary>
+        /// <returns></returns>
+        public Decimal GetExpireTaxAmountPerDay() => IsFreeTax ? 0 : Amount * (Tariff.ExpiredLoanTax / 100);
     }
 }
