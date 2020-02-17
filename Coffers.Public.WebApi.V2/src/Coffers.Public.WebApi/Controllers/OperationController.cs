@@ -42,6 +42,7 @@ namespace Coffers.Public.WebApi.Controllers
                     operation.Type != binding.Type)
                     throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.OperationAlreadyExists, $"Operation {binding.Id} already exists",
                         new { operation.Id, operation.Amount, operation.Description, operation.Type, operation.UserId }.ToDictionary());
+                return Ok(operation);
             }
 
             try
@@ -82,19 +83,26 @@ namespace Coffers.Public.WebApi.Controllers
             if (operation == null)
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.OperationNotFound, $"Operation {id} not found");
 
-            switch (binding.Type)
+            try
             {
-                case OperationType.Tax:
-                    await setter.SetTax(operation, binding.DocumentId, cancellationToken);
-                    break;
-                case OperationType.Penalty:
-                    await setter.SetPenalty(operation, binding.DocumentId, cancellationToken);
-                    break;
-                case OperationType.Loan:
-                    await setter.SetLoan(operation, binding.DocumentId, cancellationToken);
-                    break;
-                default:
-                    throw new ApiException(HttpStatusCode.BadRequest, "Unsupported operation", "Unsupported operation");
+                switch (binding.Type)
+                {
+                    case OperationType.Tax:
+                        await setter.SetTax(operation, binding.DocumentId, cancellationToken);
+                        break;
+                    case OperationType.Penalty:
+                        await setter.SetPenalty(operation, binding.DocumentId, cancellationToken);
+                        break;
+                    case OperationType.Loan:
+                        await setter.SetLoan(operation, binding.DocumentId, cancellationToken);
+                        break;
+                    default:
+                        throw new ApiException(HttpStatusCode.BadRequest, "Unsupported operation", "Unsupported operation");
+                }
+            }
+            catch (DocumentNotFoundException)
+            {
+                throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.DocumentNotFound, $"Document {binding.DocumentId} of {binding.Type} not found");
             }
 
             await operationsRepository.Save(operation);

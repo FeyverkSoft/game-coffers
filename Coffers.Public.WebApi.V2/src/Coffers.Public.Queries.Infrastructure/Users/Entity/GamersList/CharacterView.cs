@@ -3,7 +3,7 @@ namespace Coffers.Public.Queries.Infrastructure.Users.Entity.GamersList
 {
     internal sealed class CharacterView
     {
-        public static String Sql = @"
+        internal static String Sql = @"
 select 
     c.Id,
     c.Name, 

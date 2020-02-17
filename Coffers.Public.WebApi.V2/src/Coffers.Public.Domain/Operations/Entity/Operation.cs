@@ -29,7 +29,7 @@ namespace Coffers.Public.Domain.Operations.Entity
         /// <summary>
         /// Дата создания записи
         /// </summary>
-        public DateTime CreateDate { get; }
+        public DateTime CreateDate { get; } = DateTime.UtcNow;
 
         /// <summary>
         /// Сумма операции
