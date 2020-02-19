@@ -1,0 +1,56 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Data;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Coffers.Helpers;
+using Coffers.Public.Queries.Operations;
+using Query.Core;
+using Dapper;
+
+namespace Coffers.Public.Queries.Infrastructure.Operations
+{
+    public class OperationsQueryHandler :
+        IQueryHandler<GetOperationsQuery, ICollection<OperationListView>>
+    {
+        private readonly IDbConnection _db;
+
+        public OperationsQueryHandler(IDbConnection db)
+        {
+            _db = db;
+        }
+
+        /// <summary>
+        /// пока что без пагинации, если будет реально много. то добавлю пагинацию
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<ICollection<OperationListView>> Handle(GetOperationsQuery query, CancellationToken cancellationToken)
+        {
+            var dateMonth = (query.DateMonth ?? DateTime.UtcNow).Trunc(DateTruncType.Month);
+
+            var operations = await _db.QueryAsync<Entity.OperationListItem>(Entity.OperationListItem.Sql, new
+            {
+                GuildId = query.GuildId,
+                DeleteDate = dateMonth
+            });
+
+
+            return operations.Select(_ => new OperationListView(
+                _.Id,
+                _.Amount,
+                _.CreateDate,
+                _.Description,
+                _.Type,
+                _.DocumentId,
+                _.DocumentAmount,
+                _.DocumentDescription,
+                _.UserId,
+                _.UserName)).ToImmutableList();
+
+        }
+    }
+}
