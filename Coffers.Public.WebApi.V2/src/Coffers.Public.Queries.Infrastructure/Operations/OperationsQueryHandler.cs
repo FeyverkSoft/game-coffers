@@ -45,8 +45,8 @@ namespace Coffers.Public.Queries.Infrastructure.Operations
                 _.CreateDate,
                 _.Description,
                 _.Type,
-                _.DocumentId,
-                _.DocumentAmount,
+                Guid.Empty == _.DocumentId ? null : _.DocumentId,
+                Guid.Empty == _.DocumentId ? null : _.DocumentAmount,
                 _.DocumentDescription,
                 _.UserId,
                 _.UserName)).ToImmutableList();

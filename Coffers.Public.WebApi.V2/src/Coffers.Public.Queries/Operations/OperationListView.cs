@@ -5,15 +5,43 @@ namespace Coffers.Public.Queries.Operations
 {
     public sealed class OperationListView
     {
+        /// <summary>
+        /// Идентификатор платёжной операции
+        /// </summary>
         public Guid Id { get; }
+        /// <summary>
+        /// Сумма операции
+        /// Сумма операции может быть не равна сумме документа
+        /// </summary>
         public Decimal Amount { get; }
         public DateTime CreateDate { get; }
+        /// <summary>
+        /// Описание операции
+        /// </summary>
         public String Description { get; }
+        /// <summary>
+        /// Тип операции
+        /// </summary>
         public OperationType Type { get; }
-        public Guid DocumentId { get; }
-        public Decimal DocumentAmount { get; }
+        /// <summary>
+        /// Идентификатор документа
+        /// </summary>
+        public Guid? DocumentId { get; }
+        /// <summary>
+        /// Сумма документа по которой была создана операция
+        /// </summary>
+        public Decimal? DocumentAmount { get; }
+        /// <summary>
+        /// описание документа, если оно есть
+        /// </summary>
         public String DocumentDescription { get; }
+        /// <summary>
+        /// Идентификатор пользоватяля которому пренадлежит операция
+        /// </summary>
         public Guid UserId { get; }
+        /// <summary>
+        /// Имя пользователя 
+        /// </summary>
         public String UserName { get; }
 
         public OperationListView(
@@ -22,8 +50,8 @@ namespace Coffers.Public.Queries.Operations
             in DateTime date,
             in String description,
             in OperationType type,
-            in Guid documentId,
-            in Decimal documentAmount,
+            in Guid? documentId,
+            in Decimal? documentAmount,
             in String documentDescription,
             in Guid userId,
             in String userName)

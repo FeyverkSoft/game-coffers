@@ -121,7 +121,7 @@ namespace Coffers.Public.WebApi.Controllers
         [ProducesResponseType(typeof(ICollection<OperationListView>), 200)]
         public async Task<ActionResult<OperationListView>> GetOperations(
             [FromQuery] GetOperationsBinding binding,
-            [FromServices] QueryProcessor queryProcessor,
+            [FromServices] IQueryProcessor queryProcessor,
             CancellationToken cancellationToken)
         {
             return Ok(await queryProcessor.Process<GetOperationsQuery, ICollection<OperationListView>>(

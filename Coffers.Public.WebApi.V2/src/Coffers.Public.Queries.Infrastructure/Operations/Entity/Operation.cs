@@ -33,8 +33,8 @@ order by op.`CreateDate`
         public DateTime CreateDate { get; }
         public String Description { get; }
         public OperationType Type { get; }
-        public Guid DocumentId { get; }
-        public Decimal DocumentAmount { get; }
+        public Guid? DocumentId { get; }
+        public Decimal? DocumentAmount { get; }
         public String DocumentDescription { get; }
         public Guid UserId { get; }
         public String UserName { get; }
