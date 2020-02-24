@@ -2,7 +2,7 @@ import * as React from 'react';
 import { LoginForm } from '../_components/LoginForm/LoginForm';
 import { Card, Breadcrumb, Icon } from 'antd';
 import { Lang } from '../_services';
-import style from './auth.module.less';
+import style from './auth.module.scss';
 import { Content } from '../_components/Content/Content';
 import { Link } from 'react-router-dom';
 

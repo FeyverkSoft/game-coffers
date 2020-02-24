@@ -117,7 +117,7 @@ namespace Coffers.Public.WebApi.Controllers
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [Authorize]
-        [HttpGet("/Guild/operations")]
+        [HttpGet("/Guilds/current/operations")]
         [ProducesResponseType(typeof(ICollection<OperationListView>), 200)]
         public async Task<ActionResult<OperationListView>> GetOperations(
             [FromQuery] GetOperationsBinding binding,

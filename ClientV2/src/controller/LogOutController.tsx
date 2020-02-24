@@ -2,7 +2,7 @@ import * as React from 'react';
 import { LoginForm } from '../_components/LoginForm/LoginForm';
 import { Card, Button, Breadcrumb, Icon } from 'antd';
 import { Lang } from '../_services';
-import style from './auth.module.less';
+import style from './auth.module.scss';
 import { sessionInstance } from '../_actions/session.actions';
 import { connect } from 'react-redux';
 import { IStore } from '../_helpers/store';

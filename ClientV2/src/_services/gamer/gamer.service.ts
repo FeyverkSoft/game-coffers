@@ -126,7 +126,7 @@ export class gamerService {
     /**
      * Возвращает список игроков в гильдии удовлетворяющих условию
      */
-    static async GetGamers(guildId: string, dateMonth?: Date | string): Promise<Array<IGamersListView>> {
+    static async GetGamers(dateMonth?: Date | string): Promise<Array<IGamersListView>> {
         let session = authService.getCurrentSession();
         const requestOptions: RequestInit = {
             method: 'GET',
@@ -137,7 +137,7 @@ export class gamerService {
                 'Authorization': 'Bearer ' + session.sessionId
             },
         };
-        return await fetch(Config.BuildUrl(`/Guilds/${guildId}/gamers`), requestOptions)
+        return await fetch(Config.BuildUrl(`/Guilds/current/gamers`), requestOptions)
             .then<BaseResponse & any>(getResponse)
             .then(data => {
                 if (data && data.type || data.traceId) {

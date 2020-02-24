@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { IStore, BlendColor } from "../_helpers";
 import { gamerInstance } from "../_actions";
 import { ColumnProps } from "antd/lib/table";
-import style from './bd.module.less';
+import style from './bd.module.scss';
 import { Content } from "../_components/Content/Content";
 import { Link } from "react-router-dom";
 import Search from "antd/lib/input/Search";
@@ -155,7 +155,7 @@ const MemGamers = memoize(gamersList => {
             let dayCount = res > 0 ? 365 - res : -1 * res;
             return {
                 id: _.id,
-                name: `${_.name} - ${_.characters.firstOrDefault((_: ICharacter) => _.isMain, _.characters[0]).name}`,
+                name: `${_.name} - ${_.characters.length > 0 ? _.characters.firstOrDefault((_: ICharacter) => _.isMain, _.characters[0]).name : ''}`,
                 birthday: `${_.dateOfBirth.getDate() > 9 ? _.dateOfBirth.getDate() : '0' + _.dateOfBirth.getDate()}-${mo > 9 ? mo : '0' + mo}`,
                 count: dayCount,
                 color: BlendColor('#36c13955', '#fb6d2955', (100 / 365) * dayCount) || '',
@@ -176,7 +176,7 @@ const connectedLoginForm = connect<{}, {}, {}, IStore>(
         return {
             loadData: () => dispatch(
                 (dispatch: Function, getState: Function) =>
-                    dispatch(gamerInstance.GetGamers({ guildId: getState().session.guildId, dateMonth: new Date() }))),
+                    dispatch(gamerInstance.GetGamers({ dateMonth: new Date() }))),
         }
     })(_BirthdayController);
 

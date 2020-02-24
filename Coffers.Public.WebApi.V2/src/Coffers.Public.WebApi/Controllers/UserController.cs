@@ -20,7 +20,7 @@ namespace Coffers.Public.WebApi.Controllers
     {
         [Authorize]
         [PermissionRequired("admin", "officer", "leader")]
-        [HttpPost("/guild/gamers")]
+        [HttpPost("/guilds/current/gamers")]
         [ProducesResponseType(200)]
         public async Task<IActionResult> AddNewGamer(
             [FromBody] GamerCreateBinding binding,

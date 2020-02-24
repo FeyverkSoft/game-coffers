@@ -43,8 +43,9 @@ namespace Coffers.Public.Domain.Gamers
             Status = CharStatus.Deleted;
         }
 
-        public void MarkAsActive()
+        public void MarkAsActive(Boolean isMain)
         {
+            IsMain = isMain;
             Status = CharStatus.Active;
         }
     }

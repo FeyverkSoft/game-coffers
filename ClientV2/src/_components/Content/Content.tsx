@@ -1,5 +1,5 @@
 import * as React from 'react';
-import style from "./content.module.less";
+import style from "./content.module.scss";
 
 export const Content = ({ ...props }) => {
     return (

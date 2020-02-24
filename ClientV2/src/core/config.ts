@@ -2,7 +2,7 @@ export class Config {
     static Debug: boolean = true;
     
     public static GetUrl(): string {
-        return "https://guild-treasury.ru/api"|| localStorage.getItem('Coffer_apiUrl') || (window.config || {}).ApiUrl || 'http://localhost:58201';
+        return /*"https://guild-treasury.ru/api"||*/ localStorage.getItem('Coffer_apiUrl') || (window.config || {}).ApiUrl || 'https://localhost:5001';
     }
 
     public static BuildUrl(url: string, params: any = null): string {

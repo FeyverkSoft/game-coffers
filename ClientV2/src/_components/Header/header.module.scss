@@ -1,25 +1,25 @@
-@import "../../../assets/_variables.less"; // variables to override above
+@import "../../../assets/_variables.scss"; // variables to override above
 
 .header {
-    .flex();
+    @include flex();
     align-items    : center;
     justify-content: space-between;
     position       : fixed;
     z-index        : 10;
-    width          : @width-100pr;
+    width          : $width-100pr;
     contain        : layout;
-    box-shadow     : @box-shadow-1;
+    box-shadow     : $box-shadow-1;
     min-height     : 2em;
-    background     : @headerColor;
+    background     : $headerColor;
     
     .logo {
-        .flex();
+        @include flex();
         min-height     : 3rem;
         justify-content: center;
         align-items    : center;
         padding        : 0 0.5rem;
 
-        @media screen and (max-width: @tablet) {
+        @media screen and (max-width: $tablet) {
             min-height: 3rem;
         }
 
@@ -29,23 +29,23 @@
 
         >.title {
             user-select   : none !important;
-            color         : @mainFontColor;
-            font-size     : @22px;
+            color         : $mainFontColor;
+            font-size     : $_22px;
             text-transform: uppercase;
 
-            @media screen and (max-width: @tablet) {
+            @media screen and (max-width: $tablet) {
                 display: none;
             }
         }
 
         >.small-title {
             user-select   : none !important;
-            color         : @mainFontColor;
-            font-size     : @12px;
+            color         : $mainFontColor;
+            font-size     : $_12px;
             font-weight   : 500;
             text-transform: uppercase;
 
-            @media screen and (min-width: @tablet) {
+            @media screen and (min-width: $tablet) {
                 display: none;
             }
         }

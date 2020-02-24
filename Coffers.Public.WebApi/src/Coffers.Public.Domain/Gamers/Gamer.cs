@@ -78,7 +78,7 @@ namespace Coffers.Public.Domain.Gamers
 
             if (ch.ClassName.Equals(_className, StringComparison.InvariantCultureIgnoreCase))
             {
-                ch?.MarkAsActive();
+                ch?.MarkAsActive(isMain);
                 UpdateDate = DateTime.UtcNow;
                 return;
             }

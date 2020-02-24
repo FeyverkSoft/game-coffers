@@ -1,6 +1,7 @@
 ﻿using System;
 using Coffers.Public.Domain.Gamers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Coffers.Public.Infrastructure.Gamers
 {
@@ -90,10 +91,11 @@ namespace Coffers.Public.Infrastructure.Gamers
                     .HasConversion<String>()
                     .IsRequired();
                 b.Property(t => t.IsMain)
+                    .HasConversion(new BoolToZeroOneConverter<Boolean>())
                     .HasDefaultValue(false)
                     .IsRequired();
             });
-          
+
             modelBuilder.Entity<Loan>(b =>
             {
                 b.ToTable(nameof(Loan));

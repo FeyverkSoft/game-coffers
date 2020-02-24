@@ -5,7 +5,6 @@ import { alertInstance, ICallback } from '..';
 import { profileService } from '../../_services/profile/profile.service';
 
 interface GetGuildGamersProps extends ICallback<any> {
-    guildId: string;
     dateMonth: Date;
     gamerStatuses?: Array<GamerStatus>
 }
@@ -135,7 +134,7 @@ export class GamerActions {
     GetGamers(filter: GetGuildGamersProps): Function {
         return (dispatch: Function) => {
             dispatch(request());
-            gamerService.GetGamers(filter.guildId, filter.dateMonth)
+            gamerService.GetGamers(filter.dateMonth)
                 .then(
                     data => {
                         dispatch(success(data, `${filter.dateMonth.getMonth() + 1}-${filter.dateMonth.getFullYear()}`));

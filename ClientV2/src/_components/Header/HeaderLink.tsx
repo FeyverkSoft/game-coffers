@@ -1,5 +1,5 @@
 import * as React from 'react';
-import style from "./header.module.less";
+import style from "./header.module.scss";
 import { NavLink, NavLinkProps } from 'react-router-dom';
 
 export const HeaderLink = ({ ...props }: NavLinkProps) => {

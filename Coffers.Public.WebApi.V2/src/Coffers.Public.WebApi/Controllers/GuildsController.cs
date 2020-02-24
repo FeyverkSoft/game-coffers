@@ -34,7 +34,7 @@ namespace Coffers.Public.WebApi.Controllers
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [Authorize]
-        [HttpGet("/Guild")]
+        [HttpGet("/Guilds/current")]
         [ProducesResponseType(typeof(GuildView), 200)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> Get(CancellationToken cancellationToken)
@@ -54,7 +54,7 @@ namespace Coffers.Public.WebApi.Controllers
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [Authorize]
-        [HttpGet("/Guild/balance")]
+        [HttpGet("/Guilds/current/balance")]
         [ProducesResponseType(typeof(GuildBalanceView), 200)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetBalance(CancellationToken cancellationToken)
@@ -77,7 +77,7 @@ namespace Coffers.Public.WebApi.Controllers
         /// <returns></returns>
         [Authorize]
         [PermissionRequired("officer", "leader")]
-        [HttpPatch("/Guild/roles")]
+        [HttpPatch("/Guilds/current/roles")]
         [ProducesResponseType(200)]
         public async Task<IActionResult> SetOrUpdateGuildTax(
             [FromBody] UpdateUserRoleBinding binding,
@@ -103,7 +103,7 @@ namespace Coffers.Public.WebApi.Controllers
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [Authorize]
-        [HttpGet("/Guild/roles")]
+        [HttpGet("/Guilds/current/roles")]
         [ProducesResponseType(typeof(ICollection<GuildRoleView>), 200)]
         public async Task<IActionResult> GetGuildTax(CancellationToken cancellationToken)
         {
@@ -120,7 +120,7 @@ namespace Coffers.Public.WebApi.Controllers
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [Authorize]
-        [HttpGet("/Guild/gamers")]
+        [HttpGet("/Guilds/current/gamers")]
         [ProducesResponseType(typeof(ICollection<GamersListView>), 200)]
         public async Task<ActionResult<GamersListView>> GetGamers(
             [FromQuery] GetGamersBinding binding,

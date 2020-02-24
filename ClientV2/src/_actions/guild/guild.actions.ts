@@ -35,7 +35,7 @@ export class GuildActions {
                     data => {
                         if (props.onSuccess)
                             props.onSuccess(data);
-                        dispatch(gamerInstance.GetGamers({ guildId: props.guildId, dateMonth: new Date() }));
+                        dispatch(gamerInstance.GetGamers({ dateMonth: new Date() }));
                     })
                 .catch(
                     ex => {

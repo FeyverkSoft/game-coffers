@@ -18,7 +18,7 @@ namespace Coffers.Public.WebApi.Models.Gamers
         /// <summary>
         /// Is main character
         /// </summary>
-        public Boolean IsMain { get; set; } = false;
+        public Boolean IsMain { get; set; }
     }
     public class AddCharacterBindingValidator : AbstractValidator<AddCharacterBinding>
     {

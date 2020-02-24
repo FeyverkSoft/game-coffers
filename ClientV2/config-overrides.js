@@ -4,7 +4,7 @@ const {
     override,
     fixBabelImports,
     addWebpackAlias,
-    addLessLoader,
+   /* addLessLoader,*/
 } = require("customize-cra");
 
 
@@ -15,12 +15,12 @@ module.exports = override(
     }),
     /*addWebpackAlias({
         'react-dom$': 'react-dom/profiling',
-    }),*/
+    }),
     addLessLoader({
         javascriptEnabled: true,
         ident: 'postcss',
         sourceMap: true, // should skip in production
         importLoaders: true,
         localIdentName: '[name]__[local]___[hash:base64:5]'
-    })
+    })*/
 );
