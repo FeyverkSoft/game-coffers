@@ -13,7 +13,9 @@ using Dapper;
 namespace Coffers.Public.Queries.Infrastructure.Users
 {
     public class UserQueryHandler :
-        IQueryHandler<GetGamersQuery, ICollection<GamersListView>>
+        IQueryHandler<GetGamersQuery, ICollection<GamersListView>>,
+        IQueryHandler<ProfileViewQuery, ProfileView>
+
     {
         private readonly IDbConnection _db;
 
@@ -22,7 +24,7 @@ namespace Coffers.Public.Queries.Infrastructure.Users
             _db = db;
         }
 
-        public async Task<ICollection<GamersListView>> Handle(GetGamersQuery query, CancellationToken cancellationToken)
+        async Task<ICollection<GamersListView>> IQueryHandler<GetGamersQuery, ICollection<GamersListView>>.Handle(GetGamersQuery query, CancellationToken cancellationToken)
         {
             var dateMonth = (query.DateMonth ?? DateTime.UtcNow).Trunc(DateTruncType.Month);
 
@@ -69,6 +71,11 @@ namespace Coffers.Public.Queries.Infrastructure.Users
                     ));
             }
             return result;
+        }
+
+        async Task<ProfileView> IQueryHandler<ProfileViewQuery, ProfileView>.Handle(ProfileViewQuery query, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
         }
     }
 }

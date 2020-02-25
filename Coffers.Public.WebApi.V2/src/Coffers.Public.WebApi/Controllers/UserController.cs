@@ -10,6 +10,8 @@ using Coffers.Public.WebApi.Models.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Coffers.Helpers;
+using Coffers.Public.Queries.Users;
+using Query.Core;
 
 namespace Coffers.Public.WebApi.Controllers
 {
@@ -21,7 +23,7 @@ namespace Coffers.Public.WebApi.Controllers
         [Authorize]
         [PermissionRequired("admin", "officer", "leader")]
         [HttpPost("/guilds/current/gamers")]
-        [ProducesResponseType(200)]
+        [ProducesResponseType(201)]
         public async Task<IActionResult> AddNewGamer(
             [FromBody] GamerCreateBinding binding,
             [FromServices] Domain.UserRegistration.IUserRepository userRepository,
@@ -48,7 +50,7 @@ namespace Coffers.Public.WebApi.Controllers
         [Authorize]
         [PermissionRequired("admin", "officer", "leader")]
         [HttpPost("/gamers/{id}/characters")]
-        [ProducesResponseType(200)]
+        [ProducesResponseType(201)]
         public async Task<IActionResult> AddCharacter(
             [FromRoute] Guid id,
             [FromBody] AddCharacterBinding binding,
@@ -71,6 +73,21 @@ namespace Coffers.Public.WebApi.Controllers
 
             userRepository.Save(user);
             return Ok(new { });
+        }
+
+        /// <summary>
+        /// Get profile
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpDelete("/gamers/current/profile")]
+        [ProducesResponseType(typeof(ProfileView), 200)]
+        public async Task<IActionResult> GetProfile(
+            [FromServices] IQueryProcessor queryProcessor,
+            CancellationToken cancellationToken)
+        {
+            return Ok(await queryProcessor.Process<ProfileViewQuery, ProfileView>(new ProfileViewQuery(HttpContext.GetUserId()), cancellationToken));
         }
 
         /// <summary>
@@ -138,7 +155,7 @@ namespace Coffers.Public.WebApi.Controllers
         [Authorize]
         [PermissionRequired("admin", "officer", "leader")]
         [HttpPost("/gamers/current/characters")]
-        [ProducesResponseType(200)]
+        [ProducesResponseType(201)]
         public async Task<IActionResult> SelfAddCharacter(
             [FromBody] AddCharacterBinding binding,
             [FromServices] Domain.Users.IUserRepository userRepository,
@@ -168,7 +185,7 @@ namespace Coffers.Public.WebApi.Controllers
         [Authorize]
         [PermissionRequired("admin", "officer", "leader")]
         [HttpPatch("/gamers/{userId}/rank")]
-        [ProducesResponseType(200)]
+        [ProducesResponseType(201)]
         public async Task<IActionResult> ChangeRank(
             [FromRoute] Guid userId,
             [FromBody] ChangeRankBinding binding,

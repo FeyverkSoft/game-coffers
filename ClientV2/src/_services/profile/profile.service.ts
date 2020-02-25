@@ -72,7 +72,7 @@ export class profileService {
                 'Authorization': 'Bearer ' + session.sessionId
             }
         };
-        return await fetch(Config.BuildUrl(`/profile`), requestOptions)
+        return await fetch(Config.BuildUrl(`/gamers/current/profile`), requestOptions)
             .then<BaseResponse & IGamerInfo>(getResponse)
             .then(data => {
                 if (data && data.type || data.traceId) {
