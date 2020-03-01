@@ -21,8 +21,4 @@
     <ProjectReference Include="..\Coffers.Types\Coffers.Types.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Users\Entity\Profile\" />
-  </ItemGroup>
-
 </Project>

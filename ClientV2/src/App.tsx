@@ -21,17 +21,24 @@ export const App = ({ ...props }) => {
   return (
     <Layout className="layout">
       <Router
-        history={history} >
+        history={history} 
+        >
         <Header>
           <Link to="./">
             <Logo />
           </Link>
           <Private>
             <Menu
-              defaultSelectedKeys={['/']}
+              /*defaultSelectedKeys={['/']}*/
+
               mode="horizontal"
               theme="light"
             >
+              <Menu.Item key="/profile" >
+                <HeaderLink to="/profile" exact>
+                  {Lang('PROFILE')}
+                </HeaderLink>
+              </Menu.Item>
               <Menu.Item key="/">
                 <HeaderLink to="/" exact>
                   {Lang('COFFERS')}
@@ -50,6 +57,7 @@ export const App = ({ ...props }) => {
           <TryCatch>
             <Switch>
               <Route path='/auth' component={AuthController} />
+              <PrivateRoute path='/profile' component={LogOutController} />
               <PrivateRoute path='/logout' component={LogOutController} />
               <PrivateRoute path='/birthday' component={BirthdayController} />
               {/* <PrivateRoute path="/" component={MainController} />*/}

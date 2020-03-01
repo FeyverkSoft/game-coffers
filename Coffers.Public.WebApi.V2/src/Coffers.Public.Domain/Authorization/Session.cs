@@ -1,4 +1,5 @@
 ﻿using System;
+using Coffers.Helpers;
 
 namespace Coffers.Public.Domain.Authorization
 {
@@ -34,6 +35,8 @@ namespace Coffers.Public.Domain.Authorization
         {
             if (IsExpired)
                 throw new InvalidOperationException("Session expired");
+            if (ExpireDate.Trunc(DateTruncType.Minute) == DateTime.UtcNow.Trunc(DateTruncType.Minute))
+                return;
             ExpireDate = DateTime.UtcNow.AddMinutes(lifetime);
             ConcurrencyTokens = Guid.NewGuid();
         }

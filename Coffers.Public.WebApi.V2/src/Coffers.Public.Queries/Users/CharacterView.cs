@@ -26,9 +26,10 @@ namespace Coffers.Public.Queries.Users
         /// Признак основного персонажа
         /// </summary>
         public Boolean IsMain { get; }
+        public Guid UserId { get; }
 
-        public CharacterView(Guid id, String name, String className, Boolean isMain) 
-            => (Id, Name, ClassName, IsMain) 
-            =  (id, name, className, isMain);
+        public CharacterView(Guid id, String name, String className, Boolean isMain, Guid userId)
+                => (Id, Name, ClassName, IsMain, UserId)
+                = (id, name, className, isMain, userId);
     }
 }

@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using Query.Core;
 
 namespace Coffers.Public.Queries.Users
 {
-    public sealed class ProfileViewQuery : IQuery<ProfileView>
+    public sealed class CharacterViewQuery : IQuery<IEnumerable<CharacterView>>
     {
         /// <summary>
         /// User id
@@ -11,7 +12,7 @@ namespace Coffers.Public.Queries.Users
         public Guid UserId { get; }
         public Guid GuildId { get; set; }
 
-        public ProfileViewQuery(Guid userId, Guid guildId)
+        public CharacterViewQuery(Guid userId, Guid guildId)
             => (UserId, GuildId)
              = (userId, guildId);
     }

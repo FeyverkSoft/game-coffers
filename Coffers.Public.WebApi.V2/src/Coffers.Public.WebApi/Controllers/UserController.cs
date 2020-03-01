@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -81,13 +82,32 @@ namespace Coffers.Public.WebApi.Controllers
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [Authorize]
-        [HttpDelete("/gamers/current/profile")]
+        [HttpGet("/gamers/current/profile")]
         [ProducesResponseType(typeof(ProfileView), 200)]
         public async Task<IActionResult> GetProfile(
             [FromServices] IQueryProcessor queryProcessor,
             CancellationToken cancellationToken)
         {
-            return Ok(await queryProcessor.Process<ProfileViewQuery, ProfileView>(new ProfileViewQuery(HttpContext.GetUserId()), cancellationToken));
+            return Ok(await queryProcessor.Process<ProfileViewQuery, ProfileView>(new ProfileViewQuery(
+                HttpContext.GetUserId(),
+                HttpContext.GetGuildId()), cancellationToken));
+        }
+
+        /// <summary>
+        /// Get profile
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet("/gamers/current/characters")]
+        [ProducesResponseType(typeof(IEnumerable<CharacterView>), 200)]
+        public async Task<IActionResult> GetCharacters(
+            [FromServices] IQueryProcessor queryProcessor,
+            CancellationToken cancellationToken)
+        {
+            return Ok(await queryProcessor.Process<CharacterViewQuery, IEnumerable<CharacterView>>(new CharacterViewQuery(
+                HttpContext.GetUserId(),
+                HttpContext.GetGuildId()), cancellationToken));
         }
 
         /// <summary>

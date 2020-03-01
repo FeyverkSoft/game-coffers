@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Data;
 using System.Linq;
 using System.Threading;
@@ -14,7 +15,8 @@ namespace Coffers.Public.Queries.Infrastructure.Users
 {
     public class UserQueryHandler :
         IQueryHandler<GetGamersQuery, ICollection<GamersListView>>,
-        IQueryHandler<ProfileViewQuery, ProfileView>
+        IQueryHandler<ProfileViewQuery, ProfileView>,
+        IQueryHandler<CharacterViewQuery, IEnumerable<CharacterView>>
 
     {
         private readonly IDbConnection _db;
@@ -60,7 +62,7 @@ namespace Coffers.Public.Queries.Infrastructure.Users
                     user.Name,
                     user.Balance,
                     characters.Where(_ => _.UserId == user.Id)
-                        .Select(_ => new CharacterView(_.Id, _.Name, _.ClassName, _.IsMain)),
+                        .Select(_ => new CharacterView(_.Id, _.Name, _.ClassName, _.IsMain, _.UserId)),
                     user.Rank,
                     user.Status,
                     user.DateOfBirth,
@@ -75,7 +77,38 @@ namespace Coffers.Public.Queries.Infrastructure.Users
 
         async Task<ProfileView> IQueryHandler<ProfileViewQuery, ProfileView>.Handle(ProfileViewQuery query, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var profile = await _db.QuerySingleAsync<Entity.Profile.ProfileView>(Entity.Profile.ProfileView.Sql, new
+            {
+                GuildId = query.GuildId,
+                UserId = query.UserId
+            });
+
+            return new ProfileView(
+                profile.UserId,
+                profile.Name,
+                profile.Rank,
+                profile.CharCount,
+                profile.Balance,
+                profile.ActiveLoanAmount,
+                profile.ActivePenaltyAmount,
+                profile.ActiveLoanTaxAmount);
+        }
+
+        async Task<IEnumerable<CharacterView>> IQueryHandler<CharacterViewQuery, IEnumerable<CharacterView>>.Handle(CharacterViewQuery query, CancellationToken cancellationToken)
+        {
+            var list = await _db.QueryAsync<Entity.Profile.CharacterView>(Entity.Profile.CharacterView.Sql, new
+            {
+                GuildId = query.GuildId,
+                Statuses = new[] { CharStatus.Active.ToString() },
+                UserIds = new[] { query.UserId }
+            });
+
+            return list.Select(ch => new CharacterView(
+                ch.Id,
+                ch.Name,
+                ch.ClassName,
+                ch.IsMain,
+                ch.UserId));
         }
     }
 }

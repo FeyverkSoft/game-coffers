@@ -12,19 +12,13 @@ namespace Coffers.Public.Queries.Users
         public Decimal Balance { get; }
         public Decimal ActiveLoanAmount { get; }
         public Decimal ActivePenaltyAmount { get; }
-        public Decimal ActiveExpLoanAmount { get; }
         public Decimal ActiveLoanTaxAmount { get; }
-        public Decimal RepaymentLoanAmount { get; }
-        public Decimal RepaymentTaxAmount { get; }
 
         public ProfileView(Guid userId, String name, GamerRank rank, Int32 charCount, Decimal balance,
-            Decimal activeLoanAmount, Decimal activePenaltyAmount, Decimal activeExpLoanAmount,
-            Decimal activeLoanTaxAmount, Decimal repaymentLoanAmount, Decimal repaymentTaxAmount)
+            Decimal activeLoanAmount, Decimal activePenaltyAmount, Decimal activeLoanTaxAmount)
         => (UserId, Name, Rank, CharCount, Balance,
-                 ActiveLoanAmount, ActivePenaltyAmount, ActiveExpLoanAmount,
-                 ActiveLoanTaxAmount, RepaymentLoanAmount, RepaymentTaxAmount)
+                 ActiveLoanAmount, ActivePenaltyAmount, ActiveLoanTaxAmount)
             = (userId, name, rank, charCount, balance,
-                activeLoanAmount, activePenaltyAmount, activeExpLoanAmount,
-                activeLoanTaxAmount, repaymentLoanAmount, repaymentTaxAmount);
+                activeLoanAmount, activePenaltyAmount, activeLoanTaxAmount);
     }
 }

@@ -26,8 +26,11 @@ namespace Coffers.Public.Infrastructure.Authorization
             var entry = _context.Entry(session);
             if (entry.State == EntityState.Detached)
                 _context.Sessions.Add(session);
-
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException) { }
         }
 
         public async Task<User> GetUser(String login, CancellationToken cancellationToken)
