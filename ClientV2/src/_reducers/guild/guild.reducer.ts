@@ -1,6 +1,6 @@
 import { GuildActionsType } from "../../_actions";
 import { IAction, IHolded } from "../../core";
-import { ITariffs, IGuild, GuildBalanceReport, IGamersListView } from "../../_services";
+import { ITariffs, IGuild, GuildBalanceReport } from "../../_services";
 import clonedeep from 'lodash.clonedeep';
 
 export interface IReports {

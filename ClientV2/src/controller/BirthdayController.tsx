@@ -1,5 +1,6 @@
 import React from "react";
-import { Lang, IGamersListView, ICharacter } from '../_services';
+import { Lang, IGamersListView } from '../_services';
+import { ICharacter } from '../_services/guild/ICharacter';
 import { Card, Table, Breadcrumb, Icon } from 'antd';
 import { memoize } from "lodash";
 import { connect } from "react-redux";

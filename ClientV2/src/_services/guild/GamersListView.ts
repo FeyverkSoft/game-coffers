@@ -3,12 +3,7 @@ import { GamerRank } from "../gamer/GamerRank";
 import { PenaltyStatus } from "./PenaltyStatus";
 import { LoanStatus } from "./LoanStatus";
 import { Dictionary } from "../../core";
-
-export interface ICharacter {
-    name: string;
-    className: string;
-    isMain: boolean;
-}
+import { ICharacter } from "./ICharacter";
 
 export interface IGamersListView {
     id: string;

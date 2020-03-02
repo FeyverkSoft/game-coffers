@@ -15,4 +15,6 @@ export * from './auth/auth.service.ts';
 export * from './guild/guild.service.ts';
 export * from './gamer/gamer.service.ts';
 export * from './operation/operation.service.ts';
+export * from './profile/IProfile.ts';
+export * from './profile/profile.service.ts';
 export * from "./lang.service.ts";

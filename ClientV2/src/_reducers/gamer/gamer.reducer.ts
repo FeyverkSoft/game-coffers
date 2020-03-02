@@ -4,7 +4,6 @@ import { IGamerInfo, IGamersListView, GamersListView } from "../../_services";
 import clonedeep from 'lodash.clonedeep';
 
 export class IGamerStore {
-    currentGamer: IGamerInfo & IHolded;
     gamersList: Dictionary<IGamersListView & IHolded>;
 
     public GetGamer(id: string): IGamersListView {
@@ -13,38 +12,13 @@ export class IGamerStore {
         return new GamersListView('', [], 0, [], [], 'Beginner', 'New', new Date().toISOString(), '');
     }
 
-    constructor(currentGamer?: IGamerInfo | IHolded & any, gamersList?: Array<IGamersListView>) {
-        if (currentGamer)
-            this.currentGamer = {
-                userId: currentGamer.userId || '',
-                name: currentGamer.name || '',
-                rank: currentGamer.rank || 'Soldier',
-                balance: currentGamer.balance || 0,
-                activeLoanAmount: currentGamer.activeLoanAmount || 0,
-                activePenaltyAmount: currentGamer.activePenaltyAmount || 0,
-                activeExpLoanAmount: currentGamer.activeExpLoanAmount || 0,
-                activeLoanTaxAmount: currentGamer.activeLoanTaxAmount || 0,
-                repaymentLoanAmount: currentGamer.repaymentLoanAmount || 0,
-                repaymentTaxAmount: currentGamer.repaymentTaxAmount || 0,
-                charCount: currentGamer.charCount || 0,
-            };
-        else {
-            this.currentGamer = {
-                userId: '',
-                name: '',
-                rank: 'Soldier',
-                balance: 0,
-                activeLoanAmount: 0,
-                activePenaltyAmount: 0,
-                activeExpLoanAmount: 0,
-                activeLoanTaxAmount: 0,
-                repaymentLoanAmount: 0,
-                repaymentTaxAmount: 0,
-                charCount: 0,
-            };
-        }
-        if (gamersList)
+    constructor(gamersList?: Array<IGamersListView>) {
+        if (gamersList) {
             this.gamersList = {};
+            gamersList.forEach(_ => {
+                this.gamersList[_.id] = _;
+            });
+        }
         else
             this.gamersList = {};
     }
@@ -59,21 +33,6 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<G
     IGamerStore {
     var clonedState = clonedeep(state);
     switch (action.type) {
-        /**
-         * Секция получения ионформации о текущем игроке сессии
-         */
-        case GamerActionsType.PROC_GET_CURRENT_GAMER:
-            Object.assign(state.currentGamer, { holding: true });
-            return state;
-
-        case GamerActionsType.SUCC_GET_CURRENT_GAMER:
-            clonedState.currentGamer = action.currentGamer;
-            return clonedState;
-
-        case GamerActionsType.FAILED_GET_CURRENT_GAMER:
-            Object.assign(state.currentGamer, { holding: false });
-            return state;
-
         /**
          * Секция получения информации о списке игроков в гильдии
          */

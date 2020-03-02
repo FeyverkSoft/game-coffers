@@ -9,10 +9,11 @@ import { PrivateRoute } from './_components/PrivateRoute';
 import { NotFoundController } from './controller/NotFoundController';
 import { BirthdayController } from './controller/BirthdayController';
 import { AuthController } from './controller/AuthController';
+import { ProfileController } from './controller/ProfileController';
 import { Lang } from './_services';
 import { HeaderLink } from './_components/Header/HeaderLink';
-import { ProfileButton } from './_components/ProfileButton/ProfileButton';
 import { LogOutController } from './controller/LogOutController';
+import { ProfileButton } from './_components/Profile/ProfileButton';
 
 
 const { Content, Footer } = Layout;
@@ -21,8 +22,8 @@ export const App = ({ ...props }) => {
   return (
     <Layout className="layout">
       <Router
-        history={history} 
-        >
+        history={history}
+      >
         <Header>
           <Link to="./">
             <Logo />
@@ -57,7 +58,7 @@ export const App = ({ ...props }) => {
           <TryCatch>
             <Switch>
               <Route path='/auth' component={AuthController} />
-              <PrivateRoute path='/profile' component={LogOutController} />
+              <PrivateRoute path='/profile' component={ProfileController} />
               <PrivateRoute path='/logout' component={LogOutController} />
               <PrivateRoute path='/birthday' component={BirthdayController} />
               {/* <PrivateRoute path="/" component={MainController} />*/}

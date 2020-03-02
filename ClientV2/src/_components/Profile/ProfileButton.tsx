@@ -1,8 +1,8 @@
+import * as React from 'react';
 import { NavLink } from "react-router-dom";
-import React from "react";
 import { IStore } from "../../_helpers";
 import { connect } from "react-redux";
-import { gamerInstance } from "../../_actions";
+import { profileInstance } from "../../_actions";
 import { Button, Icon } from "antd";
 
 interface ProfileButtonProps extends React.Props<any> {
@@ -33,15 +33,15 @@ class _profileButton extends React.Component<ProfileButtonProps> {
 
 const connectedProfileButton = connect<any, any, any, IStore>(
     (state: IStore) => {
-        const { currentGamer } = state.gamers;
+        const { profile } = state.profile;
         return {
-            isLoading: currentGamer.holding || false,
-            name: currentGamer.name
+            isLoading: profile.holding || false,
+            name: profile.name
         };
     },
     (dispatch: Function) => {
         return {
-            GetCurrentGamer: () => dispatch(gamerInstance.GetCurrentGamer()),
+            GetCurrentGamer: () => dispatch(profileInstance.Get()),
         }
     })(_profileButton);
 
