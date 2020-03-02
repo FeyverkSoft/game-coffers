@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { LangF, Lang } from '../_services';
-import { Card, Breadcrumb, Icon } from 'antd';
+import { Card, Breadcrumb } from 'antd';
+import { HomeOutlined } from '@ant-design/icons';
 import style from './auth.module.scss';
 import { Content } from '../_components/Content/Content';
 import { Link } from 'react-router-dom';
@@ -11,7 +12,7 @@ export class NotFoundController extends React.Component {
             <Content>
                 <Breadcrumb>
                     <Breadcrumb.Item>
-                        <Icon type="home" />
+                        <HomeOutlined />
                         <Link to={"/"} />
                     </Breadcrumb.Item>
                     <Breadcrumb.Item href="">

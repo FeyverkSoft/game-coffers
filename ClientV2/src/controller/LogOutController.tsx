@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { LoginForm } from '../_components/LoginForm/LoginForm';
-import { Card, Button, Breadcrumb, Icon } from 'antd';
+import { Card, Button, Breadcrumb } from 'antd';
+import { HomeOutlined } from '@ant-design/icons';
 import { Lang } from '../_services';
 import style from './auth.module.scss';
 import { sessionInstance } from '../_actions/session.actions';
@@ -19,7 +20,7 @@ const _LogOutController = ({ ...props }: LogOutControllerProps) => {
             <Breadcrumb>
                 <Breadcrumb.Item>
                     <Link to={"/"} >
-                        <Icon type="home" />
+                        <HomeOutlined />
                     </Link>
                 </Breadcrumb.Item>
                 <Breadcrumb.Item>

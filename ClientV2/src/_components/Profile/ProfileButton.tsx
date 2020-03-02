@@ -3,7 +3,8 @@ import { NavLink } from "react-router-dom";
 import { IStore } from "../../_helpers";
 import { connect } from "react-redux";
 import { profileInstance } from "../../_actions";
-import { Button, Icon } from "antd";
+import { Button } from "antd";
+import { UserOutlined } from '@ant-design/icons';
 
 interface ProfileButtonProps extends React.Props<any> {
     isLoading: boolean,
@@ -23,7 +24,7 @@ class _profileButton extends React.Component<ProfileButtonProps> {
                 <Button
                     loading={this.props.isLoading}
                 >
-                    <Icon type="user" />
+                    <UserOutlined />
                     {this.props.name}
                 </Button>
             </NavLink>

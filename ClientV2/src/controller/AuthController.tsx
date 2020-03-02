@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { LoginForm } from '../_components/LoginForm/LoginForm';
-import { Card, Breadcrumb, Icon } from 'antd';
+import { Card, Breadcrumb } from 'antd';
+import { HomeOutlined } from '@ant-design/icons';
 import { Lang } from '../_services';
 import style from './auth.module.scss';
 import { Content } from '../_components/Content/Content';
@@ -13,7 +14,7 @@ export class AuthController extends React.Component {
                 <Breadcrumb>
                     <Breadcrumb.Item>
                         <Link to={"/"} >
-                            <Icon type="home" />
+                            <HomeOutlined />
                         </Link>
                     </Breadcrumb.Item>
                     <Breadcrumb.Item>

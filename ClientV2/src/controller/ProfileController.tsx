@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Breadcrumb, Icon, Layout, Col, Row } from 'antd';
+import { Breadcrumb, Layout, Col, Row } from 'antd';
+import { HomeOutlined } from '@ant-design/icons';
 import { Lang, IProfile } from '../_services';
 import style from './profile.module.scss';
 import { connect } from 'react-redux';
@@ -32,7 +33,7 @@ export class _ProfileController extends React.Component<IProfileProps, any> {
             <Breadcrumb>
                 <Breadcrumb.Item>
                     <Link to={"/"} >
-                        <Icon type="home" />
+                        <HomeOutlined />
                     </Link>
                 </Breadcrumb.Item>
                 <Breadcrumb.Item>
@@ -43,13 +44,13 @@ export class _ProfileController extends React.Component<IProfileProps, any> {
             </Breadcrumb>
             <Layout>
                 <Row gutter={[16, 16]}>
-                    <Col span={12} >
+                    <Col span={8} >
                         <ProfileCard
                             profile={this.props.profile}
                             isLoading={this.props.profile.holding !== false}
                         />
                     </Col>
-                    <Col span={12} ></Col>
+                    <Col span={8} ></Col>
                 </Row>
             </Layout>
         </Content>

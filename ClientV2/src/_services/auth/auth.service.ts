@@ -51,7 +51,7 @@ export class authService {
     static async logOut(): Promise<any> {
         let session = authService.getCurrentSession();
         if (session) {
-            return fetch(`${Config.BuildUrl('/session')}/${session.sessionId}`, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + session.sessionId } })
+            return fetch(`${Config.BuildUrl('/session')}`, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + session.sessionId } })
                 .then<BaseResponse>(getResponse)
                 .then((data: any) => {
                     authService.clearLocalSession();

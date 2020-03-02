@@ -1,7 +1,8 @@
 import React from "react";
 import { Lang, IGamersListView } from '../_services';
 import { ICharacter } from '../_services/guild/ICharacter';
-import { Card, Table, Breadcrumb, Icon } from 'antd';
+import { Card, Table, Breadcrumb } from 'antd';
+import { HomeOutlined } from '@ant-design/icons';
 import { memoize } from "lodash";
 import { connect } from "react-redux";
 import { IStore, BlendColor } from "../_helpers";
@@ -96,7 +97,7 @@ export class _BirthdayController extends React.Component<IMainProps, IBDState> {
                 <Breadcrumb>
                     <Breadcrumb.Item>
                         <Link to={"/"} >
-                            <Icon type="home" />
+                            <HomeOutlined/>
                         </Link>
                     </Breadcrumb.Item>
                     <Breadcrumb.Item>
@@ -118,7 +119,7 @@ export class _BirthdayController extends React.Component<IMainProps, IBDState> {
                                 this.setState({ filter: value });
                             }}
                         />
-                        <Table
+                        {/*<Table
                             size='middle'
                             rowKey="id"
                             columns={columns}
@@ -135,7 +136,7 @@ export class _BirthdayController extends React.Component<IMainProps, IBDState> {
                                         id: _.id
                                     }
                                 })}
-                        />
+                        />*/}
                     </Card>
                 </div>
             </Content>

@@ -82,6 +82,7 @@ export class profileService {
                 return new Profile(
                     data.userId,
                     data.name,
+                    data.characterName,
                     Number(data.balance || 0),
                     Number(data.activeLoanAmount || 0),
                     Number(data.activePenaltyAmount || 0),
