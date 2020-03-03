@@ -51,7 +51,7 @@ const locString: any = {
         TARIFF_LOAN_TAX: 'Стоимость займа в день',
         TARIFF_LOAN_EXPTAX: 'Стоимость просрочки займа',
         USER_CHAR_LIST: 'персонажи игрока: {0}',
-        USER_CHAR_COUNT: 'Персонажей у игрока',
+        USER_CHAR_COUNT: 'Персонажей',
         USER_ROW_STATUS: 'Статус',
         USER_ROW_RANK: 'Ранг',
         OPERATION: 'Операция',
@@ -143,6 +143,7 @@ const locString: any = {
         OPERATION_TOUSERID: 'Пользователю:',
         OPERATION_PENALTY: 'Уплата штрафа',
         OPERATION_LOANS: 'Уплата займа',
+        USER_AMOUNT_PENALTIES: 'Непогашеных штрафов на'
     }
 };
 

@@ -111,6 +111,23 @@ namespace Coffers.Public.WebApi.Controllers
         }
 
         /// <summary>
+        /// Get user tax
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet("/gamers/current/tax")]
+        [ProducesResponseType(typeof(UserTaxView), 200)]
+        public async Task<IActionResult> GetTax(
+            [FromServices] IQueryProcessor queryProcessor,
+            CancellationToken cancellationToken)
+        {
+            return Ok(await queryProcessor.Process<UserTaxViewQuery, UserTaxView>(new UserTaxViewQuery(
+                HttpContext.GetUserId(),
+                HttpContext.GetGuildId()), cancellationToken));
+        }
+
+        /// <summary>
         /// Remove character
         /// </summary>
         /// <param name="userId"></param>

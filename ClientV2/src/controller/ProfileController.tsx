@@ -51,8 +51,10 @@ export class _ProfileController extends React.Component<IProfileProps, any> {
                             isLoading={profile.holding !== false}
                         />
                     </Col>
-                    <Col xs={24} sm={12} md={4} lg={3} xl={3} >
-                        <Card style={{ boxShadow: '0 2px 2px rgba(0, 0, 0, 0.14), 1px 2px 3px rgba(0, 0, 0, 0.12)' }}>
+                    <Col xs={24} sm={12} md={4} lg={3} xl={2} >
+                        <Card
+                            loading={profile.holding}
+                            style={{ boxShadow: '0 2px 2px rgba(0, 0, 0, 0.14), 1px 2px 3px rgba(0, 0, 0, 0.12)' }}>
                             <Statistic
                                 title={Lang('USER_CHAR_COUNT')}
                                 valueStyle={{ color: '#3f8600' }}
@@ -62,33 +64,42 @@ export class _ProfileController extends React.Component<IProfileProps, any> {
                     </Col>
                     <Col xs={24} sm={12} md={4} lg={3} xl={2} >
                         <Card
+                            loading={profile.holding}
                             style={{ boxShadow: '0 2px 2px rgba(0, 0, 0, 0.14), 1px 2px 3px rgba(0, 0, 0, 0.12)' }}
                         >
                             <Statistic
                                 title={Lang('USER_ROW_BALANCE')}
                                 value={profile.balance}
-                                precision={2} />
+                                precision={2}
+                                suffix="G"
+                            />
                         </Card>
                     </Col>
                     <Col xs={24} sm={12} md={6} lg={4} xl={3} >
                         <Card
+                            loading={profile.holding}
                             style={{ boxShadow: '0 2px 2px rgba(0, 0, 0, 0.14), 1px 2px 3px rgba(0, 0, 0, 0.12)' }}
                         >
                             <Statistic
                                 title={Lang('USER_LOAN_AMOUNT')}
                                 value={profile.activeLoanAmount}
-                                precision={2} />
+                                precision={2}
+                                suffix="G"
+                            />
                         </Card>
                     </Col>
                     <Col xs={24} sm={12} md={6} lg={4} xl={3} >
                         <Card
+                            loading={profile.holding}
                             style={{ boxShadow: '0 2px 2px rgba(0, 0, 0, 0.14), 1px 2px 3px rgba(0, 0, 0, 0.12)' }}
                         >
                             <Statistic
-                                title={Lang('USER_ROW_PENALTIES')}
+                                title={Lang('USER_AMOUNT_PENALTIES')}
                                 valueStyle={{ color: '#cf1322' }}
                                 value={profile.activePenaltyAmount}
-                                precision={2} />
+                                precision={2}
+                                suffix="G"
+                            />
                         </Card>
                     </Col>
                 </Row>

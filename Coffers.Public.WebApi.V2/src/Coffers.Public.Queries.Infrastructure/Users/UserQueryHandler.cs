@@ -16,7 +16,8 @@ namespace Coffers.Public.Queries.Infrastructure.Users
     public class UserQueryHandler :
         IQueryHandler<GetGamersQuery, ICollection<GamersListView>>,
         IQueryHandler<ProfileViewQuery, ProfileView>,
-        IQueryHandler<CharacterViewQuery, IEnumerable<CharacterView>>
+        IQueryHandler<CharacterViewQuery, IEnumerable<CharacterView>>,
+        IQueryHandler<UserTaxViewQuery, UserTaxView>
 
     {
         private readonly IDbConnection _db;
@@ -112,6 +113,21 @@ namespace Coffers.Public.Queries.Infrastructure.Users
                 ch.ClassName,
                 ch.IsMain,
                 ch.UserId));
+        }
+
+        async Task<UserTaxView> IQueryHandler<UserTaxViewQuery, UserTaxView>.Handle(UserTaxViewQuery query, CancellationToken cancellationToken)
+        {
+            var tax = await _db.QuerySingleAsync<Entity.Profile.UserTaxView>(Entity.Profile.UserTaxView.Sql, new
+            {
+                GuildId = query.GuildId,
+                UserId = query.UserId
+            });
+
+            if (String.IsNullOrEmpty(tax.TaxTariff))
+                return new UserTaxView(tax.UserId, 0, new List<Decimal>());
+            var taxes = tax.TaxTariff.TryParseJson<IList<Decimal>>() ?? new List<Decimal>();
+            var taxAmount = taxes.Count > 0 ? taxes[tax.CharCount % taxes.Count] * tax.CharCount : 0;
+            return new UserTaxView(tax.UserId, taxAmount, taxes);
         }
     }
 }
