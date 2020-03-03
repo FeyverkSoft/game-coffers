@@ -2,7 +2,7 @@ import * as React from 'react';
 import 'antd/es/col/style/css'
 import 'antd/es/row/style/css'
 import { Button, Card, Avatar, Col, Row } from "antd";
-import { IProfile, Lang } from "../../_services";
+import { IProfile, DLang } from "../../_services";
 import { IF } from '../../_helpers'
 
 const colorArray = ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
@@ -28,25 +28,29 @@ export const ProfileCard = ({ ...props }: IProfileCardProps) => {
         loading={props.isLoading}
     >
         <Row gutter={[16, 16]} justify='center' align={'middle'}>
-            <Col>
-                <Avatar
-                    size='large'
-                    style={{
-                        backgroundColor: colorArray[index]
-                    }}
-                >
-                    {profile.name[0]}
-                </Avatar>
-            </Col>
+            <Avatar
+                size='large'
+                style={{
+                    backgroundColor: colorArray[index]
+                }}
+            >
+                {profile.name[0]}
+            </Avatar>
         </Row>
-        <Row gutter={[16, 16]} justify='center' align={'middle'}>
+        <Row gutter={[16, 16]} justify='center' align='middle'>
             <span style={{
                 fontWeight: 500
-            }}>{profile.name}
+            }}>{profile.name}&nbsp;
                 <IF value={profile.characterName}>
-                    - {profile.characterName}
+                    -&nbsp;{profile.characterName}
                 </IF>
             </span>
+        </Row>
+        <Row gutter={[16, 16]} justify='center' align='middle'>
+            {DLang('USER_ROLE', profile.rank)}
+            {`${profile.dateOfBirth.getDate() > 9 ? profile.dateOfBirth.getDate() :
+                 '0' + profile.dateOfBirth.getDate()}-${profile.dateOfBirth.getMonth() + 1 > 9 ? profile.dateOfBirth.getMonth() 
+                 : '0' + profile.dateOfBirth.getMonth()}`}
         </Row>
     </Card>)
 }

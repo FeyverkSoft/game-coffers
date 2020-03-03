@@ -87,7 +87,9 @@ export class profileService {
                     Number(data.activeLoanAmount || 0),
                     Number(data.activePenaltyAmount || 0),
                     data.rank,
-                    data.charCount || 0);
+                    data.charCount || 0,
+                    data.dateOfBirth
+                    );
             })
             .catch(catchHandle);
     }

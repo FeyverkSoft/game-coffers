@@ -87,11 +87,14 @@ namespace Coffers.Public.Queries.Infrastructure.Users
                 profile.UserId,
                 profile.Name,
                 profile.Rank,
+                profile.CharacterName,
                 profile.CharCount,
                 profile.Balance,
                 profile.ActiveLoanAmount,
                 profile.ActivePenaltyAmount,
-                profile.ActiveLoanTaxAmount);
+                profile.ActiveLoanTaxAmount,
+                profile.DateOfBirth
+                );
         }
 
         async Task<IEnumerable<CharacterView>> IQueryHandler<CharacterViewQuery, IEnumerable<CharacterView>>.Handle(CharacterViewQuery query, CancellationToken cancellationToken)
