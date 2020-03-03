@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Breadcrumb, Layout, Col, Row } from 'antd';
+import { Breadcrumb, Layout, Col, Row, Statistic, Card } from 'antd';
 import { HomeOutlined } from '@ant-design/icons';
 import { Lang, IProfile } from '../_services';
 import style from './profile.module.scss';
@@ -29,6 +29,7 @@ export class _ProfileController extends React.Component<IProfileProps, any> {
     }
 
     render = () => {
+        let { profile } = this.props;
         return <Content>
             <Breadcrumb>
                 <Breadcrumb.Item>
@@ -44,13 +45,52 @@ export class _ProfileController extends React.Component<IProfileProps, any> {
             </Breadcrumb>
             <Layout>
                 <Row gutter={[16, 16]}>
-                    <Col span={8} >
+                    <Col xs={24} sm={24} md={8} lg={6} xl={6}>
                         <ProfileCard
-                            profile={this.props.profile}
-                            isLoading={this.props.profile.holding !== false}
+                            profile={profile}
+                            isLoading={profile.holding !== false}
                         />
                     </Col>
-                    <Col span={8} ></Col>
+                    <Col xs={24} sm={12} md={4} lg={3} xl={3} >
+                        <Card style={{ boxShadow: '0 2px 2px rgba(0, 0, 0, 0.14), 1px 2px 3px rgba(0, 0, 0, 0.12)' }}>
+                            <Statistic
+                                title={Lang('USER_CHAR_COUNT')}
+                                valueStyle={{ color: '#3f8600' }}
+                                value={profile.charCount}
+                                precision={0} />
+                        </Card>
+                    </Col>
+                    <Col xs={24} sm={12} md={4} lg={3} xl={2} >
+                        <Card
+                            style={{ boxShadow: '0 2px 2px rgba(0, 0, 0, 0.14), 1px 2px 3px rgba(0, 0, 0, 0.12)' }}
+                        >
+                            <Statistic
+                                title={Lang('USER_ROW_BALANCE')}
+                                value={profile.balance}
+                                precision={2} />
+                        </Card>
+                    </Col>
+                    <Col xs={24} sm={12} md={6} lg={4} xl={3} >
+                        <Card
+                            style={{ boxShadow: '0 2px 2px rgba(0, 0, 0, 0.14), 1px 2px 3px rgba(0, 0, 0, 0.12)' }}
+                        >
+                            <Statistic
+                                title={Lang('USER_LOAN_AMOUNT')}
+                                value={profile.activeLoanAmount}
+                                precision={2} />
+                        </Card>
+                    </Col>
+                    <Col xs={24} sm={12} md={6} lg={4} xl={3} >
+                        <Card
+                            style={{ boxShadow: '0 2px 2px rgba(0, 0, 0, 0.14), 1px 2px 3px rgba(0, 0, 0, 0.12)' }}
+                        >
+                            <Statistic
+                                title={Lang('USER_ROW_PENALTIES')}
+                                valueStyle={{ color: '#cf1322' }}
+                                value={profile.activePenaltyAmount}
+                                precision={2} />
+                        </Card>
+                    </Col>
                 </Row>
             </Layout>
         </Content>

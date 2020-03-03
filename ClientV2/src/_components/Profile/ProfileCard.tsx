@@ -1,8 +1,6 @@
 import * as React from 'react';
-import 'antd/es/col/style/css'
-import 'antd/es/row/style/css'
-import { Button, Card, Avatar, Col, Row } from "antd";
-import { IProfile, DLang } from "../../_services";
+import { Card, Avatar, Row } from "antd";
+import { IProfile, DLang, Lang } from "../../_services";
 import { IF } from '../../_helpers'
 
 const colorArray = ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
@@ -23,15 +21,24 @@ export interface IProfileCardProps extends React.Props<any> {
 
 export const ProfileCard = ({ ...props }: IProfileCardProps) => {
     let { profile } = props;
-    let index = profile.name.charCodeAt(0) % colorArray.length;
+    let { month, day, year } = {
+        month: profile.dateOfBirth.getMonth() + 1,
+        day: profile.dateOfBirth.getDay(),
+        year: profile.dateOfBirth.getFullYear()
+    }
+    let color = colorArray[profile.name.charCodeAt(0) % colorArray.length];
     return (<Card
         loading={props.isLoading}
+        style={{
+            background: 'linear-gradient(29deg, rgba(255,242,220,1) 0%, rgba(233,233,255,1) 40%, rgba(239,223,255,1) 100%)',
+            boxShadow: '0 2px 2px rgba(0, 0, 0, 0.14), 1px 2px 3px rgba(0, 0, 0, 0.12)'
+        }}
     >
         <Row gutter={[16, 16]} justify='center' align={'middle'}>
             <Avatar
                 size='large'
                 style={{
-                    backgroundColor: colorArray[index]
+                    backgroundColor: color
                 }}
             >
                 {profile.name[0]}
@@ -47,10 +54,9 @@ export const ProfileCard = ({ ...props }: IProfileCardProps) => {
             </span>
         </Row>
         <Row gutter={[16, 16]} justify='center' align='middle'>
-            {DLang('USER_ROLE', profile.rank)}
-            {`${profile.dateOfBirth.getDate() > 9 ? profile.dateOfBirth.getDate() :
-                 '0' + profile.dateOfBirth.getDate()}-${profile.dateOfBirth.getMonth() + 1 > 9 ? profile.dateOfBirth.getMonth() 
-                 : '0' + profile.dateOfBirth.getMonth()}`}
+            {DLang('USER_ROLE', profile.rank)},&nbsp;
+            {Lang('DATEOFBIRTH')}:&nbsp;
+            {`${year}-${month + 1 > 9 ? month : '0' + month}-${day > 9 ? day : '0' + day}`}
         </Row>
     </Card>)
 }

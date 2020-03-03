@@ -119,7 +119,7 @@ export class _BirthdayController extends React.Component<IMainProps, IBDState> {
                                 this.setState({ filter: value });
                             }}
                         />
-                        {/*<Table
+                        {<Table
                             size='middle'
                             rowKey="id"
                             columns={columns}
@@ -136,7 +136,7 @@ export class _BirthdayController extends React.Component<IMainProps, IBDState> {
                                         id: _.id
                                     }
                                 })}
-                        />*/}
+                        />}
                     </Card>
                 </div>
             </Content>

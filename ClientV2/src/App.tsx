@@ -40,6 +40,11 @@ export const App = ({ ...props }) => {
                   {Lang('PROFILE')}
                 </HeaderLink>
               </Menu.Item>
+              <Menu.Item key="/operations" >
+                <HeaderLink to="/operations" exact>
+                  {Lang('OPERATIONS')}
+                </HeaderLink>
+              </Menu.Item>
               <Menu.Item key="/">
                 <HeaderLink to="/" exact>
                   {Lang('COFFERS')}
