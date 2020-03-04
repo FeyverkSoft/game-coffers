@@ -93,7 +93,7 @@ const locString: any = {
         USER_PENALTY_AMOUNT: "ШТРАФ: {0}",
         USER_BALANCE: 'Ваш баланс',
         USER_TITLE: "Вы",
-        USER_TAX_AMOUNT: 'Сумма налога с учётом скидки',
+        USER_TAX_AMOUNT: 'Сумма налога',
         USER_LOAN_AMOUNT: 'Сумма активных займов',
         NEW_LOAN_MODAL: 'Новый займ',
         NEW_PENALTY_MODAL: 'Новый штраф',

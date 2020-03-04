@@ -3,14 +3,16 @@ import { BaseResponse } from '..';
 import { Config } from '../../core';
 import { authService } from '..';
 import { IProfile, Profile } from './IProfile';
+import { ITax, UserTax } from './ITax';
 
 export class profileService {
+    
     /**
      * Добавить нового персонажа игроку
      * @param name 
      * @param className 
      */
-    static async AddNewChar(name: string, className: string): Promise<void> {
+    static async AddNewChar(name: string, className: string, isMain: boolean): Promise<void> {
         let session = authService.getCurrentSession();
         const requestOptions: RequestInit = {
             method: 'PUT',
@@ -22,7 +24,7 @@ export class profileService {
             },
             body: JSON.stringify({ name: name, className: className })
         };
-        return await fetch(Config.BuildUrl(`/profile/characters`), requestOptions)
+        return await fetch(Config.BuildUrl(`/gamers/current/characters`), requestOptions)
             .then<BaseResponse>(getResponse)
             .then(data => {
                 if (data && data.type || data.traceId) {
@@ -34,10 +36,9 @@ export class profileService {
 
     /**
      * Удалить персонажа у игрока
-     * @param name 
-     * @param className 
+     * @param id 
      */
-    static async DeleteChar(name: string): Promise<void> {
+    static async DeleteChar(id: string): Promise<void> {
         let session = authService.getCurrentSession();
         const requestOptions: RequestInit = {
             method: 'DELETE',
@@ -47,9 +48,8 @@ export class profileService {
                 'accept': 'application/json',
                 'Authorization': 'Bearer ' + session.sessionId
             },
-            body: JSON.stringify({ name: name })
         };
-        return await fetch(Config.BuildUrl(`/profile/characters`), requestOptions)
+        return await fetch(Config.BuildUrl(`/gamers/current/characters/${id}`), requestOptions)
             .then<BaseResponse>(getResponse)
             .then(data => {
                 if (data && data.type || data.traceId) {
@@ -89,7 +89,33 @@ export class profileService {
                     data.rank,
                     data.charCount || 0,
                     data.dateOfBirth
-                    );
+                );
+            })
+            .catch(catchHandle);
+    }
+
+    static async GetTax(): Promise<ITax> {
+        let session = authService.getCurrentSession();
+        const requestOptions: RequestInit = {
+            method: 'GET',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+                'Authorization': 'Bearer ' + session.sessionId
+            }
+        };
+        return await fetch(Config.BuildUrl(`/gamers/current/tax`), requestOptions)
+            .then<BaseResponse & ITax>(getResponse)
+            .then(data => {
+                if (data && data.type || data.traceId) {
+                    return errorHandle(data);
+                }
+                return new UserTax(
+                    data.userId,
+                    data.taxAmount,
+                    data.taxTariff
+                );
             })
             .catch(catchHandle);
     }

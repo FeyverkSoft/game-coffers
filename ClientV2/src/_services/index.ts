@@ -16,5 +16,6 @@ export * from './guild/guild.service';
 export * from './gamer/gamer.service';
 export * from './operation/operation.service';
 export * from './profile/IProfile';
+export * from './profile/ITax';
 export * from './profile/profile.service';
 export * from "./lang.service";

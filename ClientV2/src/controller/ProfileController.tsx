@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Breadcrumb, Layout, Col, Row, Statistic, Card } from 'antd';
 import { HomeOutlined } from '@ant-design/icons';
-import { Lang, IProfile } from '../_services';
+import { Lang, IProfile, ITax } from '../_services';
 import style from './profile.module.scss';
 import { connect } from 'react-redux';
 import { IStore } from '../_helpers/store';
@@ -13,7 +13,9 @@ import { ProfileCard } from '../_components/Profile/ProfileCard';
 
 interface IProfileProps {
     Get: Function;
+    GetTax: Function;
     profile: IProfile & IHolded;
+    tax: ITax & IHolded;
 }
 
 export class _ProfileController extends React.Component<IProfileProps, any> {
@@ -26,10 +28,12 @@ export class _ProfileController extends React.Component<IProfileProps, any> {
     componentDidMount() {
         if (this.props.profile == undefined)
             this.props.Get();
+        if (this.props.tax == undefined || !this.props.tax.userId)
+            this.props.GetTax();
     }
 
     render = () => {
-        let { profile } = this.props;
+        let { profile, tax } = this.props;
         return <Content>
             <Breadcrumb>
                 <Breadcrumb.Item>
@@ -102,6 +106,20 @@ export class _ProfileController extends React.Component<IProfileProps, any> {
                             />
                         </Card>
                     </Col>
+                    <Col xs={24} sm={12} md={6} lg={4} xl={3} >
+                        <Card
+                            loading={profile.holding}
+                            style={{ boxShadow: '0 2px 2px rgba(0, 0, 0, 0.14), 1px 2px 3px rgba(0, 0, 0, 0.12)' }}
+                        >
+                            <Statistic
+                                title={Lang('USER_TAX_AMOUNT')}
+                                value={tax.taxAmount}
+                                precision={2}
+                                suffix="G"
+                            />
+                            {tax.taxTariff.map((_, i) => <span>{i+1} - {_} </span>)}
+                        </Card>
+                    </Col>
                 </Row>
             </Layout>
         </Content>
@@ -110,12 +128,13 @@ export class _ProfileController extends React.Component<IProfileProps, any> {
 
 const connectedProfileController = connect<{}, {}, {}, IStore>(
     (state: IStore) => {
-        const { profile } = state.profile;
-        return { profile };
+        const { profile, tax } = state.profile;
+        return { profile, tax };
     },
     (dispatch: Function) => {
         return {
             Get: () => dispatch(profileInstance.Get()),
+            GetTax: () => dispatch(profileInstance.GetTax()),
         }
     })(_ProfileController);
 

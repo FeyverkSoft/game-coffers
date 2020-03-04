@@ -48,6 +48,8 @@ namespace Coffers.Public.WebApi.Controllers
             return Ok(new { });
         }
 
+        #region Users
+
         [Authorize]
         [PermissionRequired("admin", "officer", "leader")]
         [HttpPost("/gamers/{id}/characters")]
@@ -74,57 +76,6 @@ namespace Coffers.Public.WebApi.Controllers
 
             userRepository.Save(user);
             return Ok(new { });
-        }
-
-        /// <summary>
-        /// Get profile
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        [Authorize]
-        [HttpGet("/gamers/current/profile")]
-        [ProducesResponseType(typeof(ProfileView), 200)]
-        public async Task<IActionResult> GetProfile(
-            [FromServices] IQueryProcessor queryProcessor,
-            CancellationToken cancellationToken)
-        {
-            return Ok(await queryProcessor.Process<ProfileViewQuery, ProfileView>(new ProfileViewQuery(
-                HttpContext.GetUserId(),
-                HttpContext.GetGuildId()), cancellationToken));
-        }
-
-        /// <summary>
-        /// Get profile
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        [Authorize]
-        [HttpGet("/gamers/current/characters")]
-        [ProducesResponseType(typeof(IEnumerable<CharacterView>), 200)]
-        public async Task<IActionResult> GetCharacters(
-            [FromServices] IQueryProcessor queryProcessor,
-            CancellationToken cancellationToken)
-        {
-            return Ok(await queryProcessor.Process<CharacterViewQuery, IEnumerable<CharacterView>>(new CharacterViewQuery(
-                HttpContext.GetUserId(),
-                HttpContext.GetGuildId()), cancellationToken));
-        }
-
-        /// <summary>
-        /// Get user tax
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        [Authorize]
-        [HttpGet("/gamers/current/tax")]
-        [ProducesResponseType(typeof(UserTaxView), 200)]
-        public async Task<IActionResult> GetTax(
-            [FromServices] IQueryProcessor queryProcessor,
-            CancellationToken cancellationToken)
-        {
-            return Ok(await queryProcessor.Process<UserTaxViewQuery, UserTaxView>(new UserTaxViewQuery(
-                HttpContext.GetUserId(),
-                HttpContext.GetGuildId()), cancellationToken));
         }
 
         /// <summary>
@@ -156,57 +107,6 @@ namespace Coffers.Public.WebApi.Controllers
             catch (CharacterNotFound e)
             {
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.CharacterNotFound, e.Message);
-            }
-
-            userRepository.Save(user);
-            return Ok(new { });
-        }
-
-        /// <summary>
-        /// Remove character
-        /// </summary>
-        /// <param name="characterId"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        [Authorize]
-        [HttpDelete("/gamers/current/characters/{characterId}")]
-        [ProducesResponseType(200)]
-        public async Task<IActionResult> SelfDeleteCharacter(
-            [FromRoute] Guid characterId,
-            [FromServices] Domain.Users.IUserRepository userRepository,
-            CancellationToken cancellationToken)
-        {
-            var user = await userRepository.Get(HttpContext.GetUserId(), HttpContext.GetGuildId(), cancellationToken);
-            try
-            {
-                user.CharacterRemove(characterId);
-            }
-            catch (CharacterNotFound e)
-            {
-                throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.CharacterNotFound, e.Message);
-            }
-            userRepository.Save(user);
-            return Ok(new { });
-        }
-
-        [Authorize]
-        [PermissionRequired("admin", "officer", "leader")]
-        [HttpPost("/gamers/current/characters")]
-        [ProducesResponseType(201)]
-        public async Task<IActionResult> SelfAddCharacter(
-            [FromBody] AddCharacterBinding binding,
-            [FromServices] Domain.Users.IUserRepository userRepository,
-            CancellationToken cancellationToken)
-        {
-            var user = await userRepository.Get(HttpContext.GetUserId(), HttpContext.GetGuildId(), cancellationToken);
-
-            try
-            {
-                user.AddCharacter(binding.Name, binding.ClassName, binding.IsMain);
-            }
-            catch (CharacterAlreadyExists e)
-            {
-                throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.CharacterAlreadyExists, e.Message, e.Character.ToDictionary(), e);
             }
 
             userRepository.Save(user);
@@ -266,5 +166,110 @@ namespace Coffers.Public.WebApi.Controllers
             userRepository.Save(user);
             return Ok(new { });
         }
+#endregion
+
+        #region current
+        /// <summary>
+        /// Get profile
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet("/gamers/current/profile")]
+        [ProducesResponseType(typeof(ProfileView), 200)]
+        public async Task<IActionResult> GetProfile(
+            [FromServices] IQueryProcessor queryProcessor,
+            CancellationToken cancellationToken)
+        {
+            return Ok(await queryProcessor.Process<ProfileViewQuery, ProfileView>(new ProfileViewQuery(
+                HttpContext.GetUserId(),
+                HttpContext.GetGuildId()), cancellationToken));
+        }
+
+        /// <summary>
+        /// Get profile
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet("/gamers/current/characters")]
+        [ProducesResponseType(typeof(IEnumerable<CharacterView>), 200)]
+        public async Task<IActionResult> GetCharacters(
+            [FromServices] IQueryProcessor queryProcessor,
+            CancellationToken cancellationToken)
+        {
+            return Ok(await queryProcessor.Process<CharacterViewQuery, IEnumerable<CharacterView>>(new CharacterViewQuery(
+                HttpContext.GetUserId(),
+                HttpContext.GetGuildId()), cancellationToken));
+        }
+
+        /// <summary>
+        /// Get user tax
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet("/gamers/current/tax")]
+        [ProducesResponseType(typeof(UserTaxView), 200)]
+        public async Task<IActionResult> GetTax(
+            [FromServices] IQueryProcessor queryProcessor,
+            CancellationToken cancellationToken)
+        {
+            return Ok(await queryProcessor.Process<UserTaxViewQuery, UserTaxView>(new UserTaxViewQuery(
+                HttpContext.GetUserId(),
+                HttpContext.GetGuildId()), cancellationToken));
+        }
+
+        /// <summary>
+        /// Remove character
+        /// </summary>
+        /// <param name="characterId"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpDelete("/gamers/current/characters/{characterId}")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> SelfDeleteCharacter(
+            [FromRoute] Guid characterId,
+            [FromServices] Domain.Users.IUserRepository userRepository,
+            CancellationToken cancellationToken)
+        {
+            var user = await userRepository.Get(HttpContext.GetUserId(), HttpContext.GetGuildId(), cancellationToken);
+            try
+            {
+                user.CharacterRemove(characterId);
+            }
+            catch (CharacterNotFound e)
+            {
+                throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.CharacterNotFound, e.Message);
+            }
+            userRepository.Save(user);
+            return Ok(new { });
+        }
+
+        [Authorize]
+        [PermissionRequired("admin", "officer", "leader")]
+        [HttpPost("/gamers/current/characters")]
+        [ProducesResponseType(201)]
+        public async Task<IActionResult> SelfAddCharacter(
+            [FromBody] AddCharacterBinding binding,
+            [FromServices] Domain.Users.IUserRepository userRepository,
+            CancellationToken cancellationToken)
+        {
+            var user = await userRepository.Get(HttpContext.GetUserId(), HttpContext.GetGuildId(), cancellationToken);
+
+            try
+            {
+                user.AddCharacter(binding.Name, binding.ClassName, binding.IsMain);
+            }
+            catch (CharacterAlreadyExists e)
+            {
+                throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.CharacterAlreadyExists, e.Message, e.Character.ToDictionary(), e);
+            }
+
+            userRepository.Save(user);
+            return Ok(new { });
+        }
+        #endregion
     }
 }
