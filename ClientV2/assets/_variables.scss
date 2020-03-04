@@ -51,19 +51,19 @@ $font-family: Roboto,
     'Open Sans',
     sans-serif;
 //-----Тени material desing-----//
-$box-shadow-0: 0 2px 2px fade($black, 14%),
-    1px 2px 3px fade($black, 12%);
-$box-shadow-1: 0 2px 4px fade($black, 24%),
-    0 2px 3px fade($black, 22%);
-$box-shadow-2: 0 3px 6px fade($black, 36%),
-    0 3px 6px fade($black, 23%);
-$box-shadow-3: 0 16px 24px 2px fade($black, 14%),
-    0 6px 30px 5px fade($black, 12%),
-    0 8px 10px -5px fade($black, 20%);
-$box-shadow-0-inset: inset 0 2px 2px fade($black, 14%),
-    inset 1px 2px 3px fade($black, 12%);
-$box-shadow-1-inset: inset 0 2px 4px fade($black, 24%),
-    inset 0 2px 3px fade($black, 22%);
+$box-shadow-0: 0 2px 2px transparentize($black, .14),
+    1px 2px 3px transparentize($black, .12);
+$box-shadow-1: 0 2px 4px transparentize($black, .824),
+    0 2px 3px transparentize($black, .822);
+$box-shadow-2: 0 3px 6px transparentize($black, .36),
+    0 3px 6px transparentize($black, .23);
+$box-shadow-3: 0 16px 24px 2px transparentize($black, .14),
+    0 6px 30px 5px transparentize($black, .12),
+    0 8px 10px -5px transparentize($black, .20);
+$box-shadow-0-inset: inset 0 2px 2px transparentize($black, .14),
+    inset 1px 2px 3px transparentize($black, .12);
+$box-shadow-1-inset: inset 0 2px 4px transparentize($black, .24),
+    inset 0 2px 3px transparentize($black, .22);
 //---Disp Size ---//
 $mobile-M: 350px; //моё виденье размеров такое :D
 $mobile-L: 576px; //576px; моё виденье размеров такое :D

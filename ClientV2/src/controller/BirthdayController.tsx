@@ -1,7 +1,7 @@
 import React from "react";
 import { Lang, IGamersListView } from '../_services';
 import { ICharacter } from '../_services/guild/ICharacter';
-import { Card, Table, Breadcrumb } from 'antd';
+import { Card, Table, Breadcrumb, PageHeader } from 'antd';
 import { HomeOutlined } from '@ant-design/icons';
 import { memoize } from "lodash";
 import { connect } from "react-redux";
@@ -97,7 +97,7 @@ export class _BirthdayController extends React.Component<IMainProps, IBDState> {
                 <Breadcrumb>
                     <Breadcrumb.Item>
                         <Link to={"/"} >
-                            <HomeOutlined/>
+                            <HomeOutlined />
                         </Link>
                     </Breadcrumb.Item>
                     <Breadcrumb.Item>
@@ -107,9 +107,10 @@ export class _BirthdayController extends React.Component<IMainProps, IBDState> {
                     </Breadcrumb.Item>
                 </Breadcrumb>
                 <div className={style['bd']}>
-                    <Card
+                    <PageHeader
+                        ghost={false}
+                        subTitle="This is a subtitle"
                         title={Lang("BIRTHDAY_PAGE")}
-                        loading={isLoading}
                         className={style['ant-card']}
                     >
                         <Search
@@ -137,7 +138,7 @@ export class _BirthdayController extends React.Component<IMainProps, IBDState> {
                                     }
                                 })}
                         />}
-                    </Card>
+                    </PageHeader>
                 </div>
             </Content>
         );

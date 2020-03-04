@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Breadcrumb, Layout, Col, Row, Statistic, Card } from 'antd';
+import { Breadcrumb, Layout, Col, Row, Statistic, Steps, Card as AntdCard, PageHeader } from 'antd';
 import { HomeOutlined } from '@ant-design/icons';
 import { Lang, IProfile, ITax } from '../_services';
 import style from './profile.module.scss';
@@ -10,6 +10,8 @@ import { Link } from 'react-router-dom';
 import { profileInstance } from '../_actions/profile/profile.actions';
 import { IHolded } from '../core';
 import { ProfileCard } from '../_components/Profile/ProfileCard';
+import { Card } from '../_components/Base/Card';
+import { TaxCard } from '../_components/Profile/TaxCard';
 
 interface IProfileProps {
     Get: Function;
@@ -49,16 +51,15 @@ export class _ProfileController extends React.Component<IProfileProps, any> {
             </Breadcrumb>
             <Layout>
                 <Row gutter={[16, 16]}>
-                    <Col xs={24} sm={24} md={8} lg={6} xl={6}>
+                    <Col xs={24} sm={24} md={14} lg={8} xl={6}>
                         <ProfileCard
                             profile={profile}
                             isLoading={profile.holding !== false}
                         />
                     </Col>
-                    <Col xs={24} sm={12} md={4} lg={3} xl={2} >
+                    <Col xs={24} sm={12} md={5} lg={4} xl={2} >
                         <Card
-                            loading={profile.holding}
-                            style={{ boxShadow: '0 2px 2px rgba(0, 0, 0, 0.14), 1px 2px 3px rgba(0, 0, 0, 0.12)' }}>
+                            loading={profile.holding}>
                             <Statistic
                                 title={Lang('USER_CHAR_COUNT')}
                                 valueStyle={{ color: '#3f8600' }}
@@ -66,10 +67,9 @@ export class _ProfileController extends React.Component<IProfileProps, any> {
                                 precision={0} />
                         </Card>
                     </Col>
-                    <Col xs={24} sm={12} md={4} lg={3} xl={2} >
+                    <Col xs={24} sm={12} md={5} lg={4} xl={2} >
                         <Card
                             loading={profile.holding}
-                            style={{ boxShadow: '0 2px 2px rgba(0, 0, 0, 0.14), 1px 2px 3px rgba(0, 0, 0, 0.12)' }}
                         >
                             <Statistic
                                 title={Lang('USER_ROW_BALANCE')}
@@ -82,7 +82,6 @@ export class _ProfileController extends React.Component<IProfileProps, any> {
                     <Col xs={24} sm={12} md={6} lg={4} xl={3} >
                         <Card
                             loading={profile.holding}
-                            style={{ boxShadow: '0 2px 2px rgba(0, 0, 0, 0.14), 1px 2px 3px rgba(0, 0, 0, 0.12)' }}
                         >
                             <Statistic
                                 title={Lang('USER_LOAN_AMOUNT')}
@@ -95,7 +94,6 @@ export class _ProfileController extends React.Component<IProfileProps, any> {
                     <Col xs={24} sm={12} md={6} lg={4} xl={3} >
                         <Card
                             loading={profile.holding}
-                            style={{ boxShadow: '0 2px 2px rgba(0, 0, 0, 0.14), 1px 2px 3px rgba(0, 0, 0, 0.12)' }}
                         >
                             <Statistic
                                 title={Lang('USER_AMOUNT_PENALTIES')}
@@ -106,19 +104,12 @@ export class _ProfileController extends React.Component<IProfileProps, any> {
                             />
                         </Card>
                     </Col>
-                    <Col xs={24} sm={12} md={6} lg={4} xl={3} >
-                        <Card
-                            loading={profile.holding}
-                            style={{ boxShadow: '0 2px 2px rgba(0, 0, 0, 0.14), 1px 2px 3px rgba(0, 0, 0, 0.12)' }}
-                        >
-                            <Statistic
-                                title={Lang('USER_TAX_AMOUNT')}
-                                value={tax.taxAmount}
-                                precision={2}
-                                suffix="G"
-                            />
-                            {tax.taxTariff.map((_, i) => <span>{i+1} - {_} </span>)}
-                        </Card>
+                    <Col xs={24} sm={12} md={12} lg={24} xl={8} >
+                        <TaxCard
+                            loading={tax.holding}
+                            tax={tax}
+                            charCount={profile.charCount}
+                        />
                     </Col>
                 </Row>
             </Layout>

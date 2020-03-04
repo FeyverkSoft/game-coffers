@@ -143,7 +143,8 @@ const locString: any = {
         OPERATION_TOUSERID: 'Пользователю:',
         OPERATION_PENALTY: 'Уплата штрафа',
         OPERATION_LOANS: 'Уплата займа',
-        USER_AMOUNT_PENALTIES: 'Непогашеных штрафов на'
+        USER_AMOUNT_PENALTIES: 'Непогашеных штрафов на',
+        USER_SALE: 'Уровень налога за чара'
     }
 };
 

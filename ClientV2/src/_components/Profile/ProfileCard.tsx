@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { Card, Avatar, Row } from "antd";
+import { Avatar, Row } from "antd";
 import { IProfile, DLang, Lang } from "../../_services";
 import { IF } from '../../_helpers'
+import { Card } from '../Base/Card';
 
 const colorArray = ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
     '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D',
@@ -31,7 +32,6 @@ export const ProfileCard = ({ ...props }: IProfileCardProps) => {
         loading={props.isLoading}
         style={{
             background: 'linear-gradient(29deg, rgba(255,242,220,1) 0%, rgba(233,233,255,1) 40%, rgba(239,223,255,1) 100%)',
-            boxShadow: '0 2px 2px rgba(0, 0, 0, 0.14), 1px 2px 3px rgba(0, 0, 0, 0.12)'
         }}
     >
         <Row gutter={[16, 16]} justify='center' align={'middle'}>

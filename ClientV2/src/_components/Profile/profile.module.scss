@@ -1,0 +1,27 @@
+.taxcard {
+  .step {
+    width: auto;
+    :global {
+      .ant-steps-item-container {
+        width: auto;
+        .ant-steps-item-content {
+          width: auto !important;
+          margin-left: -5px;
+          text-align: left;
+        }
+        .ant-steps-item-tail,
+        .ant-steps-item-icon {
+          margin: 0;
+        }
+      }
+    }
+  }
+  :global {
+    .ant-page-header-heading-sub-title {
+      margin: 0;
+    }
+    .ant-page-header-content {
+      padding-left: 5px;
+    }
+  }
+}
