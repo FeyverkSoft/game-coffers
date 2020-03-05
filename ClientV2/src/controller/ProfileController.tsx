@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Breadcrumb, Layout, Col, Row, Statistic, Steps, Card as AntdCard, PageHeader } from 'antd';
+import { Breadcrumb, Layout, Col, Row, Statistic, Steps, Card as AntdCard, PageHeader, Table } from 'antd';
 import { HomeOutlined } from '@ant-design/icons';
 import { Lang, IProfile, ITax } from '../_services';
 import style from './profile.module.scss';
@@ -12,18 +12,54 @@ import { IHolded } from '../core';
 import { ProfileCard } from '../_components/Profile/ProfileCard';
 import { Card } from '../_components/Base/Card';
 import { TaxCard } from '../_components/Profile/TaxCard';
+import { ICharacter } from '../_services/profile/ICharacter';
+import { ColumnProps } from 'antd/lib/table';
 
 interface IProfileProps {
     Get: Function;
     GetTax: Function;
+    GetCharacters: Function;
     profile: IProfile & IHolded;
     tax: ITax & IHolded;
+    characters: Array<ICharacter> & IHolded;
 }
 
-export class _ProfileController extends React.Component<IProfileProps, any> {
+interface IState {
+    charactersMap: ColumnProps<ICharacter>[];
+}
+
+export class _ProfileController extends React.Component<IProfileProps, IState> {
     constructor(props: IProfileProps) {
         super(props);
         this.state = {
+            charactersMap: [
+                {
+                    title: Lang('NAME'),
+                    dataIndex: 'name',
+                    key: 'name',
+                    render: (text: string, record: ICharacter) => {
+                        return {
+                            props: {
+                                style: { fontWeight: record.isMain ? 500 : 300 },
+                            },
+                            children: text,
+                        };
+                    },
+                },
+                {
+                    title: Lang('CLASS_NAME'),
+                    dataIndex: 'className',
+                    key: 'className',
+                    render: (text: string, record: ICharacter) => {
+                        return {
+                            props: {
+                                style: { fontWeight: record.isMain ? 500 : 300 },
+                            },
+                            children: text,
+                        };
+                    },
+                },
+            ]
         }
     }
 
@@ -32,10 +68,12 @@ export class _ProfileController extends React.Component<IProfileProps, any> {
             this.props.Get();
         if (this.props.tax == undefined || !this.props.tax.userId)
             this.props.GetTax();
+        if (this.props.characters == undefined || this.props.characters.length === 0)
+            this.props.GetCharacters();
     }
 
     render = () => {
-        let { profile, tax } = this.props;
+        let { profile, tax, characters } = this.props;
         return <Content>
             <Breadcrumb>
                 <Breadcrumb.Item>
@@ -104,12 +142,28 @@ export class _ProfileController extends React.Component<IProfileProps, any> {
                             />
                         </Card>
                     </Col>
-                    <Col xs={24} sm={12} md={12} lg={24} xl={8} >
+                    <Col xs={24} sm={24} md={12} lg={24} xl={8} >
                         <TaxCard
                             loading={tax.holding}
                             tax={tax}
                             charCount={profile.charCount}
                         />
+                    </Col>
+                </Row>
+                <Row gutter={[16, 16]}>
+                    <Col xs={24} sm={24} md={24} lg={12} xl={12} >
+                        <Card
+                            loading={characters.holding}
+                        >
+                            <Table
+                                size='middle'
+                                rowKey="id"
+                                columns={this.state.charactersMap}
+                                pagination={false}
+                                bordered={false}
+                                dataSource={characters}
+                            />
+                        </Card>
                     </Col>
                 </Row>
             </Layout>
@@ -119,13 +173,14 @@ export class _ProfileController extends React.Component<IProfileProps, any> {
 
 const connectedProfileController = connect<{}, {}, {}, IStore>(
     (state: IStore) => {
-        const { profile, tax } = state.profile;
-        return { profile, tax };
+        const { profile, tax, characters } = state.profile;
+        return { profile, tax, characters };
     },
     (dispatch: Function) => {
         return {
             Get: () => dispatch(profileInstance.Get()),
             GetTax: () => dispatch(profileInstance.GetTax()),
+            GetCharacters: () => dispatch(profileInstance.GetChars()),
         }
     })(_ProfileController);
 

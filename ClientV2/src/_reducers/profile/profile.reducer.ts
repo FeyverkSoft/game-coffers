@@ -2,10 +2,12 @@ import { ProfileActionsType } from "../../_actions";
 import { IAction, IHolded } from "../../core";
 import { IProfile, Profile, ITax, UserTax } from "../../_services";
 import clonedeep from 'lodash.clonedeep';
+import { ICharacter } from "../../_services/guild/ICharacter";
 
 export class IProfileStore {
     profile: IProfile & IHolded = new Profile();
     tax: ITax & IHolded = new UserTax();
+    characters: Array<ICharacter> & IHolded = [];
 }
 
 export function profile(state: IProfileStore = new IProfileStore(), action: IAction<ProfileActionsType>):
@@ -41,6 +43,23 @@ export function profile(state: IProfileStore = new IProfileStore(), action: IAct
         }
         case ProfileActionsType.FAILED_GET_TAX: {
             clonedState.tax.holding = false;
+            return clonedState;
+        }
+
+        /**
+        * Секция обработчика события получения списка персонажей
+        */
+        case ProfileActionsType.PROC_GET_CHARACTERS: {
+            clonedState.characters.holding = true;
+            return clonedState;
+        }
+        case ProfileActionsType.SUCC_GET_CHARACTERS: {
+            clonedState.characters = [...action.chars];
+            clonedState.characters.holding = false;
+            return clonedState;
+        }
+        case ProfileActionsType.FAILED_GET_CHARACTERS: {
+            clonedState.characters.holding = false;
             return clonedState;
         }
 

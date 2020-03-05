@@ -27,61 +27,62 @@ interface IMainProps {
     gamers: Array<IGamerView>;
     loadData: Function;
 }
+
 interface IBDState {
     filter: string;
+    columns: ColumnProps<IGamerView>[];
 }
-
-const columns: ColumnProps<IGamerView>[] = [
-    {
-        title: Lang('NAME'),
-        dataIndex: 'name',
-        key: 'name',
-        render: (text: string, record: any) => {
-            return {
-                props: {
-                    style: { background: record.color },
-                },
-                children: text,
-            };
-        },
-    },
-    {
-        title: Lang('DATEOFBIRTH'),
-        dataIndex: 'birthday',
-        key: 'birthday',
-        render: (text: string, record: any) => {
-            return {
-                props: {
-                    style: { background: record.color },
-                },
-                children: text,
-            };
-        },
-    },
-    {
-        title: Lang('DAYS_COUNT'),
-        dataIndex: 'count',
-        key: 'count',
-        defaultSortOrder: 'ascend',
-        sorter: (a: IGamerView, b: IGamerView) => {
-            return Number(a.count) - Number(b.count);
-        },
-        render: (text: string, record: any) => {
-            return {
-                props: {
-                    style: { background: record.color },
-                },
-                children: text,
-            };
-        },
-    },
-];
 
 export class _BirthdayController extends React.Component<IMainProps, IBDState> {
     constructor(props: IMainProps) {
         super(props);
         this.state = {
-            filter: ''
+            filter: '',
+            columns: [
+                {
+                    title: Lang('NAME'),
+                    dataIndex: 'name',
+                    key: 'name',
+                    render: (text: string, record: any) => {
+                        return {
+                            props: {
+                                style: { background: record.color },
+                            },
+                            children: text,
+                        };
+                    },
+                },
+                {
+                    title: Lang('DATEOFBIRTH'),
+                    dataIndex: 'birthday',
+                    key: 'birthday',
+                    render: (text: string, record: any) => {
+                        return {
+                            props: {
+                                style: { background: record.color },
+                            },
+                            children: text,
+                        };
+                    },
+                },
+                {
+                    title: Lang('DAYS_COUNT'),
+                    dataIndex: 'count',
+                    key: 'count',
+                    defaultSortOrder: 'ascend',
+                    sorter: (a: IGamerView, b: IGamerView) => {
+                        return Number(a.count) - Number(b.count);
+                    },
+                    render: (text: string, record: any) => {
+                        return {
+                            props: {
+                                style: { background: record.color },
+                            },
+                            children: text,
+                        };
+                    },
+                },
+            ]
         }
     }
 
@@ -123,7 +124,7 @@ export class _BirthdayController extends React.Component<IMainProps, IBDState> {
                         {<Table
                             size='middle'
                             rowKey="id"
-                            columns={columns}
+                            columns={this.state.columns}
                             pagination={false}
                             bordered={false}
                             dataSource={gamers

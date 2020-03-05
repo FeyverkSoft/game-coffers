@@ -26,13 +26,13 @@ export class Profile implements IProfile {
     constructor(userId: String = "", name: String = "", characterName: String = "", balance: number = 0, activeLoanAmount: number = 0,
         activePenaltyAmount: number = 0, rank: GamerRank = 'Beginner', charCount: number = 0,
         dateOfBirth: Date = new Date()) {
-        this.userId = userId;
-        this.name = name;
-        this.characterName = characterName;
+        this.userId = String(userId);
+        this.name = String(name);
+        this.characterName = String(characterName);
         this.balance = Number(balance);
         this.activeLoanAmount = Number(activeLoanAmount);
         this.activePenaltyAmount = Number(activePenaltyAmount);
-        this.rank = rank;
+        this.rank = rank as GamerRank;
         this.charCount = Number(charCount);
         this.dateOfBirth = new Date(dateOfBirth);
     }

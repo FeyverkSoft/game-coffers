@@ -13,7 +13,7 @@ interface ProfileButtonProps extends React.Props<any> {
 }
 class _profileButton extends React.Component<ProfileButtonProps> {
     componentDidMount() {
-        if (this.props.name == '' && !this.props.isLoading)
+        if (this.props.name === '' && !this.props.isLoading)
             this.props.GetCurrentGamer();
     }
     render() {

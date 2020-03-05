@@ -4,9 +4,10 @@ import { Config } from '../../core';
 import { authService } from '..';
 import { IProfile, Profile } from './IProfile';
 import { ITax, UserTax } from './ITax';
+import { ICharacter, Character } from './ICharacter';
 
 export class profileService {
-    
+
     /**
      * Добавить нового персонажа игроку
      * @param name 
@@ -119,4 +120,31 @@ export class profileService {
             })
             .catch(catchHandle);
     }
+
+    static async GetCharList(): Promise<Array<ICharacter>> {
+        let session = authService.getCurrentSession();
+        const requestOptions: RequestInit = {
+            method: 'GET',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+                'Authorization': 'Bearer ' + session.sessionId
+            }
+        };
+        return await fetch(Config.BuildUrl(`/gamers/current/characters`), requestOptions)
+            .then<BaseResponse & Array<ICharacter>>(getResponse)
+            .then(data => {
+                if (data && data.type || data.traceId) {
+                    return errorHandle(data);
+                }
+                return data.map(_ => new Character(
+                    _.id,
+                    _.name,
+                    _.className,
+                    _.isMain
+                )).sort((x, y) => (x === y) ? 0 : x ? -1 : 1);
+    })
+            .catch(catchHandle);
+}
 }

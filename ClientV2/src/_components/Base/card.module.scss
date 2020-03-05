@@ -1,5 +1,6 @@
 @import "../../../assets/_variables.scss"; // variables to override above
 
 .card {
-    box-shadow     : $box-shadow-1;
+  box-shadow: $box-shadow-1;
+  height: 100%;
 }
