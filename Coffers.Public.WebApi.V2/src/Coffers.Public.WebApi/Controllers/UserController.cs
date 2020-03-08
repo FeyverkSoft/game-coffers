@@ -204,6 +204,33 @@ namespace Coffers.Public.WebApi.Controllers
         }
 
         /// <summary>
+        /// Mark character as main
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpPut("/gamers/current/characters/{characterId}/markasmain")]
+        [ProducesResponseType(typeof(IEnumerable<CharacterView>), 200)]
+        public async Task<IActionResult> MarkAsMain(
+            Guid characterId,
+            [FromServices] Domain.Users.IUserRepository userRepository,
+            CancellationToken cancellationToken)
+        {
+            var user = await userRepository.Get(HttpContext.GetUserId(), HttpContext.GetGuildId(), cancellationToken);
+            try
+            {
+                user.SetMainCharacter(characterId);
+            }
+            catch (CharacterNotFound e)
+            {
+                throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.CharacterNotFound, e.Message);
+            }
+            userRepository.Save(user);
+
+            return Ok(new { });
+        }
+
+        /// <summary>
         /// Get user tax
         /// </summary>
         /// <param name="cancellationToken"></param>

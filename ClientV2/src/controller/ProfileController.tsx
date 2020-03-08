@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Breadcrumb, Layout, Col, Row, Statistic, Steps, Card as AntdCard, PageHeader, Table } from 'antd';
+import { Breadcrumb, Layout, Col, Row, Statistic, Table, Switch } from 'antd';
 import { HomeOutlined } from '@ant-design/icons';
 import { Lang, IProfile, ITax } from '../_services';
 import style from './profile.module.scss';
@@ -14,62 +14,40 @@ import { Card } from '../_components/Base/Card';
 import { TaxCard } from '../_components/Profile/TaxCard';
 import { ICharacter } from '../_services/profile/ICharacter';
 import { ColumnProps } from 'antd/lib/table';
+import { ProfileCharList } from '../_components/Profile/ProfileCharList';
 
 interface IProfileProps {
     Get: Function;
     GetTax: Function;
     GetCharacters: Function;
+    SetMainChar(charId: string): void;
     profile: IProfile & IHolded;
     tax: ITax & IHolded;
     characters: Array<ICharacter> & IHolded;
 }
 
-interface IState {
-    charactersMap: ColumnProps<ICharacter>[];
-}
+interface IState { }
 
 export class _ProfileController extends React.Component<IProfileProps, IState> {
     constructor(props: IProfileProps) {
         super(props);
-        this.state = {
-            charactersMap: [
-                {
-                    title: Lang('NAME'),
-                    dataIndex: 'name',
-                    key: 'name',
-                    render: (text: string, record: ICharacter) => {
-                        return {
-                            props: {
-                                style: { fontWeight: record.isMain ? 500 : 300 },
-                            },
-                            children: text,
-                        };
-                    },
-                },
-                {
-                    title: Lang('CLASS_NAME'),
-                    dataIndex: 'className',
-                    key: 'className',
-                    render: (text: string, record: ICharacter) => {
-                        return {
-                            props: {
-                                style: { fontWeight: record.isMain ? 500 : 300 },
-                            },
-                            children: text,
-                        };
-                    },
-                },
-            ]
-        }
+        this.state = {}
     }
 
     componentDidMount() {
-        if (this.props.profile == undefined)
+        if (this.props.profile === undefined)
             this.props.Get();
-        if (this.props.tax == undefined || !this.props.tax.userId)
+        if (this.props.tax === undefined || !this.props.tax.userId)
             this.props.GetTax();
-        if (this.props.characters == undefined || this.props.characters.length === 0)
+        if (this.props.characters === undefined || this.props.characters.length === 0)
             this.props.GetCharacters();
+    }
+
+    setMainChar = (charId: string) => {
+        let { characters } = this.props;
+        if (characters.filter(_ => _.id === charId && _.isMain).length === 1)
+            return;
+        this.props.SetMainChar(charId);
     }
 
     render = () => {
@@ -152,18 +130,11 @@ export class _ProfileController extends React.Component<IProfileProps, IState> {
                 </Row>
                 <Row gutter={[16, 16]}>
                     <Col xs={24} sm={24} md={24} lg={12} xl={12} >
-                        <Card
+                        <ProfileCharList
+                            characters={characters}
                             loading={characters.holding}
-                        >
-                            <Table
-                                size='middle'
-                                rowKey="id"
-                                columns={this.state.charactersMap}
-                                pagination={false}
-                                bordered={false}
-                                dataSource={characters}
-                            />
-                        </Card>
+                            SetMainChar={this.setMainChar}
+                        />
                     </Col>
                 </Row>
             </Layout>
@@ -181,6 +152,7 @@ const connectedProfileController = connect<{}, {}, {}, IStore>(
             Get: () => dispatch(profileInstance.Get()),
             GetTax: () => dispatch(profileInstance.GetTax()),
             GetCharacters: () => dispatch(profileInstance.GetChars()),
+            SetMainChar: (charId: string) => dispatch(profileInstance.SetMainChar(charId)),
         }
     })(_ProfileController);
 

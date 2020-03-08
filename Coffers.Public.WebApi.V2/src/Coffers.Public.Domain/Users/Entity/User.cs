@@ -55,10 +55,31 @@ namespace Coffers.Public.Domain.Users
                                     && _.IsActive
                                     && _.ClassName != className))
                 throw new CharacterAlreadyExists(Characters.First(_ => _.Name == name
+
                                                                        && _.IsActive));
+            if (isMain)
+                foreach (var character in Characters)
+                {
+                    character.UnmarkAsMain();
+                }
 
             Characters.Add(new Character(name, className, isMain));
             ConcurrencyTokens = Guid.NewGuid();
+            UpdateDate = DateTime.UtcNow;
+        }
+
+        public void SetMainCharacter(Guid characterId)
+        {
+            var ch = Characters.FirstOrDefault(_ => _.Id == characterId) ?? throw new CharacterNotFound(characterId);
+            if (ch.IsMain)
+                return;
+            foreach (var character in Characters)
+            {
+                character.UnmarkAsMain();
+            }
+            ch.MarkAsMain();
+            ConcurrencyTokens = Guid.NewGuid();
+            UpdateDate = DateTime.UtcNow;
         }
 
         public void CharacterRemove(Guid characterId)
@@ -70,6 +91,7 @@ namespace Coffers.Public.Domain.Users
 
             ch.MarkAsDeleted();
             ConcurrencyTokens = Guid.NewGuid();
+            UpdateDate = DateTime.UtcNow;
         }
 
         public void ChangeRank(GamerRank rank)

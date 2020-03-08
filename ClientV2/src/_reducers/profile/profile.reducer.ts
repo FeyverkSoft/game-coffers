@@ -2,12 +2,12 @@ import { ProfileActionsType } from "../../_actions";
 import { IAction, IHolded } from "../../core";
 import { IProfile, Profile, ITax, UserTax } from "../../_services";
 import clonedeep from 'lodash.clonedeep';
-import { ICharacter } from "../../_services/guild/ICharacter";
+import { ICharacter } from "../../_services/profile/ICharacter";
 
 export class IProfileStore {
     profile: IProfile & IHolded = new Profile();
     tax: ITax & IHolded = new UserTax();
-    characters: Array<ICharacter> & IHolded = [];
+    characters: Array<ICharacter & IHolded> & IHolded = [];
 }
 
 export function profile(state: IProfileStore = new IProfileStore(), action: IAction<ProfileActionsType>):
@@ -63,6 +63,37 @@ export function profile(state: IProfileStore = new IProfileStore(), action: IAct
             return clonedState;
         }
 
+        /**
+        * Секция обработчика события установки перса как основы
+        */
+        case ProfileActionsType.PROC_SET_MAIN: {
+            clonedState.characters.forEach(ch => {
+                if (ch.id === action.id) {
+                    ch.holding = true;
+                }
+            });
+            return clonedState;
+        }
+        case ProfileActionsType.SUCC_SET_MAIN: {
+            clonedState.characters.forEach(ch => {
+                if (ch.id === action.id) {
+                    ch.isMain = true;
+                    ch.holding = false;
+                    clonedState.profile.characterName = ch.name;
+                }
+                else
+                    ch.isMain = false;
+            });
+            return clonedState;
+        }
+        case ProfileActionsType.FAILED_SET_MAIN: {
+            clonedState.characters.forEach(ch => {
+                if (ch.id === action.id) {
+                    ch.holding = false;
+                }
+            });
+            return clonedState;
+        }
         default:
             return state
     }

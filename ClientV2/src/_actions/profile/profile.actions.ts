@@ -72,6 +72,28 @@ export class ProfileActions {
         function success(chars: Array<ICharacter>) { return { type: ProfileActionsType.SUCC_GET_CHARACTERS, chars } }
         function failure() { return { type: ProfileActionsType.FAILED_GET_CHARACTERS } }
     }
+
+    /**
+     * Устанавливает перса как основу
+     */
+    SetMainChar(charId: string): Function {
+        return (dispatch: Function) => {
+            dispatch(request(charId));
+            profileService.SetMainChar(charId)
+                .then(
+                    data => {
+                        dispatch(success(charId));
+                    })
+                .catch(
+                    ex => {
+                        dispatch(failure(charId));
+                        dispatch(alertInstance.error(ex));
+                    });
+        }
+        function request(id: string) { return { type: ProfileActionsType.PROC_SET_MAIN, id } }
+        function success(id: string) { return { type: ProfileActionsType.SUCC_SET_MAIN, id } }
+        function failure(id: string) { return { type: ProfileActionsType.FAILED_SET_MAIN, id } }
+    }
 }
 
 export const profileInstance = new ProfileActions();

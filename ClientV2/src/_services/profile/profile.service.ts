@@ -7,6 +7,27 @@ import { ITax, UserTax } from './ITax';
 import { ICharacter, Character } from './ICharacter';
 
 export class profileService {
+    static async SetMainChar(charId: string): Promise<void> {
+        let session = authService.getCurrentSession();
+        const requestOptions: RequestInit = {
+            method: 'PUT',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+                'Authorization': 'Bearer ' + session.sessionId
+            }
+        };
+        
+        return await fetch(Config.BuildUrl(`/gamers/current/characters/${charId}/markasmain`), requestOptions)
+            .then<BaseResponse>(getResponse)
+            .then(data => {
+                if (data && data.type || data.traceId) {
+                    return errorHandle(data);
+                }
+            })
+            .catch(catchHandle);
+    }
 
     /**
      * Добавить нового персонажа игроку
@@ -144,7 +165,7 @@ export class profileService {
                     _.className,
                     _.isMain
                 )).sort((x, y) => (x === y) ? 0 : x ? -1 : 1);
-    })
+            })
             .catch(catchHandle);
-}
+    }
 }

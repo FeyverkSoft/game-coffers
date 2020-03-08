@@ -28,7 +28,7 @@ namespace Coffers.Public.Domain.Users
         /// <summary>
         /// Признак того что это основной перс
         /// </summary>
-        public Boolean IsMain { get; }
+        public Boolean IsMain { get; private set; }
 
         /// <summary>
         /// Статус персонажа
@@ -44,9 +44,28 @@ namespace Coffers.Public.Domain.Users
             IsMain = isMain;
         }
 
+        /// <summary>
+        /// пометить персонажа как удалённый
+        /// </summary>
         internal void MarkAsDeleted()
         {
             Status = CharStatus.Deleted;
+        }
+
+        /// <summary>
+        /// Убрать отметку о том что этот перс основа
+        /// </summary>
+        internal void UnmarkAsMain()
+        {
+            IsMain = false;
+        }
+
+        /// <summary>
+        /// установить отметку о том что этот перс основа
+        /// </summary>
+        internal void MarkAsMain()
+        {
+            IsMain = true;
         }
     }
 }

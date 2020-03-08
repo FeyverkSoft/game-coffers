@@ -1,7 +1,7 @@
 import React from "react";
 import { Lang, IGamersListView } from '../_services';
 import { ICharacter } from '../_services/guild/ICharacter';
-import { Card, Table, Breadcrumb, PageHeader } from 'antd';
+import { Table, Breadcrumb, PageHeader } from 'antd';
 import { HomeOutlined } from '@ant-design/icons';
 import { memoize } from "lodash";
 import { connect } from "react-redux";
@@ -12,7 +12,6 @@ import style from './bd.module.scss';
 import { Content } from "../_components/Content/Content";
 import { Link } from "react-router-dom";
 import Search from "antd/lib/input/Search";
-import { string } from "prop-types";
 
 interface IGamerView {
     id: string;
@@ -126,6 +125,7 @@ export class _BirthdayController extends React.Component<IMainProps, IBDState> {
                             rowKey="id"
                             columns={this.state.columns}
                             pagination={false}
+                            loading={isLoading}
                             bordered={false}
                             dataSource={gamers
                                 .filter(_ => _.name.toLowerCase().includes(filter.toLowerCase()))
@@ -150,7 +150,7 @@ const MemGamers = memoize(gamersList => {
     let d = new Date();
     return Object.keys(gamersList)
         .map((k): IGamersListView => gamersList[k])
-        .filter(g => !(g.status == 'Banned' || g.status == 'Left'))
+        .filter(g => !(g.status === 'Banned' || g.status === 'Left'))
         .map((_): IGamerView => {
             let f: any = new Date(_.dateOfBirth.getFullYear(), d.getMonth(), d.getDate());
             let n: any = new Date(_.dateOfBirth.getFullYear(), _.dateOfBirth.getMonth(), _.dateOfBirth.getDate());
