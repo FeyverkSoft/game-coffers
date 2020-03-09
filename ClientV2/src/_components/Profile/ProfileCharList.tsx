@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Table, Switch } from 'antd';
+import { Table, Switch, Button, Tooltip, Divider, Modal } from 'antd';
+import { DeleteFilled } from '@ant-design/icons';
 import { Lang } from '../../_services';
 import { Card } from '../Base/Card';
 import { ICharacter } from '../../_services/profile/ICharacter';
@@ -8,6 +9,8 @@ import { IHolded } from '../../core';
 
 export interface ICharList {
     SetMainChar(charId: string): void;
+    DeleteChar(charId: string): void;
+    AddChar: Function;
     characters: Array<ICharacter>;
     loading?: boolean;
 }
@@ -60,9 +63,19 @@ export const ProfileCharList = ({ ...props }: ICharList) => {
             dataIndex: 'id',
             key: 'id',
             width: 50,
-            render: (id: string, record: ICharacter) => {
+            fixed: 'right',
+            render: (id: string, record: ICharacter & IHolded) => {
                 return {
-                    children: <div />
+                    children: <div >
+                        <Tooltip title={Lang('DELETE')}>
+                            <Button
+                                loading={record.holding}
+                                type="link"
+                                icon={<DeleteFilled />}
+                                onClick={() => props.DeleteChar(record.id)}
+                            />
+                        </Tooltip>
+                    </div>
                 };
             },
         },
@@ -81,5 +94,11 @@ export const ProfileCharList = ({ ...props }: ICharList) => {
             bordered={false}
             dataSource={props.characters}
         />
+        <Button
+            block
+            onClick={() => props.AddChar}
+        >
+            {Lang('ADD')}
+        </Button>
     </Card>
 };

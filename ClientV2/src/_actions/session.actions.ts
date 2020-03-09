@@ -67,4 +67,4 @@ export class SessionActions {
 
 }
 
-export const sessionInstance = new SessionActions;
+export const sessionInstance = new SessionActions();

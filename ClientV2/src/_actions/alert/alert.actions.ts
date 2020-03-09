@@ -49,4 +49,4 @@ export class AlertActions {
 
 }
 
-export const alertInstance = new AlertActions;
+export const alertInstance = new AlertActions();

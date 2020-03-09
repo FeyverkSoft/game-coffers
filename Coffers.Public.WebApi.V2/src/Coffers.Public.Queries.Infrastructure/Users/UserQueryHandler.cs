@@ -127,7 +127,7 @@ namespace Coffers.Public.Queries.Infrastructure.Users
                 return new UserTaxView(tax.UserId, 0, new List<Decimal>());
             var taxes = tax.TaxTariff.TryParseJson<IList<Decimal>>() ?? new List<Decimal>();
             var index = tax.CharCount > taxes.Count ? taxes.Count - 1 : tax.CharCount - 1;
-            var taxAmount = taxes.Count > 0 ? taxes[index] * tax.CharCount : 0;
+            var taxAmount = taxes.Count > 0 && index >= 0 ? taxes[index] * tax.CharCount : 0;
             return new UserTaxView(tax.UserId, taxAmount, taxes);
         }
     }

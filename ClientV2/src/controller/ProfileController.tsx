@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Breadcrumb, Layout, Col, Row, Statistic, Table, Switch } from 'antd';
+import { Breadcrumb, Layout, Col, Row, Statistic } from 'antd';
 import { HomeOutlined } from '@ant-design/icons';
 import { Lang, IProfile, ITax } from '../_services';
 import style from './profile.module.scss';
@@ -13,7 +13,6 @@ import { ProfileCard } from '../_components/Profile/ProfileCard';
 import { Card } from '../_components/Base/Card';
 import { TaxCard } from '../_components/Profile/TaxCard';
 import { ICharacter } from '../_services/profile/ICharacter';
-import { ColumnProps } from 'antd/lib/table';
 import { ProfileCharList } from '../_components/Profile/ProfileCharList';
 
 interface IProfileProps {
@@ -21,6 +20,7 @@ interface IProfileProps {
     GetTax: Function;
     GetCharacters: Function;
     SetMainChar(charId: string): void;
+    DeleteChar(charId: string): void;
     profile: IProfile & IHolded;
     tax: ITax & IHolded;
     characters: Array<ICharacter> & IHolded;
@@ -48,6 +48,14 @@ export class _ProfileController extends React.Component<IProfileProps, IState> {
         if (characters.filter(_ => _.id === charId && _.isMain).length === 1)
             return;
         this.props.SetMainChar(charId);
+    }
+
+    deleteChar = (charId: string) => {
+        this.props.DeleteChar(charId);
+    }
+
+    addChar = () => {
+
     }
 
     render = () => {
@@ -134,6 +142,8 @@ export class _ProfileController extends React.Component<IProfileProps, IState> {
                             characters={characters}
                             loading={characters.holding}
                             SetMainChar={this.setMainChar}
+                            DeleteChar={this.deleteChar}
+                            AddChar={this.addChar}
                         />
                     </Col>
                 </Row>
@@ -153,6 +163,7 @@ const connectedProfileController = connect<{}, {}, {}, IStore>(
             GetTax: () => dispatch(profileInstance.GetTax()),
             GetCharacters: () => dispatch(profileInstance.GetChars()),
             SetMainChar: (charId: string) => dispatch(profileInstance.SetMainChar(charId)),
+            DeleteChar: (charId: string) => dispatch(profileInstance.DeleteChar(charId)),
         }
     })(_ProfileController);
 

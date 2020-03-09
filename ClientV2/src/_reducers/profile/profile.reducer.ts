@@ -94,6 +94,35 @@ export function profile(state: IProfileStore = new IProfileStore(), action: IAct
             });
             return clonedState;
         }
+
+        /**
+        * Секция обработчика события удаления перса
+        */
+        case ProfileActionsType.PROC_DELETE_CHAR: {
+            clonedState.characters.forEach(ch => {
+                if (ch.id === action.id) {
+                    ch.holding = true;
+                }
+            });
+            return clonedState;
+        }
+        case ProfileActionsType.SUCC_DELETE_CHAR: {
+
+            if (clonedState.characters.filter(ch => ch.id === action.id)[0].name === clonedState.profile.characterName)
+                clonedState.profile.characterName = '';
+            clonedState.characters = clonedState.characters.filter(ch => ch.id !== action.id);
+            clonedState.profile.charCount--;
+
+            return clonedState;
+        }
+        case ProfileActionsType.FAILED_DELETE_CHAR: {
+            clonedState.characters.forEach(ch => {
+                if (ch.id === action.id) {
+                    ch.holding = false;
+                }
+            });
+            return clonedState;
+        }
         default:
             return state
     }

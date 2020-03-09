@@ -94,6 +94,29 @@ export class ProfileActions {
         function success(id: string) { return { type: ProfileActionsType.SUCC_SET_MAIN, id } }
         function failure(id: string) { return { type: ProfileActionsType.FAILED_SET_MAIN, id } }
     }
+
+    /**
+     * Удалить выбранного персонажа
+     */
+    DeleteChar(charId: string): Function {
+        return (dispatch: Function) => {
+            dispatch(request(charId));
+            profileService.DeleteChar(charId)
+                .then(
+                    data => {
+                        dispatch(success(charId));
+                        dispatch(profileInstance.GetTax());
+                    })
+                .catch(
+                    ex => {
+                        dispatch(failure(charId));
+                        dispatch(alertInstance.error(ex));
+                    });
+        }
+        function request(id: string) { return { type: ProfileActionsType.PROC_DELETE_CHAR, id } }
+        function success(id: string) { return { type: ProfileActionsType.SUCC_DELETE_CHAR, id } }
+        function failure(id: string) { return { type: ProfileActionsType.FAILED_DELETE_CHAR, id } }
+    }
 }
 
 export const profileInstance = new ProfileActions();
