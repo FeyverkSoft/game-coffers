@@ -96,7 +96,7 @@ export const ProfileCharList = ({ ...props }: ICharList) => {
         />
         <Button
             block
-            onClick={() => props.AddChar}
+            onClick={() => props.AddChar()}
         >
             {Lang('ADD')}
         </Button>

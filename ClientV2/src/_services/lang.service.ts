@@ -147,7 +147,8 @@ const locString: any = {
         USER_SALE: 'Уровень налога за чара',
         CHAR_IS_MAIN: 'Основа',
         PROFILE_CHARACTERS: 'Ваши персонажи',
-        CHAR_ACTIONS: 'Действия'
+        CHAR_ACTIONS: 'Действия',
+        NEW_CHAR: 'Новый персонаж'
     }
 };
 

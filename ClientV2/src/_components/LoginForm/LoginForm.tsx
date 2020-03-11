@@ -11,7 +11,7 @@ interface UserFormProps {
     LogIn(username: string, password: string): void;
 }
 
-class _LoginForm extends React.Component<any> {
+class _LoginForm extends React.Component<UserFormProps, any> {
     handleSubmit = (values: any) => {
         this.props.LogIn(values.username, values.password);
     };
@@ -65,7 +65,7 @@ class _LoginForm extends React.Component<any> {
     }
 }
 
-const connectedLoginForm = connect<{}, {}, {}, IStore>(
+const connectedLoginForm = connect<{}, {}, any, IStore>(
     (state: IStore) => {
         const { session } = state;
         return {

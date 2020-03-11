@@ -7,6 +7,11 @@ import { ICharacter } from '../../_services/profile/ICharacter';
 
 
 export class ProfileActions {
+    
+    AddChar(name: string, className: string, isMain: boolean): Function {
+        throw new Error("Method not implemented.");
+    }
+
     /**
      * Возвращает информацию о текущем игроке
      */

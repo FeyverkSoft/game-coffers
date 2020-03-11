@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Breadcrumb, Layout, Col, Row, Statistic } from 'antd';
+import { Breadcrumb, Layout, Col, Row, Statistic, Modal } from 'antd';
 import { HomeOutlined } from '@ant-design/icons';
 import { Lang, IProfile, ITax } from '../_services';
 import style from './profile.module.scss';
@@ -14,6 +14,7 @@ import { Card } from '../_components/Base/Card';
 import { TaxCard } from '../_components/Profile/TaxCard';
 import { ICharacter } from '../_services/profile/ICharacter';
 import { ProfileCharList } from '../_components/Profile/ProfileCharList';
+import { AddCharDialog } from '../_components/Profile/AddCharDialog';
 
 interface IProfileProps {
     Get: Function;
@@ -26,12 +27,16 @@ interface IProfileProps {
     characters: Array<ICharacter> & IHolded;
 }
 
-interface IState { }
+interface IState {
+    showAddModal: boolean;
+}
 
 export class _ProfileController extends React.Component<IProfileProps, IState> {
     constructor(props: IProfileProps) {
         super(props);
-        this.state = {}
+        this.state = {
+            showAddModal: false
+        }
     }
 
     componentDidMount() {
@@ -54,8 +59,8 @@ export class _ProfileController extends React.Component<IProfileProps, IState> {
         this.props.DeleteChar(charId);
     }
 
-    addChar = () => {
-
+    showAddCharModal = () => {
+        this.setState({ showAddModal: !this.state.showAddModal });
     }
 
     render = () => {
@@ -143,11 +148,15 @@ export class _ProfileController extends React.Component<IProfileProps, IState> {
                             loading={characters.holding}
                             SetMainChar={this.setMainChar}
                             DeleteChar={this.deleteChar}
-                            AddChar={this.addChar}
+                            AddChar={this.showAddCharModal}
                         />
                     </Col>
                 </Row>
             </Layout>
+            <AddCharDialog
+                onClose={this.showAddCharModal}
+                visible={this.state.showAddModal}
+            />
         </Content>
     }
 }
