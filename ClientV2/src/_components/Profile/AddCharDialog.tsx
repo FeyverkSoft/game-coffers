@@ -12,75 +12,73 @@ interface FormProps {
     onClose(): void;
     Add(name: string, className: string, isMain: boolean): void;
 }
-interface FormData {
-    name: string;
-    className: string;
-    isMain: boolean;
-}
-class _ModalDialog extends React.Component<FormProps, any> {
 
-    handleSubmit = (values: any) => {
-        this.props.Add(values.name, values.className, values.isMain);
-    };
+const _ModalDialog = ({ ...props }: FormProps) => {
+    const { isLoading, visible } = props;
+    const [form] = Form.useForm();
+    return (
+        <Modal
+            title={Lang('NEW_CHAR')}
+            visible={visible}
+            onCancel={props.onClose}
+            okText={Lang('Add')}
+            confirmLoading={isLoading}
+            onOk={() => {
 
-    render() {
-        const { isLoading, visible } = this.props;
-
-        return (
-            <Modal
-                title={Lang('NEW_CHAR')}
-                visible={visible}
-                onCancel={this.props.onClose}
+                form.validateFields()
+                    .then(values => {
+                        form.resetFields();
+                        props.Add(values.name, values.className, values.isMain);
+                    })
+                    .catch(info => {
+                        console.log('Validate Failed:', info);
+                    });
+            }}
+        >
+            <Form
+                form={form}
+                layout='vertical'
             >
-                <Form
-                    onFinish={this.handleSubmit}
+                <Form.Item
+                    name="name"
+                    label={Lang('Name')}
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input your name!',
+                        },
+                    ]}
                 >
-                    <Form.Item
-                        name="Name"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input your name!',
-                            },
-                        ]}
-                    >
-                        <Input
-                            prefix={<UserOutlined />}
-                            placeholder={Lang('NAME')}
-                        />
-                    </Form.Item>
-                    <Form.Item
-                        name="ClassName"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input your classname!',
-                            }]}
-                    >
+                    <Input
+                        prefix={<UserOutlined />}
+                        placeholder={Lang('NAME')}
+                    />
+                </Form.Item>
+                <Form.Item
+                    name="className"
+                    label={Lang('CLASS_NAME')}
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please input your classname!',
+                        }]}
+                >
 
-                        <Input
-                            prefix={<LockOutlined />}
-                            placeholder={Lang('ClassName')}
-                        />
-                    </Form.Item>
-                    <Form.Item
-                        name="IsMain"
-                    >
-                        <Switch />
-                    </Form.Item>
-                    <Form.Item>
-                        <Button
-                            type="primary"
-                            htmlType="submit"
-                            loading={isLoading}
-                        >
-                            {Lang('Add')}
-                        </Button>
-                    </Form.Item>
-                </Form>
-            </Modal>
-        );
-    }
+                    <Input
+                        prefix={<LockOutlined />}
+                        placeholder={Lang('CLASS_NAME')}
+                    />
+                </Form.Item>
+                <Form.Item
+                    name="isMain"
+                    rules={[]}
+                    label={Lang('CHAR_IS_MAIN')}
+                >
+                    <Switch />
+                </Form.Item>
+            </Form>
+        </Modal>
+    );
 }
 
 
@@ -91,9 +89,12 @@ const connectedModal = connect<{}, {}, any, IStore>(
             isLoading: session && session.holding,
         };
     },
-    (dispatch: Function) => {
+    (dispatch: Function, props: any) => {
         return {
-            Add: (name: string, className: string, isMain: boolean) => dispatch(profileInstance.AddChar(name, className, isMain)),
+            Add: (name: string, className: string, isMain: boolean) => {
+                dispatch(profileInstance.AddChar(name, className, isMain));
+                props.onClose();
+            },
         }
     },
 )(_ModalDialog);

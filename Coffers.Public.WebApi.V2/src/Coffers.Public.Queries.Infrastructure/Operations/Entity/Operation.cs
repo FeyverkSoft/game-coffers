@@ -24,7 +24,8 @@ left join tax t on t.`Id` = op.`DocumentId`
 left join penalty p on p.`Id` = op.`DocumentId`
 where 1 = 1
     AND u.GuildId = @GuildId
-    AND u.CreateDate < ADDDATE(@DeleteDate, INTERVAL 1 MONTH)
+    AND op.CreateDate >= @DateMonth
+    AND op.CreateDate < ADDDATE(@DateMonth, INTERVAL 1 MONTH)
 order by op.`CreateDate`
 ";
 

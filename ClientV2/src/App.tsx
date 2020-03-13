@@ -14,6 +14,7 @@ import { Lang } from './_services';
 import { HeaderLink } from './_components/Header/HeaderLink';
 import { LogOutController } from './controller/LogOutController';
 import { ProfileButton } from './_components/Profile/ProfileButton';
+import { OperationsController } from './controller/OperationsController';
 
 
 const { Content, Footer } = Layout;
@@ -64,6 +65,7 @@ export const App = ({ ...props }) => {
             <Switch>
               <Route path='/auth' component={AuthController} />
               <PrivateRoute path='/profile' component={ProfileController} />
+              <PrivateRoute path='/operations' component={OperationsController} />
               <PrivateRoute path='/logout' component={LogOutController} />
               <PrivateRoute path='/birthday' component={BirthdayController} />
               {/* <PrivateRoute path="/" component={MainController} />*/}

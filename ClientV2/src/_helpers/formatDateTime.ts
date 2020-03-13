@@ -1,4 +1,5 @@
-export const formatDateTime = (dateTime: Date | string, short?: string): string => {
+type dateFormat = 'm' | 'd' | 'h' | 'hh';
+export const formatDateTime = (dateTime: Date | string, short?: dateFormat): string => {
     let date: Date;
     if (`${dateTime}`.length < 10)
         return `${dateTime}`;
@@ -9,13 +10,25 @@ export const formatDateTime = (dateTime: Date | string, short?: string): string 
         return `${dateTime}`;
     }
     switch (short) {
+        case 'm':
+            var values: any = [date.getFullYear(), date.getMonth() + 1, date.getDate()];
+            for (var id in values) {
+                values[id] = values[id].toString().replace(/^([0-9])$/, '0$1');
+            }
+            return `${values[0]}-${values[1]}`.replace(' ', ' ');
         case 'd':
             var values: any = [date.getFullYear(), date.getMonth() + 1, date.getDate()];
             for (var id in values) {
                 values[id] = values[id].toString().replace(/^([0-9])$/, '0$1');
             }
-            return `${values[0]}-${values[1]}-${values[2]}`.replace(' ', ' ')
+            return `${values[0]}-${values[1]}-${values[2]}`.replace(' ', ' ');
         case 'h':
+            var values: any = [date.getFullYear(), date.getMonth() + 1, date.getDate()];
+            for (var id in values) {
+                values[id] = values[id].toString().replace(/^([0-9])$/, '0$1');
+            }
+            return `${values[0]}-${values[1]}-${values[2]} ${date.toLocaleTimeString()}`.replace(' ', ' ');
+        case 'hh':
             return date.toLocaleTimeString().replace(' ', ' ');
     }
     return date.toLocaleString().replace(' ', ' ');

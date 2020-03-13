@@ -125,6 +125,8 @@ const locString: any = {
         MODAL__OPERATIONS: 'Операции',
         BIRTHDAY_PAGE: 'Дни рождения',
         BIRTHDAY_TILE: 'Участники',
+        OPERATION_TYPE: 'Тип операции',
+        DOCUMENT_DESCRIPTION: 'Описание документа',
         OPERATIONS_TYPE: {
             Tax: 'Погашение налога',
             Sell: 'Операция продажи предмета со склада',
@@ -136,6 +138,8 @@ const locString: any = {
             Emission: 'Эмиссия',
             InternalEmission: 'Пополнение со счёта игрока',
             Other: 'Иное',
+            Deal: 'Сделка',
+            LoanTax: 'Погашение процентов'
         },
         OPERATION_AMOUNT: 'Сумма операции',
         OPERATION_DESCRIPTION: 'Описание операции',
@@ -148,7 +152,9 @@ const locString: any = {
         CHAR_IS_MAIN: 'Основа',
         PROFILE_CHARACTERS: 'Ваши персонажи',
         CHAR_ACTIONS: 'Действия',
-        NEW_CHAR: 'Новый персонаж'
+        NEW_CHAR: 'Новый персонаж',
+        DATE: 'Дата',
+        OPERATIONS_PAGE: 'Список операций'
     }
 };
 

@@ -8,14 +8,6 @@ interface GetOperationsProps extends ICallback<any> {
     type: OperationType;
 }
 
-interface GetOperationsByUserIdProps extends ICallback<any> {
-    userId: string;
-    dateMonth?: string;
-}
-interface GetOperationsByGuildProps extends ICallback<any> {
-    guildId: string;
-    dateMonth?: string;
-}
 interface CreateOperationProps extends ICallback<any> {
     id: string;
     fromUserId?: string;
@@ -33,80 +25,23 @@ class OperationActions {
      * Метод возвращает список операций по первичному документу
      * @param props 
      */
-    GetOperations(props: GetOperationsProps): Function {
+    GetOperations(date: Date): Function {
         return (dispatch: Function) => {
-            dispatch(request(props.documentId));
-            operationService.GetOperations(props.documentId, props.type)
+            dispatch(request(date));
+            operationService.GetOperations(date)
                 .then(
                     data => {
-                        dispatch(success(props.documentId, data));
-                        if (props.onSuccess)
-                            props.onSuccess(data);
+                        dispatch(success(date, data));
                     })
                 .catch(
                     ex => {
-                        dispatch(failure(props.documentId));
+                        dispatch(failure(date));
                         dispatch(alertInstance.error(ex));
-                        if (props.onFailure)
-                            props.onFailure(ex);
                     });
         }
-        function request(id: string) { return { type: OperationActionsType.PROC_GET_OPERATIONS, id } }
-        function success(id: string, operations: Array<IOperationView>) { return { type: OperationActionsType.SUCC_GET_OPERATIONS, id, operations } }
-        function failure(id: string) { return { type: OperationActionsType.FAILED_GET_OPERATIONS, id } }
-    }
-    /**
-     * Метод возвращает список операций пользователя
-     * @param props
-     */
-    GetOperationsByUserId(props: GetOperationsByUserIdProps): Function {
-        return (dispatch: Function) => {
-            dispatch(request(props.userId));
-            operationService.GetOperationsByUserId(props.userId, props.dateMonth)
-                .then(
-                    data => {
-                        dispatch(success(props.userId, data));
-                        if (props.onSuccess)
-                            props.onSuccess(data);
-                    })
-                .catch(
-                    ex => {
-                        dispatch(failure(props.userId));
-                        dispatch(alertInstance.error(ex));
-                        if (props.onFailure)
-                            props.onFailure(ex);
-                    });
-        }
-        function request(id: string) { return { type: OperationActionsType.PROC_GET_OPERATIONS_BY_USER, id } }
-        function success(id: string, operations: Array<IOperationView>) { return { type: OperationActionsType.SUCC_GET_OPERATIONS_BY_USER, id, operations } }
-        function failure(id: string) { return { type: OperationActionsType.FAILED_GET_OPERATIONS_BY_USER, id } }
-    }
-
-    /**
-     * Метод возвращает список операций пользователя
-     * @param props
-     */
-    GetOperationsByGuildId(props: GetOperationsByGuildProps): Function {
-        return (dispatch: Function) => {
-            dispatch(request(props.guildId));
-            operationService.GetOperationsByGuildId(props.guildId, props.dateMonth)
-                .then(
-                    data => {
-                        dispatch(success(props.guildId, data));
-                        if (props.onSuccess)
-                            props.onSuccess(data);
-                    })
-                .catch(
-                    ex => {
-                        dispatch(failure(props.guildId));
-                        dispatch(alertInstance.error(ex));
-                        if (props.onFailure)
-                            props.onFailure(ex);
-                    });
-        }
-        function request(id: string) { return { type: OperationActionsType.PROC_GET_OPERATIONS_BY_GUILD, id } }
-        function success(id: string, operations: Array<IOperationView>) { return { type: OperationActionsType.SUCC_GET_OPERATIONS_BY_GUILD, id, operations } }
-        function failure(id: string) { return { type: OperationActionsType.FAILED_GET_OPERATIONS_BY_GUILD, id } }
+        function request(date: Date) { return { type: OperationActionsType.PROC_GET_OPERATIONS, date } }
+        function success(date: Date, operations: Array<IOperationView>) { return { type: OperationActionsType.SUCC_GET_OPERATIONS, date, operations } }
+        function failure(date: Date) { return { type: OperationActionsType.FAILED_GET_OPERATIONS, date } }
     }
 
     /**
@@ -146,4 +81,4 @@ class OperationActions {
     }
 }
 
-export const operationsInstance = new OperationActions;
+export const operationsInstance = new OperationActions();

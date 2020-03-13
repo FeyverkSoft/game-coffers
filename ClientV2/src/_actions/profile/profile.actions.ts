@@ -7,11 +7,6 @@ import { ICharacter } from '../../_services/profile/ICharacter';
 
 
 export class ProfileActions {
-    
-    AddChar(name: string, className: string, isMain: boolean): Function {
-        throw new Error("Method not implemented.");
-    }
-
     /**
      * Возвращает информацию о текущем игроке
      */
@@ -121,6 +116,33 @@ export class ProfileActions {
         function request(id: string) { return { type: ProfileActionsType.PROC_DELETE_CHAR, id } }
         function success(id: string) { return { type: ProfileActionsType.SUCC_DELETE_CHAR, id } }
         function failure(id: string) { return { type: ProfileActionsType.FAILED_DELETE_CHAR, id } }
+    }
+
+    /**
+     * Метод регистрации нового персонажа у игрока
+     * @param name 
+     * @param className 
+     * @param isMain 
+     */
+    AddChar(name: string, className: string, isMain: boolean): Function {
+        return (dispatch: Function) => {
+            dispatch(request());
+            profileService.AddNewChar(name, className, isMain)
+                .then(
+                    data => {
+                        dispatch(success());
+                        dispatch(profileInstance.GetTax());
+                        dispatch(profileInstance.GetChars());
+                    })
+                .catch(
+                    ex => {
+                        dispatch(failure());
+                        dispatch(alertInstance.error(ex));
+                    });
+        }
+        function request() { return { type: ProfileActionsType.PROC_ADD_NEW_CHAR } }
+        function success() { return { type: ProfileActionsType.SUCC_ADD_NEW_CHAR } }
+        function failure() { return { type: ProfileActionsType.FAILED_ADD_NEW_CHAR } }
     }
 }
 

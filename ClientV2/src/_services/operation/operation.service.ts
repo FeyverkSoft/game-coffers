@@ -6,9 +6,9 @@ import { authService } from '..';
 export class operationService {
 
     /**
-     * Получить список опеаций по id документа и типу документа
+     * Получить список опеаций
      */
-    static async GetOperations(documentId: string, type: OperationType): Promise<Array<IOperationView>> {
+    static async GetOperations(DateMonth: Date): Promise<Array<IOperationView>> {
         let session = authService.getCurrentSession();
         const requestOptions: RequestInit = {
             method: 'GET',
@@ -19,7 +19,7 @@ export class operationService {
                 'Authorization': 'Bearer ' + session.sessionId
             },
         };
-        return await fetch(Config.BuildUrl(`/Operations`, { documentId: documentId, type: type }), requestOptions)
+        return await fetch(Config.BuildUrl(`/Guilds/current/operations`, { DateMonth: DateMonth.toISOString() }), requestOptions)
             .then<BaseResponse & Array<any>>(getResponse)
             .then(data => {
                 if (data && data.type || data.traceId) {
@@ -29,73 +29,10 @@ export class operationService {
                     _.id,
                     _.amount,
                     _.documentId,
-                    _.type,
-                    _.description,
-                    _.createDate
-                ));
-            })
-            .catch(catchHandle);
-    }
-
-
-    /**
-     * Получить список опеаций по id пользователя
-     *  /Operations/guild/{userId}
-     */
-    static async GetOperationsByUserId(userId: string, dateMonth?: string): Promise<Array<IOperationView>> {
-        let session = authService.getCurrentSession();
-        const requestOptions: RequestInit = {
-            method: 'GET',
-            cache: 'no-cache',
-            headers: {
-                'Content-Type': 'application/json',
-                'accept': 'application/json',
-                'Authorization': 'Bearer ' + session.sessionId
-            },
-        };
-        return await fetch(Config.BuildUrl(`/Operations/gamer/${userId}`, { dateMonth: dateMonth }), requestOptions)
-            .then<BaseResponse & Array<any>>(getResponse)
-            .then(data => {
-                if (data && data.type || data.traceId) {
-                    return errorHandle(data);
-                }
-                return data.map(_ => new OperationView(
-                    _.id,
-                    _.amount,
-                    _.documentId,
-                    _.type,
-                    _.description,
-                    _.createDate
-                ));
-            })
-            .catch(catchHandle);
-    }
-
-    /**
- * Получить список опеаций по id пользователя
- *  /Operations/guild/{userId}
- */
-    static async GetOperationsByGuildId(guildId: string, dateMonth?: string): Promise<Array<IOperationView>> {
-        let session = authService.getCurrentSession();
-        const requestOptions: RequestInit = {
-            method: 'GET',
-            cache: 'no-cache',
-            headers: {
-                'Content-Type': 'application/json',
-                'accept': 'application/json',
-                'Authorization': 'Bearer ' + session.sessionId
-            },
-        };
-        return await fetch(Config.BuildUrl(`/Operations/guild/${guildId}`, { dateMonth: dateMonth }), requestOptions)
-            .then<BaseResponse & Array<any>>(getResponse)
-            .then(data => {
-                if (data && data.type || data.traceId) {
-                    return errorHandle(data);
-                }
-                return data.map(_ => new OperationView(
-                    _.id,
-                    _.amount,
-                    _.documentId,
+                    _.documentAmount,
+                    _.documentDescription,
+                    _.userId,
+                    _.userName,
                     _.type,
                     _.description,
                     _.createDate

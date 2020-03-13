@@ -109,7 +109,7 @@ export class _BirthdayController extends React.Component<IMainProps, IBDState> {
                 <div className={style['bd']}>
                     <PageHeader
                         ghost={false}
-                        subTitle="This is a subtitle"
+                        subTitle=""
                         title={Lang("BIRTHDAY_PAGE")}
                         className={style['ant-card']}
                     >
@@ -117,7 +117,7 @@ export class _BirthdayController extends React.Component<IMainProps, IBDState> {
                             placeholder="введите текст для поиска"
                             enterButton='search'
                             onSearch={(value: string) => {
-                                this.setState({ filter: value });
+                                this.setState({ filter: (value || '').toLowerCase() });
                             }}
                         />
                         {<Table
@@ -128,7 +128,7 @@ export class _BirthdayController extends React.Component<IMainProps, IBDState> {
                             loading={isLoading}
                             bordered={false}
                             dataSource={gamers
-                                .filter(_ => _.name.toLowerCase().includes(filter.toLowerCase()))
+                                .filter(_ => _.name.toLowerCase().includes(filter))
                                 .map(_ => {
                                     return {
                                         name: _.name,
@@ -178,9 +178,7 @@ const connectedLoginForm = connect<{}, {}, {}, IStore>(
     },
     (dispatch: any) => {
         return {
-            loadData: () => dispatch(
-                (dispatch: Function, getState: Function) =>
-                    dispatch(gamerInstance.GetGamers({ dateMonth: new Date() }))),
+            loadData: () => dispatch(gamerInstance.GetGamers({ dateMonth: new Date() }))
         }
     })(_BirthdayController);
 

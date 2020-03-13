@@ -35,7 +35,7 @@ namespace Coffers.Public.Queries.Infrastructure.Operations
             var operations = await _db.QueryAsync<Entity.OperationListItem>(Entity.OperationListItem.Sql, new
             {
                 GuildId = query.GuildId,
-                DeleteDate = dateMonth
+                DateMonth = dateMonth
             });
 
 

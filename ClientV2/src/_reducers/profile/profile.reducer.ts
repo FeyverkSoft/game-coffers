@@ -123,6 +123,25 @@ export function profile(state: IProfileStore = new IProfileStore(), action: IAct
             });
             return clonedState;
         }
+
+
+        /**
+        * Секция обработчика события добавления нового персонажа
+        */
+        case ProfileActionsType.PROC_ADD_NEW_CHAR: {
+            clonedState.characters.holding = true;
+            return clonedState;
+        }
+        case ProfileActionsType.SUCC_ADD_NEW_CHAR: {
+            clonedState.characters.holding = false;
+            clonedState.profile.charCount++;
+            return clonedState;
+        }
+        case ProfileActionsType.FAILED_ADD_NEW_CHAR: {
+            clonedState.characters.holding = false;
+            return clonedState;
+        }
+
         default:
             return state
     }

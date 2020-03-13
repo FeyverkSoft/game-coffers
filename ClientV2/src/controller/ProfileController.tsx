@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Breadcrumb, Layout, Col, Row, Statistic, Modal } from 'antd';
 import { HomeOutlined } from '@ant-design/icons';
 import { Lang, IProfile, ITax } from '../_services';
-import style from './profile.module.scss';
 import { connect } from 'react-redux';
 import { IStore } from '../_helpers/store';
 import { Content } from '../_components/Content/Content';
