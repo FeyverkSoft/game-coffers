@@ -34,7 +34,7 @@ export class profileService {
      * @param name 
      * @param className 
      */
-    static async AddNewChar(name: string, className: string, isMain: boolean): Promise<void> {
+    static async AddNewChar(id: string, name: string, className: string, isMain: boolean): Promise<void> {
         let session = authService.getCurrentSession();
         const requestOptions: RequestInit = {
             method: 'POST',
@@ -44,7 +44,7 @@ export class profileService {
                 'accept': 'application/json',
                 'Authorization': 'Bearer ' + session.sessionId
             },
-            body: JSON.stringify({ name: name, className: className, isMain: isMain })
+            body: JSON.stringify({ id: id, name: name, className: className, isMain: isMain })
         };
         return await fetch(Config.BuildUrl(`/gamers/current/characters`), requestOptions)
             .then<BaseResponse>(getResponse)

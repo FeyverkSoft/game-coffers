@@ -1,9 +1,7 @@
 import { getResponse, catchHandle, errorHandle } from '../../_helpers';
-import { BaseResponse, GuildInfo, GuildBalanceReport, IGamersListView, GamersListView } from '..';
+import { BaseResponse, GuildInfo, GuildBalanceReport} from '..';
 import { Config } from '../../core';
 import { authService } from '..';
-import { GamerStatus } from '../gamer/GamerStatus';
-import { GamerRank } from '../gamer/GamerRank';
 
 export class guildService {
 
@@ -68,39 +66,6 @@ export class guildService {
                     Number(data.activeLoansAmount),
                     Number(data.repaymentLoansAmount),
                     Number(data.gamersBalance));
-            })
-            .catch(catchHandle);
-    }
-
-    /**
-    * Добавляет нового пользователя в гильдию
-    */
-    static async AddUser(guildId: string,
-        id: string,
-        name: string,
-        rank: GamerRank,
-        status: GamerStatus,
-        dateOfBirth: Date,
-        login: string
-    ): Promise<void> {
-        let session = authService.getCurrentSession();
-        const requestOptions: RequestInit = {
-            method: 'POST',
-            cache: 'no-cache',
-            headers: {
-                'Content-Type': 'application/json',
-                'accept': 'application/json',
-                'Authorization': 'Bearer ' + session.sessionId
-            },
-            body: JSON.stringify({ id: id, name: name, rank: rank, status: status, dateOfBirth: dateOfBirth, login: login })
-        };
-        return await fetch(Config.BuildUrl(`/Guilds/${guildId}/Gamers`), requestOptions)
-            .then<BaseResponse & any>(getResponse)
-            .then(data => {
-                if (data && data.type || data.traceId) {
-                    return errorHandle(data);
-                }
-                return;
             })
             .catch(catchHandle);
     }

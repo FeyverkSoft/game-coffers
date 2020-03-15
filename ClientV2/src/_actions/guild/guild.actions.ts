@@ -21,30 +21,6 @@ interface GetGuildBalanceProps extends ICallback<any> {
 }
 
 export class GuildActions {
-
-    /**
-     * Метод регистрирует нового пользователя в гильдии
-     * костыльный метод
-     * @param props 
-     */
-    AddUser(props: AddUserProps): Function {
-        return (dispatch: Function) => {
-            guildService.AddUser(props.guildId, props.id, props.name,
-                props.rank, props.status, props.dateOfBirth, props.login)
-                .then(
-                    data => {
-                        if (props.onSuccess)
-                            props.onSuccess(data);
-                        dispatch(gamerInstance.GetGamers({ dateMonth: new Date() }));
-                    })
-                .catch(
-                    ex => {
-                        dispatch(alertInstance.error(ex));
-                        if (props.onFailure)
-                            props.onFailure(ex);
-                    });
-        }
-    }
     /**
      * Возвращает информацию о гильдии по её ID
      */

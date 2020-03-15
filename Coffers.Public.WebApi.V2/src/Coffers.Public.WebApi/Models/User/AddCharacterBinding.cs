@@ -6,6 +6,10 @@ namespace Coffers.Public.WebApi.Models.User
     public sealed class AddCharacterBinding
     {
         /// <summary>
+        /// Character ID
+        /// </summary>
+        public Guid Id { get; set; }
+        /// <summary>
         /// Character name
         /// </summary>
         public String Name { get; set; }
@@ -24,6 +28,10 @@ namespace Coffers.Public.WebApi.Models.User
     {
         public AddCharacterBindingValidator()
         {
+            RuleFor(r => r.Id)
+                .NotNull()
+                .NotEmpty();
+
             RuleFor(r => r.Name)
                 .NotNull()
                 .NotEmpty()

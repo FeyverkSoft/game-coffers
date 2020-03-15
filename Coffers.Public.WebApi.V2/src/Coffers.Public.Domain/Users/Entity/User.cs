@@ -43,27 +43,28 @@ namespace Coffers.Public.Domain.Users
         public Guid ConcurrencyTokens { get; private set; }
         internal User() { }
 
-        public void AddCharacter(String name, String className, Boolean isMain)
+        public void AddCharacter(Guid id, String name, String className, Boolean isMain)
         {
             if (Characters
-                .Any(_ => _.Name == name
-                          && _.ClassName == className
-                          && _.IsActive))
+                .Any(_ => _.Id == id &&
+                          _.Name == name &&
+                          _.ClassName == className &&
+                          _.IsActive))
                 return;
 
-            if (Characters.Any(_ => _.Name == name
-                                    && _.IsActive
-                                    && _.ClassName != className))
-                throw new CharacterAlreadyExists(Characters.First(_ => _.Name == name
+            if (Characters.Any(_ => _.Id == id &&
+                                    _.Name != name &&
+                                    _.IsActive &&
+                                    _.ClassName != className))
+                throw new CharacterAlreadyExists(Characters.First(_ => _.Id == id));
 
-                                                                       && _.IsActive));
             if (isMain)
                 foreach (var character in Characters)
                 {
                     character.UnmarkAsMain();
                 }
 
-            Characters.Add(new Character(name, className, isMain));
+            Characters.Add(new Character(id, name, className, isMain));
             ConcurrencyTokens = Guid.NewGuid();
             UpdateDate = DateTime.UtcNow;
         }

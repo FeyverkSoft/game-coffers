@@ -4,10 +4,11 @@ import { GamerActionsType } from './GamerActionsType';
 import { alertInstance, ICallback } from '..';
 import { profileService } from '../../_services/profile/profile.service';
 
-interface GetGuildGamersProps extends ICallback<any> {
+interface GetGuildGamersProps{
     dateMonth: Date;
     gamerStatuses?: Array<GamerStatus>
 }
+
 interface SetRankProps extends ICallback<any> {
     gamerId: string;
     rank: GamerRank;
@@ -54,57 +55,6 @@ interface CancelPenaltyProps extends ICallback<any> {
 }
 
 export class GamerActions {
-    /**
-     * Метод добавляет игроку нового персонажа
-     */
-    AddCharacters(props: AddCharProps): Function {
-        return (dispatch: Function) => {
-            dispatch(request(props.gamerId));
-            gamerService.AddNewChar(props.gamerId, props.name, props.className)
-                .then(
-                    data => {
-                        dispatch(success(props.gamerId, props.name, props.className));
-                        if (props.onSuccess)
-                            props.onSuccess(data);
-                    })
-                .catch(
-                    ex => {
-                        dispatch(failure(props.gamerId));
-                        dispatch(alertInstance.error(ex));
-                        if (props.onFailure)
-                            props.onFailure(ex);
-                    });
-        }
-        function request(gamerId: string) { return { type: GamerActionsType.PROC_ADD_NEW_CHARS, gamerId } }
-        function success(gamerId: string, name: string, className: string) { return { type: GamerActionsType.SUCC_ADD_NEW_CHARS, gamerId, name, className } }
-        function failure(gamerId: string) { return { type: GamerActionsType.FAILED_ADD_NEW_CHARS, gamerId } }
-    }
-
-    /**
-     * Метод удаляет у игрока персонажа
-     */
-    DeleteCharacters(props: DeleteCharProps): Function {
-        return (dispatch: Function) => {
-            dispatch(request(props.gamerId));
-            gamerService.DeleteChar(props.gamerId, props.name)
-                .then(
-                    data => {
-                        dispatch(success(props.gamerId, props.name));
-                        if (props.onSuccess)
-                            props.onSuccess(data);
-                    })
-                .catch(
-                    ex => {
-                        dispatch(failure(props.gamerId));
-                        dispatch(alertInstance.error(ex));
-                        if (props.onFailure)
-                            props.onFailure(ex);
-                    });
-        }
-        function request(gamerId: string) { return { type: GamerActionsType.PROC_DELETE_CHARS, gamerId } }
-        function success(gamerId: string, name: string) { return { type: GamerActionsType.SUCC_DELETE_CHARS, gamerId, name } }
-        function failure(gamerId: string) { return { type: GamerActionsType.FAILED_DELETE_CHARS, gamerId } }
-    }
 
     /**
      * This method return gamer list
@@ -112,221 +62,292 @@ export class GamerActions {
     GetGamers(filter: GetGuildGamersProps): Function {
         return (dispatch: Function) => {
             dispatch(request());
-            gamerService.GetGamers(filter.dateMonth)
+            gamerService.GetGamers(filter.dateMonth, filter.gamerStatuses)
                 .then(
                     data => {
-                        dispatch(success(data, `${filter.dateMonth.getMonth() + 1}-${filter.dateMonth.getFullYear()}`));
-                        if (filter.onSuccess)
-                            filter.onSuccess(data);
+                        dispatch(success(data, filter.dateMonth));
                     })
                 .catch(
                     ex => {
                         dispatch(failure());
                         dispatch(alertInstance.error(ex));
-                        if (filter.onFailure)
-                            filter.onFailure(ex);
                     });
         }
         function request() { return { type: GamerActionsType.PROC_GET_GUILD_GAMERS } }
-        function success(GamersList: Array<IGamersListView>, DateMonth: Date | string) { return { type: GamerActionsType.SUCC_GET_GUILD_GAMERS, GamersList, DateMonth } }
+        function success(GamersList: Array<IGamersListView>, DateMonth: Date) { return { type: GamerActionsType.SUCC_GET_GUILD_GAMERS, GamersList, DateMonth } }
         function failure() { return { type: GamerActionsType.FAILED_GET_GUILD_GAMERS } }
     }
 
-    /**
-     * This method changed gamer status
-     */
-    SetStatus(status: SetStatusProps): Function {
-        return (dispatch: Function) => {
-            dispatch(request(status.gamerId));
-            gamerService.SetStatus(status.gamerId, status.status)
-                .then(
-                    data => {
-                        dispatch(success(status.gamerId, status.status));
-                        if (status.onSuccess)
-                            status.onSuccess(data);
-                    })
-                .catch(
-                    ex => {
-                        dispatch(failure(status.gamerId));
-                        dispatch(alertInstance.error(ex));
-                        if (status.onFailure)
-                            status.onFailure(ex);
-                    });
-        }
-        function request(gamerId: string) { return { type: GamerActionsType.PROC_SET_GAMER_STATUS, gamerId } }
-        function success(gamerId: string, status: GamerStatus) { return { type: GamerActionsType.SUCC_SET_GAMER_STATUS, gamerId, status } }
-        function failure(gamerId: string) { return { type: GamerActionsType.FAILED_SET_GAMER_STATUS, gamerId } }
-    }
+    // /**
+    //  * Метод регистрирует нового пользователя в гильдии
+    //  * костыльный метод
+    //  * @param props 
+    //  */
+    // AddUser(props: AddUserProps): Function {
+    //     return (dispatch: Function) => {
+    //         gamerService.AddUser(props.guildId, props.id, props.name,
+    //             props.rank, props.status, props.dateOfBirth, props.login)
+    //             .then(
+    //                 data => {
+    //                     if (props.onSuccess)
+    //                         props.onSuccess(data);
+    //                     dispatch(gamerInstance.GetGamers({ dateMonth: new Date() }));
+    //                 })
+    //             .catch(
+    //                 ex => {
+    //                     dispatch(alertInstance.error(ex));
+    //                     if (props.onFailure)
+    //                         props.onFailure(ex);
+    //                 });
+    //     }
+    // }
+    // /**
+    //  * Метод добавляет игроку нового персонажа
+    //  */
+    // AddCharacters(props: AddCharProps): Function {
+    //     return (dispatch: Function) => {
+    //         dispatch(request(props.gamerId));
+    //         gamerService.AddNewChar(props.gamerId, props.name, props.className)
+    //             .then(
+    //                 data => {
+    //                     dispatch(success(props.gamerId, props.name, props.className));
+    //                     if (props.onSuccess)
+    //                         props.onSuccess(data);
+    //                 })
+    //             .catch(
+    //                 ex => {
+    //                     dispatch(failure(props.gamerId));
+    //                     dispatch(alertInstance.error(ex));
+    //                     if (props.onFailure)
+    //                         props.onFailure(ex);
+    //                 });
+    //     }
+    //     function request(gamerId: string) { return { type: GamerActionsType.PROC_ADD_NEW_CHARS, gamerId } }
+    //     function success(gamerId: string, name: string, className: string) { return { type: GamerActionsType.SUCC_ADD_NEW_CHARS, gamerId, name, className } }
+    //     function failure(gamerId: string) { return { type: GamerActionsType.FAILED_ADD_NEW_CHARS, gamerId } }
+    // }
 
-    /**
-     * This method changed gamer rank
-     */
-    SetRank(rank: SetRankProps): Function {
-        return (dispatch: Function) => {
-            dispatch(request(rank.gamerId));
-            gamerService.SetRank(rank.gamerId, rank.rank)
-                .then(
-                    data => {
-                        dispatch(success(rank.gamerId, rank.rank));
-                        if (rank.onSuccess)
-                            rank.onSuccess(data);
-                    })
-                .catch(
-                    ex => {
-                        dispatch(failure(rank.gamerId));
-                        dispatch(alertInstance.error(ex));
-                        if (rank.onFailure)
-                            rank.onFailure(ex);
-                    });
-        }
-        function request(gamerId: string) { return { type: GamerActionsType.PROC_SET_GAMER_RANK, gamerId } }
-        function success(gamerId: string, rank: GamerRank) { return { type: GamerActionsType.SUCC_SET_GAMER_RANK, gamerId, rank } }
-        function failure(gamerId: string) { return { type: GamerActionsType.FAILED_SET_GAMER_RANK, gamerId } }
-    }
+    // /**
+    //  * Метод удаляет у игрока персонажа
+    //  */
+    // DeleteCharacters(props: DeleteCharProps): Function {
+    //     return (dispatch: Function) => {
+    //         dispatch(request(props.gamerId));
+    //         gamerService.DeleteChar(props.gamerId, props.name)
+    //             .then(
+    //                 data => {
+    //                     dispatch(success(props.gamerId, props.name));
+    //                     if (props.onSuccess)
+    //                         props.onSuccess(data);
+    //                 })
+    //             .catch(
+    //                 ex => {
+    //                     dispatch(failure(props.gamerId));
+    //                     dispatch(alertInstance.error(ex));
+    //                     if (props.onFailure)
+    //                         props.onFailure(ex);
+    //                 });
+    //     }
+    //     function request(gamerId: string) { return { type: GamerActionsType.PROC_DELETE_CHARS, gamerId } }
+    //     function success(gamerId: string, name: string) { return { type: GamerActionsType.SUCC_DELETE_CHARS, gamerId, name } }
+    //     function failure(gamerId: string) { return { type: GamerActionsType.FAILED_DELETE_CHARS, gamerId } }
+    // }
 
-    /**
-     * This method add gamers loan
-     */
-    AddLoan(loan: AddLoanProps): Function {
-        return (dispatch: Function) => {
-            dispatch(request(loan.gamerId));
-            gamerService.AddLoan(loan.gamerId, loan.id, loan.amount, loan.description, loan.borrowDate, loan.expiredDate)
-                .then(
-                    data => {
-                        dispatch(success(loan.gamerId, {
-                            id: loan.id,
-                            createDate: loan.borrowDate,
-                            expiredDate: loan.expiredDate,
-                            amount: loan.amount,
-                            balance: loan.amount,
-                            description: loan.description,
-                            loanStatus: 'Active'
-                        }));
-                        if (loan.onSuccess)
-                            loan.onSuccess(data);
-                    })
-                .catch(
-                    ex => {
-                        dispatch(failure(loan.gamerId));
-                        dispatch(alertInstance.error(ex));
-                        if (loan.onFailure)
-                            loan.onFailure(ex);
-                    });
-        }
-        function request(gamerId: string) { return { type: GamerActionsType.PROC_ADD_GAMER_LOAN, gamerId } }
-        function success(gamerId: string, loan: ILoanView) { return { type: GamerActionsType.SUCC_ADD_GAMER_LOAN, gamerId, loan } }
-        function failure(gamerId: string) { return { type: GamerActionsType.FAILED_ADD_GAMER_LOAN, gamerId } }
-    }
+    // /**
+    //  * This method changed gamer status
+    //  */
+    // SetStatus(status: SetStatusProps): Function {
+    //     return (dispatch: Function) => {
+    //         dispatch(request(status.gamerId));
+    //         gamerService.SetStatus(status.gamerId, status.status)
+    //             .then(
+    //                 data => {
+    //                     dispatch(success(status.gamerId, status.status));
+    //                     if (status.onSuccess)
+    //                         status.onSuccess(data);
+    //                 })
+    //             .catch(
+    //                 ex => {
+    //                     dispatch(failure(status.gamerId));
+    //                     dispatch(alertInstance.error(ex));
+    //                     if (status.onFailure)
+    //                         status.onFailure(ex);
+    //                 });
+    //     }
+    //     function request(gamerId: string) { return { type: GamerActionsType.PROC_SET_GAMER_STATUS, gamerId } }
+    //     function success(gamerId: string, status: GamerStatus) { return { type: GamerActionsType.SUCC_SET_GAMER_STATUS, gamerId, status } }
+    //     function failure(gamerId: string) { return { type: GamerActionsType.FAILED_SET_GAMER_STATUS, gamerId } }
+    // }
 
-    /**
-     * This method add gamers Penalty
-     */
-    AddPenalty(penalty: AddPenaltyProps): Function {
-        return (dispatch: Function) => {
-            dispatch(request(penalty.gamerId));
-            gamerService.AddPenalty(penalty.gamerId, penalty.id, penalty.amount, penalty.description)
-                .then(
-                    data => {
-                        dispatch(success(penalty.gamerId, {
-                            id: penalty.id,
-                            createDate: new Date(),
-                            amount: penalty.amount,
-                            description: penalty.description,
-                            penaltyStatus: 'Active'
-                        }));
-                        if (penalty.onSuccess)
-                            penalty.onSuccess(data);
-                    })
-                .catch(
-                    ex => {
-                        dispatch(failure(penalty.gamerId));
-                        dispatch(alertInstance.error(ex));
-                        if (penalty.onFailure)
-                            penalty.onFailure(ex);
-                    });
-        }
-        function request(gamerId: string) { return { type: GamerActionsType.PROC_ADD_GAMER_PENALTY, gamerId } }
-        function success(gamerId: string, penalty: IPenaltyView) { return { type: GamerActionsType.SUCC_ADD_GAMER_PENALTY, gamerId, penalty } }
-        function failure(gamerId: string) { return { type: GamerActionsType.FAILED_ADD_GAMER_PENALTY, gamerId } }
-    }
+    // /**
+    //  * This method changed gamer rank
+    //  */
+    // SetRank(rank: SetRankProps): Function {
+    //     return (dispatch: Function) => {
+    //         dispatch(request(rank.gamerId));
+    //         gamerService.SetRank(rank.gamerId, rank.rank)
+    //             .then(
+    //                 data => {
+    //                     dispatch(success(rank.gamerId, rank.rank));
+    //                     if (rank.onSuccess)
+    //                         rank.onSuccess(data);
+    //                 })
+    //             .catch(
+    //                 ex => {
+    //                     dispatch(failure(rank.gamerId));
+    //                     dispatch(alertInstance.error(ex));
+    //                     if (rank.onFailure)
+    //                         rank.onFailure(ex);
+    //                 });
+    //     }
+    //     function request(gamerId: string) { return { type: GamerActionsType.PROC_SET_GAMER_RANK, gamerId } }
+    //     function success(gamerId: string, rank: GamerRank) { return { type: GamerActionsType.SUCC_SET_GAMER_RANK, gamerId, rank } }
+    //     function failure(gamerId: string) { return { type: GamerActionsType.FAILED_SET_GAMER_RANK, gamerId } }
+    // }
 
-    /**
-     * отменяет займ если это возможно
-     */
-    CancelLoan(props: CancelLoanProps): Function {
-        return (dispatch: Function) => {
-            dispatch(request(props.gamerId));
-            gamerService.CancelLoan(props.gamerId, props.id)
-                .then(
-                    data => {
-                        dispatch(success(props.gamerId, props.id));
-                        if (props.onSuccess)
-                            props.onSuccess(data);
-                    })
-                .catch(
-                    ex => {
-                        dispatch(failure(props.gamerId));
-                        dispatch(alertInstance.error(ex));
-                        if (props.onFailure)
-                            props.onFailure(ex);
-                    });
-        }
-        function request(gamerId: string) { return { type: GamerActionsType.PROC_CANCEL_GAMER_LOAN, gamerId } }
-        function success(gamerId: string, loanId: string) { return { type: GamerActionsType.SUCC_CANCEL_GAMER_LOAN, gamerId, loanId } }
-        function failure(gamerId: string) { return { type: GamerActionsType.FAILED_CANCEL_GAMER_LOAN, gamerId } }
-    }
+    // /**
+    //  * This method add gamers loan
+    //  */
+    // AddLoan(loan: AddLoanProps): Function {
+    //     return (dispatch: Function) => {
+    //         dispatch(request(loan.gamerId));
+    //         gamerService.AddLoan(loan.gamerId, loan.id, loan.amount, loan.description, loan.borrowDate, loan.expiredDate)
+    //             .then(
+    //                 data => {
+    //                     dispatch(success(loan.gamerId, {
+    //                         id: loan.id,
+    //                         createDate: loan.borrowDate,
+    //                         expiredDate: loan.expiredDate,
+    //                         amount: loan.amount,
+    //                         balance: loan.amount,
+    //                         description: loan.description,
+    //                         loanStatus: 'Active'
+    //                     }));
+    //                     if (loan.onSuccess)
+    //                         loan.onSuccess(data);
+    //                 })
+    //             .catch(
+    //                 ex => {
+    //                     dispatch(failure(loan.gamerId));
+    //                     dispatch(alertInstance.error(ex));
+    //                     if (loan.onFailure)
+    //                         loan.onFailure(ex);
+    //                 });
+    //     }
+    //     function request(gamerId: string) { return { type: GamerActionsType.PROC_ADD_GAMER_LOAN, gamerId } }
+    //     function success(gamerId: string, loan: ILoanView) { return { type: GamerActionsType.SUCC_ADD_GAMER_LOAN, gamerId, loan } }
+    //     function failure(gamerId: string) { return { type: GamerActionsType.FAILED_ADD_GAMER_LOAN, gamerId } }
+    // }
 
-    /**
-     * Красное сторно займа, если это возожно
-     */
-    ReverseLoan(props: CancelLoanProps): Function {
-        return (dispatch: Function) => {
-            dispatch(request(props.gamerId));
-            gamerService.ReverseLoan(props.gamerId, props.id)
-                .then(
-                    data => {
-                        dispatch(success(props.gamerId, props.id));
-                        if (props.onSuccess)
-                            props.onSuccess(data);
-                    })
-                .catch(
-                    ex => {
-                        dispatch(failure(props.gamerId));
-                        dispatch(alertInstance.error(ex));
-                        if (props.onFailure)
-                            props.onFailure(ex);
-                    });
-        }
-        function request(gamerId: string) { return { type: GamerActionsType.PROC_CANCEL_GAMER_LOAN, gamerId } }
-        function success(gamerId: string, loanId: string) { return { type: GamerActionsType.SUCC_CANCEL_GAMER_LOAN, gamerId, loanId } }
-        function failure(gamerId: string) { return { type: GamerActionsType.FAILED_CANCEL_GAMER_LOAN, gamerId } }
-    }
+    // /**
+    //  * This method add gamers Penalty
+    //  */
+    // AddPenalty(penalty: AddPenaltyProps): Function {
+    //     return (dispatch: Function) => {
+    //         dispatch(request(penalty.gamerId));
+    //         gamerService.AddPenalty(penalty.gamerId, penalty.id, penalty.amount, penalty.description)
+    //             .then(
+    //                 data => {
+    //                     dispatch(success(penalty.gamerId, {
+    //                         id: penalty.id,
+    //                         createDate: new Date(),
+    //                         amount: penalty.amount,
+    //                         description: penalty.description,
+    //                         penaltyStatus: 'Active'
+    //                     }));
+    //                     if (penalty.onSuccess)
+    //                         penalty.onSuccess(data);
+    //                 })
+    //             .catch(
+    //                 ex => {
+    //                     dispatch(failure(penalty.gamerId));
+    //                     dispatch(alertInstance.error(ex));
+    //                     if (penalty.onFailure)
+    //                         penalty.onFailure(ex);
+    //                 });
+    //     }
+    //     function request(gamerId: string) { return { type: GamerActionsType.PROC_ADD_GAMER_PENALTY, gamerId } }
+    //     function success(gamerId: string, penalty: IPenaltyView) { return { type: GamerActionsType.SUCC_ADD_GAMER_PENALTY, gamerId, penalty } }
+    //     function failure(gamerId: string) { return { type: GamerActionsType.FAILED_ADD_GAMER_PENALTY, gamerId } }
+    // }
 
-    /**
-     * отменяет штраф если это возможно
-     */
-    CancelPenalty(props: CancelPenaltyProps): Function {
-        return (dispatch: Function) => {
-            dispatch(request(props.gamerId));
-            gamerService.CancelPenalty(props.gamerId, props.id)
-                .then(
-                    data => {
-                        dispatch(success(props.gamerId, props.id));
-                        if (props.onSuccess)
-                            props.onSuccess(data);
-                    })
-                .catch(
-                    ex => {
-                        dispatch(failure(props.gamerId));
-                        dispatch(alertInstance.error(ex));
-                        if (props.onFailure)
-                            props.onFailure(ex);
-                    });
-        }
-        function request(gamerId: string) { return { type: GamerActionsType.PROC_CANCEL_GAMER_PENALTY, gamerId } }
-        function success(gamerId: string, penaltyId: string) { return { type: GamerActionsType.SUCC_CANCEL_GAMER_PENALTY, gamerId, penaltyId } }
-        function failure(gamerId: string) { return { type: GamerActionsType.FAILED_CANCEL_GAMER_PENALTY, gamerId } }
-    }
+    // /**
+    //  * отменяет займ если это возможно
+    //  */
+    // CancelLoan(props: CancelLoanProps): Function {
+    //     return (dispatch: Function) => {
+    //         dispatch(request(props.gamerId));
+    //         gamerService.CancelLoan(props.gamerId, props.id)
+    //             .then(
+    //                 data => {
+    //                     dispatch(success(props.gamerId, props.id));
+    //                     if (props.onSuccess)
+    //                         props.onSuccess(data);
+    //                 })
+    //             .catch(
+    //                 ex => {
+    //                     dispatch(failure(props.gamerId));
+    //                     dispatch(alertInstance.error(ex));
+    //                     if (props.onFailure)
+    //                         props.onFailure(ex);
+    //                 });
+    //     }
+    //     function request(gamerId: string) { return { type: GamerActionsType.PROC_CANCEL_GAMER_LOAN, gamerId } }
+    //     function success(gamerId: string, loanId: string) { return { type: GamerActionsType.SUCC_CANCEL_GAMER_LOAN, gamerId, loanId } }
+    //     function failure(gamerId: string) { return { type: GamerActionsType.FAILED_CANCEL_GAMER_LOAN, gamerId } }
+    // }
+
+    // /**
+    //  * Красное сторно займа, если это возожно
+    //  */
+    // ReverseLoan(props: CancelLoanProps): Function {
+    //     return (dispatch: Function) => {
+    //         dispatch(request(props.gamerId));
+    //         gamerService.ReverseLoan(props.gamerId, props.id)
+    //             .then(
+    //                 data => {
+    //                     dispatch(success(props.gamerId, props.id));
+    //                     if (props.onSuccess)
+    //                         props.onSuccess(data);
+    //                 })
+    //             .catch(
+    //                 ex => {
+    //                     dispatch(failure(props.gamerId));
+    //                     dispatch(alertInstance.error(ex));
+    //                     if (props.onFailure)
+    //                         props.onFailure(ex);
+    //                 });
+    //     }
+    //     function request(gamerId: string) { return { type: GamerActionsType.PROC_CANCEL_GAMER_LOAN, gamerId } }
+    //     function success(gamerId: string, loanId: string) { return { type: GamerActionsType.SUCC_CANCEL_GAMER_LOAN, gamerId, loanId } }
+    //     function failure(gamerId: string) { return { type: GamerActionsType.FAILED_CANCEL_GAMER_LOAN, gamerId } }
+    // }
+
+    // /**
+    //  * отменяет штраф если это возможно
+    //  */
+    // CancelPenalty(props: CancelPenaltyProps): Function {
+    //     return (dispatch: Function) => {
+    //         dispatch(request(props.gamerId));
+    //         gamerService.CancelPenalty(props.gamerId, props.id)
+    //             .then(
+    //                 data => {
+    //                     dispatch(success(props.gamerId, props.id));
+    //                     if (props.onSuccess)
+    //                         props.onSuccess(data);
+    //                 })
+    //             .catch(
+    //                 ex => {
+    //                     dispatch(failure(props.gamerId));
+    //                     dispatch(alertInstance.error(ex));
+    //                     if (props.onFailure)
+    //                         props.onFailure(ex);
+    //                 });
+    //     }
+    //     function request(gamerId: string) { return { type: GamerActionsType.PROC_CANCEL_GAMER_PENALTY, gamerId } }
+    //     function success(gamerId: string, penaltyId: string) { return { type: GamerActionsType.SUCC_CANCEL_GAMER_PENALTY, gamerId, penaltyId } }
+    //     function failure(gamerId: string) { return { type: GamerActionsType.FAILED_CANCEL_GAMER_PENALTY, gamerId } }
+    // }
 }
 
 export const gamerInstance = new GamerActions();

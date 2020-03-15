@@ -158,7 +158,7 @@ const MemGamers = memoize(gamersList => {
             let dayCount = res > 0 ? 365 - res : -1 * res;
             return {
                 id: _.id,
-                name: `${_.name} - ${_.characters.length > 0 ? _.characters.firstOrDefault((_: ICharacter) => _.isMain, _.characters[0]).name : ''}`,
+                name: `${_.name} - ${Object.keys(_.characters).length > 0 ? Object.values(_.characters).firstOrDefault((_: ICharacter) => _.isMain, Object.values(_.characters)[0]).name : ''}`,
                 birthday: `${_.dateOfBirth.getDate() > 9 ? _.dateOfBirth.getDate() : '0' + _.dateOfBirth.getDate()}-${mo > 9 ? mo : '0' + mo}`,
                 count: dayCount,
                 color: BlendColor('#36c13955', '#fb6d2955', (100 / 365) * dayCount) || '',

@@ -37,11 +37,12 @@ namespace Coffers.Public.Domain.Users
 
         public Boolean IsActive => Status == CharStatus.Active;
 
-        public Character(String name, String className, Boolean isMain)
+        public Character(Guid id, String name, String className, Boolean isMain)
         {
             Name = name?.Trim();
             ClassName = className?.Trim();
             IsMain = isMain;
+            Id = id;
         }
 
         /// <summary>

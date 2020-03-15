@@ -1,7 +1,8 @@
 import { GamerActionsType } from "../../_actions";
 import { IAction, IHolded, Dictionary } from "../../core";
-import { IGamerInfo, IGamersListView, GamersListView } from "../../_services";
+import { IGamerInfo } from "../../_services";
 import clonedeep from 'lodash.clonedeep';
+import { IGamersListView, GamersListView } from "../../_services/gamer/GamersListView";
 
 export class IGamerStore {
     gamersList: Dictionary<IGamersListView & IHolded>;
@@ -104,9 +105,9 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<G
         case GamerActionsType.SUCC_ADD_NEW_CHARS:
             if (clonedState.gamersList[action.gamerId]) {
                 if (clonedState.gamersList[action.gamerId].characters == undefined)
-                    clonedState.gamersList[action.gamerId].characters = [];
+                    clonedState.gamersList[action.gamerId].characters = {};
                 clonedState.gamersList[action.gamerId].holding = false;
-                clonedState.gamersList[action.gamerId].characters.push({ id: action.id, userId: action.userId, name: action.name, className: action.className, isMain: action.isMain });
+                clonedState.gamersList[action.gamerId].characters[action.id]={ id: action.id, userId: action.userId, name: action.name, className: action.className, isMain: action.isMain };
                 return clonedState;
             }
         case GamerActionsType.FAILED_ADD_NEW_CHARS:
@@ -119,7 +120,7 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<G
         /**
          * Секция обработчик события удаления персонажа у игрока
          */
-        case GamerActionsType.PROC_DELETE_CHARS:
+       /* case GamerActionsType.PROC_DELETE_CHARS:
             if (clonedState.gamersList[action.gamerId]) {
                 clonedState.gamersList[action.gamerId].holding = true;
                 return clonedState;
@@ -127,7 +128,7 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<G
         case GamerActionsType.SUCC_DELETE_CHARS:
             if (clonedState.gamersList[action.gamerId]) {
                 if (clonedState.gamersList[action.gamerId].characters == undefined)
-                    clonedState.gamersList[action.gamerId].characters = [];
+                    clonedState.gamersList[action.gamerId].characters = {};
                 clonedState.gamersList[action.gamerId].holding = false;
                 clonedState.gamersList[action.gamerId].characters = clonedState.gamersList[action.gamerId].characters.filter(c => c.name != action.name);
                 return clonedState;
@@ -137,7 +138,7 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<G
                 clonedState.gamersList[action.gamerId].holding = false;
                 return clonedState;
             }
-
+*/
 
         /***
          * Секция обработчика события добавляения нового ЗАЙМА игроку

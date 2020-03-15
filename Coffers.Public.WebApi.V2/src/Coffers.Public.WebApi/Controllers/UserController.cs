@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Coffers.Helpers;
 using Coffers.Public.Queries.Users;
+using Coffers.Public.WebApi.Models.Guild;
 using Query.Core;
 
 namespace Coffers.Public.WebApi.Controllers
@@ -21,9 +22,32 @@ namespace Coffers.Public.WebApi.Controllers
     [ProducesResponseType(401)]
     public class UserController : ControllerBase
     {
+
+        /// <summary>
+        /// This method return gamer list
+        /// </summary>
+        /// <param name="binding"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet("/gamers/guilds/current")]
+        [ProducesResponseType(typeof(ICollection<GamersListView>), 200)]
+        public async Task<ActionResult<GamersListView>> GetGamers(
+            [FromQuery] GetGamersBinding binding,
+            [FromServices] IQueryProcessor queryProcessor,
+            CancellationToken cancellationToken)
+        {
+            return Ok(await queryProcessor.Process<GetGamersQuery, ICollection<GamersListView>>(
+                new GetGamersQuery(
+                    HttpContext.GetGuildId(),
+                    binding.DateMonth?.Trunc(DateTruncType.Day),
+                    binding.GamerStatuses),
+                cancellationToken));
+        }
+
         [Authorize]
         [PermissionRequired("admin", "officer", "leader")]
-        [HttpPost("/guilds/current/gamers")]
+        [HttpPost("/gamers/guilds/current")]
         [ProducesResponseType(201)]
         public async Task<IActionResult> AddNewGamer(
             [FromBody] GamerCreateBinding binding,
@@ -67,7 +91,7 @@ namespace Coffers.Public.WebApi.Controllers
 
             try
             {
-                user.AddCharacter(binding.Name, binding.ClassName, binding.IsMain);
+                user.AddCharacter(binding.Id, binding.Name, binding.ClassName, binding.IsMain);
             }
             catch (CharacterAlreadyExists e)
             {
@@ -166,7 +190,7 @@ namespace Coffers.Public.WebApi.Controllers
             userRepository.Save(user);
             return Ok(new { });
         }
-#endregion
+        #endregion
 
         #region current
         /// <summary>
@@ -287,7 +311,7 @@ namespace Coffers.Public.WebApi.Controllers
 
             try
             {
-                user.AddCharacter(binding.Name, binding.ClassName, binding.IsMain);
+                user.AddCharacter(binding.Id, binding.Name, binding.ClassName, binding.IsMain);
             }
             catch (CharacterAlreadyExists e)
             {

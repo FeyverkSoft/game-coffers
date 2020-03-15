@@ -135,6 +135,16 @@ export function profile(state: IProfileStore = new IProfileStore(), action: IAct
         case ProfileActionsType.SUCC_ADD_NEW_CHAR: {
             clonedState.characters.holding = false;
             clonedState.profile.charCount++;
+            clonedState.characters.push(action.char);
+            if (action.char.isMain) {
+                clonedState.characters.forEach(ch => {
+                    if (ch.id === action.char.id) {
+                        ch.isMain = true;
+                    } else {
+                        ch.isMain = false;
+                    }
+                });
+            };
             return clonedState;
         }
         case ProfileActionsType.FAILED_ADD_NEW_CHAR: {

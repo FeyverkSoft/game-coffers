@@ -111,27 +111,5 @@ namespace Coffers.Public.WebApi.Controllers
                 new GuildRoleListQuery(HttpContext.GetGuildId()), cancellationToken);
             return Ok(roles);
         }
-
-
-        /// <summary>
-        /// This method return gamer list
-        /// </summary>
-        /// <param name="binding"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        [Authorize]
-        [HttpGet("/Guilds/current/gamers")]
-        [ProducesResponseType(typeof(ICollection<GamersListView>), 200)]
-        public async Task<ActionResult<GamersListView>> GetGamers(
-            [FromQuery] GetGamersBinding binding,
-            CancellationToken cancellationToken)
-        {
-            return Ok(await _queryProcessor.Process<GetGamersQuery, ICollection<GamersListView>>(
-                new GetGamersQuery(
-                    HttpContext.GetGuildId(),
-                    binding.DateMonth?.Trunc(DateTruncType.Day),
-                    binding.GamerStatuses), 
-                cancellationToken));
-        }
     }
 }
