@@ -3,26 +3,33 @@ import { GamerRank } from "../gamer/GamerRank";
 import { PenaltyStatus } from "./PenaltyStatus";
 import { LoanStatus } from "./LoanStatus";
 import { Dictionary } from "../../core";
-import { ICharacter } from "./ICharacter";
 
 export interface IGamersListView {
     id: string;
-    characters: Array<ICharacter>;
     balance: number;
-    penalties: Dictionary<IPenaltyView>;
-    loans: Dictionary<ILoanView>;
     rank: GamerRank;
     status: GamerStatus;
     dateOfBirth: Date;
     name: string;
+    characters: Array<ICharacter>;
+    penalties: Dictionary<IPenaltyView>;
+    loans: Dictionary<ILoanView>;
 
     GetLoan(id: string): ILoanView;
     GetPenalty(penaltyId: string): IPenaltyView;
 }
 
+export interface ICharacter {
+    id: string;
+    name: string;
+    className: string;
+    isMain: boolean;
+    userId: string;
+}
+
 export interface IPenaltyView {
     id: string;
-    date: Date;
+    createDate: Date;
     amount: number;
     description: string;
     penaltyStatus: PenaltyStatus
@@ -30,12 +37,12 @@ export interface IPenaltyView {
 
 export interface ILoanView {
     id: string;
-    date: Date;
-    expiredDate: Date;
     amount: number;
     balance: number;
+    createDate: Date;
+    expiredDate: Date;
     description: string;
-    loanStatus: LoanStatus
+    loanStatus: LoanStatus;
 }
 
 export class GamersListView implements IGamersListView {

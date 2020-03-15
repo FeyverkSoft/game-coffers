@@ -106,7 +106,7 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<G
                 if (clonedState.gamersList[action.gamerId].characters == undefined)
                     clonedState.gamersList[action.gamerId].characters = [];
                 clonedState.gamersList[action.gamerId].holding = false;
-                clonedState.gamersList[action.gamerId].characters.push({ name: action.name, className: action.className, isMain: action.isMain });
+                clonedState.gamersList[action.gamerId].characters.push({ id: action.id, userId: action.userId, name: action.name, className: action.className, isMain: action.isMain });
                 return clonedState;
             }
         case GamerActionsType.FAILED_ADD_NEW_CHARS:

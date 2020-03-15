@@ -70,7 +70,7 @@ namespace Coffers.Public.Queries.Infrastructure.Users
                     penalties.Where(_ => _.UserId == user.Id)
                         .Select(_ => new PenaltyView(_.Id, _.Amount, _.CreateDate, _.Description, _.Status)),
                     loans.Where(_ => _.UserId == user.Id)
-                        .Select(_ => new LoanView(_.Id, _.Amount, _.Description, _.Status, _.ExpiredDate))
+                        .Select(_ => new LoanView(_.Id, _.Amount, _.Balance, _.Description, _.Status, _.CreateDate, _.ExpiredDate))
                     ));
             }
             return result;

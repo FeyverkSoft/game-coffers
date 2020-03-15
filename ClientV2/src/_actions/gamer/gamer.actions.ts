@@ -195,7 +195,7 @@ export class GamerActions {
                     data => {
                         dispatch(success(loan.gamerId, {
                             id: loan.id,
-                            date: loan.borrowDate,
+                            createDate: loan.borrowDate,
                             expiredDate: loan.expiredDate,
                             amount: loan.amount,
                             balance: loan.amount,
@@ -229,7 +229,7 @@ export class GamerActions {
                     data => {
                         dispatch(success(penalty.gamerId, {
                             id: penalty.id,
-                            date: new Date(),
+                            createDate: new Date(),
                             amount: penalty.amount,
                             description: penalty.description,
                             penaltyStatus: 'Active'

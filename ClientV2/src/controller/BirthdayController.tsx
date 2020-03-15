@@ -1,6 +1,5 @@
 import React from "react";
-import { Lang, IGamersListView } from '../_services';
-import { ICharacter } from '../_services/guild/ICharacter';
+import { Lang, IGamersListView, ICharacter } from '../_services';
 import { Table, Breadcrumb, PageHeader } from 'antd';
 import { HomeOutlined } from '@ant-design/icons';
 import { memoize } from "lodash";
