@@ -15,6 +15,7 @@ import { HeaderLink } from './_components/Header/HeaderLink';
 import { LogOutController } from './controller/LogOutController';
 import { ProfileButton } from './_components/Profile/ProfileButton';
 import { OperationsController } from './controller/OperationsController';
+import { CofferController } from './controller/CofferController';
 
 
 const { Content, Footer } = Layout;
@@ -68,13 +69,13 @@ export const App = ({ ...props }) => {
               <PrivateRoute path='/operations' component={OperationsController} />
               <PrivateRoute path='/logout' component={LogOutController} />
               <PrivateRoute path='/birthday' component={BirthdayController} />
-              {/* <PrivateRoute path="/" component={MainController} />*/}
+              <PrivateRoute path="/" component={CofferController} />
               <Route component={NotFoundController} />
             </Switch>
           </TryCatch>
         </Content>
       </Router>
-      <Footer><div>© Peter 2019 - {(new Date()).getFullYear()}</div> <div>developed by Mazin Peter</div></Footer>
+      <Footer style={{ display: 'flex' }}><div>© Peter 2019 - {(new Date()).getFullYear()}</div> <div>developed by Mazin Peter</div></Footer>
     </Layout>
   );
 }

@@ -1,19 +1,17 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { Form, Input, Button, Modal, Switch } from 'antd';
+import { Form, Input, Modal, Switch } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import { IStore, getGuid } from '../../_helpers';
+import { getGuid } from '../../_helpers';
 import { Lang } from '../../_services';
-import { profileInstance } from '../../_actions';
 
 interface FormProps {
-    isLoading: boolean,
+    isLoading?: boolean,
     visible: boolean;
     onClose(): void;
-    Add(id: string, name: string, className: string, isMain: boolean): void;
+    onAdd(id: string, name: string, className: string, isMain: boolean): void;
 }
 
-const _ModalDialog = ({ ...props }: FormProps) => {
+export const AddCharDialog = ({ ...props }: FormProps) => {
     const { isLoading, visible } = props;
     const [form] = Form.useForm();
     const id = getGuid();
@@ -29,7 +27,7 @@ const _ModalDialog = ({ ...props }: FormProps) => {
                 form.validateFields()
                     .then(values => {
                         form.resetFields();
-                        props.Add(id, values.name, values.className, values.isMain);
+                        props.onAdd(id, values.name, values.className, values.isMain);
                     })
                     .catch(info => {
                         console.log('Validate Failed:', info);
@@ -81,23 +79,3 @@ const _ModalDialog = ({ ...props }: FormProps) => {
         </Modal>
     );
 }
-
-
-const connectedModal = connect<{}, {}, any, IStore>(
-    (state: IStore) => {
-        const { session } = state;
-        return {
-            isLoading: session && session.holding,
-        };
-    },
-    (dispatch: Function, props: any) => {
-        return {
-            Add: (id: string, name: string, className: string, isMain: boolean) => {
-                dispatch(profileInstance.AddChar(id, name, className, isMain));
-                props.onClose();
-            },
-        }
-    },
-)(_ModalDialog);
-
-export { connectedModal as AddCharDialog };

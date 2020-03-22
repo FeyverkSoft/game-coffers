@@ -82,26 +82,38 @@ export class _OperationsController extends React.Component<IMainProps, IState> {
         }
     }
 
-    loadDate = () => {
+    loadData = () => {
         const { date } = this.state;
         this.props.loadData(date);
     }
 
     componentDidMount() {
-        this.loadDate();
+        this.loadData();
     }
 
     onSelectDate = (value: Moment | null, dateString: string) => {
         if (value) {
-            this.setState({ date: value.toDate() }, this.loadDate);
+            this.setState({ date: value.toDate() }, this.loadData);
         }
     };
 
-    render() {
-        const { operations } = this.props;
+    getOperations = () => {
         const { date, filter } = this.state;
         const strDate: string = formatDateTime(date, 'm');
+        const { operations } = this.props;
         const dateOp = (operations[strDate] || []);
+        return dateOp.filter(_ => {
+            return _.amount.toString() === filter ||
+                _.description.toLowerCase().includes(filter) ||
+                _.documentDescription.toLowerCase().includes(filter) ||
+                _.userName.toLowerCase().includes(filter) ||
+                formatDateTime(_.createDate, 'h').includes(filter) ||
+                filter === '';
+        })
+    }
+
+    render() {
+        const { date } = this.state;
         return (
             <Content>
                 <Breadcrumb>
@@ -148,16 +160,9 @@ export class _OperationsController extends React.Component<IMainProps, IState> {
                                     rowKey="id"
                                     columns={this.state.columns}
                                     pagination={false}
-                                    loading={dateOp.holding}
+                                    loading={this.props.isLoading}
                                     bordered={false}
-                                    dataSource={dateOp.filter(_ => {
-                                        return _.amount.toString() === filter ||
-                                            _.description.toLowerCase().includes(filter) ||
-                                            _.documentDescription.toLowerCase().includes(filter) ||
-                                            _.userName.toLowerCase().includes(filter) ||
-                                            formatDateTime(_.createDate, 'h').includes(filter) ||
-                                            filter === '';
-                                    })}
+                                    dataSource={this.getOperations()}
                                 />}
                             </Col>
                         </Row>
@@ -174,7 +179,8 @@ const connectedOperationsController = connect<{}, {}, {}, IStore>(
     (state: IStore) => {
         const { operations } = state.operations;
         return {
-            operations: operations
+            operations: operations,
+            isLoading: operations.holding
         };
     },
     (dispatch: any) => {

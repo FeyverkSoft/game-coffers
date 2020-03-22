@@ -55,13 +55,14 @@ const locString: any = {
         USER_ROW_STATUS: 'Статус',
         USER_ROW_RANK: 'Ранг',
         OPERATION: 'Операция',
+        DAYS_COUNT: 'До др осталось',
         USER_ROW_BALANCE: 'Баланс',
         PROFILE: 'Профиль',
         OPERATIONS: 'Операции',
         USER_ROW_PENALTIES: 'Штрафы',
         USER_ROW_LOANS: 'Займы',
         NEW_USER_MODAL: 'Новый пользователь',
-        USER_ROLE: {
+        USER_RANK: {
             Leader: 'ГМ',
             Officer: 'Офицер',
             Veteran: 'Ветеран',

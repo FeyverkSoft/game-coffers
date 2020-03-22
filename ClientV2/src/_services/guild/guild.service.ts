@@ -6,10 +6,9 @@ import { authService } from '..';
 export class guildService {
 
     /**
-     * Получить информацию о гильдии по её id
-     * @param {*} guildId идентификатор гильдии для которой будет возвращена информация
+     * Получить информацию о гильдии 
      */
-    static async getGuild(guildId: string): Promise<GuildInfo> {
+    static async getGuild(): Promise<GuildInfo> {
         let session = authService.getCurrentSession();
         const requestOptions: RequestInit = {
             method: 'GET',
@@ -20,7 +19,7 @@ export class guildService {
                 'Authorization': 'Bearer ' + session.sessionId
             }
         };
-        return await fetch(Config.BuildUrl(`/Guilds/${guildId}`), requestOptions)
+        return await fetch(Config.BuildUrl(`/Guilds/current`), requestOptions)
             .then<BaseResponse & any>(getResponse)
             .then(data => {
                 if (data && data.type || data.traceId) {
@@ -42,9 +41,9 @@ export class guildService {
     }
 
     /**
-     * Возвращает информацию о балансе гильдии по ID
+     * Возвращает информацию о балансе гильдии
      */
-    static async GetGuildBalanceReport(guildId: string): Promise<GuildBalanceReport> {
+    static async GetGuildBalanceReport(): Promise<GuildBalanceReport> {
         let session = authService.getCurrentSession();
         const requestOptions: RequestInit = {
             method: 'GET',
@@ -53,7 +52,7 @@ export class guildService {
                 'Authorization': 'Bearer ' + session.sessionId
             }
         };
-        return await fetch(Config.BuildUrl(`/Guilds/${guildId}/balance`), requestOptions)
+        return await fetch(Config.BuildUrl(`/Guilds/current/balance`), requestOptions)
             .then<BaseResponse & any>(getResponse)
             .then(data => {
                 if (data && data.type || data.traceId) {

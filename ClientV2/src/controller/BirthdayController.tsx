@@ -4,7 +4,7 @@ import { Table, Breadcrumb, PageHeader } from 'antd';
 import { HomeOutlined } from '@ant-design/icons';
 import { memoize } from "lodash";
 import { connect } from "react-redux";
-import { IStore, BlendColor } from "../_helpers";
+import { IStore, BlendColor, formatDateTime } from "../_helpers";
 import { gamerInstance } from "../_actions";
 import { ColumnProps } from "antd/lib/table";
 import style from './bd.module.scss';
@@ -169,9 +169,10 @@ const MemGamers = memoize(gamersList => {
 
 const connectedLoginForm = connect<{}, {}, {}, IStore>(
     (state: IStore) => {
-        const { gamersList } = state.gamers;
+        const date = formatDateTime(new Date(), 'm');
+        const gamersList = state.gamers.gamersList[date] || {};
         return {
-            isLoading: Object.keys(gamersList).length === 0,
+            isLoading: state.gamers.gamersList.holding === true,
             gamers: MemGamers(gamersList)
         };
     },

@@ -60,7 +60,7 @@ namespace Coffers.Public.WebApi.Extensions
                     Format = "uuid",
                     Default = new OpenApiString(Guid.NewGuid().ToString())
                 });
-                options.DescribeAllEnumsAsStrings();
+                //options.DescribeAllEnumsAsStrings();
 
                 var basePath = AppDomain.CurrentDomain.BaseDirectory;
                 options.IncludeXmlComments(Path.Combine(basePath, "Coffer.Public.WebApi.xml"));

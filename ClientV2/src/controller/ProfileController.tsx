@@ -13,7 +13,7 @@ import { Card } from '../_components/Base/Card';
 import { TaxCard } from '../_components/Profile/TaxCard';
 import { ICharacter } from '../_services/profile/ICharacter';
 import { ProfileCharList } from '../_components/Profile/ProfileCharList';
-import { AddCharDialog } from '../_components/Profile/AddCharDialog';
+import { AddCharDialog } from '../_components/Character/AddCharDialog';
 
 interface IProfileProps {
     Get: Function;
@@ -21,6 +21,7 @@ interface IProfileProps {
     GetCharacters: Function;
     SetMainChar(charId: string): void;
     DeleteChar(charId: string): void;
+    AddChar(id: string, name: string, className: string, isMain: boolean): void;
     profile: IProfile & IHolded;
     tax: ITax & IHolded;
     characters: Array<ICharacter> & IHolded;
@@ -58,9 +59,14 @@ export class _ProfileController extends React.Component<IProfileProps, IState> {
         this.props.DeleteChar(charId);
     }
 
-    showAddCharModal = () => {
+    toggleAddCharModal = () => {
         this.setState({ showAddModal: !this.state.showAddModal });
     }
+
+    onAddCharacter = (id: string, name: string, className: string, isMain: boolean) => {
+        this.props.AddChar(id, name, className, isMain);
+        this.toggleAddCharModal();
+    };
 
     render = () => {
         let { profile, tax, characters } = this.props;
@@ -147,14 +153,16 @@ export class _ProfileController extends React.Component<IProfileProps, IState> {
                             loading={characters.holding}
                             SetMainChar={this.setMainChar}
                             DeleteChar={this.deleteChar}
-                            AddChar={this.showAddCharModal}
+                            AddChar={this.toggleAddCharModal}
                         />
                     </Col>
                 </Row>
             </Layout>
             <AddCharDialog
-                onClose={this.showAddCharModal}
+                onClose={this.toggleAddCharModal}
                 visible={this.state.showAddModal}
+                onAdd={this.onAddCharacter}
+                isLoading={characters.holding}
             />
         </Content>
     }
@@ -172,6 +180,7 @@ const connectedProfileController = connect<{}, {}, {}, IStore>(
             GetCharacters: () => dispatch(profileInstance.GetChars()),
             SetMainChar: (charId: string) => dispatch(profileInstance.SetMainChar(charId)),
             DeleteChar: (charId: string) => dispatch(profileInstance.DeleteChar(charId)),
+            AddChar: (id: string, name: string, className: string, isMain: boolean) => dispatch(profileInstance.AddChar(id, name, className, isMain)),
         }
     })(_ProfileController);
 

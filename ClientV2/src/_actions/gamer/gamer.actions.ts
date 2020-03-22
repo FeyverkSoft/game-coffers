@@ -4,7 +4,7 @@ import { GamerActionsType } from './GamerActionsType';
 import { alertInstance, ICallback } from '..';
 import { profileService } from '../../_services/profile/profile.service';
 
-interface GetGuildGamersProps{
+interface GetGuildGamersProps {
     dateMonth: Date;
     gamerStatuses?: Array<GamerStatus>
 }
@@ -55,13 +55,34 @@ interface CancelPenaltyProps extends ICallback<any> {
 }
 
 export class GamerActions {
+    /**
+     * Метод удаляет у игрока персонажа
+     */
+    deleteCharacter(userId: string, characterId: string): any {
+        return (dispatch: Function) => {
+            dispatch(request(userId));
+            gamerService.DeleteChar(userId, characterId)
+                .then(
+                    data => {
+                        dispatch(success(userId, characterId));
+                    })
+                .catch(
+                    ex => {
+                        dispatch(failure(userId));
+                        dispatch(alertInstance.error(ex));
+                    });
+        }
+        function request(userId: string) { return { type: GamerActionsType.PROC_DELETE_CHARS, userId } }
+        function success(userId: string, characterId: string) { return { type: GamerActionsType.SUCC_DELETE_CHARS, userId, characterId } }
+        function failure(userId: string) { return { type: GamerActionsType.FAILED_DELETE_CHARS, userId } }
+    }
 
     /**
      * This method return gamer list
      */
     GetGamers(filter: GetGuildGamersProps): Function {
         return (dispatch: Function) => {
-            dispatch(request());
+            dispatch(request(filter.dateMonth));
             gamerService.GetGamers(filter.dateMonth, filter.gamerStatuses)
                 .then(
                     data => {
@@ -69,13 +90,13 @@ export class GamerActions {
                     })
                 .catch(
                     ex => {
-                        dispatch(failure());
+                        dispatch(failure(filter.dateMonth));
                         dispatch(alertInstance.error(ex));
                     });
         }
-        function request() { return { type: GamerActionsType.PROC_GET_GUILD_GAMERS } }
-        function success(GamersList: Array<IGamersListView>, DateMonth: Date) { return { type: GamerActionsType.SUCC_GET_GUILD_GAMERS, GamersList, DateMonth } }
-        function failure() { return { type: GamerActionsType.FAILED_GET_GUILD_GAMERS } }
+        function request(date: Date) { return { type: GamerActionsType.PROC_GET_GUILD_GAMERS, date } }
+        function success(gamersList: Array<IGamersListView>, date: Date) { return { type: GamerActionsType.SUCC_GET_GUILD_GAMERS, gamersList, date } }
+        function failure(date: Date) { return { type: GamerActionsType.FAILED_GET_GUILD_GAMERS, date } }
     }
 
     // /**
@@ -127,31 +148,8 @@ export class GamerActions {
     //     function failure(gamerId: string) { return { type: GamerActionsType.FAILED_ADD_NEW_CHARS, gamerId } }
     // }
 
-    // /**
-    //  * Метод удаляет у игрока персонажа
-    //  */
-    // DeleteCharacters(props: DeleteCharProps): Function {
-    //     return (dispatch: Function) => {
-    //         dispatch(request(props.gamerId));
-    //         gamerService.DeleteChar(props.gamerId, props.name)
-    //             .then(
-    //                 data => {
-    //                     dispatch(success(props.gamerId, props.name));
-    //                     if (props.onSuccess)
-    //                         props.onSuccess(data);
-    //                 })
-    //             .catch(
-    //                 ex => {
-    //                     dispatch(failure(props.gamerId));
-    //                     dispatch(alertInstance.error(ex));
-    //                     if (props.onFailure)
-    //                         props.onFailure(ex);
-    //                 });
-    //     }
-    //     function request(gamerId: string) { return { type: GamerActionsType.PROC_DELETE_CHARS, gamerId } }
-    //     function success(gamerId: string, name: string) { return { type: GamerActionsType.SUCC_DELETE_CHARS, gamerId, name } }
-    //     function failure(gamerId: string) { return { type: GamerActionsType.FAILED_DELETE_CHARS, gamerId } }
-    // }
+
+
 
     // /**
     //  * This method changed gamer status

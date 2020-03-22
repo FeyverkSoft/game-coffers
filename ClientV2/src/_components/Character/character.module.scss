@@ -1,0 +1,47 @@
+@import "../../../assets/_variables.scss"; // variables to override above
+.chars_wrapper {
+  @include flex();
+  align-items: flex-start;
+  @media screen and (max-width: $mobile-L) {
+    flex-direction: column;
+  }
+
+  .char {
+    @include flex();
+    padding-left: 0.25rem;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+
+    @media screen and (max-width: $mobile-L) {
+      justify-content: center;
+      font-size: 0.85rem;
+      flex-direction: row;
+    }
+
+    .main {
+      font-weight: 500;
+    }
+
+    button {
+      @include flex();
+      width: auto;
+      height: auto;
+    }
+
+    .char_name {
+      @include flex();
+      position: relative;
+      padding-right: 0.2rem;
+      align-items: center;
+      flex: 0 1 0;
+
+      &:focus,
+      &:hover {
+        .delete {
+          display: block;
+        }
+      }
+    }
+  }
+}

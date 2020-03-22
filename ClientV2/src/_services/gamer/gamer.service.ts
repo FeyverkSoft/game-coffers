@@ -3,13 +3,12 @@ import { BaseResponse } from '..';
 import { Config } from '../../core';
 import { authService } from '..';
 import { GamerStatus } from './GamerStatus';
-import { GamerRank } from './GamerRank';
 import { GamersListView, IGamersListView } from './GamersListView';
 
 export class gamerService {
     /**
-      * Возвращает список игроков в гильдии удовлетворяющих условию
-      */
+     * Возвращает список игроков в гильдии удовлетворяющих условию
+     */
     static async GetGamers(dateMonth: Date, gamerStatuses?: Array<GamerStatus>): Promise<Array<IGamersListView>> {
         let session = authService.getCurrentSession();
         const requestOptions: RequestInit = {
@@ -41,6 +40,34 @@ export class gamerService {
             })
             .catch(catchHandle);
     }
+
+    /**
+       * Удалить персонажа у игрока
+       * @param gamerId 
+       * @param name 
+       * @param className 
+       */
+    static async DeleteChar(gamerId: string, characterId: string): Promise<void> {
+        let session = authService.getCurrentSession();
+        const requestOptions: RequestInit = {
+            method: 'DELETE',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+                'Authorization': 'Bearer ' + session.sessionId
+            },
+        };
+        return await fetch(Config.BuildUrl(`/gamers/${gamerId}/characters/${characterId}`), requestOptions)
+            .then<BaseResponse>(getResponse)
+            .then(data => {
+                if (data && data.type || data.traceId) {
+                    return errorHandle(data);
+                }
+            })
+            .catch(catchHandle);
+    }
+
 
     // /**
     //  * Добавить игроку новый штраф
@@ -130,33 +157,6 @@ export class gamerService {
     //         .catch(catchHandle);
     // }
 
-    // /**
-    //  * Удалить персонажа у игрока
-    //  * @param gamerId 
-    //  * @param name 
-    //  * @param className 
-    //  */
-    // static async DeleteChar(gamerId: string, name: string): Promise<void> {
-    //     let session = authService.getCurrentSession();
-    //     const requestOptions: RequestInit = {
-    //         method: 'DELETE',
-    //         cache: 'no-cache',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'accept': 'application/json',
-    //             'Authorization': 'Bearer ' + session.sessionId
-    //         },
-    //         body: JSON.stringify({ name: name })
-    //     };
-    //     return await fetch(Config.BuildUrl(`/Gamers/${gamerId}/characters`), requestOptions)
-    //         .then<BaseResponse>(getResponse)
-    //         .then(data => {
-    //             if (data && data.type || data.traceId) {
-    //                 return errorHandle(data);
-    //             }
-    //         })
-    //         .catch(catchHandle);
-    // }
 
 
 

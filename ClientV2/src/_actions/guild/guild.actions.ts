@@ -1,45 +1,24 @@
 
 import { guildService, GuildInfo, GuildBalanceReport, GamerStatus, IGamersListView, GamerStatusList, GamerRank } from '../../_services';
 import { GuildActionsType } from './GuildActionsType';
-import { alertInstance, ICallback } from '..';
-import { gamerInstance } from '../gamer/gamer.actions';
-
-interface GetGuildProps extends ICallback<any> {
-    guildId: string;
-}
-interface AddUserProps extends ICallback<any> {
-    guildId: string;
-    id: string;
-    name: string,
-    rank: GamerRank,
-    status: GamerStatus,
-    dateOfBirth: Date,
-    login: string
-}
-interface GetGuildBalanceProps extends ICallback<any> {
-    guildId: string;
-}
+import { alertInstance } from '..';
 
 export class GuildActions {
     /**
-     * Возвращает информацию о гильдии по её ID
+     * Возвращает информацию о гильдии
      */
-    GetGuild(guild: GetGuildProps) {
+    GetGuild() {
         return (dispatch: Function) => {
             dispatch(request());
-            guildService.getGuild(guild.guildId)
+            guildService.getGuild()
                 .then(
                     data => {
                         dispatch(success(data));
-                        if (guild.onSuccess)
-                            guild.onSuccess(data);
                     })
                 .catch(
                     ex => {
                         dispatch(failure());
                         dispatch(alertInstance.error(ex));
-                        if (guild.onFailure)
-                            guild.onFailure(ex);
                     });
         }
         function request() { return { type: GuildActionsType.PROC_GET_GUILD } }
@@ -50,22 +29,18 @@ export class GuildActions {
     /**
      * Возвращает информацию о балансе гильдии по ID
      */
-    GetGuildBalanceReport(guild: GetGuildBalanceProps): Function {
+    GetGuildBalanceReport(): Function {
         return (dispatch: Function) => {
             dispatch(request());
-            guildService.GetGuildBalanceReport(guild.guildId)
+            guildService.GetGuildBalanceReport()
                 .then(
                     data => {
                         dispatch(success(data));
-                        if (guild.onSuccess)
-                            guild.onSuccess(data);
                     })
                 .catch(
                     ex => {
                         dispatch(failure());
                         dispatch(alertInstance.error(ex));
-                        if (guild.onFailure)
-                            guild.onFailure(ex);
                     });
         }
         function request() { return { type: GuildActionsType.PROC_GET_BALANCE_REPORT } }
@@ -74,4 +49,4 @@ export class GuildActions {
     }
 }
 
-export const guildInstance = new GuildActions;
+export const guildInstance = new GuildActions();
