@@ -78,6 +78,7 @@ namespace Coffers.Public.WebApi
             });
             services.AddScoped<Domain.Admin.GuildCreate.IGuildRepository, Infrastructure.Admin.GuildCreate.GuildRepository>();
             services.AddScoped<Domain.Authorization.IAuthorizationRepository, Infrastructure.Authorization.AuthorizationRepository>();
+            services.AddScoped<Domain.Admin.GuildCreate.GuildCreator>();
 
             #endregion
 

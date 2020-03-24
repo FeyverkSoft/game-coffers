@@ -15,7 +15,7 @@ namespace Coffers.Public.WebApi.Controllers.Admin
     [Route("[controller]")]
     [ApiController]
     [ProducesResponseType(401)]
-    [PermissionRequired(new[] { "admin" })]
+    [PermissionRequired(new[] {"admin"})]
     public class GuildsController : ControllerBase
     {
         private readonly IGuildRepository _guildRepository;
@@ -38,24 +38,23 @@ namespace Coffers.Public.WebApi.Controllers.Admin
         [HttpPost("/admin/guilds")]
         [ProducesResponseType(201)]
         public async Task<IActionResult> Create(
-            [FromBody]GuildCreateBinding binding,
+            [FromBody] GuildCreateBinding binding,
+            [FromServices] GuildCreator creator,
             CancellationToken cancellationToken)
         {
-            var existGuild = await _guildRepository.Get(binding.Id, cancellationToken);
-
-            if (existGuild != null)
+            try
             {
-                if (existGuild.Name == binding.Name)
-                    return CreatedAtRoute("GetGuild", new { id = binding.Id }, null);
+                var guild = await creator.Create(id: binding.Id, name: binding.Name, status: binding.Status, recruitmentStatus: binding.RecruitmentStatus,
+                    cancellationToken);
 
-                throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.GuildAlreadyExists, "Гильдия уже существует");
+                await _guildRepository.Save(guild);
+
+                return CreatedAtRoute("GetGuild", new {id = binding.Id}, null);
             }
-
-            var guild = new Guild(id: binding.Id, name: binding.Name, status: binding.Status, recruitmentStatus: binding.RecruitmentStatus);
-
-            await _guildRepository.Save(guild);
-
-            return CreatedAtRoute("AdminGetGuild", new { id = binding.Id }, null);
+            catch (GuildAlreadyExistsException e)
+            {
+                throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.GuildAlreadyExists, e.Message);
+            }
         }
 
         /// <summary>
@@ -68,7 +67,7 @@ namespace Coffers.Public.WebApi.Controllers.Admin
         [ProducesResponseType(typeof(GuildView), 200)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> Get(
-            [FromRoute]Guid id,
+            [FromRoute] Guid id,
             CancellationToken cancellationToken)
         {
             var guild = await _queryProcessor.Process<GuildQuery, GuildView>(new GuildQuery(id), cancellationToken);

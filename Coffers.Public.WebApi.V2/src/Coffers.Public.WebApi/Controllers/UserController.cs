@@ -22,7 +22,6 @@ namespace Coffers.Public.WebApi.Controllers
     [ProducesResponseType(401)]
     public class UserController : ControllerBase
     {
-
         /// <summary>
         /// This method return gamer list
         /// </summary>
@@ -55,21 +54,19 @@ namespace Coffers.Public.WebApi.Controllers
             [FromServices] UserFactory gamerFactory,
             CancellationToken cancellationToken)
         {
-            var user = await userRepository.Get(binding.Id, cancellationToken);
+            try
+            {
+                var user = await gamerFactory.Create(binding.Id, HttpContext.GetGuildId(), binding.Login, binding.Name, binding.DateOfBirth, binding.Rank,
+                    binding.Status, cancellationToken);
 
-            if (user != null)
-                if (user.Login == binding.Login &&
-                    user.Name == binding.Name &&
-                    user.DateOfBirth == binding.DateOfBirth)
-                    return Ok(new { });
-                else
-                    throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.GamerAlreadyExists, "Gamer already exists");
+                userRepository.Save(user);
 
-            user = await gamerFactory.Create(binding.Id, HttpContext.GetGuildId(), binding.Login, binding.Name, binding.DateOfBirth, binding.Rank, binding.Status);
-
-            userRepository.Save(user);
-
-            return Ok(new { });
+                return Ok(new { });
+            }
+            catch (UserAlreadyExistsException)
+            {
+                throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.GamerAlreadyExists, "Gamer already exists");
+            }
         }
 
         #region Users
@@ -190,9 +187,11 @@ namespace Coffers.Public.WebApi.Controllers
             userRepository.Save(user);
             return Ok(new { });
         }
+
         #endregion
 
         #region current
+
         /// <summary>
         /// Get profile
         /// </summary>
@@ -249,6 +248,7 @@ namespace Coffers.Public.WebApi.Controllers
             {
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.CharacterNotFound, e.Message);
             }
+
             userRepository.Save(user);
 
             return Ok(new { });
@@ -294,6 +294,7 @@ namespace Coffers.Public.WebApi.Controllers
             {
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.CharacterNotFound, e.Message);
             }
+
             userRepository.Save(user);
             return Ok(new { });
         }
@@ -321,6 +322,7 @@ namespace Coffers.Public.WebApi.Controllers
             userRepository.Save(user);
             return Ok(new { });
         }
+
         #endregion
     }
 }
