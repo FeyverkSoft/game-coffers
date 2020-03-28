@@ -12,8 +12,8 @@ select
     c.UserId
 from `Character`c
 where 1 = 1
-and c.UserId in @UserIds
-and c.Status in @Statuses
+    and c.UserId in @UserIds
+    and c.Status in @Statuses
 ";
         public Guid Id { get; }
         public Guid UserId { get; }

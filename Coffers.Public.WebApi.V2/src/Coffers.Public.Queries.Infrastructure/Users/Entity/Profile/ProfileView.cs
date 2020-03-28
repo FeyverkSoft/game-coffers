@@ -3,29 +3,53 @@ using Coffers.Types.Gamer;
 
 namespace Coffers.Public.Queries.Infrastructure.Users.Entity.Profile
 {
-   internal sealed class ProfileView
+    internal sealed class ProfileView
     {
         public static String Sql = @"
 select
     u.`Id` as UserId,
     u.`Name` as Name,
     u.`Rank` as Rank,
-    count(uch.`Id`) as CharCount,
     u.`DateOfBirth` as DateOfBirth,
-    coalesce(sum(uo.`Amount` ), 0.0) as Balance,
-    count(ul.`Id`) as ActiveLoanAmount,
-    coalesce(sum(up.`Amount`), 0.0) as ActivePenaltyAmount,
-    coalesce(sum(ul.`TaxAmount`), 0.0) as ActiveLoanTaxAmount,
+    coalesce(uch.`CharCount`, 0) as CharCount,
+    coalesce(uo.`Amount`, 0.0) as Balance,
+    coalesce(ul.`Amount`, 0.0) as ActiveLoanAmount,
+    coalesce(up.`Amount`, 0.0) as ActivePenaltyAmount,
+    coalesce(ul.`TaxAmount`, 0.0) as ActiveLoanTaxAmount,
     uc.`Name` as CharacterName
 from `user` u
-left join `operation` uo  on  uo.`UserId` = u.`Id`
-                          and uo.Type in ('Emission', 'Other')
-left join `character` uch on  uch.`UserId` = u.`Id` 
-                          and uch.`Status` = 'Active'
-left join `loan` ul on ul.`LoanStatus` in ('Active', 'Expired') 
-left join `penalty` up on  up.`UserId` = u.`Id` 
-                       and up.`PenaltyStatus` = 'Active'
-left join ( select 
+left join (select 
+                sum(o.`Amount`) as Amount, 
+                o.UserId from `operation` o 
+                where 1 = 1 
+                    and o.Type in ('Emission', 'Other') 
+                group by o.UserId 
+            ) as uo on  uo.`UserId` = u.`Id`
+left join (select 
+                count(c.Id) as CharCount, 
+                c.UserId  
+            from `character` c
+            where 1 = 1 
+                and c.`Status` = 'Active'
+            group by c.UserId 
+            ) as uch on  uch.`UserId` = u.`Id` 
+left join (select 
+                sum(l.Amount) as Amount,
+                sum(l.TaxAmount) as TaxAmount,
+                l.UserId 
+            from `loan` l
+            where 1 = 1 
+                and l.`LoanStatus` in ('Active', 'Expired')
+            group by l.UserId
+          ) as ul on ul.`UserId` = u.`Id`
+left join (select 
+                sum(p.Amount) as Amount,
+                p.UserId
+            from `penalty` p
+            where 1 = 1
+                and p.`PenaltyStatus` = 'Active'
+            ) as up on  up.`UserId` = u.`Id`            
+left join (select 
                 c.`Name`,
                 c.`UserId`
             from   `character` c 
@@ -37,6 +61,7 @@ where 1 = 1
     and u.`Id` = @UserId
     and u.`GuildId` = @GuildId
 ";
+
         public Guid UserId { get; }
         public String Name { get; }
         public GamerRank Rank { get; }
@@ -50,6 +75,7 @@ where 1 = 1
         /// Имя основного персонажа
         /// </summary>
         public String CharacterName { get; }
+
         public DateTime DateOfBirth { get; }
     }
 }
