@@ -5,7 +5,7 @@ export class SessionInfo {
     roles: string[];
     constructor(data: any = { holding: false }) {
         let obj;
-        if (typeof (data) == typeof ('')) {
+        if (typeof (data) === typeof ('')) {
             try {
                 obj = JSON.parse(data);
             } catch (e) { console.warn(e); }
@@ -18,6 +18,6 @@ export class SessionInfo {
     }
 
     isActive(): boolean {
-        return this.sessionId != null || this.sessionId == '';
+        return this.sessionId !== undefined || this.sessionId !== null || this.sessionId !== '';
     }
 }

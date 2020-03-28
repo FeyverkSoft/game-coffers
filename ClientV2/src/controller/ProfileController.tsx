@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Breadcrumb, Layout, Col, Row, Statistic, Modal } from 'antd';
+import { Breadcrumb, Layout, Col, Row, Statistic } from 'antd';
 import { HomeOutlined } from '@ant-design/icons';
 import { Lang, IProfile, ITax } from '../_services';
 import { connect } from 'react-redux';
@@ -180,7 +180,8 @@ const connectedProfileController = connect<{}, {}, {}, IStore>(
             GetCharacters: () => dispatch(profileInstance.GetChars()),
             SetMainChar: (charId: string) => dispatch(profileInstance.SetMainChar(charId)),
             DeleteChar: (charId: string) => dispatch(profileInstance.DeleteChar(charId)),
-            AddChar: (id: string, name: string, className: string, isMain: boolean) => dispatch(profileInstance.AddChar(id, name, className, isMain)),
+            AddChar: (id: string, name: string, className: string, isMain: boolean) =>
+                dispatch(profileInstance.AddChar({ id, name, className, isMain })),
         }
     })(_ProfileController);
 

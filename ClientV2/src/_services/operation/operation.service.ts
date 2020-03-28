@@ -1,6 +1,6 @@
 import { getResponse, catchHandle, errorHandle } from '../../_helpers';
 import { BaseResponse, OperationType, IOperationView, OperationView } from '..';
-import { Config, Dictionary } from '../../core';
+import { Config } from '../../core';
 import { authService } from '..';
 
 export class operationService {
@@ -22,7 +22,7 @@ export class operationService {
         return await fetch(Config.BuildUrl(`/Guilds/current/operations`, { DateMonth: DateMonth.toISOString() }), requestOptions)
             .then<BaseResponse & Array<any>>(getResponse)
             .then(data => {
-                if (data && data.type || data.traceId) {
+                if ((data && data.type) || data.traceId) {
                     return errorHandle(data);
                 }
                 return data.map(_ => new OperationView(
@@ -70,7 +70,7 @@ export class operationService {
         return await fetch(Config.BuildUrl(`/Operations`), requestOptions)
             .then<BaseResponse & Array<any>>(getResponse)
             .then(data => {
-                if (data && data.type || data.traceId) {
+                if ((data && data.type) || data.traceId) {
                     return errorHandle(data);
                 }
             })

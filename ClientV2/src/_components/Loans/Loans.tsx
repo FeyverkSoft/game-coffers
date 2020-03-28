@@ -16,6 +16,7 @@ interface ILoans {
 export const Loans = ({ ...props }: ILoans) => <div className={style['loans_wrapper']}>
     {
         Object.keys(props.loans).filter(_ => _ !== 'holding').map(_ => <Loan
+            key={props.loans[_].id}
             loan={props.loans[_]}
         />)
     }

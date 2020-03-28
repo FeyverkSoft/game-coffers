@@ -16,6 +16,7 @@ interface ICharacters {
 export const Characters = ({ ...props }: ICharacters) => <div className={style['chars_wrapper']}>
     {
         Object.keys(props.characters).filter(_ => _ !== 'holding').map(_ => <Character
+            key={props.characters[_].id}
             character={props.characters[_]}
             onDeleteChar={props.onDeleteChar}
         />)

@@ -35,7 +35,7 @@ export class authService {
         return fetch(Config.BuildUrl('/Session'), requestOptions)
             .then<BaseResponse & SessionInfo>(getResponse)
             .then((data: any) => {
-                if (data && data.type || data.traceId) {
+                if ((data && data.type) || data.traceId) {
                     authService.clearLocalSession();
                     throw new Error(LangF(data.type || 'INVALID_ARGUMENT', Object.keys(data.errors || {})[0]));
                 }
@@ -56,7 +56,7 @@ export class authService {
                 .then((data: any) => {
                     authService.clearLocalSession();
 
-                    if (data && data.type || data.traceId)
+                    if ((data && data.type) || data.traceId)
                         return errorHandle(data);
 
                     return data;

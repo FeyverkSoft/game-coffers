@@ -1,5 +1,5 @@
 ﻿import * as React from 'react';
-import { store, IStore } from '../_helpers';
+import { IStore } from '../_helpers';
 import { connect } from 'react-redux';
 import { SessionInfo } from '../_services';
 
@@ -20,11 +20,11 @@ class _Private extends React.Component<_IPrivateProps> {
     defIsHidden: Function = (): boolean => {
         let flag = true;
         const { session } = this.props;
-        flag = session == undefined || !session.isActive();
+        flag = session === undefined || !session.isActive();
         if (!this.props.skipRoleTest && this.props.roles && this.props.roles.length > 0) {
             for (let i = 0; i < this.props.roles.length; i++) {
                 let role = this.props.roles[i].toLowerCase();
-                if (session.roles.filter(s => s.toLowerCase() == role).length > 0) {
+                if (session.roles.filter(s => s.toLowerCase() === role).length > 0) {
                     return false;
                 }
             }

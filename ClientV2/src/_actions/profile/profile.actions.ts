@@ -1,7 +1,7 @@
 
 import { IProfile, ITax } from '../../_services';
 import { ProfileActionsType } from '../profile/ProfileActionsType';
-import { alertInstance, ICallback } from '..';
+import { alertInstance } from '..';
 import { profileService } from '../../_services/profile/profile.service';
 import { ICharacter, Character } from '../../_services/profile/ICharacter';
 
@@ -124,13 +124,13 @@ export class ProfileActions {
      * @param className 
      * @param isMain 
      */
-    AddChar(id: string, name: string, className: string, isMain: boolean): Function {
+    AddChar(props: { id: string, name: string, className: string, isMain: boolean }): Function {
         return (dispatch: Function) => {
             dispatch(request());
-            profileService.AddNewChar(id, name, className, isMain)
+            profileService.AddNewChar(props.id, props.name, props.className, props.isMain)
                 .then(
                     data => {
-                        dispatch(success(new Character(id, name, className, isMain)));
+                        dispatch(success(new Character(props.id, props.name, props.className, props.isMain)));
                         dispatch(profileInstance.GetTax());
                     })
                 .catch(
@@ -140,7 +140,7 @@ export class ProfileActions {
                     });
         }
         function request() { return { type: ProfileActionsType.PROC_ADD_NEW_CHAR } }
-        function success(char: ICharacter) { return { type: ProfileActionsType.SUCC_ADD_NEW_CHAR, char} }
+        function success(char: ICharacter) { return { type: ProfileActionsType.SUCC_ADD_NEW_CHAR, char } }
         function failure() { return { type: ProfileActionsType.FAILED_ADD_NEW_CHAR } }
     }
 }

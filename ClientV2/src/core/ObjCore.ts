@@ -30,7 +30,7 @@ export const hashVal = (id: string): string | undefined => {
     if (!arr)
         return undefined;
 
-    let tempVal = (arr.filter(x => x && (x.id || '').toLowerCase() == trimmedId)[0] || empt).val;
+    let tempVal = (arr.filter(x => x && (x.id || '').toLowerCase() === trimmedId)[0] || empt).val;
     if (tempVal)
         return decodeURI(tempVal);
     return tempVal;

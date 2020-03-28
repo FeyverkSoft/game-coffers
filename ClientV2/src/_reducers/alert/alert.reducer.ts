@@ -20,7 +20,7 @@ export function alerts(state: AlertState = new AlertState(), action: IAction<Ale
         case AlertActionsType.INFO:
             return new AlertState([action.alert, ...state.messages].slice(0, count));
         case AlertActionsType.DELETE:
-            return new AlertState(state.messages.filter(x => x.id != action.id))
+            return new AlertState(state.messages.filter(x => x.id !== action.id))
         case AlertActionsType.CLEAR:
             return new AlertState();
         default:

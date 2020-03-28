@@ -21,7 +21,7 @@ export class guildService {
         return await fetch(Config.BuildUrl(`/Guilds/current`), requestOptions)
             .then<BaseResponse & any>(getResponse)
             .then(data => {
-                if (data && data.type || data.traceId) {
+                if ((data && data.type) || data.traceId) {
                     return errorHandle(data);
                 }
                 return new GuildInfo(data.id, data.name, data.status, data.recruitmentStatus,
@@ -47,7 +47,7 @@ export class guildService {
         return await fetch(Config.BuildUrl(`/Guilds/current/balance`), requestOptions)
             .then<BaseResponse & any>(getResponse)
             .then(data => {
-                if (data && data.type || data.traceId) {
+                if ((data && data.type) || data.traceId) {
                     return errorHandle(data);
                 }
                 return new GuildBalanceReport(
@@ -73,7 +73,7 @@ export class guildService {
         return await fetch(Config.BuildUrl(`/Guilds/current/roles`), requestOptions)
             .then<BaseResponse & Array<any>>(getResponse)
             .then(data => {
-                if (data && data.type || data.traceId) {
+                if ((data && data.type) || data.traceId) {
                     return errorHandle(data);
                 }
                 return data.map(_ => new Tariff(

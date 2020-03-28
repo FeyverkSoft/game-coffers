@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Table, Switch, Button, Tooltip, Divider, Modal } from 'antd';
+import { Table, Switch, Button, Tooltip } from 'antd';
 import { DeleteFilled } from '@ant-design/icons';
 import { Lang } from '../../_services';
 import { Card } from '../Base/Card';

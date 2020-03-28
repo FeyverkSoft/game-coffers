@@ -22,7 +22,7 @@ export class profileService {
         return await fetch(Config.BuildUrl(`/gamers/current/characters/${charId}/markasmain`), requestOptions)
             .then<BaseResponse>(getResponse)
             .then(data => {
-                if (data && data.type || data.traceId) {
+                if ((data && data.type) || data.traceId) {
                     return errorHandle(data);
                 }
             })
@@ -49,7 +49,7 @@ export class profileService {
         return await fetch(Config.BuildUrl(`/gamers/current/characters`), requestOptions)
             .then<BaseResponse>(getResponse)
             .then(data => {
-                if (data && data.type || data.traceId) {
+                if ((data && data.type) || data.traceId) {
                     return errorHandle(data);
                 }
             })
@@ -74,7 +74,7 @@ export class profileService {
         return await fetch(Config.BuildUrl(`/gamers/current/characters/${id}`), requestOptions)
             .then<BaseResponse>(getResponse)
             .then(data => {
-                if (data && data.type || data.traceId) {
+                if ((data && data.type) || data.traceId) {
                     return errorHandle(data);
                 }
             })
@@ -98,7 +98,7 @@ export class profileService {
         return await fetch(Config.BuildUrl(`/gamers/current/profile`), requestOptions)
             .then<BaseResponse & IProfile>(getResponse)
             .then(data => {
-                if (data && data.type || data.traceId) {
+                if ((data && data.type) || data.traceId) {
                     return errorHandle(data);
                 }
                 return new Profile(
@@ -130,7 +130,7 @@ export class profileService {
         return await fetch(Config.BuildUrl(`/gamers/current/tax`), requestOptions)
             .then<BaseResponse & ITax>(getResponse)
             .then(data => {
-                if (data && data.type || data.traceId) {
+                if ((data && data.type) || data.traceId) {
                     return errorHandle(data);
                 }
                 return new UserTax(
@@ -156,7 +156,7 @@ export class profileService {
         return await fetch(Config.BuildUrl(`/gamers/current/characters`), requestOptions)
             .then<BaseResponse & Array<ICharacter>>(getResponse)
             .then(data => {
-                if (data && data.type || data.traceId) {
+                if ((data && data.type) || data.traceId) {
                     return errorHandle(data);
                 }
                 return data.map(_ => new Character(

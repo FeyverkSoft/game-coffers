@@ -22,7 +22,7 @@ export const BlendColor = (start?: string, end?: string, proc?: number) => {
         proc = 100;
     const toHex = (c: number): string => {
         let hex: string = c.toString(16);
-        return hex.length == 1 ? "0" + hex : hex;
+        return hex.length === 1 ? "0" + hex : hex;
     }
     const startRgb = hexToRgb(start);
     const endRgb = hexToRgb(end);

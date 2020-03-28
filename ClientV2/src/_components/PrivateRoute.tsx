@@ -8,7 +8,7 @@ export const PrivateRoute = ({ component, ...rest }: RouteProps) => {
     let session = localStorage.getItem('session');
     const Component = component;
     const render = (props: RouteComponentProps<any>): (React.ReactNode | Redirect) => {
-        return session && session !== null && session !== '' && session != '{}' ?
+        return session && session !== null && session !== '' && session !== '{}' ?
             <Component {...rest} {...props} /> :
             <Redirect
                 exact={rest.exact}

@@ -23,7 +23,7 @@ export class gamerService {
         return await fetch(Config.BuildUrl(`/gamers/guilds/current`, { dateMonth: dateMonth.toISOString(), gamerStatuses: gamerStatuses }), requestOptions)
             .then<BaseResponse & any>(getResponse)
             .then(data => {
-                if (data && data.type || data.traceId) {
+                if ((data && data.type) || data.traceId) {
                     return errorHandle(data);
                 }
                 return data.map((g: any) => new GamersListView(
@@ -61,7 +61,7 @@ export class gamerService {
         return await fetch(Config.BuildUrl(`/gamers/${gamerId}/characters/${characterId}`), requestOptions)
             .then<BaseResponse>(getResponse)
             .then(data => {
-                if (data && data.type || data.traceId) {
+                if ((data && data.type) || data.traceId) {
                     return errorHandle(data);
                 }
             })
@@ -125,7 +125,7 @@ export class gamerService {
         return await fetch(Config.BuildUrl(`/loans`), requestOptions)
             .then<BaseResponse>(getResponse)
             .then(data => {
-                if (data && data.type || data.traceId) {
+                if ((data && data.type) || data.traceId) {
                     return errorHandle(data);
                 }
             })
@@ -158,7 +158,7 @@ export class gamerService {
         return await fetch(Config.BuildUrl(`/gamers/${userId}/characters`), requestOptions)
             .then<BaseResponse>(getResponse)
             .then(data => {
-                if (data && data.type || data.traceId) {
+                if ((data && data.type) || data.traceId) {
                     return errorHandle(data);
                 }
             })

@@ -1,8 +1,6 @@
-
-import { guildService, GuildInfo, GuildBalanceReport, GamerStatus, IGamersListView, GamerStatusList, GamerRank, ITariff } from '../../_services';
+import { guildService, GuildInfo, GuildBalanceReport, ITariff } from '../../_services';
 import { GuildActionsType } from './GuildActionsType';
 import { alertInstance } from '..';
-import { IDictionary } from '../../core';
 
 export class GuildActions {
     /**

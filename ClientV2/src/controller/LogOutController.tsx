@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { LoginForm } from '../_components/LoginForm/LoginForm';
 import { Card, Button, Breadcrumb } from 'antd';
 import { HomeOutlined } from '@ant-design/icons';
 import { Lang } from '../_services';
