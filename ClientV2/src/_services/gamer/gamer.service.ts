@@ -98,67 +98,72 @@ export class gamerService {
     //         .catch(catchHandle);
     // }
 
-    // /**
-    //  * Добавить игроку новый займ
-    //  * @param gamerId 
-    //  * @param id 
-    //  * @param amount 
-    //  * @param description 
-    //  * @param borrowDate 
-    //  * @param expiredDate 
-    //  */
-    // static async AddLoan(gamerId: string, id: string, amount: number, description: string, borrowDate: Date, expiredDate: Date): Promise<void> {
-    //     let session = authService.getCurrentSession();
-    //     const requestOptions: RequestInit = {
-    //         method: 'PUT',
-    //         cache: 'no-cache',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'accept': 'application/json',
-    //             'Authorization': 'Bearer ' + session.sessionId
-    //         },
-    //         body: JSON.stringify({ id, amount, description, borrowDate, expiredDate })
-    //     };
-    //     return await fetch(Config.BuildUrl(`/Gamers/${gamerId}/loans`), requestOptions)
-    //         .then<BaseResponse>(getResponse)
-    //         .then(data => {
-    //             if (data && data.type || data.traceId) {
-    //                 return errorHandle(data);
-    //             }
-    //         })
-    //         .catch(catchHandle);
-    // }
+    /**
+     * Добавить игроку новый займ
+     * @param userId 
+     * @param id 
+     * @param amount 
+     * @param description 
+     */
+    static async addLoan(userId: string, id: string, amount: number, description: string): Promise<void> {
+        let session = authService.getCurrentSession();
+        const requestOptions: RequestInit = {
+            method: 'POST',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+                'Authorization': 'Bearer ' + session.sessionId
+            },
+            body: JSON.stringify({
+                loanId: id,
+                userId: userId,
+                amount: Number(amount),
+                description: description
+            })
+        };
+        return await fetch(Config.BuildUrl(`/loans`), requestOptions)
+            .then<BaseResponse>(getResponse)
+            .then(data => {
+                if (data && data.type || data.traceId) {
+                    return errorHandle(data);
+                }
+            })
+            .catch(catchHandle);
+    }
 
-    // /**
-    //  * Добавить нового персонажа игроку
-    //  * @param gamerId 
-    //  * @param name 
-    //  * @param className 
-    //  */
-    // static async AddNewChar(gamerId: string, name: string, className: string): Promise<void> {
-    //     let session = authService.getCurrentSession();
-    //     const requestOptions: RequestInit = {
-    //         method: 'PUT',
-    //         cache: 'no-cache',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'accept': 'application/json',
-    //             'Authorization': 'Bearer ' + session.sessionId
-    //         },
-    //         body: JSON.stringify({ name: name, className: className })
-    //     };
-    //     return await fetch(Config.BuildUrl(`/Gamers/${gamerId}/characters`), requestOptions)
-    //         .then<BaseResponse>(getResponse)
-    //         .then(data => {
-    //             if (data && data.type || data.traceId) {
-    //                 return errorHandle(data);
-    //             }
-    //         })
-    //         .catch(catchHandle);
-    // }
-
-
-
+    /**
+     * Добавить нового персонажа игроку
+     * @param gamerId 
+     * @param name 
+     * @param className 
+     */
+    static async addNewChar(userId: string, characterId: string, name: string, className: string, isMain: boolean): Promise<void> {
+        let session = authService.getCurrentSession();
+        const requestOptions: RequestInit = {
+            method: 'POST',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+                'Authorization': 'Bearer ' + session.sessionId
+            },
+            body: JSON.stringify({
+                id: characterId,
+                name: name,
+                className: className,
+                isMain: isMain
+            })
+        };
+        return await fetch(Config.BuildUrl(`/gamers/${userId}/characters`), requestOptions)
+            .then<BaseResponse>(getResponse)
+            .then(data => {
+                if (data && data.type || data.traceId) {
+                    return errorHandle(data);
+                }
+            })
+            .catch(catchHandle);
+    }
 
 
     // /**

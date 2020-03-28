@@ -1,10 +1,9 @@
 import { getResponse, catchHandle, errorHandle } from '../../_helpers';
-import { BaseResponse, GuildInfo, GuildBalanceReport} from '..';
+import { BaseResponse, GuildInfo, GuildBalanceReport, Tariff } from '..';
 import { Config } from '../../core';
 import { authService } from '..';
 
 export class guildService {
-
     /**
      * Получить информацию о гильдии 
      */
@@ -28,14 +27,7 @@ export class guildService {
                 return new GuildInfo(data.id, data.name, data.status, data.recruitmentStatus,
                     Number(data.charactersCount),
                     Number(data.gamersCount),
-                    Number(data.balance),
-                    {
-                        Soldier: data.tariffs.soldier,
-                        Beginner: data.tariffs.beginner,
-                        Officer: data.tariffs.officer,
-                        Veteran: data.tariffs.veteran,
-                        Leader: data.tariffs.leader
-                    });
+                    Number(data.balance));
             })
             .catch(catchHandle);
     }
@@ -69,4 +61,29 @@ export class guildService {
             .catch(catchHandle);
     }
 
+    static async GetGuildTariffs() {
+        let session = authService.getCurrentSession();
+        const requestOptions: RequestInit = {
+            method: 'GET',
+            cache: 'no-cache',
+            headers: {
+                'Authorization': 'Bearer ' + session.sessionId
+            }
+        };
+        return await fetch(Config.BuildUrl(`/Guilds/current/roles`), requestOptions)
+            .then<BaseResponse & Array<any>>(getResponse)
+            .then(data => {
+                if (data && data.type || data.traceId) {
+                    return errorHandle(data);
+                }
+                return data.map(_ => new Tariff(
+                    _.guildId,
+                    _.userRole,
+                    _.loanTax,
+                    _.expiredLoanTax,
+                    _.tax
+                ));
+            })
+            .catch(catchHandle);
+    }
 }

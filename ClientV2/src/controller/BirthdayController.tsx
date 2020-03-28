@@ -178,7 +178,7 @@ const connectedLoginForm = connect<{}, {}, {}, IStore>(
     },
     (dispatch: any) => {
         return {
-            loadData: () => dispatch(gamerInstance.GetGamers({ dateMonth: new Date() }))
+            loadData: () => dispatch(gamerInstance.getGamers({ dateMonth: new Date() }))
         }
     })(_BirthdayController);
 

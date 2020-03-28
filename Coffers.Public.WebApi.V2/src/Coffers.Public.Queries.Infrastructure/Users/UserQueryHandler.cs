@@ -13,7 +13,7 @@ using Dapper;
 
 namespace Coffers.Public.Queries.Infrastructure.Users
 {
-    public class UserQueryHandler :
+    public sealed class UserQueryHandler :
         IQueryHandler<GetGamersQuery, ICollection<GamersListView>>,
         IQueryHandler<ProfileViewQuery, ProfileView>,
         IQueryHandler<CharacterViewQuery, IEnumerable<CharacterView>>,
@@ -27,7 +27,8 @@ namespace Coffers.Public.Queries.Infrastructure.Users
             _db = db;
         }
 
-        async Task<ICollection<GamersListView>> IQueryHandler<GetGamersQuery, ICollection<GamersListView>>.Handle(GetGamersQuery query, CancellationToken cancellationToken)
+        async Task<ICollection<GamersListView>> IQueryHandler<GetGamersQuery, ICollection<GamersListView>>.Handle(GetGamersQuery query,
+            CancellationToken cancellationToken)
         {
             var dateMonth = (query.DateMonth ?? DateTime.UtcNow).Trunc(DateTruncType.Month);
 
@@ -42,7 +43,7 @@ namespace Coffers.Public.Queries.Infrastructure.Users
             var characters = await _db.QueryAsync<Entity.GamersList.CharacterView>(Entity.GamersList.CharacterView.Sql, new
             {
                 UserIds = userIds,
-                Statuses = new[] { CharStatus.Active.ToString() }
+                Statuses = new[] {CharStatus.Active.ToString()}
             });
             var loans = await _db.QueryAsync<Entity.GamersList.LoanView>(Entity.GamersList.LoanView.Sql, new
             {
@@ -55,25 +56,20 @@ namespace Coffers.Public.Queries.Infrastructure.Users
                 Date = dateMonth,
             });
 
-            var result = new List<GamersListView>();
-            foreach (var user in users)
-            {
-                result.Add(new GamersListView(
-                    user.Id,
-                    user.Name,
-                    user.Balance,
-                    characters.Where(_ => _.UserId == user.Id)
+            return users.Select(user => new GamersListView(
+                    id: user.Id,
+                    name: user.Name,
+                    balance: user.Balance,
+                    characters: characters.Where(_ => _.UserId == user.Id)
                         .Select(_ => new CharacterView(_.Id, _.Name, _.ClassName, _.IsMain, _.UserId)),
-                    user.Rank,
-                    user.Status,
-                    user.DateOfBirth,
-                    penalties.Where(_ => _.UserId == user.Id)
+                    rank: user.Rank,
+                    status: user.Status,
+                    dateOfBirth: user.DateOfBirth,
+                    penalties: penalties.Where(_ => _.UserId == user.Id)
                         .Select(_ => new PenaltyView(_.Id, _.Amount, _.CreateDate, _.Description, _.Status)),
-                    loans.Where(_ => _.UserId == user.Id)
-                        .Select(_ => new LoanView(_.Id, _.Amount, _.Balance, _.Description, _.Status, _.CreateDate, _.ExpiredDate))
-                    ));
-            }
-            return result;
+                    loans: loans.Where(_ => _.UserId == user.Id)
+                        .Select(_ => new LoanView(_.Id, _.Amount, _.Balance, _.Description, _.Status, _.CreateDate, _.ExpiredDate))))
+                .ToList();
         }
 
         async Task<ProfileView> IQueryHandler<ProfileViewQuery, ProfileView>.Handle(ProfileViewQuery query, CancellationToken cancellationToken)
@@ -95,16 +91,17 @@ namespace Coffers.Public.Queries.Infrastructure.Users
                 profile.ActivePenaltyAmount,
                 profile.ActiveLoanTaxAmount,
                 profile.DateOfBirth
-                );
+            );
         }
 
-        async Task<IEnumerable<CharacterView>> IQueryHandler<CharacterViewQuery, IEnumerable<CharacterView>>.Handle(CharacterViewQuery query, CancellationToken cancellationToken)
+        async Task<IEnumerable<CharacterView>> IQueryHandler<CharacterViewQuery, IEnumerable<CharacterView>>.Handle(CharacterViewQuery query,
+            CancellationToken cancellationToken)
         {
             var list = await _db.QueryAsync<Entity.Profile.CharacterView>(Entity.Profile.CharacterView.Sql, new
             {
                 GuildId = query.GuildId,
-                Statuses = new[] { CharStatus.Active.ToString() },
-                UserIds = new[] { query.UserId }
+                Statuses = new[] {CharStatus.Active.ToString()},
+                UserIds = new[] {query.UserId}
             });
 
             return list.Select(ch => new CharacterView(

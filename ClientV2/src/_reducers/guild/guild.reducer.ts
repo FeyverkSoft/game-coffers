@@ -1,6 +1,6 @@
 import { GuildActionsType } from "../../_actions";
-import { IAction, IHolded } from "../../core";
-import { ITariffs, IGuild, GuildBalanceReport } from "../../_services";
+import { IAction, IHolded, IDictionary } from "../../core";
+import { IGuild, GuildBalanceReport, ITariff } from "../../_services";
 import clonedeep from 'lodash.clonedeep';
 
 export interface IReports {
@@ -8,9 +8,10 @@ export interface IReports {
 }
 export class IGuildStore {
     guild: IGuild & IHolded;
-    tariffs: ITariffs;
+    tariffs: Array<ITariff> & IHolded = [];
     reports: IReports;
-    constructor(guild?: IGuild | IHolded & any, tariffs?: ITariffs | IHolded & any) {
+
+    constructor(guild?: IGuild | IHolded & any) {
         if (guild)
             this.guild = {
                 id: guild.id || '',
@@ -32,39 +33,6 @@ export class IGuildStore {
                 gamersCount: 0,
                 charactersCount: 0,
                 balance: 0
-            };
-        }
-        if (tariffs)
-            this.tariffs = {
-                Leader: tariffs.Leader,
-                Officer: tariffs.Officer,
-                Soldier: tariffs.Soldier,
-                Veteran: tariffs.Veteran,
-                Beginner: tariffs.Beginner
-            };
-        else {
-            this.tariffs = {
-                Leader: {
-                    tax: [0],
-                    expiredLoanTax: 0,
-                    loanTax: 0
-                }, Officer: {
-                    tax: [0],
-                    expiredLoanTax: 0,
-                    loanTax: 0
-                }, Soldier: {
-                    tax: [0],
-                    expiredLoanTax: 0,
-                    loanTax: 0
-                }, Veteran: {
-                    tax: [0],
-                    expiredLoanTax: 0,
-                    loanTax: 0
-                }, Beginner: {
-                    tax: [0],
-                    expiredLoanTax: 0,
-                    loanTax: 0
-                }
             };
         }
         this.reports = {
@@ -100,6 +68,8 @@ export function guild(state: IGuildStore = new IGuildStore(), action: IAction<Gu
             clonedState.guild.holding = false;
             return clonedState;
 
+
+
         case GuildActionsType.PROC_GET_BALANCE_REPORT:
             clonedState.reports.balanceReport.holding = true;
             return clonedState;
@@ -110,6 +80,20 @@ export function guild(state: IGuildStore = new IGuildStore(), action: IAction<Gu
 
         case GuildActionsType.FAILED_GET_BALANCE_REPORT:
             clonedState.reports.balanceReport.holding = false;
+            return clonedState;
+
+
+
+        case GuildActionsType.PROC_GET_TARIFFS:
+            clonedState.tariffs.holding = true;
+            return clonedState;
+
+        case GuildActionsType.SUCC_GET_TARIFFS:
+            clonedState.tariffs = action.tariffs;
+            return clonedState;
+
+        case GuildActionsType.FAILED_GET_TARIFFS:
+            clonedState.tariffs.holding = false;
             return clonedState;
 
         default:

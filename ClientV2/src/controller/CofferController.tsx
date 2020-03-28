@@ -1,20 +1,21 @@
 import React from "react";
 import { Lang, IGamersListView, DLang, LangF } from '../_services';
-import { Table, Breadcrumb, PageHeader, Row, Col, DatePicker, Layout } from 'antd';
+import { Table, Breadcrumb, Row, Col, DatePicker, Layout } from 'antd';
 import { HomeOutlined } from '@ant-design/icons';
 import { connect } from "react-redux";
 import { IStore, formatDateTime } from "../_helpers";
 import { gamerInstance, guildInstance } from "../_actions";
 import { ColumnProps } from "antd/lib/table";
-import style from './bd.module.scss';
 import { Content } from "../_components/Content/Content";
 import { Link } from "react-router-dom";
 import Search from "antd/lib/input/Search";
 import moment, { Moment } from "moment";
 import { Dictionary } from "../core";
-import { Character, Characters } from "../_components/Character/Character";
+import { Characters } from "../_components/Character/Character";
 import { Card } from "../_components/Base/Card";
 import { AddCharDialog } from "../_components/Character/AddCharDialog";
+import { Loans } from "../_components/Loans/Loans";
+import { AddLoanDialog } from "../_components/Loans/AddLoanDialog";
 
 
 interface IMainProps {
@@ -23,13 +24,17 @@ interface IMainProps {
     loadGuildInfo(): void;
     loadData(date: Date): void;
     deleteCharacter(userId: string, characterId: string): void;
+    addCharacter(userId: string, characterId: string, name: string, className: string, isMain: boolean): void;
+    addLoan(userId: string, loanId: string, amount: number, description: string): void;
 }
 
+interface ModalState {
+    show: boolean;
+    userId?: string;
+}
 interface IState {
-    addCharacterModal: {
-        show: boolean;
-        userId?: string;
-    };
+    addCharacterModal: ModalState;
+    addLoanModal: ModalState;
     filter: string;
     date: Date;
     columns: ColumnProps<IGamersListView>[];
@@ -39,10 +44,8 @@ export class _CofferController extends React.Component<IMainProps, IState> {
     constructor(props: IMainProps) {
         super(props);
         this.state = {
-            addCharacterModal: {
-                show: false,
-                userId: undefined
-            },
+            addCharacterModal: { show: false },
+            addLoanModal: { show: false },
             filter: '',
             date: new Date(),
             columns: [
@@ -55,7 +58,7 @@ export class _CofferController extends React.Component<IMainProps, IState> {
 
                         return a.name === b.name ? 0 : (a.name > b.name ? 1 : -1);
                     },
-                    render: (value: string, record: IGamersListView, index: number) => {
+                    render: (value: string, record: IGamersListView) => {
                         return <div>
                             <Col style={{
                                 fontWeight: 500,
@@ -64,13 +67,12 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                                 {LangF('USER_CHAR_LIST', value)}
                             </Col>
                             <Col>
-                                <Characters>
-                                    {Object.keys(record.characters).map(_ => <Character
-                                        key={record.characters[_].id}
-                                        character={record.characters[_]}
-                                        onDeleteChar={this.onDeleteChar}
-                                    />)}
-                                </Characters>
+                                <Characters
+                                    userId={record.id}
+                                    characters={record.characters}
+                                    onDeleteChar={this.onDeleteChar}
+                                    toggleAddCharModal={this.toggleAddCharModal}
+                                />
                             </Col>
                         </div>
                     }
@@ -84,7 +86,7 @@ export class _CofferController extends React.Component<IMainProps, IState> {
 
                         return a.status === b.status ? 0 : (a.status > b.status ? 1 : -1);
                     },
-                    render: (value: string, record: IGamersListView, index: number) => {
+                    render: (value: string) => {
                         return DLang('USER_STATUS', value);
                     }
                 },
@@ -97,7 +99,7 @@ export class _CofferController extends React.Component<IMainProps, IState> {
 
                         return a.rank === b.rank ? 0 : (a.rank > b.rank ? 1 : -1);
                     },
-                    render: (value: string, record: IGamersListView, index: number) => {
+                    render: (value: string) => {
                         return DLang('USER_RANK', value);
                     }
                 },
@@ -110,7 +112,7 @@ export class _CofferController extends React.Component<IMainProps, IState> {
 
                         return a.balance - b.balance;
                     },
-                    render: (value: number, record: IGamersListView, index: number) => {
+                    render: (value: number) => {
                         return <div
                             style={{ color: value > 0 ? 'green' : 'red' }}
                         >
@@ -118,12 +120,32 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                         </div>;
                     }
                 },
+                {
+                    title: Lang('USER_ROW_LOANS'),
+                    dataIndex: 'loans',
+                    key: 'loans',
+                    render: (value: number, record: IGamersListView) => {
+                        return <Loans
+                            loans={record.loans}
+                            userId={record.id}
+                            onAddLoan={this.toggleAddLoanModal}
+                        />
+                    }
+                },
             ]
         }
     }
 
     onAddCharacter = (id: string, name: string, className: string, isMain: boolean) => {
+        let { userId } = this.state.addCharacterModal;
+        if (userId)
+            this.props.addCharacter(userId, id, name, className, isMain);
+    };
 
+    onAddLoan = (loanId: string, amount: number, description: string) => {
+        let { userId } = this.state.addLoanModal;
+        if (userId)
+            this.props.addLoan(userId, loanId, amount, description);
     };
 
     onDeleteChar = (id: string, userId: string) => {
@@ -140,7 +162,7 @@ export class _CofferController extends React.Component<IMainProps, IState> {
         this.loadData();
     }
 
-    onSelectDate = (value: Moment | null, dateString: string) => {
+    onSelectDate = (value: Moment | null) => {
         if (value) {
             this.setState({ date: value.toDate() }, this.loadData);
         }
@@ -163,6 +185,10 @@ export class _CofferController extends React.Component<IMainProps, IState> {
 
     toggleAddCharModal = (userId?: string) => {
         this.setState({ addCharacterModal: { show: !this.state.addCharacterModal.show, userId } });
+    }
+
+    toggleAddLoanModal = (userId?: string) => {
+        this.setState({ addLoanModal: { show: !this.state.addLoanModal.show, userId } });
     }
 
     render() {
@@ -228,10 +254,16 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                 </Layout>
 
                 <AddCharDialog
-                    onClose={() => this.toggleAddCharModal}
+                    onClose={this.toggleAddCharModal}
                     visible={this.state.addCharacterModal.show}
                     onAdd={this.onAddCharacter}
                     isLoading={isLoading}
+                />
+                <AddLoanDialog
+                    onClose={this.toggleAddLoanModal}
+                    visible={this.state.addLoanModal.show}
+                    isLoading={isLoading}
+                    onAdd={this.onAddLoan}
                 />
             </Content>
         );
@@ -248,13 +280,17 @@ const connectedCofferController = connect<{}, {}, {}, IStore>(
     },
     (dispatch: any) => {
         return {
-            loadData: (date: Date) => dispatch(gamerInstance.GetGamers({ dateMonth: date })),
+            loadData: (date: Date) => dispatch(gamerInstance.getGamers({ dateMonth: date })),
             loadGuildInfo: () => {
                 dispatch(guildInstance.GetGuild());
                 dispatch(guildInstance.GetGuildBalanceReport())
             },
-            deleteCharacter: (userId: string, characterId: string) => dispatch(gamerInstance.deleteCharacter(userId, characterId))
-
+            deleteCharacter: (userId: string, characterId: string) =>
+                dispatch(gamerInstance.deleteCharacter({ userId, characterId })),
+            addCharacter: (userId: string, characterId: string, name: string, className: string, isMain: boolean) =>
+                dispatch(gamerInstance.addCharacter({ userId, characterId, name, className, isMain })),
+            addLoan: (userId: string, loanId: string, amount: number, description: string) =>
+                dispatch(gamerInstance.addLoan({ userId, loanId, amount, description })),
         }
     })(_CofferController);
 

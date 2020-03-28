@@ -11,6 +11,7 @@ const locString: any = {
         RESOURCE_NOT_FOUND: 'Resource {0} not found;'
     },
     ru: {
+        DELETE_CHAR: 'Удалить персонажа',
         NOT_FOUND: 'Ресурс {0} не найден;',
         NOT_IMPLEMENTED: 'Метод или функционал {0} не реализован',
         INTERNAL_SERVER_ERROR: 'Произошла внутреняя ошибка сервера: {0}',

@@ -1,0 +1,38 @@
+@import "../../../assets/_variables.scss"; // variables to override above
+
+.loans_wrapper {
+  @include flex();
+  align-items: flex-start;
+  @media screen and (max-width: $mobile-L) {
+    flex-direction: column;
+  }
+  .add {
+    @include flex();
+    width: auto;
+    height: auto;
+  }
+  .loan {
+    cursor: pointer;
+    padding-left: 0.25rem;
+
+    &:hover {
+      color: $defaultColor !important;
+    }
+
+    &.active {
+      font-weight: 400;
+    }
+
+    &.canceled,
+    &.paid {
+      font-weight: 400;
+      text-decoration: line-through;
+      color: fade($black, 50%);
+    }
+
+    &.expired {
+      font-weight: 800;
+      color: $importantColor;
+    }
+  }
+}

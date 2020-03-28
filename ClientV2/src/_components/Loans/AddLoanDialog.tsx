@@ -1,6 +1,6 @@
 import React from 'react';
-import { Form, Input, Modal, Switch } from 'antd';
-import { UserOutlined, RadarChartOutlined } from '@ant-design/icons';
+import { Form, Input, Modal } from 'antd';
+import { ShoppingCartOutlined, BarsOutlined } from '@ant-design/icons';
 import { getGuid } from '../../_helpers';
 import { Lang } from '../../_services';
 
@@ -8,16 +8,16 @@ interface FormProps {
     isLoading?: boolean,
     visible: boolean;
     onClose(): void;
-    onAdd(id: string, name: string, className: string, isMain: boolean): void;
+    onAdd(loanId: string, amount: number, description: string): void;
 }
 
-export const AddCharDialog = ({ ...props }: FormProps) => {
+export const AddLoanDialog = ({ ...props }: FormProps) => {
     const { isLoading, visible } = props;
     const [form] = Form.useForm();
-    const id = getGuid();
+    const loanId = getGuid();
     return (
         <Modal
-            title={Lang('NEW_CHAR')}
+            title={Lang('NEW_LOAN_MODAL')}
             visible={visible}
             onCancel={() => props.onClose()}
             okText={Lang('Add')}
@@ -27,7 +27,7 @@ export const AddCharDialog = ({ ...props }: FormProps) => {
                 form.validateFields()
                     .then(values => {
                         form.resetFields();
-                        props.onAdd(id, values.name, values.className, values.isMain);
+                        props.onAdd(loanId, values.amount, values.description);
                     })
                     .catch(info => {
                         console.log('Validate Failed:', info);
@@ -39,42 +39,34 @@ export const AddCharDialog = ({ ...props }: FormProps) => {
                 layout='vertical'
             >
                 <Form.Item
-                    name="name"
-                    label={Lang('Name')}
+                    name="amount"
+                    label={Lang('MODAL_LOAN_AMOUNT')}
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your name!',
+                            message: 'Please input loan amount!',
                         },
                     ]}
                 >
                     <Input
-                        prefix={<UserOutlined />}
-                        placeholder={Lang('NAME')}
+                        prefix={<ShoppingCartOutlined />}
+                        type={'number'}
+                        placeholder={Lang('MODAL_LOAN_AMOUNT')}
                     />
                 </Form.Item>
                 <Form.Item
-                    name="className"
-                    label={Lang('CLASS_NAME')}
+                    name="description"
+                    label={Lang('MODAL_LOAN_DESCRIPTION')}
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your classname!',
+                            message: 'Please input loan description!',
                         }]}
                 >
-
                     <Input
-                        prefix={<RadarChartOutlined />}
-                        placeholder={Lang('CLASS_NAME')}
+                        prefix={<BarsOutlined />}
+                        placeholder={Lang('MODAL_LOAN_DESCRIPTION')}
                     />
-                </Form.Item>
-                <Form.Item
-                    name="isMain"
-                    valuePropName='checked'
-                    rules={[]}
-                    label={Lang('CHAR_IS_MAIN')}
-                >
-                    <Switch />
                 </Form.Item>
             </Form>
         </Modal>

@@ -1,6 +1,5 @@
 import { GamerActionsType } from "../../_actions";
 import { IAction, IHolded, Dictionary } from "../../core";
-import { IGamerInfo } from "../../_services";
 import clonedeep from 'lodash.clonedeep';
 import { IGamersListView } from "../../_services/gamer/GamersListView";
 import { formatDateTime } from "../../_helpers";
@@ -41,14 +40,46 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<G
 
         case GamerActionsType.SUCC_DELETE_CHARS:
             Object.keys(clonedState.gamersList).forEach(k => {
-                if (k != 'holding') {
-                    delete clonedState.gamersList[k][action.userId].characters[action.characterId];
-                }
+                if (k === 'holding')
+                    return;
+                delete clonedState.gamersList[k][action.userId].characters[action.characterId];
             });
             clonedState.gamersList.holding = false;
             return clonedState;
 
         case GamerActionsType.FAILED_DELETE_CHARS:
+            clonedState.gamersList.holding = false;
+            return clonedState;
+
+
+        /**
+        * Секция добавления перса игроку
+        */
+        case GamerActionsType.PROC_ADD_NEW_CHARS:
+            clonedState.gamersList.holding = true;
+            return clonedState;
+
+        case GamerActionsType.SUCC_ADD_NEW_CHARS:
+            Object.keys(clonedState.gamersList).forEach(k => {
+                if (k === 'holding')
+                    return;
+                if (action.isMain)
+                    Object.keys(clonedState.gamersList[k][action.userId].characters).forEach(c => {
+                        clonedState.gamersList[k][action.userId].characters[c].isMain = false;
+                    });
+
+                clonedState.gamersList[k][action.userId].characters[action.characterId] = {
+                    id: action.characterId,
+                    name: action.name,
+                    className: action.className,
+                    isMain: action.isMain,
+                    userId: action.userId
+                };
+            });
+            clonedState.gamersList.holding = false;
+            return clonedState;
+
+        case GamerActionsType.FAILED_ADD_NEW_CHARS:
             clonedState.gamersList.holding = false;
             return clonedState;
 

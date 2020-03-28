@@ -12,7 +12,7 @@ select
     l.LoanStatus as Status,
     l.CreateDate,
     l.Amount,
-    sum(o.Amount) as Balance,
+    coalesce(sum(o.Amount), 0.0) as Balance,
     l.UserId,
     l.ExpiredDate
 from `Loan`l
@@ -24,6 +24,7 @@ and (
     and l.CreateDate < ADDDATE(@Date, INTERVAL 1 MONTH))
     or l.LoanStatus in ('Active', 'Expired')
 )
+group by l.Id
 ";
 
         public Guid Id { get; }

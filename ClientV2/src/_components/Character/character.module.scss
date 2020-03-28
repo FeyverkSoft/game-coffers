@@ -5,6 +5,11 @@
   @media screen and (max-width: $mobile-L) {
     flex-direction: column;
   }
+  .add {
+    @include flex();
+    width: auto;
+    height: auto;
+  }
 
   .char {
     @include flex();
@@ -23,7 +28,7 @@
       font-weight: 500;
     }
 
-    button {
+    .remove {
       @include flex();
       width: auto;
       height: auto;

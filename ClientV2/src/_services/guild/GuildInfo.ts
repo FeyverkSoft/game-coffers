@@ -4,18 +4,29 @@ export type RecruitmentStatus = 'Open' | 'Close' | 'Internal';
 export type GuildStatus = 'Active' | 'InActive';
 
 export interface ITariff {
+    guildId: string;
+    userRole: string;
     loanTax: number;
     expiredLoanTax: number;
     tax: number[];
 }
 
-export interface ITariffs extends IDictionary<ITariff> {
-    Leader: ITariff;
-    Officer: ITariff;
-    Veteran: ITariff;
-    Soldier: ITariff;
-    Beginner: ITariff;
+export class Tariff implements ITariff {
+    guildId: string;
+    userRole: string;
+    loanTax: number;
+    expiredLoanTax: number;
+    tax: Array<number>;
+
+    constructor(guildId: string, userRole: string, loanTax: number, expiredLoanTax: number, tax: Array<number>) {
+        this.guildId = String(guildId);
+        this.userRole = String(userRole);
+        this.loanTax = Number(loanTax);
+        this.expiredLoanTax = Number(expiredLoanTax);
+        this.tax = tax.map(_ => Number(_));
+    }
 }
+
 export interface IGuild {
     id: string;
     name: string;
@@ -34,15 +45,13 @@ export class GuildInfo implements IGuild {
     gamersCount: number;
     balance: number;
     charactersCount: number;
-    tariffs: ITariffs;
     constructor(id: string, name: string, status: GuildStatus,
         recruitmentStatus: RecruitmentStatus, charactersCount: number,
-        gamersCount: number, balance:number, tariffs: ITariffs) {
+        gamersCount: number, balance: number) {
         this.id = id;
         this.name = name;
         this.status = status;
         this.recruitmentStatus = recruitmentStatus;
-        this.tariffs = tariffs;
         this.charactersCount = charactersCount;
         this.gamersCount = gamersCount;
         this.balance = balance;
