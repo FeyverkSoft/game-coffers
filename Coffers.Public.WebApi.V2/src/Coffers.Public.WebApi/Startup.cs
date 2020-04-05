@@ -1,8 +1,8 @@
+using System;
 using System.Data;
 using System.Net;
 using System.Text.Json.Serialization;
 using Coffers.DB.Migrations;
-using Coffers.Public.Infrastructure.Authorization;
 using Coffers.Public.Queries.Infrastructure.Guilds;
 using Coffers.Public.Queries.Infrastructure.Loans;
 using Coffers.Public.Queries.Infrastructure.Operations;
@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using MySql.Data.MySqlClient;
 using Query.Core.FluentExtensions;
 
@@ -67,7 +68,7 @@ namespace Coffers.Public.WebApi
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
-            services.AddDbContext<AuthorizationDbContext>(options =>
+            services.AddDbContext<Infrastructure.Authorization.AuthorizationDbContext>(options =>
             {
                 options.UseMySql(Configuration.GetConnectionString("Coffers"));
             });
@@ -199,7 +200,7 @@ namespace Coffers.Public.WebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -226,7 +227,7 @@ namespace Coffers.Public.WebApi
 
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("v1/swagger.json", "Coffer Api v2"); });
-            app.UseRewriter(new RewriteOptions().AddRedirect(@"^$", "swagger", (int)HttpStatusCode.Redirect));
+            app.UseRewriter(new RewriteOptions().AddRedirect(@"^$", "swagger", (Int32)HttpStatusCode.Redirect));
         }
     }
 }

@@ -86,9 +86,9 @@ export class gamerService {
                 'accept': 'application/json',
                 'Authorization': 'Bearer ' + session.sessionId
             },
-            body: JSON.stringify({ id, amount, description })
+            body: JSON.stringify({ id: String(id), amount: Number(amount), description: String(description) })
         };
-        return await fetch(Config.BuildUrl(`/user/${userId}/penalties`), requestOptions)
+        return await fetch(Config.BuildUrl(`/users/${userId}/penalties`), requestOptions)
             .then<BaseResponse & IPenaltyView>(getResponse)
             .then(data => {
                 if (data && data.type || data.traceId) {
@@ -117,10 +117,10 @@ export class gamerService {
                 'Authorization': 'Bearer ' + session.sessionId
             },
             body: JSON.stringify({
-                loanId: id,
-                userId: userId,
+                loanId: String(id),
+                userId: String(userId),
                 amount: Number(amount),
-                description: description
+                description: String(description)
             })
         };
         return await fetch(Config.BuildUrl(`/loans`), requestOptions)
@@ -151,10 +151,10 @@ export class gamerService {
                 'Authorization': 'Bearer ' + session.sessionId
             },
             body: JSON.stringify({
-                id: characterId,
-                name: name,
-                className: className,
-                isMain: isMain
+                id: String(characterId),
+                name: String(name),
+                className: String(className),
+                isMain: Boolean(isMain)
             })
         };
         return await fetch(Config.BuildUrl(`/gamers/${userId}/characters`), requestOptions)

@@ -48,6 +48,7 @@ left join (select
             from `penalty` p
             where 1 = 1
                 and p.`PenaltyStatus` = 'Active'
+            group by p.UserId
             ) as up on  up.`UserId` = u.`Id`            
 left join (select 
                 c.`Name`,

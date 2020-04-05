@@ -200,10 +200,10 @@ export class GamerActions {
     /**
      * This method add gamers Penalty
      */
-    addPenalty(penalty: { userId: string; id: string, description: string, amount: number }): Function {
+    addPenalty(penalty: { userId: string; penaltyId: string, description: string, amount: number }): Function {
         return (dispatch: Function) => {
             dispatch(request(penalty.userId));
-            gamerService.addPenalty(penalty.userId, penalty.id, penalty.amount, penalty.description)
+            gamerService.addPenalty(penalty.userId, penalty.penaltyId, penalty.amount, penalty.description)
                 .then(
                     data => {
                         dispatch(success(penalty.userId, {

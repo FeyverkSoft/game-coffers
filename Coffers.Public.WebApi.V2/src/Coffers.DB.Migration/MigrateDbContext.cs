@@ -1,6 +1,5 @@
 ﻿using System;
 using Coffers.DB.Migrations.Entities;
-using Coffers.Types.Account;
 using Microsoft.EntityFrameworkCore;
 
 namespace Coffers.DB.Migrations

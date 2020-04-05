@@ -11,7 +11,7 @@ namespace Coffers.Helpers
         {
             return JsonConvert.SerializeObject(obj, new JsonSerializerSettings
             {
-                Converters = new List<JsonConverter> { }
+                Converters = new List<JsonConverter>()
             });
         }
 

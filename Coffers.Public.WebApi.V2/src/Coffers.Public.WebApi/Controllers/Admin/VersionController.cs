@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Threading;
 using Coffers.Public.WebApi.Models;
 using Microsoft.AspNetCore.Authorization;

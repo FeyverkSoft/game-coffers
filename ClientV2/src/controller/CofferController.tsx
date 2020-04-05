@@ -17,6 +17,7 @@ import { AddCharDialog } from "../_components/Character/AddCharDialog";
 import { Loans } from "../_components/Loans/Loans";
 import { AddLoanDialog } from "../_components/Loans/AddLoanDialog";
 import { Penalties } from "../_components/Penalties/Penalties";
+import { AddPenaltyDialog } from "../_components/Penalties/AddPenaltyDialog";
 
 
 interface IMainProps {
@@ -27,6 +28,7 @@ interface IMainProps {
     deleteCharacter(userId: string, characterId: string): void;
     addCharacter(userId: string, characterId: string, name: string, className: string, isMain: boolean): void;
     addLoan(userId: string, loanId: string, amount: number, description: string): void;
+    addPenalty(userId: string, penaltyId: string, amount: number, description: string): void;
 }
 
 interface ModalState {
@@ -36,6 +38,7 @@ interface ModalState {
 interface IState {
     addCharacterModal: ModalState;
     addLoanModal: ModalState;
+    addPenaltyModal: ModalState;
     filter: string;
     date: Date;
     columns: ColumnProps<IGamersListView>[];
@@ -47,6 +50,7 @@ export class _CofferController extends React.Component<IMainProps, IState> {
         this.state = {
             addCharacterModal: { show: false },
             addLoanModal: { show: false },
+            addPenaltyModal: { show: false },
             filter: '',
             date: new Date(),
             columns: [
@@ -141,30 +145,13 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                         return <Penalties
                             penalties={record.penalties}
                             userId={record.id}
-                            onAddLoan={this.toggleAddLoanModal}
+                            onAddLoan={this.toggleAddPenaltyModal}
                         />
                     }
                 },
             ]
         }
     }
-
-    onAddCharacter = (id: string, name: string, className: string, isMain: boolean) => {
-        let { userId } = this.state.addCharacterModal;
-        if (userId)
-            this.props.addCharacter(userId, id, name, className, isMain);
-    };
-
-    onAddLoan = (loanId: string, amount: number, description: string) => {
-        let { userId } = this.state.addLoanModal;
-        if (userId)
-            this.props.addLoan(userId, loanId, amount, description);
-    };
-
-    onDeleteChar = (id: string, userId: string) => {
-        this.props.deleteCharacter(userId, id);
-    };
-
     loadData = () => {
         const { date } = this.state;
         this.props.loadData(date);
@@ -199,10 +186,32 @@ export class _CofferController extends React.Component<IMainProps, IState> {
     toggleAddCharModal = (userId?: string) => {
         this.setState({ addCharacterModal: { show: !this.state.addCharacterModal.show, userId } });
     }
+    onAddCharacter = (id: string, name: string, className: string, isMain: boolean) => {
+        let { userId } = this.state.addCharacterModal;
+        if (userId)
+            this.props.addCharacter(userId, id, name, className, isMain);
+    };
+    onDeleteChar = (id: string, userId: string) => {
+        this.props.deleteCharacter(userId, id);
+    };
 
     toggleAddLoanModal = (userId?: string) => {
         this.setState({ addLoanModal: { show: !this.state.addLoanModal.show, userId } });
     }
+    onAddLoan = (loanId: string, amount: number, description: string) => {
+        let { userId } = this.state.addLoanModal;
+        if (userId)
+            this.props.addLoan(userId, loanId, amount, description);
+    };
+
+    toggleAddPenaltyModal = (userId?: string) => {
+        this.setState({ addPenaltyModal: { show: !this.state.addPenaltyModal.show, userId } });
+    }
+    onAddPenalty = (penaltyId: string, amount: number, description: string) => {
+        let { userId } = this.state.addPenaltyModal;
+        if (userId)
+            this.props.addPenalty(userId, penaltyId, amount, description);
+    };
 
     render() {
         const { isLoading } = this.props;
@@ -278,6 +287,12 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                     isLoading={isLoading}
                     onAdd={this.onAddLoan}
                 />
+                <AddPenaltyDialog
+                    onClose={this.toggleAddPenaltyModal}
+                    visible={this.state.addPenaltyModal.show}
+                    isLoading={isLoading}
+                    onAdd={this.onAddPenalty}
+                />
             </Content>
         );
     }
@@ -304,6 +319,8 @@ const connectedCofferController = connect<{}, {}, {}, IStore>(
                 dispatch(gamerInstance.addCharacter({ userId, characterId, name, className, isMain })),
             addLoan: (userId: string, loanId: string, amount: number, description: string) =>
                 dispatch(gamerInstance.addLoan({ userId, loanId, amount, description })),
+            addPenalty: (userId: string, penaltyId: string, amount: number, description: string) =>
+                dispatch(gamerInstance.addPenalty({ userId, penaltyId, amount, description })),
         }
     })(_CofferController);
 
