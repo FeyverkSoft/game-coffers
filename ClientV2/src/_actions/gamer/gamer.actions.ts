@@ -11,13 +11,6 @@ interface SetStatusProps extends ICallback<any> {
     status: GamerStatus;
 }
 
-interface AddPenaltyProps extends ICallback<any> {
-    gamerId: string;
-    id: string,
-    description: string,
-    amount: number
-}
-
 interface CancelLoanProps extends ICallback<any> {
     gamerId: string;
     id: string,
@@ -183,15 +176,15 @@ export class GamerActions {
             gamerService.addLoan(loan.userId, loan.loanId, loan.amount, loan.description)
                 .then(
                     data => {
-                        /*dispatch(success(loan.gamerId, {
-                            id: loan.loanId,
-                            createDate: loan.borrowDate,
-                            expiredDate: loan.expiredDate,
-                            amount: loan.amount,
-                            balance: loan.amount,
-                            description: loan.description,
-                            loanStatus: 'Active'
-                        }));*/
+                        dispatch(success(loan.userId, {
+                            id: String(data.id),
+                            amount: Number(data.amount),
+                            balance: Number(data.balance),
+                            createDate: new Date(data.createDate),
+                            expiredDate: new Date(data.expiredDate),
+                            description: String(data.description),
+                            loanStatus: data.loanStatus
+                        }));
                     })
                 .catch(
                     ex => {
@@ -204,37 +197,33 @@ export class GamerActions {
         function failure(userId: string) { return { type: GamerActionsType.FAILED_ADD_GAMER_LOAN, userId } }
     }
 
-    // /**
-    //  * This method add gamers Penalty
-    //  */
-    // AddPenalty(penalty: AddPenaltyProps): Function {
-    //     return (dispatch: Function) => {
-    //         dispatch(request(penalty.gamerId));
-    //         gamerService.AddPenalty(penalty.gamerId, penalty.id, penalty.amount, penalty.description)
-    //             .then(
-    //                 data => {
-    //                     dispatch(success(penalty.gamerId, {
-    //                         id: penalty.id,
-    //                         createDate: new Date(),
-    //                         amount: penalty.amount,
-    //                         description: penalty.description,
-    //                         penaltyStatus: 'Active'
-    //                     }));
-    //                     if (penalty.onSuccess)
-    //                         penalty.onSuccess(data);
-    //                 })
-    //             .catch(
-    //                 ex => {
-    //                     dispatch(failure(penalty.gamerId));
-    //                     dispatch(alertInstance.error(ex));
-    //                     if (penalty.onFailure)
-    //                         penalty.onFailure(ex);
-    //                 });
-    //     }
-    //     function request(gamerId: string) { return { type: GamerActionsType.PROC_ADD_GAMER_PENALTY, gamerId } }
-    //     function success(gamerId: string, penalty: IPenaltyView) { return { type: GamerActionsType.SUCC_ADD_GAMER_PENALTY, gamerId, penalty } }
-    //     function failure(gamerId: string) { return { type: GamerActionsType.FAILED_ADD_GAMER_PENALTY, gamerId } }
-    // }
+    /**
+     * This method add gamers Penalty
+     */
+    addPenalty(penalty: { userId: string; id: string, description: string, amount: number }): Function {
+        return (dispatch: Function) => {
+            dispatch(request(penalty.userId));
+            gamerService.addPenalty(penalty.userId, penalty.id, penalty.amount, penalty.description)
+                .then(
+                    data => {
+                        dispatch(success(penalty.userId, {
+                            id: data.id,
+                            createDate: data.createDate,
+                            amount: data.amount,
+                            description: data.description,
+                            penaltyStatus: data.penaltyStatus
+                        }));
+                    })
+                .catch(
+                    ex => {
+                        dispatch(failure(penalty.userId));
+                        dispatch(alertInstance.error(ex));
+                    });
+        }
+        function request(userId: string) { return { type: GamerActionsType.PROC_ADD_GAMER_PENALTY, userId } }
+        function success(userId: string, penalty: IPenaltyView) { return { type: GamerActionsType.SUCC_ADD_GAMER_PENALTY, userId, penalty } }
+        function failure(userId: string) { return { type: GamerActionsType.FAILED_ADD_GAMER_PENALTY, userId } }
+    }
 
     // /**
     //  * отменяет займ если это возможно

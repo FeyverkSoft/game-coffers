@@ -83,6 +83,29 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<G
             clonedState.gamersList.holding = false;
             return clonedState;
 
+
+        case GamerActionsType.PROC_ADD_GAMER_PENALTY:
+            clonedState.gamersList.holding = true;
+            return clonedState;
+        case GamerActionsType.SUCC_ADD_GAMER_PENALTY:
+            clonedState.gamersList.holding = false;
+            clonedState.gamersList[formatDateTime(new Date(), 'm')][action.userId].penalties[action.penalty.id] = action.penalty;
+            return clonedState;
+        case GamerActionsType.FAILED_ADD_GAMER_PENALTY:
+            clonedState.gamersList.holding = false;
+            return clonedState;
+
+
+        case GamerActionsType.PROC_ADD_GAMER_LOAN:
+            clonedState.gamersList.holding = true;
+            return clonedState;
+        case GamerActionsType.SUCC_ADD_GAMER_LOAN:
+            clonedState.gamersList[formatDateTime(new Date(), 'm')][action.userId].loans[action.loan.id] = action.loan;
+            clonedState.gamersList.holding = false;
+            return clonedState;
+        case GamerActionsType.FAILED_ADD_GAMER_LOAN:
+            clonedState.gamersList.holding = false;
+            return clonedState;
         default:
             return state
     }

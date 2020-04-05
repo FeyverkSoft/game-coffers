@@ -16,6 +16,7 @@ import { Card } from "../_components/Base/Card";
 import { AddCharDialog } from "../_components/Character/AddCharDialog";
 import { Loans } from "../_components/Loans/Loans";
 import { AddLoanDialog } from "../_components/Loans/AddLoanDialog";
+import { Penalties } from "../_components/Penalties/Penalties";
 
 
 interface IMainProps {
@@ -127,6 +128,18 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                     render: (value: number, record: IGamersListView) => {
                         return <Loans
                             loans={record.loans}
+                            userId={record.id}
+                            onAddLoan={this.toggleAddLoanModal}
+                        />
+                    }
+                },
+                {
+                    title: Lang('USER_ROW_PENALTIES'),
+                    dataIndex: 'penalties',
+                    key: 'penalties',
+                    render: (value: number, record: IGamersListView) => {
+                        return <Penalties
+                            penalties={record.penalties}
                             userId={record.id}
                             onAddLoan={this.toggleAddLoanModal}
                         />

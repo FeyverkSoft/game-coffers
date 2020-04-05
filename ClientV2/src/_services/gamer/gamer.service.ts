@@ -3,7 +3,7 @@ import { BaseResponse } from '..';
 import { Config } from '../../core';
 import { authService } from '..';
 import { GamerStatus } from './GamerStatus';
-import { GamersListView, IGamersListView } from './GamersListView';
+import { GamersListView, IGamersListView, ILoanView, IPenaltyView } from './GamersListView';
 
 export class gamerService {
     /**
@@ -69,34 +69,35 @@ export class gamerService {
     }
 
 
-    // /**
-    //  * Добавить игроку новый штраф
-    //  * @param gamerId 
-    //  * @param id 
-    //  * @param amount 
-    //  * @param description 
-    //  */
-    // static async AddPenalty(gamerId: string, id: string, amount: number, description: string): Promise<void> {
-    //     let session = authService.getCurrentSession();
-    //     const requestOptions: RequestInit = {
-    //         method: 'PUT',
-    //         cache: 'no-cache',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'accept': 'application/json',
-    //             'Authorization': 'Bearer ' + session.sessionId
-    //         },
-    //         body: JSON.stringify({ id, amount, description })
-    //     };
-    //     return await fetch(Config.BuildUrl(`/Gamers/${gamerId}/penalties`), requestOptions)
-    //         .then<BaseResponse>(getResponse)
-    //         .then(data => {
-    //             if (data && data.type || data.traceId) {
-    //                 return errorHandle(data);
-    //             }
-    //         })
-    //         .catch(catchHandle);
-    // }
+    /**
+     * Добавить игроку новый штраф
+     * @param gamerId 
+     * @param id 
+     * @param amount 
+     * @param description 
+     */
+    static async addPenalty(userId: string, id: string, amount: number, description: string): Promise<IPenaltyView> {
+        let session = authService.getCurrentSession();
+        const requestOptions: RequestInit = {
+            method: 'POST',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+                'Authorization': 'Bearer ' + session.sessionId
+            },
+            body: JSON.stringify({ id, amount, description })
+        };
+        return await fetch(Config.BuildUrl(`/user/${userId}/penalties`), requestOptions)
+            .then<BaseResponse & IPenaltyView>(getResponse)
+            .then(data => {
+                if (data && data.type || data.traceId) {
+                    return errorHandle(data);
+                }
+                return data;
+            })
+            .catch(catchHandle);
+    }
 
     /**
      * Добавить игроку новый займ
@@ -105,7 +106,7 @@ export class gamerService {
      * @param amount 
      * @param description 
      */
-    static async addLoan(userId: string, id: string, amount: number, description: string): Promise<void> {
+    static async addLoan(userId: string, id: string, amount: number, description: string): Promise<ILoanView> {
         let session = authService.getCurrentSession();
         const requestOptions: RequestInit = {
             method: 'POST',
@@ -123,11 +124,12 @@ export class gamerService {
             })
         };
         return await fetch(Config.BuildUrl(`/loans`), requestOptions)
-            .then<BaseResponse>(getResponse)
+            .then<BaseResponse & ILoanView>(getResponse)
             .then(data => {
                 if ((data && data.type) || data.traceId) {
                     return errorHandle(data);
                 }
+                return data;
             })
             .catch(catchHandle);
     }

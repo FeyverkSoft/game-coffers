@@ -27,7 +27,7 @@ namespace Coffers.Public.Domain.Loans
             if (!await _guildRepository.IsUserExists(userId, guildId, cancellationToken))
                 throw new UserNotFoundException(userId);
 
-            var tariff = await _guildRepository.GetTariff(guildId, cancellationToken);
+            var tariff = await _guildRepository.GetTariff(userId, guildId, cancellationToken);
 
             var existsLoan = await _loanRepository.Get(id, cancellationToken);
 

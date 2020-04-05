@@ -24,7 +24,7 @@ export const Loans = ({ ...props }: ILoans) => <div className={style['loans_wrap
         <Tooltip title={Lang('NEW_LOAN_MODAL')}>
             <Button
                 type="link"
-                className={style['add']}
+                className={style['add']} 
                 icon={<PlusCircleFilled />}
                 onClick={() => props.onAddLoan(props.userId)}
             />
@@ -34,7 +34,6 @@ export const Loans = ({ ...props }: ILoans) => <div className={style['loans_wrap
 
 interface ILoanProps {
     loan: ILoanView;
-    onAChar?(id: string, userId: string): void;
 }
 
 export const Loan = React.memo(({ ...props }: ILoanProps) => {

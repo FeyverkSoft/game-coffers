@@ -4,11 +4,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Coffers.Helpers;
 using Coffers.Public.Domain.Loans;
+using Coffers.Public.Queries.Loans;
 using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Exceptions;
 using Coffers.Public.WebApi.Models.Loan;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Query.Core;
 
 namespace Coffers.Public.WebApi.Controllers
 {
@@ -28,15 +30,15 @@ namespace Coffers.Public.WebApi.Controllers
         [Authorize]
         [PermissionRequired("admin", "officer", "leader")]
         [HttpPost("/loans")]
-        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(LoanView), 200)]
         public async Task<IActionResult> AddNewLoan(
             [FromBody] AddLoanBinding binding,
             [FromServices] LoanCreationService creator,
             [FromServices] ILoanRepository repository,
+            [FromServices] IQueryProcessor queryProcessor,
             CancellationToken cancellationToken)
         {
-            try
-            {
+            try{
                 var loan = await creator.CreateLoan(
                     binding.LoanId,
                     binding.UserId,
@@ -47,16 +49,14 @@ namespace Coffers.Public.WebApi.Controllers
                     cancellationToken);
                 await repository.Save(loan);
             }
-            catch (UserNotFoundException e)
-            {
+            catch (UserNotFoundException e){
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.GamerNotFound, e.Message);
             }
-            catch (LoanAlreadyExistsException e)
-            {
+            catch (LoanAlreadyExistsException e){
                 throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.LoanAlreadyExists, $"Loan {binding.LoanId} already exists", e.Detail.ToDictionary());
             }
 
-            return Ok(new { });
+            return Ok(await queryProcessor.Process<LoanViewQuery, LoanView>(new LoanViewQuery(binding.LoanId), cancellationToken));
         }
 
         /// <summary>
@@ -68,10 +68,11 @@ namespace Coffers.Public.WebApi.Controllers
         [Authorize]
         [PermissionRequired("officer", "leader", "admin")]
         [HttpPost("/loans/{id}/cancel")]
-        [ProducesResponseType(200)]
-        public async Task<IActionResult> CancelPenalty(
+        [ProducesResponseType(typeof(LoanView), 200)]
+        public async Task<IActionResult> CancelLoan(
             [FromServices] ILoanRepository repository,
             [FromRoute] Guid id,
+            [FromServices] IQueryProcessor queryProcessor,
             CancellationToken cancellationToken)
         {
             var loan = await repository.Get(id, cancellationToken);
@@ -79,17 +80,15 @@ namespace Coffers.Public.WebApi.Controllers
             if (loan == null)
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.LoanNotFound, $"Loan {id} not found");
 
-            try
-            {
+            try{
                 loan.MakeCancel();
                 await repository.Save(loan);
             }
-            catch (InvalidOperationException)
-            {
+            catch (InvalidOperationException){
                 throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.IncorrectOperation, $"Incorrect loan state");
             }
 
-            return Ok(new { });
+            return Ok(await queryProcessor.Process<LoanViewQuery, LoanView>(new LoanViewQuery(id), cancellationToken));
         }
 
         /// <summary>
@@ -101,11 +100,12 @@ namespace Coffers.Public.WebApi.Controllers
         [Authorize]
         [PermissionRequired("officer", "leader", "veteran", "admin")]
         [HttpPost("/loans/{id}/process")]
-        [ProducesResponseType(200)]
-        public async Task<IActionResult> ProcessPenalty(
+        [ProducesResponseType(typeof(LoanView), 200)]
+        public async Task<IActionResult> ProcessLoan(
             [FromServices] ILoanRepository repository,
             [FromRoute] Guid id,
             [FromServices] LoanProcessor processor,
+            [FromServices] IQueryProcessor queryProcessor,
             CancellationToken cancellationToken)
         {
             var loan = await repository.Get(id, cancellationToken);
@@ -113,17 +113,15 @@ namespace Coffers.Public.WebApi.Controllers
             if (loan == null)
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.LoanNotFound, $"Loan {id} not found");
 
-            try
-            {
+            try{
                 await processor.Process(loan, cancellationToken);
                 await repository.Save(loan);
             }
-            catch (InvalidOperationException)
-            {
+            catch (InvalidOperationException){
                 throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.IncorrectOperation, $"Incorrect loan state");
             }
 
-            return Ok(new { });
+            return Ok(await queryProcessor.Process<LoanViewQuery, LoanView>(new LoanViewQuery(id), cancellationToken));
         }
     }
 }

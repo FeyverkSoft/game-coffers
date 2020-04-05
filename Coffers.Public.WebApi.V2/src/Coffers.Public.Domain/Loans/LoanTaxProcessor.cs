@@ -1,4 +1,7 @@
-﻿namespace Coffers.Public.Domain.Loans
+﻿using System;
+using System.Linq;
+
+namespace Coffers.Public.Domain.Loans
 {
     public sealed class LoanTaxProcessor
     {

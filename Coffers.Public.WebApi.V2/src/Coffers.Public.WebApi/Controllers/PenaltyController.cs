@@ -4,12 +4,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Coffers.Helpers;
 using Coffers.Public.Domain.Penalties;
+using Coffers.Public.Queries.Penalties;
 using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Exceptions;
 using Coffers.Public.WebApi.Models.User;
-using Coffers.Types.Gamer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Query.Core;
 
 namespace Coffers.Public.WebApi.Controllers
 {
@@ -34,6 +35,7 @@ namespace Coffers.Public.WebApi.Controllers
             [FromServices] IUserRepository repository,
             [FromRoute] Guid userId,
             [FromBody] AddPenaltyBinding binding,
+            [FromServices] IQueryProcessor queryProcessor,
             CancellationToken cancellationToken)
         {
             var user = await repository.Get(userId, HttpContext.GetGuildId(), cancellationToken);
@@ -41,17 +43,16 @@ namespace Coffers.Public.WebApi.Controllers
             if (user == null)
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.GamerNotFound, $"User {userId} not found");
 
-            try
-            {
+            try{
                 user.AddPenalty(binding.Id, binding.Amount, binding.Description);
                 await repository.Save(user);
             }
-            catch (PenaltyAlreadyExistsException e)
-            {
-                throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.PenaltyAlreadyExists, $"Penalty {binding.Id} already exists", e.Detail.ToDictionary());
+            catch (PenaltyAlreadyExistsException){
+                throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.PenaltyAlreadyExists, $"Penalty {binding.Id} already exists",
+                    (await queryProcessor.Process<PenaltyViewQuery, PenaltyView>(new PenaltyViewQuery(binding.Id), cancellationToken)).ToDictionary());
             }
 
-            return Ok(new { });
+            return Ok(await queryProcessor.Process<PenaltyViewQuery, PenaltyView>(new PenaltyViewQuery(binding.Id), cancellationToken));
         }
 
         /// <summary>
@@ -74,13 +75,11 @@ namespace Coffers.Public.WebApi.Controllers
             if (penalty == null)
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.PenaltyNotFound, $"Penalty {id} not found");
 
-            try
-            {
+            try{
                 penalty.MakeCancel();
                 await repository.Save(penalty);
             }
-            catch (InvalidOperationException)
-            {
+            catch (InvalidOperationException){
                 throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.IncorrectOperation, $"Incorrect penalty state");
             }
 
@@ -108,13 +107,11 @@ namespace Coffers.Public.WebApi.Controllers
             if (penalty == null)
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.PenaltyNotFound, $"Penalty {id} not found");
 
-            try
-            {
+            try{
                 await processor.Process(penalty, cancellationToken);
                 await repository.Save(penalty);
             }
-            catch (InvalidOperationException)
-            {
+            catch (InvalidOperationException){
                 throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.IncorrectOperation, $"Incorrect penalty state");
             }
 

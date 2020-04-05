@@ -4,7 +4,9 @@ using System.Text.Json.Serialization;
 using Coffers.DB.Migrations;
 using Coffers.Public.Infrastructure.Authorization;
 using Coffers.Public.Queries.Infrastructure.Guilds;
+using Coffers.Public.Queries.Infrastructure.Loans;
 using Coffers.Public.Queries.Infrastructure.Operations;
+using Coffers.Public.Queries.Infrastructure.Penalties;
 using Coffers.Public.Queries.Infrastructure.Users;
 using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Extensions;
@@ -167,6 +169,8 @@ namespace Coffers.Public.WebApi
                 registry.Register<GuildsQueryHandler>();
                 registry.Register<UserQueryHandler>();
                 registry.Register<OperationsQueryHandler>();
+                registry.Register<LoanQueryHandler>();
+                registry.Register<PenaltyQueryHandler>();
             });
 
 

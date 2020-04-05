@@ -6,7 +6,7 @@ namespace Coffers.Public.Domain.Loans
 {
     public interface IGuildRepository
     {
-        Task<Tariff> GetTariff(Guid guildId, CancellationToken cancellationToken);
+        Task<Tariff> GetTariff(Guid userId, Guid guildId, CancellationToken cancellationToken);
         Task<Boolean> IsUserExists(Guid userId, Guid guildId, CancellationToken cancellationToken);
     }
 }
