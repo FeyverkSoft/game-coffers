@@ -11,17 +11,12 @@ interface SetStatusProps extends ICallback<any> {
     status: GamerStatus;
 }
 
-interface CancelLoanProps extends ICallback<any> {
-    gamerId: string;
-    id: string,
-}
 interface CancelPenaltyProps extends ICallback<any> {
     gamerId: string;
     id: string,
 }
 
 export class GamerActions {
-
     /**
      * Метод добавляет игроку нового персонажа
      */
@@ -225,57 +220,28 @@ export class GamerActions {
         function failure(userId: string) { return { type: GamerActionsType.FAILED_ADD_GAMER_PENALTY, userId } }
     }
 
-    // /**
-    //  * отменяет займ если это возможно
-    //  */
-    // CancelLoan(props: CancelLoanProps): Function {
-    //     return (dispatch: Function) => {
-    //         dispatch(request(props.gamerId));
-    //         gamerService.CancelLoan(props.gamerId, props.id)
-    //             .then(
-    //                 data => {
-    //                     dispatch(success(props.gamerId, props.id));
-    //                     if (props.onSuccess)
-    //                         props.onSuccess(data);
-    //                 })
-    //             .catch(
-    //                 ex => {
-    //                     dispatch(failure(props.gamerId));
-    //                     dispatch(alertInstance.error(ex));
-    //                     if (props.onFailure)
-    //                         props.onFailure(ex);
-    //                 });
-    //     }
-    //     function request(gamerId: string) { return { type: GamerActionsType.PROC_CANCEL_GAMER_LOAN, gamerId } }
-    //     function success(gamerId: string, loanId: string) { return { type: GamerActionsType.SUCC_CANCEL_GAMER_LOAN, gamerId, loanId } }
-    //     function failure(gamerId: string) { return { type: GamerActionsType.FAILED_CANCEL_GAMER_LOAN, gamerId } }
-    // }
+    /**
+     * отменяет займ если это возможно
+     */
+    cancelLoan(props: { loanId: string }): Function {
+        return (dispatch: Function) => {
+            dispatch(request(props.loanId));
+            gamerService.cancelLoan(props.loanId)
+                .then(
+                    data => {
+                        dispatch(success(props.loanId));
+                    })
+                .catch(
+                    ex => {
+                        dispatch(failure(props.loanId));
+                        dispatch(alertInstance.error(ex));
+                    });
+        }
+        function request(loanId: string) { return { type: GamerActionsType.PROC_CANCEL_GAMER_LOAN, loanId } }
+        function success(loanId: string) { return { type: GamerActionsType.SUCC_CANCEL_GAMER_LOAN, loanId } }
+        function failure(loanId: string) { return { type: GamerActionsType.FAILED_CANCEL_GAMER_LOAN, loanId } }
+    }
 
-    // /**
-    //  * Красное сторно займа, если это возожно
-    //  */
-    // ReverseLoan(props: CancelLoanProps): Function {
-    //     return (dispatch: Function) => {
-    //         dispatch(request(props.gamerId));
-    //         gamerService.ReverseLoan(props.gamerId, props.id)
-    //             .then(
-    //                 data => {
-    //                     dispatch(success(props.gamerId, props.id));
-    //                     if (props.onSuccess)
-    //                         props.onSuccess(data);
-    //                 })
-    //             .catch(
-    //                 ex => {
-    //                     dispatch(failure(props.gamerId));
-    //                     dispatch(alertInstance.error(ex));
-    //                     if (props.onFailure)
-    //                         props.onFailure(ex);
-    //                 });
-    //     }
-    //     function request(gamerId: string) { return { type: GamerActionsType.PROC_CANCEL_GAMER_LOAN, gamerId } }
-    //     function success(gamerId: string, loanId: string) { return { type: GamerActionsType.SUCC_CANCEL_GAMER_LOAN, gamerId, loanId } }
-    //     function failure(gamerId: string) { return { type: GamerActionsType.FAILED_CANCEL_GAMER_LOAN, gamerId } }
-    // }
 
     // /**
     //  * отменяет штраф если это возможно

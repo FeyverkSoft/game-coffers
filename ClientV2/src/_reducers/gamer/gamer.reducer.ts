@@ -1,11 +1,12 @@
 import { GamerActionsType } from "../../_actions";
 import { IAction, IHolded, Dictionary } from "../../core";
 import clonedeep from 'lodash.clonedeep';
-import { IGamersListView } from "../../_services/gamer/GamersListView";
+import { IGamersListView, ILoanView } from "../../_services/gamer/GamersListView";
 import { formatDateTime } from "../../_helpers";
 
 export class IGamerStore {
     gamersList: Dictionary<Dictionary<IGamersListView>> & IHolded = {};
+    loans: Dictionary<ILoanView & IHolded> = {};
 }
 
 export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<GamerActionsType>):
@@ -23,6 +24,7 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<G
         case GamerActionsType.SUCC_GET_GUILD_GAMERS:
             action.gamersList.forEach((gamer: IGamersListView) => {
                 clonedState.gamersList[formatDateTime(action.date, 'm')][gamer.id] = gamer;
+                clonedState.loans = { ...clonedState.loans, ...gamer.loans }
             });
             clonedState.gamersList.holding = false;
             return clonedState;
@@ -101,11 +103,25 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<G
             return clonedState;
         case GamerActionsType.SUCC_ADD_GAMER_LOAN:
             clonedState.gamersList[formatDateTime(new Date(), 'm')][action.userId].loans[action.loan.id] = action.loan;
+            clonedState.loans[action.loan.id] = action.loan;
             clonedState.gamersList.holding = false;
             return clonedState;
         case GamerActionsType.FAILED_ADD_GAMER_LOAN:
             clonedState.gamersList.holding = false;
             return clonedState;
+
+        case GamerActionsType.PROC_CANCEL_GAMER_LOAN:
+            clonedState.loans[action.loanId].holding = true;
+            return clonedState;
+        case GamerActionsType.SUCC_CANCEL_GAMER_LOAN:
+            clonedState.loans[action.loanId].loanStatus = 'Canceled';
+            clonedState.loans[action.loanId].holding = false;
+            return clonedState;
+        case GamerActionsType.FAILED_CANCEL_GAMER_LOAN:
+            clonedState.loans[action.loanId].holding = false;
+            return clonedState;
+
+
         default:
             return state
     }

@@ -219,11 +219,8 @@ export class gamerService {
     // }
 
     // /**
-    //  * Отменить ещё не штраф займ у игрока
-    //  * @param gamerId 
+    //  * Отменить штраф у игрока
     //  * @param id 
-    //  * @param amount 
-    //  * @param description 
     //  */
     // static async CancelPenalty(gamerId: string, id: string): Promise<void> {
     //     let session = authService.getCurrentSession();
@@ -246,63 +243,28 @@ export class gamerService {
     //         .catch(catchHandle);
     // }
 
-    // /**
-    //  * Отменить ещё не оплаченный займ у игрока
-    //  * @param gamerId 
-    //  * @param id 
-    //  * @param amount 
-    //  * @param description 
-    //  * @param borrowDate 
-    //  * @param expiredDate 
-    //  */
-    // static async CancelLoan(gamerId: string, id: string): Promise<void> {
-    //     let session = authService.getCurrentSession();
-    //     const requestOptions: RequestInit = {
-    //         method: 'DELETE',
-    //         cache: 'no-cache',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'accept': 'application/json',
-    //             'Authorization': 'Bearer ' + session.sessionId
-    //         },
-    //     };
-    //     return await fetch(Config.BuildUrl(`/Gamers/${gamerId}/loans/${id}`), requestOptions)
-    //         .then<BaseResponse>(getResponse)
-    //         .then(data => {
-    //             if (data && data.type || data.traceId) {
-    //                 return errorHandle(data);
-    //             }
-    //         })
-    //         .catch(catchHandle);
-    // }
-
-    // /**
-    //  * Красное сторно займа.
-    //  * @param gamerId 
-    //  * @param id 
-    //  * @param amount 
-    //  * @param description 
-    //  * @param borrowDate 
-    //  * @param expiredDate 
-    //  */
-    // static async ReverseLoan(gamerId: string, id: string): Promise<void> {
-    //     let session = authService.getCurrentSession();
-    //     const requestOptions: RequestInit = {
-    //         method: 'POST',
-    //         cache: 'no-cache',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'accept': 'application/json',
-    //             'Authorization': 'Bearer ' + session.sessionId
-    //         },
-    //     };
-    //     return await fetch(Config.BuildUrl(`/Gamers/${gamerId}/loans/${id}/reverse`), requestOptions)
-    //         .then<BaseResponse>(getResponse)
-    //         .then(data => {
-    //             if (data && data.type || data.traceId) {
-    //                 return errorHandle(data);
-    //             }
-    //         })
-    //         .catch(catchHandle);
-    // }
+     /**
+      * Отменить ещё не оплаченный займ у игрока
+      * @param id 
+      */
+     static async cancelLoan(id: string): Promise<void> {
+         let session = authService.getCurrentSession();
+         const requestOptions: RequestInit = {
+             method: 'POST',
+             cache: 'no-cache',
+             headers: {
+                 'Content-Type': 'application/json',
+                 'accept': 'application/json',
+                 'Authorization': 'Bearer ' + session.sessionId
+             },
+         };
+         return await fetch(Config.BuildUrl(`/loans/${id}/cancel`), requestOptions)
+             .then<BaseResponse>(getResponse)
+             .then(data => {
+                 if (data && data.type || data.traceId) {
+                     return errorHandle(data);
+                 }
+             })
+             .catch(catchHandle);
+     }
 }

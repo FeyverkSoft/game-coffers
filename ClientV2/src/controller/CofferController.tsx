@@ -18,6 +18,7 @@ import { Loans } from "../_components/Loans/Loans";
 import { AddLoanDialog } from "../_components/Loans/AddLoanDialog";
 import { Penalties } from "../_components/Penalties/Penalties";
 import { AddPenaltyDialog } from "../_components/Penalties/AddPenaltyDialog";
+import { ShowLoanDialog } from "../_components/Loans/ShowLoanDialog";
 
 
 interface IMainProps {
@@ -39,6 +40,7 @@ interface IState {
     addCharacterModal: ModalState;
     addLoanModal: ModalState;
     addPenaltyModal: ModalState;
+    showLoanDialog: ModalState & { loanId?: string; userId?: string; };
     filter: string;
     date: Date;
     columns: ColumnProps<IGamersListView>[];
@@ -51,6 +53,7 @@ export class _CofferController extends React.Component<IMainProps, IState> {
             addCharacterModal: { show: false },
             addLoanModal: { show: false },
             addPenaltyModal: { show: false },
+            showLoanDialog: { show: false },
             filter: '',
             date: new Date(),
             columns: [
@@ -134,6 +137,7 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                             loans={record.loans}
                             userId={record.id}
                             onAddLoan={this.toggleAddLoanModal}
+                            onLoanShow={this.toggleShowLoanDialog}
                         />
                     }
                 },
@@ -212,6 +216,10 @@ export class _CofferController extends React.Component<IMainProps, IState> {
         if (userId)
             this.props.addPenalty(userId, penaltyId, amount, description);
     };
+
+    toggleShowLoanDialog = (userId?: string, loanId?: string) => {
+        this.setState({ showLoanDialog: { show: !this.state.showLoanDialog.show, userId, loanId } });
+    }
 
     render() {
         const { isLoading } = this.props;
@@ -292,6 +300,11 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                     visible={this.state.addPenaltyModal.show}
                     isLoading={isLoading}
                     onAdd={this.onAddPenalty}
+                />
+                <ShowLoanDialog
+                    onClose={this.toggleShowLoanDialog}
+                    visible={this.state.showLoanDialog.show}
+                    loanId={this.state.showLoanDialog.loanId}
                 />
             </Content>
         );
