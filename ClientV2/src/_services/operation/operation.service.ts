@@ -44,8 +44,8 @@ export class operationService {
     /**
      * Создать новую операцию
      */
-    static async CreateOperation(id: string, type: OperationType, amount: number, description: string,
-        fromUserId?: string, toUserId?: string, penaltyId?: string, loanId?: string):
+    static async createOperation(id: string, type: OperationType, amount: number, description: string,
+        userId: string, documentId?: string, parentOperationId?: string):
         Promise<Array<IOperationView>> {
         let session = authService.getCurrentSession();
         const requestOptions: RequestInit = {
@@ -58,13 +58,12 @@ export class operationService {
             },
             body: JSON.stringify({
                 id: id,
-                fromUserId: fromUserId,
-                toUserId: toUserId,
+                userId: userId,
+                parentOperationId: parentOperationId,
                 type: type,
                 amount: amount,
                 description: description,
-                penaltyId: penaltyId,
-                loanId: loanId
+                documentId: documentId,
             })
         };
         return await fetch(Config.BuildUrl(`/Operations`), requestOptions)

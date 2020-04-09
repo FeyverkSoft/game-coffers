@@ -3,20 +3,14 @@ import { OperationType, operationService, IOperationView } from '../../_services
 import { alertInstance, ICallback } from '..';
 import { OperationActionsType } from './OperationActionsType';
 
-interface GetOperationsProps extends ICallback<any> {
-    documentId: string;
-    type: OperationType;
-}
-
-interface CreateOperationProps extends ICallback<any> {
+interface CreateOperationProps {
     id: string;
-    fromUserId?: string;
-    toUserId?: string;
     type: OperationType;
     amount: number;
     description: string;
-    penaltyId?: string;
-    loanId?: string;
+    userId: string;
+    documentId?: string;
+    parentOperationId?: string;
 }
 
 class OperationActions {
@@ -51,28 +45,23 @@ class OperationActions {
     CreateOperation(props: CreateOperationProps): Function {
         return (dispatch: Function) => {
             dispatch(request(props.id, props.type));
-            operationService.CreateOperation(
+            operationService.createOperation(
                 props.id,
                 props.type,
                 props.amount,
                 props.description,
-                props.fromUserId,
-                props.toUserId,
-                props.penaltyId,
-                props.loanId
+                props.userId,
+                props.documentId,
+                props.parentOperationId,
             )
                 .then(
                     data => {
-                        dispatch(success(props.id, props.type, {} as IOperationView));
-                        if (props.onSuccess)
-                            props.onSuccess(data);
+                        dispatch(operationsInstance.GetOperations(new Date()));
                     })
                 .catch(
                     ex => {
                         dispatch(failure(props.id, props.type));
                         dispatch(alertInstance.error(ex));
-                        if (props.onFailure)
-                            props.onFailure(ex);
                     });
         }
         function request(id: string, otype: OperationType) { return { type: OperationActionsType.PROC_CREATE_OPERATION, id, otype } }

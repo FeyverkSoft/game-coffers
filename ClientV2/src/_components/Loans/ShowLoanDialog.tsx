@@ -23,6 +23,7 @@ const showLoanDialog = ({ ...props }: ILoanDialogProps) => {
         <Modal
             title={Lang('SHOW_LOAN_MODAL')}
             visible={props.visible}
+            confirmLoading={loan.holding}
             footer={
                 <Private roles={['admin', 'leader', 'officer']}>
                     <IF value={loan.loanStatus === 'Active'}>

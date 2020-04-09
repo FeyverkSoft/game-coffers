@@ -21,7 +21,6 @@ export class IGuildStore {
                 holding: guild.holding || false,
                 gamersCount: guild.gamersCount || 0,
                 charactersCount: guild.charactersCount || 0,
-                balance: guild.balance || 0
             };
         else {
             this.guild = {
@@ -32,7 +31,6 @@ export class IGuildStore {
                 holding: false,
                 gamersCount: 0,
                 charactersCount: 0,
-                balance: 0
             };
         }
         this.reports = {

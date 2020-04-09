@@ -1,7 +1,7 @@
 import React from "react";
-import { Lang, IGamersListView, DLang, LangF } from '../_services';
-import { Table, Breadcrumb, Row, Col, DatePicker, Layout } from 'antd';
-import { HomeOutlined } from '@ant-design/icons';
+import { Lang, IGamersListView, DLang, LangF, IGuild, GuildBalanceReport } from '../_services';
+import { Table, Breadcrumb, Row, Col, DatePicker, Layout, Tooltip, Button, Descriptions } from 'antd';
+import { HomeOutlined, RedoOutlined } from '@ant-design/icons';
 import { connect } from "react-redux";
 import { IStore, formatDateTime } from "../_helpers";
 import { gamerInstance, guildInstance } from "../_actions";
@@ -19,11 +19,15 @@ import { AddLoanDialog } from "../_components/Loans/AddLoanDialog";
 import { Penalties } from "../_components/Penalties/Penalties";
 import { AddPenaltyDialog } from "../_components/Penalties/AddPenaltyDialog";
 import { ShowLoanDialog } from "../_components/Loans/ShowLoanDialog";
+import { AddUserDialog } from "../_components/Coffers/AddUserDialog";
+import { Private } from "../_components/Private";
 
 
 interface IMainProps {
     isLoading: boolean;
     gamers: Dictionary<Dictionary<IGamersListView>>;
+    guild: IGuild;
+    balanceReport: GuildBalanceReport;
     loadGuildInfo(): void;
     loadData(date: Date): void;
     deleteCharacter(userId: string, characterId: string): void;
@@ -41,6 +45,7 @@ interface IState {
     addLoanModal: ModalState;
     addPenaltyModal: ModalState;
     showLoanDialog: ModalState & { loanId?: string; userId?: string; };
+    addUserDialog: ModalState;
     filter: string;
     date: Date;
     columns: ColumnProps<IGamersListView>[];
@@ -54,6 +59,7 @@ export class _CofferController extends React.Component<IMainProps, IState> {
             addLoanModal: { show: false },
             addPenaltyModal: { show: false },
             showLoanDialog: { show: false },
+            addUserDialog: { show: false },
             filter: '',
             date: new Date(),
             columns: [
@@ -156,6 +162,7 @@ export class _CofferController extends React.Component<IMainProps, IState> {
             ]
         }
     }
+
     loadData = () => {
         const { date } = this.state;
         this.props.loadData(date);
@@ -221,8 +228,12 @@ export class _CofferController extends React.Component<IMainProps, IState> {
         this.setState({ showLoanDialog: { show: !this.state.showLoanDialog.show, userId, loanId } });
     }
 
+    toggleAddUserDialog = () => {
+        this.setState({ addUserDialog: { show: !this.state.addUserDialog.show } });
+    }
+
     render() {
-        const { isLoading } = this.props;
+        const { isLoading, guild, balanceReport } = this.props;
         const { date } = this.state;
         return (
             <Content>
@@ -240,6 +251,36 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                 </Breadcrumb>
                 <Layout>
                     <Row gutter={[16, 16]}>
+                        <Col xs={24} sm={12} md={7} lg={4} xl={4} >
+                            <Card title={Lang('MAIN_PAGE_MAIN_INFO')} size='small'>
+                                <Descriptions size='small'>
+                                    <Descriptions.Item label={Lang("MAIN_PAGE_CHARACTERS_COUNT")} span={12}>
+                                        {String(guild.charactersCount)}
+                                    </Descriptions.Item>
+                                    <Descriptions.Item label={Lang("MAIN_PAGE_GAMERS_COUNT")} span={12}>
+                                        {String(guild.gamersCount)}
+                                    </Descriptions.Item>
+                                    <Descriptions.Item label={Lang("MAIN_RECRUITMENTSTATUS")} span={12}>
+                                        {DLang('RECRUITMENTSTATUS', guild.recruitmentStatus)}
+                                    </Descriptions.Item>
+                                </Descriptions>
+                            </Card>
+                        </Col>
+                        <Col xs={24} sm={12} md={7} lg={5} xl={5} >
+                            <Card title={Lang('MAIN_PAGE_MAIN_BALANCE')} size='small'>
+                                <Descriptions size='small'>
+                                    <Descriptions.Item label={Lang("MAIN_PAGE_GUILD_BALANCE")} span={12}>
+                                        {LangF("MAIN_PAGE_GUILD_B_F", balanceReport.balance, balanceReport.gamersBalance, balanceReport.balance + balanceReport.gamersBalance)}
+                                    </Descriptions.Item>
+                                    <Descriptions.Item label={Lang("MAIN_PAGE_GUILD_LOANS")} span={12}>
+                                        {LangF("MAIN_PAGE_GUILD_LOANS_FORMAT", balanceReport.activeLoansAmount, balanceReport.repaymentLoansAmount)}
+                                    </Descriptions.Item>
+                                    <Descriptions.Item label={Lang("MAIN_PAGE_EXPECTED_TAX")} span={12}>
+                                        {LangF("MAIN_PAGE_EXPECTED_TAX_FORMAT", balanceReport.taxAmount, balanceReport.expectedTaxAmount)}
+                                    </Descriptions.Item>
+                                </Descriptions>
+                            </Card>
+                        </Col>
                     </Row>
                     <Row gutter={[16, 16]}>
                         <Col xs={24} sm={24} md={24} lg={24} xl={24}>
@@ -247,7 +288,7 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                                 title={Lang('USERS')}
                                 size='small'
                             >
-                                <Row gutter={[16, 16]}>
+                                <Row gutter={[16, 16]} justify='space-between'>
                                     <Col xs={8} sm={8} md={5} lg={5} xl={2}>
                                         <DatePicker
                                             onChange={this.onSelectDate}
@@ -255,7 +296,7 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                                             picker="month"
                                         />
                                     </Col>
-                                    <Col xs={16} sm={16} md={19} lg={19} xl={22}>
+                                    <Col xs={14} sm={15} md={18} lg={18} xl={21}>
                                         <Search
                                             placeholder="введите текст для поиска"
                                             enterButton='search'
@@ -264,11 +305,20 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                                             }}
                                         />
                                     </Col>
+                                    <Col xs={2} sm={1} md={1} lg={1} xl={1}>
+                                        <Tooltip title="update">
+                                            <Button
+                                                type="primary"
+                                                shape="circle"
+                                                icon={<RedoOutlined />}
+                                                onClick={() => this.loadData()} />
+                                        </Tooltip>
+                                    </Col>
                                 </Row>
                                 <Row gutter={[16, 16]}>
                                     <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                                         {<Table
-                                            size='middle'
+                                            size='small'
                                             rowKey="id"
                                             columns={this.state.columns}
                                             pagination={false}
@@ -277,6 +327,16 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                                             dataSource={this.getGamers()}
                                         />}
                                     </Col>
+                                </Row>
+                                <Row gutter={[16, 16]} justify='center'>
+                                    <Private roles={['admin', 'leader', 'officer']}>
+                                        <Button
+                                            type='primary'
+                                            size='large'
+                                            onClick={this.toggleAddUserDialog}
+                                        >{Lang('ADD_NEW_USER')}
+                                        </Button>
+                                    </Private>
                                 </Row>
                             </Card>
                         </Col>
@@ -306,6 +366,10 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                     visible={this.state.showLoanDialog.show}
                     loanId={this.state.showLoanDialog.loanId}
                 />
+                <AddUserDialog
+                    onClose={this.toggleAddUserDialog}
+                    visible={this.state.addUserDialog.show}
+                />
             </Content>
         );
     }
@@ -316,7 +380,9 @@ const connectedCofferController = connect<{}, {}, {}, IStore>(
         const gamersList = state.gamers.gamersList;
         return {
             isLoading: state.gamers.gamersList.holding === true,
-            gamers: gamersList
+            gamers: gamersList,
+            guild: state.guild.guild,
+            balanceReport: state.guild.reports.balanceReport
         };
     },
     (dispatch: any) => {

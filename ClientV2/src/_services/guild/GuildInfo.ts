@@ -33,7 +33,6 @@ export interface IGuild {
     status: GuildStatus;
     gamersCount: number;
     charactersCount: number;
-    balance: number;
     recruitmentStatus: RecruitmentStatus;
 }
 
@@ -43,17 +42,15 @@ export class GuildInfo implements IGuild {
     status: GuildStatus;
     recruitmentStatus: RecruitmentStatus;
     gamersCount: number;
-    balance: number;
     charactersCount: number;
     constructor(id: string, name: string, status: GuildStatus,
         recruitmentStatus: RecruitmentStatus, charactersCount: number,
-        gamersCount: number, balance: number) {
+        gamersCount: number) {
         this.id = id;
         this.name = name;
         this.status = status;
         this.recruitmentStatus = recruitmentStatus;
         this.charactersCount = charactersCount;
         this.gamersCount = gamersCount;
-        this.balance = balance;
     }
 }

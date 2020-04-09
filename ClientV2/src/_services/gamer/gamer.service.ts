@@ -6,6 +6,37 @@ import { GamerStatus } from './GamerStatus';
 import { GamersListView, IGamersListView, ILoanView, IPenaltyView } from './GamersListView';
 
 export class gamerService {
+
+    static async addUser(id: string, name: string, rank: string, status: string, dateOfBirth: Date, login: string): Promise<void> {
+        let session = authService.getCurrentSession();
+        const requestOptions: RequestInit = {
+            method: 'POST',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+                'Authorization': 'Bearer ' + session.sessionId
+            },
+            body: JSON.stringify({
+                id: String(id),
+                name: String(name),
+                rank,
+                status,
+                dateOfBirth: new Date(dateOfBirth),
+                login: String(login)
+            })
+        };
+        return await fetch(Config.BuildUrl(`/gamers/guilds/current`), requestOptions)
+            .then<BaseResponse & IPenaltyView>(getResponse)
+            .then(data => {
+                if (data && data.type || data.traceId) {
+                    return errorHandle(data);
+                }
+                return data;
+            })
+            .catch(catchHandle);
+    }
+
     /**
      * Возвращает список игроков в гильдии удовлетворяющих условию
      */
@@ -243,28 +274,28 @@ export class gamerService {
     //         .catch(catchHandle);
     // }
 
-     /**
-      * Отменить ещё не оплаченный займ у игрока
-      * @param id 
-      */
-     static async cancelLoan(id: string): Promise<void> {
-         let session = authService.getCurrentSession();
-         const requestOptions: RequestInit = {
-             method: 'POST',
-             cache: 'no-cache',
-             headers: {
-                 'Content-Type': 'application/json',
-                 'accept': 'application/json',
-                 'Authorization': 'Bearer ' + session.sessionId
-             },
-         };
-         return await fetch(Config.BuildUrl(`/loans/${id}/cancel`), requestOptions)
-             .then<BaseResponse>(getResponse)
-             .then(data => {
-                 if (data && data.type || data.traceId) {
-                     return errorHandle(data);
-                 }
-             })
-             .catch(catchHandle);
-     }
+    /**
+     * Отменить ещё не оплаченный займ у игрока
+     * @param id 
+     */
+    static async cancelLoan(id: string): Promise<void> {
+        let session = authService.getCurrentSession();
+        const requestOptions: RequestInit = {
+            method: 'POST',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+                'Authorization': 'Bearer ' + session.sessionId
+            },
+        };
+        return await fetch(Config.BuildUrl(`/loans/${id}/cancel`), requestOptions)
+            .then<BaseResponse>(getResponse)
+            .then(data => {
+                if (data && data.type || data.traceId) {
+                    return errorHandle(data);
+                }
+            })
+            .catch(catchHandle);
+    }
 }

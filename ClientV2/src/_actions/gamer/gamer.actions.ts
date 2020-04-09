@@ -2,19 +2,6 @@ import { gamerService, GamerInfo, IGamersListView, GamerStatus, GamerRank, ILoan
 import { GamerActionsType } from './GamerActionsType';
 import { alertInstance, ICallback } from '..';
 
-interface SetRankProps extends ICallback<any> {
-    gamerId: string;
-    rank: GamerRank;
-}
-interface SetStatusProps extends ICallback<any> {
-    gamerId: string;
-    status: GamerStatus;
-}
-
-interface CancelPenaltyProps extends ICallback<any> {
-    gamerId: string;
-    id: string,
-}
 
 export class GamerActions {
     /**
@@ -85,29 +72,24 @@ export class GamerActions {
         function failure(date: Date) { return { type: GamerActionsType.FAILED_GET_GUILD_GAMERS, date } }
     }
 
-    // /**
-    //  * Метод регистрирует нового пользователя в гильдии
-    //  * костыльный метод
-    //  * @param props 
-    //  */
-    // AddUser(props: AddUserProps): Function {
-    //     return (dispatch: Function) => {
-    //         gamerService.AddUser(props.guildId, props.id, props.name,
-    //             props.rank, props.status, props.dateOfBirth, props.login)
-    //             .then(
-    //                 data => {
-    //                     if (props.onSuccess)
-    //                         props.onSuccess(data);
-    //                     dispatch(gamerInstance.GetGamers({ dateMonth: new Date() }));
-    //                 })
-    //             .catch(
-    //                 ex => {
-    //                     dispatch(alertInstance.error(ex));
-    //                     if (props.onFailure)
-    //                         props.onFailure(ex);
-    //                 });
-    //     }
-    // }
+     /**
+      * Метод регистрирует нового пользователя в гильдии
+      * костыльный метод
+      * @param props 
+      */
+     addUser(props: {id: string, name: string, rank: GamerRank, status: GamerStatus, dateOfBirth: Date, login: string}): Function {
+         return (dispatch: Function) => {
+             gamerService.addUser(props.id, props.name, props.rank, props.status, props.dateOfBirth, props.login)
+                 .then(
+                     data => {
+                         dispatch(gamerInstance.getGamers({ dateMonth: new Date() }));
+                     })
+                 .catch(
+                     ex => {
+                         dispatch(alertInstance.error(ex));
+                     });
+         }
+     }
 
 
     // /**

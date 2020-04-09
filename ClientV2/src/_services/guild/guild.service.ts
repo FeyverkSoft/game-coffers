@@ -26,8 +26,7 @@ export class guildService {
                 }
                 return new GuildInfo(data.id, data.name, data.status, data.recruitmentStatus,
                     Number(data.charactersCount),
-                    Number(data.gamersCount),
-                    Number(data.balance));
+                    Number(data.gamersCount));
             })
             .catch(catchHandle);
     }
