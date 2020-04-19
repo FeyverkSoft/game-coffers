@@ -1,5 +1,5 @@
 import { getResponse, catchHandle, errorHandle } from '../../_helpers';
-import { BaseResponse } from '..';
+import { BaseResponse, GamerRank } from '..';
 import { Config } from '../../core';
 import { authService } from '..';
 import { GamerStatus } from './GamerStatus';
@@ -198,81 +198,55 @@ export class gamerService {
             .catch(catchHandle);
     }
 
+    /**
+     * This method changed gamer status
+     */
+    static async setStatus(userId: string, status: GamerStatus): Promise<void> {
+        let session = authService.getCurrentSession();
+        const requestOptions: RequestInit = {
+            method: 'PATCH',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+                'Authorization': 'Bearer ' + session.sessionId
+            },
+            body: JSON.stringify({ status: status })
+        };
+        return await fetch(Config.BuildUrl(`/gamers/${userId}/status`), requestOptions)
+            .then<BaseResponse>(getResponse)
+            .then(data => {
+                if (data && data.type || data.traceId) {
+                    return errorHandle(data);
+                }
+            })
+            .catch(catchHandle);
+    }
 
-    // /**
-    //  * This method changed gamer status
-    //  */
-    // static async SetStatus(gamerId: string, status: GamerStatus): Promise<void> {
-    //     let session = authService.getCurrentSession();
-    //     const requestOptions: RequestInit = {
-    //         method: 'PATCH',
-    //         cache: 'no-cache',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'accept': 'application/json',
-    //             'Authorization': 'Bearer ' + session.sessionId
-    //         },
-    //         body: JSON.stringify({ status: status })
-    //     };
-    //     return await fetch(Config.BuildUrl(`/Gamers/${gamerId}/status`), requestOptions)
-    //         .then<BaseResponse>(getResponse)
-    //         .then(data => {
-    //             if (data && data.type || data.traceId) {
-    //                 return errorHandle(data);
-    //             }
-    //         })
-    //         .catch(catchHandle);
-    // }
-
-    // /**
-    //  * This method changed gamer rank
-    //  */
-    // static async SetRank(gamerId: string, rank: GamerRank): Promise<void> {
-    //     let session = authService.getCurrentSession();
-    //     const requestOptions: RequestInit = {
-    //         method: 'PATCH',
-    //         cache: 'no-cache',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'accept': 'application/json',
-    //             'Authorization': 'Bearer ' + session.sessionId
-    //         },
-    //         body: JSON.stringify({ rank: rank })
-    //     };
-    //     return await fetch(Config.BuildUrl(`/Gamers/${gamerId}/rank`), requestOptions)
-    //         .then<BaseResponse>(getResponse)
-    //         .then(data => {
-    //             if (data && data.type || data.traceId) {
-    //                 return errorHandle(data);
-    //             }
-    //         })
-    //         .catch(catchHandle);
-    // }
-
-    // /**
-    //  * Отменить штраф у игрока
-    //  * @param id 
-    //  */
-    // static async CancelPenalty(gamerId: string, id: string): Promise<void> {
-    //     let session = authService.getCurrentSession();
-    //     const requestOptions: RequestInit = {
-    //         method: 'DELETE',
-    //         cache: 'no-cache',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'accept': 'application/json',
-    //             'Authorization': 'Bearer ' + session.sessionId
-    //         },
-    //     };
-    //     return await fetch(Config.BuildUrl(`/Gamers/${gamerId}/penalties/${id}`), requestOptions)
-    //         .then<BaseResponse>(getResponse)
-    //         .then(data => {
-    //             if (data && data.type || data.traceId) {
-    //                 return errorHandle(data);
-    //             }
-    //         })
-    //         .catch(catchHandle);
-    // }
+    /**
+     * This method changed gamer rank
+     */
+    static async setRank(userId: string, rank: GamerRank): Promise<void> {
+        let session = authService.getCurrentSession();
+        const requestOptions: RequestInit = {
+            method: 'PATCH',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+                'Authorization': 'Bearer ' + session.sessionId
+            },
+            body: JSON.stringify({ rank: rank })
+        };
+        return await fetch(Config.BuildUrl(`/gamers/${userId}/rank`), requestOptions)
+            .then<BaseResponse>(getResponse)
+            .then(data => {
+                if (data && data.type || data.traceId) {
+                    return errorHandle(data);
+                }
+            })
+            .catch(catchHandle);
+    }
 
     /**
      * Отменить ещё не оплаченный займ у игрока

@@ -72,77 +72,70 @@ export class GamerActions {
         function failure(date: Date) { return { type: GamerActionsType.FAILED_GET_GUILD_GAMERS, date } }
     }
 
-     /**
-      * Метод регистрирует нового пользователя в гильдии
-      * костыльный метод
-      * @param props 
-      */
-     addUser(props: {id: string, name: string, rank: GamerRank, status: GamerStatus, dateOfBirth: Date, login: string}): Function {
-         return (dispatch: Function) => {
-             gamerService.addUser(props.id, props.name, props.rank, props.status, props.dateOfBirth, props.login)
-                 .then(
-                     data => {
-                         dispatch(gamerInstance.getGamers({ dateMonth: new Date() }));
-                     })
-                 .catch(
-                     ex => {
-                         dispatch(alertInstance.error(ex));
-                     });
-         }
-     }
+    /**
+     * Метод регистрирует нового пользователя в гильдии
+     * костыльный метод
+     * @param props 
+     */
+    addUser(props: { id: string, name: string, rank: GamerRank, status: GamerStatus, dateOfBirth: Date, login: string }): Function {
+        return (dispatch: Function) => {
+            gamerService.addUser(props.id, props.name, props.rank, props.status, props.dateOfBirth, props.login)
+                .then(
+                    data => {
+                        dispatch(gamerInstance.getGamers({ dateMonth: new Date() }));
+                    })
+                .catch(
+                    ex => {
+                        dispatch(alertInstance.error(ex));
+                    });
+        }
+    }
 
 
-    // /**
-    //  * This method changed gamer status
-    //  */
-    // SetStatus(status: SetStatusProps): Function {
-    //     return (dispatch: Function) => {
-    //         dispatch(request(status.gamerId));
-    //         gamerService.SetStatus(status.gamerId, status.status)
-    //             .then(
-    //                 data => {
-    //                     dispatch(success(status.gamerId, status.status));
-    //                     if (status.onSuccess)
-    //                         status.onSuccess(data);
-    //                 })
-    //             .catch(
-    //                 ex => {
-    //                     dispatch(failure(status.gamerId));
-    //                     dispatch(alertInstance.error(ex));
-    //                     if (status.onFailure)
-    //                         status.onFailure(ex);
-    //                 });
-    //     }
-    //     function request(gamerId: string) { return { type: GamerActionsType.PROC_SET_GAMER_STATUS, gamerId } }
-    //     function success(gamerId: string, status: GamerStatus) { return { type: GamerActionsType.SUCC_SET_GAMER_STATUS, gamerId, status } }
-    //     function failure(gamerId: string) { return { type: GamerActionsType.FAILED_SET_GAMER_STATUS, gamerId } }
-    // }
+    /**
+     * This method changed gamer status
+     */
+    setStatus(props: { userId: string; status: GamerStatus; }): Function {
+        return (dispatch: Function) => {
+            dispatch(request(props.userId));
+            gamerService.setStatus(props.userId, props.status)
+                .then(
+                    data => {
+                        dispatch(success(props.userId, props.status));
+                    })
+                .catch(
+                    ex => {
+                        dispatch(failure(props.userId));
+                        dispatch(alertInstance.error(ex));
+                    });
+        }
+        function request(userId: string) { return { type: GamerActionsType.PROC_SET_GAMER_STATUS, userId } }
+        function success(userId: string, status: GamerStatus) { return { type: GamerActionsType.SUCC_SET_GAMER_STATUS, userId, status } }
+        function failure(userId: string) { return { type: GamerActionsType.FAILED_SET_GAMER_STATUS, userId } }
+    }
 
-    // /**
-    //  * This method changed gamer rank
-    //  */
-    // SetRank(rank: SetRankProps): Function {
-    //     return (dispatch: Function) => {
-    //         dispatch(request(rank.gamerId));
-    //         gamerService.SetRank(rank.gamerId, rank.rank)
-    //             .then(
-    //                 data => {
-    //                     dispatch(success(rank.gamerId, rank.rank));
-    //                     if (rank.onSuccess)
-    //                         rank.onSuccess(data);
-    //                 })
-    //             .catch(
-    //                 ex => {
-    //                     dispatch(failure(rank.gamerId));
-    //                     dispatch(alertInstance.error(ex));
-    //                     if (rank.onFailure)
-    //                         rank.onFailure(ex);
-    //                 });
-    //     }
-    //     function request(gamerId: string) { return { type: GamerActionsType.PROC_SET_GAMER_RANK, gamerId } }
-    //     function success(gamerId: string, rank: GamerRank) { return { type: GamerActionsType.SUCC_SET_GAMER_RANK, gamerId, rank } }
-    //     function failure(gamerId: string) { return { type: GamerActionsType.FAILED_SET_GAMER_RANK, gamerId } }
-    // }
+    /**
+     * This method changed gamer rank
+     */
+    setRank(props: { userId: string; rank: GamerRank; }): Function {
+        return (dispatch: Function) => {
+            dispatch(request(props.userId));
+            gamerService.setRank(props.userId, props.rank)
+                .then(
+                    data => {
+                        dispatch(success(props.userId, props.rank));
+                        dispatch(gamerInstance.getGamers({ dateMonth: new Date() }));
+                    })
+                .catch(
+                    ex => {
+                        dispatch(alertInstance.error(ex));
+                        dispatch(failure(props.userId));
+                    });
+        }
+        function request(userId: string) { return { type: GamerActionsType.PROC_SET_GAMER_RANK, userId } }
+        function success(userId: string, rank: GamerRank) { return { type: GamerActionsType.SUCC_SET_GAMER_RANK, userId, rank } }
+        function failure(userId: string) { return { type: GamerActionsType.FAILED_SET_GAMER_RANK, userId } }
+    }
 
     /**
      * This method add gamers loan

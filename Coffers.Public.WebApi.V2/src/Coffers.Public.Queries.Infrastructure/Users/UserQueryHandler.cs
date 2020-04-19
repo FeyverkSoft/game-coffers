@@ -68,6 +68,9 @@ namespace Coffers.Public.Queries.Infrastructure.Users
                         .Select(_ => new PenaltyView(_.Id, _.Amount, _.CreateDate, _.Description, _.Status)),
                     loans: loans.Where(_ => _.UserId == user.Id)
                         .Select(_ => new LoanView(_.Id, _.Amount, _.Balance, _.Description, _.Status, _.CreateDate, _.ExpiredDate))))
+                .OrderBy(_=>_.Rank)
+                .ThenBy(_=>_.Status)
+                .ThenBy(_=>_.Name)
                 .ToList();
         }
 

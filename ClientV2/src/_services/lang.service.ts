@@ -11,6 +11,7 @@ const locString: any = {
         RESOURCE_NOT_FOUND: 'Resource {0} not found;'
     },
     ru: {
+        SAVE: 'Сохранить',
         DELETE_CHAR: 'Удалить персонажа',
         NOT_FOUND: 'Ресурс {0} не найден;',
         NOT_IMPLEMENTED: 'Метод или функционал {0} не реализован',
@@ -76,6 +77,7 @@ const locString: any = {
             Active: 'Активный',
             Left: 'Ушёл',
             New: 'Новичок',
+            Spirit: 'Призрак'
         },
         LOAN_STATUS: {
             Active: 'Активный',

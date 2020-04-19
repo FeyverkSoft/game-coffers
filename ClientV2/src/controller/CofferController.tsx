@@ -1,5 +1,5 @@
 import React from "react";
-import { Lang, IGamersListView, DLang, LangF, IGuild, GuildBalanceReport } from '../_services';
+import { Lang, IGamersListView, DLang, LangF, IGuild, GuildBalanceReport, GamerRankList, GamerRank, GamerStatus, GamerStatusList } from '../_services';
 import { Table, Breadcrumb, Row, Col, DatePicker, Layout, Tooltip, Button, Descriptions } from 'antd';
 import { HomeOutlined, RedoOutlined } from '@ant-design/icons';
 import { connect } from "react-redux";
@@ -21,6 +21,7 @@ import { AddPenaltyDialog } from "../_components/Penalties/AddPenaltyDialog";
 import { ShowLoanDialog } from "../_components/Loans/ShowLoanDialog";
 import { AddUserDialog } from "../_components/Coffers/AddUserDialog";
 import { Private } from "../_components/Private";
+import { EditableSelect, IItem } from "../_components/Coffers/UserStatus";
 
 
 interface IMainProps {
@@ -34,6 +35,8 @@ interface IMainProps {
     addCharacter(userId: string, characterId: string, name: string, className: string, isMain: boolean): void;
     addLoan(userId: string, loanId: string, amount: number, description: string): void;
     addPenalty(userId: string, penaltyId: string, amount: number, description: string): void;
+    setUserRank(id: string, value: string): void;
+    setUserStatus(id: string, value: string): void;
 }
 
 interface ModalState {
@@ -48,6 +51,7 @@ interface IState {
     addUserDialog: ModalState;
     filter: string;
     date: Date;
+    isCurrentDate: boolean;
     columns: ColumnProps<IGamersListView>[];
 }
 
@@ -62,12 +66,12 @@ export class _CofferController extends React.Component<IMainProps, IState> {
             addUserDialog: { show: false },
             filter: '',
             date: new Date(),
+            isCurrentDate: true,
             columns: [
                 {
                     title: Lang('USER'),
                     dataIndex: 'name',
                     key: 'name',
-                    defaultSortOrder: 'ascend',
                     sorter: (a: IGamersListView, b: IGamersListView) => {
 
                         return a.name === b.name ? 0 : (a.name > b.name ? 1 : -1);
@@ -95,33 +99,42 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                     title: Lang('USER_ROW_STATUS'),
                     dataIndex: 'status',
                     key: 'status',
-                    defaultSortOrder: 'ascend',
                     sorter: (a: IGamersListView, b: IGamersListView) => {
 
                         return a.status === b.status ? 0 : (a.status > b.status ? 1 : -1);
                     },
-                    render: (value: string) => {
-                        return DLang('USER_STATUS', value);
+                    render: (value: string, record: IGamersListView) => {
+                        return this.state.isCurrentDate ? <EditableSelect
+                            value={value}
+                            items={GamerStatusList.map((_): IItem => {
+                                return { value: _, description: DLang('USER_STATUS', _) }
+                            })}
+                            onSave={(value: string) => this.props.setUserStatus(record.id, value)}
+                        /> : value
                     }
                 },
                 {
                     title: Lang('USER_ROW_RANK'),
                     dataIndex: 'rank',
                     key: 'rank',
-                    defaultSortOrder: 'ascend',
                     sorter: (a: IGamersListView, b: IGamersListView) => {
 
                         return a.rank === b.rank ? 0 : (a.rank > b.rank ? 1 : -1);
                     },
-                    render: (value: string) => {
-                        return DLang('USER_RANK', value);
+                    render: (value: string, record: IGamersListView) => {
+                        return this.state.isCurrentDate ? <EditableSelect
+                            value={value}
+                            items={GamerRankList.map((_): IItem => {
+                                return { value: _, description: DLang('USER_RANK', _) }
+                            })}
+                            onSave={(value: string) => this.props.setUserRank(record.id, value)}
+                        /> : value
                     }
                 },
                 {
                     title: Lang('USER_ROW_BALANCE'),
                     dataIndex: 'balance',
                     key: 'balance',
-                    defaultSortOrder: 'ascend',
                     sorter: (a: IGamersListView, b: IGamersListView) => {
 
                         return a.balance - b.balance;
@@ -175,7 +188,10 @@ export class _CofferController extends React.Component<IMainProps, IState> {
 
     onSelectDate = (value: Moment | null) => {
         if (value) {
-            this.setState({ date: value.toDate() }, this.loadData);
+            this.setState({
+                date: value.toDate(),
+                isCurrentDate: formatDateTime(value.toDate(), 'm') === formatDateTime(Date(), 'm')
+            }, this.loadData);
         }
     };
 
@@ -408,6 +424,8 @@ const connectedCofferController = connect<{}, {}, {}, IStore>(
                 dispatch(gamerInstance.addLoan({ userId, loanId, amount, description })),
             addPenalty: (userId: string, penaltyId: string, amount: number, description: string) =>
                 dispatch(gamerInstance.addPenalty({ userId, penaltyId, amount, description })),
+            setUserRank: (id: string, value: GamerRank) => dispatch(gamerInstance.setRank({ userId: id, rank: value })),
+            setUserStatus: (id: string, value: GamerStatus) => dispatch(gamerInstance.setStatus({ userId: id, status: value })),
         }
     })(_CofferController);
 

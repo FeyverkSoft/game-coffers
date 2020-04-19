@@ -1,7 +1,7 @@
 import React from "react";
 import { Lang, IOperationView, LangF, OperationType, DLang, IGamersListView } from '../_services';
-import { Table, Breadcrumb, PageHeader, DatePicker, Row, Col, Button } from 'antd';
-import { HomeOutlined } from '@ant-design/icons';
+import { Table, Breadcrumb, PageHeader, DatePicker, Row, Col, Button, Tooltip } from 'antd';
+import { HomeOutlined, RedoOutlined } from '@ant-design/icons';
 import { connect } from "react-redux";
 import { IStore, formatDateTime } from "../_helpers";
 import { operationsInstance, gamerInstance } from "../_actions";
@@ -45,7 +45,7 @@ export class _OperationsController extends React.Component<IMainProps, IState> {
                     title: Lang('DATE'),
                     dataIndex: 'createDate',
                     key: 'createDate',
-                    defaultSortOrder: 'ascend',
+                    defaultSortOrder: 'descend',
                     sorter: (a: IOperationView, b: IOperationView) => {
                         return (Number(a.createDate) - Number(b.createDate));
                     },
@@ -157,7 +157,7 @@ export class _OperationsController extends React.Component<IMainProps, IState> {
                                     picker="month"
                                 />
                             </Col>
-                            <Col xs={16} sm={16} md={19} lg={19} xl={22}>
+                            <Col xs={14} sm={15} md={18} lg={18} xl={21}>
                                 <Search
                                     placeholder="введите текст для поиска"
                                     enterButton='search'
@@ -165,6 +165,15 @@ export class _OperationsController extends React.Component<IMainProps, IState> {
                                         this.setState({ filter: (value || '').toLowerCase() });
                                     }}
                                 />
+                            </Col>
+                            <Col xs={2} sm={1} md={1} lg={1} xl={1}>
+                                <Tooltip title="update">
+                                    <Button
+                                        type="primary"
+                                        shape="circle"
+                                        icon={<RedoOutlined />}
+                                        onClick={() => this.loadData()} />
+                                </Tooltip>
                             </Col>
                         </Row>
                         <Row gutter={[16, 16]}>

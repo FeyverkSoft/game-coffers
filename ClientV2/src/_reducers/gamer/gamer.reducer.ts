@@ -122,6 +122,28 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: IAction<G
             return clonedState;
 
 
+        case GamerActionsType.PROC_SET_GAMER_RANK:
+            clonedState.gamersList.holding = true;
+            return clonedState;
+        case GamerActionsType.SUCC_SET_GAMER_RANK:
+            clonedState.gamersList[formatDateTime(new Date(), 'm')][action.userId].rank = action.rank;
+            clonedState.gamersList.holding = false;
+            return clonedState;
+        case GamerActionsType.FAILED_SET_GAMER_RANK:
+            clonedState.gamersList.holding = false;
+            return clonedState;
+
+        case GamerActionsType.PROC_SET_GAMER_STATUS:
+            clonedState.gamersList.holding = true;
+            return clonedState;
+        case GamerActionsType.SUCC_SET_GAMER_STATUS:
+            clonedState.gamersList[formatDateTime(new Date(), 'm')][action.userId].status = action.status;
+            clonedState.gamersList.holding = false;
+            return clonedState;
+        case GamerActionsType.FAILED_SET_GAMER_STATUS:
+            clonedState.gamersList.holding = false;
+            return clonedState;
+
         default:
             return state
     }

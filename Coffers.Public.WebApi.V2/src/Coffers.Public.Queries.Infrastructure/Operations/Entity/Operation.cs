@@ -26,7 +26,7 @@ where 1 = 1
     AND u.GuildId = @GuildId
     AND op.CreateDate >= @DateMonth
     AND op.CreateDate < ADDDATE(@DateMonth, INTERVAL 1 MONTH)
-order by op.`CreateDate`
+order by op.`CreateDate` desc 
 ";
 
         public Guid Id { get; }
