@@ -3,7 +3,7 @@ namespace Coffers.Public.Queries.Infrastructure.Users.Entity.Profile
 {
     internal sealed class CharacterView
     {
-        internal static String Sql = @"
+        internal static readonly String Sql = @"
 select 
     c.Id,
     c.Name, 

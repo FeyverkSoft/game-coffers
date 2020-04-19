@@ -196,6 +196,7 @@ namespace Coffers.Public.WebApi
             #endregion
 
             services.AddHostedService<Infrastructure.Loans.LoanRecurrentProcessor>();
+            services.AddHostedService<Infrastructure.Penalties.PenaltyRecurrentProcessor>();
             services.AddSwagger();
         }
 

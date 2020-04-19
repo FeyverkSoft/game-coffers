@@ -4,7 +4,7 @@ namespace Coffers.Public.Queries.Infrastructure.Guilds.Entity
 {
     internal sealed class GuildBalance
     {
-        public static String Sql = @"
+        public static readonly String Sql = @"
 SELECT
     COALESCE(ActiveLoansAmount, 0) AS ActiveLoansAmount, /*Сумма активных займов*/
     COALESCE(RepaymentLoansAmount, 0) AS RepaymentLoansAmount, /*Сумма уже уплаченная от суммы займов*/

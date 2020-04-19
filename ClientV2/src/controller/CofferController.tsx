@@ -10,7 +10,7 @@ import { Content } from "../_components/Content/Content";
 import { Link } from "react-router-dom";
 import Search from "antd/lib/input/Search";
 import moment, { Moment } from "moment";
-import { Dictionary } from "../core";
+import { Dictionary, IHolded } from "../core";
 import { Characters } from "../_components/Character/Character";
 import { Card } from "../_components/Base/Card";
 import { AddCharDialog } from "../_components/Character/AddCharDialog";
@@ -26,8 +26,8 @@ import { Private } from "../_components/Private";
 interface IMainProps {
     isLoading: boolean;
     gamers: Dictionary<Dictionary<IGamersListView>>;
-    guild: IGuild;
-    balanceReport: GuildBalanceReport;
+    guild: IGuild & IHolded;
+    balanceReport: GuildBalanceReport & IHolded;
     loadGuildInfo(): void;
     loadData(date: Date): void;
     deleteCharacter(userId: string, characterId: string): void;
@@ -252,7 +252,11 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                 <Layout>
                     <Row gutter={[16, 16]}>
                         <Col xs={24} sm={12} md={7} lg={4} xl={4} >
-                            <Card title={Lang('MAIN_PAGE_MAIN_INFO')} size='small'>
+                            <Card
+                                title={Lang('MAIN_PAGE_MAIN_INFO')}
+                                size='small'
+                                loading={guild.holding}
+                            >
                                 <Descriptions size='small'>
                                     <Descriptions.Item label={Lang("MAIN_PAGE_CHARACTERS_COUNT")} span={12}>
                                         {String(guild.charactersCount)}
@@ -267,7 +271,11 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                             </Card>
                         </Col>
                         <Col xs={24} sm={12} md={7} lg={5} xl={5} >
-                            <Card title={Lang('MAIN_PAGE_MAIN_BALANCE')} size='small'>
+                            <Card
+                                title={Lang('MAIN_PAGE_MAIN_BALANCE')}
+                                size='small'
+                                loading={balanceReport.holding}
+                            >
                                 <Descriptions size='small'>
                                     <Descriptions.Item label={Lang("MAIN_PAGE_GUILD_BALANCE")} span={12}>
                                         {LangF("MAIN_PAGE_GUILD_B_F", balanceReport.balance, balanceReport.gamersBalance, balanceReport.balance + balanceReport.gamersBalance)}

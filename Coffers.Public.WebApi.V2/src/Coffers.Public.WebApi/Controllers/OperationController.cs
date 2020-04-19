@@ -33,20 +33,18 @@ namespace Coffers.Public.WebApi.Controllers
         {
             var operation = await operationsRepository.Get(binding.Id, cancellationToken);
 
-            if (operation != null)
-            {
+            if (operation != null){
                 if (operation.Amount != binding.Amount ||
                     operation.UserId != binding.UserId ||
                     operation.DocumentId != binding.DocumentId ||
                     operation.GuildId != HttpContext.GetGuildId() ||
                     operation.Type != binding.Type)
                     throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.OperationAlreadyExists, $"Operation {binding.Id} already exists",
-                        new { operation.Id, operation.Amount, operation.Description, operation.Type, operation.UserId }.ToDictionary());
+                        new {operation.Id, operation.Amount, operation.Description, operation.Type, operation.UserId}.ToDictionary());
                 return Ok(operation);
             }
 
-            try
-            {
+            try{
                 operation = await operationCreator.Create(
                     binding.Id,
                     HttpContext.GetGuildId(),
@@ -58,8 +56,7 @@ namespace Coffers.Public.WebApi.Controllers
                     binding.ParentOperationId,
                     cancellationToken);
             }
-            catch (DocumentNotFoundException e)
-            {
+            catch (DocumentNotFoundException e){
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.DocumentNotFound, e.Message);
             }
 
@@ -83,10 +80,8 @@ namespace Coffers.Public.WebApi.Controllers
             if (operation == null)
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.OperationNotFound, $"Operation {id} not found");
 
-            try
-            {
-                switch (binding.Type)
-                {
+            try{
+                switch (binding.Type){
                     case OperationType.Tax:
                         await setter.SetTax(operation, binding.DocumentId, cancellationToken);
                         break;
@@ -100,8 +95,7 @@ namespace Coffers.Public.WebApi.Controllers
                         throw new ApiException(HttpStatusCode.BadRequest, "Unsupported operation", "Unsupported operation");
                 }
             }
-            catch (DocumentNotFoundException)
-            {
+            catch (DocumentNotFoundException){
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.DocumentNotFound, $"Document {binding.DocumentId} of {binding.Type} not found");
             }
 
@@ -119,7 +113,7 @@ namespace Coffers.Public.WebApi.Controllers
         [Authorize]
         [HttpGet("/Guilds/current/operations")]
         [ProducesResponseType(typeof(ICollection<OperationListView>), 200)]
-        public async Task<ActionResult<OperationListView>> GetOperations(
+        public async Task<ActionResult<ICollection<OperationListView>>> GetOperations(
             [FromQuery] GetOperationsBinding binding,
             [FromServices] IQueryProcessor queryProcessor,
             CancellationToken cancellationToken)
@@ -128,6 +122,23 @@ namespace Coffers.Public.WebApi.Controllers
                 new GetOperationsQuery(
                     HttpContext.GetGuildId(),
                     binding.DateMonth?.Trunc(DateTruncType.Day)),
+                cancellationToken));
+        }
+
+        /// <summary>
+        /// This method return available documents
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet("/Guilds/current/operations/documents")]
+        [ProducesResponseType(typeof(ICollection<DocumentView>), 200)]
+        public async Task<ActionResult<ICollection<DocumentView>>> GetAvailableDocuments(
+            [FromServices] IQueryProcessor queryProcessor,
+            CancellationToken cancellationToken)
+        {
+            return Ok(await queryProcessor.Process<GetDocumentsQuery, ICollection<DocumentView>>(
+                new GetDocumentsQuery(HttpContext.GetGuildId()),
                 cancellationToken));
         }
     }

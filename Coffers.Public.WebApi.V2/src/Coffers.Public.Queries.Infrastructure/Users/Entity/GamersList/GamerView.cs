@@ -5,7 +5,7 @@ namespace Coffers.Public.Queries.Infrastructure.Users.Entity.GamersList
 {
     internal sealed class GamerView
     {
-        public static String Sql = @"
+        public static readonly String Sql = @"
 SELECT 
     u.Id,
     u.Rank,

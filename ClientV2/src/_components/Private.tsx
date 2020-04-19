@@ -20,6 +20,8 @@ class _Private extends React.Component<_IPrivateProps> {
     defIsHidden: Function = (): boolean => {
         let flag = true;
         const { session } = this.props;
+        if (!session.isActive())
+            return true;
         flag = session === undefined || !session.isActive();
         if (!this.props.skipRoleTest && this.props.roles && this.props.roles.length > 0) {
             for (let i = 0; i < this.props.roles.length; i++) {

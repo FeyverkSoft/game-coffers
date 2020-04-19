@@ -4,7 +4,7 @@ namespace Coffers.Public.Queries.Infrastructure.Users.Entity.Profile
 {
     internal sealed class UserTaxView
     {
-        internal static String Sql = @"
+        internal static readonly String Sql = @"
 select
     u.`Id` as UserId,
     count(uch.`Id`) as CharCount,

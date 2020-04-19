@@ -13,7 +13,8 @@ using Dapper;
 namespace Coffers.Public.Queries.Infrastructure.Operations
 {
     public class OperationsQueryHandler :
-        IQueryHandler<GetOperationsQuery, ICollection<OperationListView>>
+        IQueryHandler<GetOperationsQuery, ICollection<OperationListView>>,
+        IQueryHandler<GetDocumentsQuery, ICollection<DocumentView>>
     {
         private readonly IDbConnection _db;
 
@@ -38,7 +39,6 @@ namespace Coffers.Public.Queries.Infrastructure.Operations
                 DateMonth = dateMonth
             });
 
-
             return operations.Select(_ => new OperationListView(
                 _.Id,
                 _.Amount,
@@ -50,7 +50,20 @@ namespace Coffers.Public.Queries.Infrastructure.Operations
                 _.DocumentDescription,
                 _.UserId,
                 _.UserName)).ToImmutableList();
+        }
 
+        public async Task<ICollection<DocumentView>> Handle(GetDocumentsQuery query, CancellationToken cancellationToken)
+        {
+            var documents = await _db.QueryAsync<Entity.DocumentView>(Entity.DocumentView.Sql, new
+            {
+                GuildId = query.GuildId,
+            });
+            return documents.Select(_ => new DocumentView(
+                id: _.Id,
+                userId: _.UserId,
+                description: _.Description,
+                documentType: _.DocumentType
+            )).ToImmutableList();
         }
     }
 }

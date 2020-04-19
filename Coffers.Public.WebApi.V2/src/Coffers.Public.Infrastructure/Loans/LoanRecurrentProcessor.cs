@@ -15,6 +15,7 @@ namespace Coffers.Public.Infrastructure.Loans
         private readonly LoanExpireProcessor _loanExpireProcessor;
         private readonly LoanTaxProcessor _loanTaxProcessor;
         private readonly LoanProcessor _loanProcessor;
+
         public LoanRecurrentProcessor(
             IServiceScopeFactory scopeFactory,
             ILogger<LoanRecurrentProcessor> logger)
@@ -29,128 +30,104 @@ namespace Coffers.Public.Infrastructure.Loans
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
             cancellationToken.Register(() => _logger.LogInformation("LoanRecurrentProcessor stopped"));
-            while (!cancellationToken.IsCancellationRequested)
-            {
+            while (!cancellationToken.IsCancellationRequested){
                 await LoanWorker(cancellationToken);
                 await LoanExpireWorker(cancellationToken);
                 await LoanExpireTaxWorker(cancellationToken);
                 await LoanActiveTaxWorker(cancellationToken);
-                await Task.Delay(TimeSpan.FromMinutes(2), cancellationToken);
+                await Task.Delay(TimeSpan.FromMinutes(1), cancellationToken);
             }
         }
 
         private async Task LoanExpireWorker(CancellationToken cancellationToken)
         {
-            try
-            {
+            try{
                 var loans = await _repository.GetAllUnprocessedExpiredLoan(cancellationToken);
-                foreach (var loan in loans)
-                {
+                foreach (var loan in loans){
                     if (cancellationToken.IsCancellationRequested)
                         return;
-                    try
-                    {
+                    try{
                         _logger.LogInformation($"ExpireWorker: Start process loan: {loan.Id}");
                         await _loanExpireProcessor.Process(loan, cancellationToken);
                         await _repository.Save(loan);
                         _logger.LogInformation($"ExpireWorker: End process loan: {loan.Id}");
                     }
-                    catch (Exception e)
-                    {
+                    catch (Exception e){
                         _logger.LogError(e, $"ExpireWorker: {e.Message}");
                     }
                 }
-
             }
-            catch (Exception e)
-            {
+            catch (Exception e){
                 _logger.LogError(e, $"ExpireWorker: {e.Message}");
             }
         }
 
         private async Task LoanExpireTaxWorker(CancellationToken cancellationToken)
         {
-            try
-            {
+            try{
                 var loans = await _repository.GetExpiredLoan(cancellationToken);
-                foreach (var loan in loans)
-                {
+                foreach (var loan in loans){
                     if (cancellationToken.IsCancellationRequested)
                         return;
-                    try
-                    {
+                    try{
                         _logger.LogInformation($"LoanExpireTaxWorker: Start process loan: {loan.Id}");
                         _loanTaxProcessor.ProcessExpireLoan(loan);
+                        await _loanProcessor.Process(loan, cancellationToken);
                         await _repository.Save(loan);
                         _logger.LogInformation($"LoanExpireTaxWorker: End process loan: {loan.Id}");
                     }
-                    catch (Exception e)
-                    {
+                    catch (Exception e){
                         _logger.LogError(e, $"LoanExpireTaxWorker: {e.Message}");
                     }
                 }
-
             }
-            catch (Exception e)
-            {
+            catch (Exception e){
                 _logger.LogError(e, $"LoanExpireTaxWorker: {e.Message}");
             }
         }
 
         private async Task LoanActiveTaxWorker(CancellationToken cancellationToken)
         {
-            try
-            {
+            try{
                 var loans = await _repository.GetActiveLoan(cancellationToken);
-                foreach (var loan in loans)
-                {
+                foreach (var loan in loans){
                     if (cancellationToken.IsCancellationRequested)
                         return;
-                    try
-                    {
+                    try{
                         _logger.LogInformation($"LoanActiveTaxWorker: Start process loan: {loan.Id}");
                         _loanTaxProcessor.ProcessLoanTax(loan);
                         await _repository.Save(loan);
                         _logger.LogInformation($"LoanActiveTaxWorker: End process loan: {loan.Id}");
                     }
-                    catch (Exception e)
-                    {
+                    catch (Exception e){
                         _logger.LogError(e, $"LoanActiveTaxWorker: {e.Message}");
                     }
                 }
-
             }
-            catch (Exception e)
-            {
+            catch (Exception e){
                 _logger.LogError(e, $"LoanActiveTaxWorker: {e.Message}");
             }
         }
 
         private async Task LoanWorker(CancellationToken cancellationToken)
         {
-            try
-            {
+            try{
                 var loans = await _repository.GetActiveLoan(cancellationToken);
-                foreach (var loan in loans)
-                {
+                foreach (var loan in loans){
                     if (cancellationToken.IsCancellationRequested)
                         return;
-                    try
-                    {
+                    try{
                         _logger.LogInformation($"LoanWorker: Start process loan: {loan.Id}");
                         await _loanProcessor.Process(loan, cancellationToken);
                         await _repository.Save(loan);
                         _logger.LogInformation($"LoanWorker: End process loan: {loan.Id}");
                     }
-                    catch (Exception e)
-                    {
+                    catch (Exception e){
                         _logger.LogError(e, $"LoanWorker: {e.Message}");
                     }
                 }
-
             }
-            catch (Exception e)
-            {
+            catch (Exception e){
                 _logger.LogError(e, $"LoanWorker: {e.Message}");
             }
         }

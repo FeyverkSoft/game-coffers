@@ -5,7 +5,7 @@ namespace Coffers.Public.Queries.Infrastructure.Users.Entity.GamersList
 {
     class PenaltyView
     {
-        public static String Sql = @"
+        public static readonly String Sql = @"
 select 
     p.Id,
     p.Description,
@@ -17,7 +17,7 @@ from `Penalty` p
 where 1 = 1
 and p.UserId in @UserIds
 and (
-    (@Date >= p.CreateDate
+    (p.CreateDate >= @Date 
     and p.CreateDate < ADDDATE(@Date, INTERVAL 1 MONTH))
     or p.PenaltyStatus in ('Active')
 )

@@ -5,7 +5,7 @@ namespace Coffers.Public.Queries.Infrastructure.Penalties.Entity
 {
     internal sealed class PenaltyView
     {
-        public static String Sql = @"
+        public static readonly String Sql = @"
 select 
     p.Id,
     p.Description,

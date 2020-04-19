@@ -1,10 +1,10 @@
 import React from "react";
-import { Lang, IOperationView, LangF, OperationType, DLang } from '../_services';
-import { Table, Breadcrumb, PageHeader, DatePicker, Row, Col } from 'antd';
+import { Lang, IOperationView, LangF, OperationType, DLang, IGamersListView } from '../_services';
+import { Table, Breadcrumb, PageHeader, DatePicker, Row, Col, Button } from 'antd';
 import { HomeOutlined } from '@ant-design/icons';
 import { connect } from "react-redux";
 import { IStore, formatDateTime } from "../_helpers";
-import { operationsInstance } from "../_actions";
+import { operationsInstance, gamerInstance } from "../_actions";
 import { ColumnProps } from "antd/lib/table";
 import style from './bd.module.scss';
 import { Content } from "../_components/Content/Content";
@@ -12,14 +12,22 @@ import { Link } from "react-router-dom";
 import Search from "antd/lib/input/Search";
 import { IHolded, IDictionary } from "../core";
 import moment, { Moment } from "moment";
+import { AddOperationDialog } from "../_components/Operations/AddOperationDialog";
+import { Private } from "../_components/Private";
 
 interface IMainProps {
     isLoading: boolean;
     operations: IDictionary<Array<IOperationView> & IHolded>;
+    gamersList: IDictionary<IDictionary<IGamersListView>>;
     loadData: Function;
 }
 
+interface ModalState {
+    show: boolean;
+}
+
 interface IState {
+    addOperationModal: ModalState;
     filter: string;
     date: Date,
     columns: ColumnProps<IOperationView>[];
@@ -29,6 +37,7 @@ export class _OperationsController extends React.Component<IMainProps, IState> {
     constructor(props: IMainProps) {
         super(props);
         this.state = {
+            addOperationModal: { show: false },
             filter: '',
             date: new Date(),
             columns: [
@@ -112,8 +121,13 @@ export class _OperationsController extends React.Component<IMainProps, IState> {
         })
     }
 
+    toggleAddOperationDialog = () => {
+        this.setState({ addOperationModal: { show: !this.state.addOperationModal.show } });
+    }
+
     render() {
         const { date } = this.state;
+        const gamersList = this.props.gamersList[formatDateTime(date, 'm')] || {};
         return (
             <Content>
                 <Breadcrumb>
@@ -166,26 +180,46 @@ export class _OperationsController extends React.Component<IMainProps, IState> {
                                 />}
                             </Col>
                         </Row>
+                        <Row gutter={[16, 16]} justify='center'>
+                            <Private roles={['admin', 'leader', 'officer']}>
+                                <Button
+                                    type='primary'
+                                    size='large'
+                                    onClick={this.toggleAddOperationDialog}
+                                >{Lang('ADD_NEW_USER')}
+                                </Button>
+                            </Private>
+                        </Row>
                     </PageHeader>
                 </div>
+                <AddOperationDialog
+                    onClose={this.toggleAddOperationDialog}
+                    visible={this.state.addOperationModal.show}
+                    users={Object.keys(gamersList).map(
+                        _ => gamersList[_]
+                    )}
+                />
             </Content>
         );
     }
 }
 
-
-
 const connectedOperationsController = connect<{}, {}, {}, IStore>(
     (state: IStore) => {
         const { operations } = state.operations;
+        const { gamersList } = state.gamers;
         return {
             operations: operations,
-            isLoading: operations.holding
+            isLoading: operations.holding,
+            gamersList: gamersList
         };
     },
     (dispatch: any) => {
         return {
-            loadData: (date: Date) => dispatch(operationsInstance.GetOperations(date)),
+            loadData: (date: Date) => {
+                dispatch(operationsInstance.getOperations(date));
+                dispatch(gamerInstance.getGamers({ dateMonth: date }));
+            },
         }
     })(_OperationsController);
 

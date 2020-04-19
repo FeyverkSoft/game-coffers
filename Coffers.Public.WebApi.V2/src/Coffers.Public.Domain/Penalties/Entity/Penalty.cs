@@ -41,12 +41,7 @@ namespace Coffers.Public.Domain.Penalties.Entity
 
         public Guid ConcurrencyTokens { get; internal set; } = Guid.NewGuid();
         public Boolean IsActive => PenaltyStatus == PenaltyStatus.Active;
-
-        /// <summary>
-        /// Список операций
-        /// </summary>
-        public IReadOnlyList<Operation> Operations { get; }
-
+        
         public Penalty(Guid id, Guid userId, Decimal amount, String description)
         => (Id, UserId, Amount, Description)
         = (id, userId, amount < 0 ? throw new ArgumentOutOfRangeException(nameof(amount), "Non-negative number required") : amount, description?.Trim());

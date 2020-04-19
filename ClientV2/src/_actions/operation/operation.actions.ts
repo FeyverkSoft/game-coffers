@@ -1,7 +1,7 @@
-
-import { OperationType, operationService, IOperationView } from '../../_services';
-import { alertInstance, ICallback } from '..';
+import { OperationType, operationService, IOperationView, OperationView } from '../../_services';
+import { alertInstance } from '..';
 import { OperationActionsType } from './OperationActionsType';
+import { IAvailableDocument } from '../../_services/operation/IAvailableDocuments';
 
 interface CreateOperationProps {
     id: string;
@@ -19,10 +19,10 @@ class OperationActions {
      * Метод возвращает список операций по первичному документу
      * @param props 
      */
-    GetOperations(date: Date): Function {
+    getOperations(date: Date): Function {
         return (dispatch: Function) => {
             dispatch(request(date));
-            operationService.GetOperations(date)
+            operationService.getOperations(date)
                 .then(
                     data => {
                         dispatch(success(date, data));
@@ -42,7 +42,7 @@ class OperationActions {
      * Метод cсоздаёт новую операцию
      * @param props
      */
-    CreateOperation(props: CreateOperationProps): Function {
+    createOperation(props: CreateOperationProps): Function {
         return (dispatch: Function) => {
             dispatch(request(props.id, props.type));
             operationService.createOperation(
@@ -56,7 +56,8 @@ class OperationActions {
             )
                 .then(
                     data => {
-                        dispatch(operationsInstance.GetOperations(new Date()));
+                        dispatch(success(props.id, props.type, data));
+                        dispatch(operationsInstance.getOperations(new Date()));
                     })
                 .catch(
                     ex => {
@@ -67,6 +68,28 @@ class OperationActions {
         function request(id: string, otype: OperationType) { return { type: OperationActionsType.PROC_CREATE_OPERATION, id, otype } }
         function success(id: string, otype: OperationType, operation: IOperationView) { return { type: OperationActionsType.SUCC_CREATE_OPERATION, id, otype, operation } }
         function failure(id: string, otype: OperationType) { return { type: OperationActionsType.FAILED_CREATE_OPERATION, id, otype } }
+    }
+
+    /**
+     * Метод возвращает список документов доступных для оплаты
+     */
+    getDocuments(): Function {
+        return (dispatch: Function) => {
+            dispatch(request());
+            operationService.getDocuments()
+                .then(
+                    data => {
+                        dispatch(success(data));
+                    })
+                .catch(
+                    ex => {
+                        dispatch(failure());
+                        dispatch(alertInstance.error(ex));
+                    });
+        }
+        function request() { return { type: OperationActionsType.PROC_GET_DOCUMENTS } }
+        function success(documents: Array<IAvailableDocument>) { return { type: OperationActionsType.SUCC_GET_DOCUMENTS, documents } }
+        function failure() { return { type: OperationActionsType.FAILED_GET_DOCUMENTS } }
     }
 }
 

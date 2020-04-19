@@ -129,7 +129,8 @@ const connectedAddUserDialog = connect<{}, {}, any, IStore>(
     (state: IStore) => { return {} },
     (dispatch: any) => {
         return {
-            onAdd: (id: string, name: string, rank: GamerRank, status: GamerStatus, dateOfBirth: Date, login: string) => dispatch(gamerInstance.addUser({ id: id, name: name, rank: rank, status: status, dateOfBirth: dateOfBirth, login: login })),
+            onAdd: (id: string, name: string, rank: GamerRank, status: GamerStatus, dateOfBirth: Date, login: string) =>
+                dispatch(gamerInstance.addUser({ id: id, name: name, rank: rank, status: status, dateOfBirth: dateOfBirth, login: login })),
         }
     }
 )(addUserDialog);

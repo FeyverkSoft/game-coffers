@@ -13,5 +13,9 @@ namespace Coffers.Public.Queries.Loans
         public LoanViewQuery(Guid loanId)
             => (LoanId)
                 = (loanId);
+        
+        public void Deconstruct(out Guid loanId)
+            => (loanId)
+                = (LoanId);
     }
 }

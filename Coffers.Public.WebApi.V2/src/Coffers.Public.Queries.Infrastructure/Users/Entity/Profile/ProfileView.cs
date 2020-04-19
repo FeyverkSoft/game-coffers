@@ -5,7 +5,7 @@ namespace Coffers.Public.Queries.Infrastructure.Users.Entity.Profile
 {
     internal sealed class ProfileView
     {
-        public static String Sql = @"
+        public static readonly String Sql = @"
 select
     u.`Id` as UserId,
     u.`Name` as Name,

@@ -2,7 +2,7 @@ import * as React from "react";
 import style from "./penalties.module.scss";
 import { PlusCircleFilled } from '@ant-design/icons';
 import { Private } from "../Private";
-import { ILoanView, IPenaltyView } from "../../_services/gamer/GamersListView";
+import { IPenaltyView } from "../../_services/gamer/GamersListView";
 import { Tooltip, Button } from "antd";
 import { Lang } from "../../_services";
 import { Dictionary } from "../../core";
@@ -21,7 +21,7 @@ export const Penalties = ({ ...props }: IPenalties) => <div className={style['pe
         />)
     }
     <Private roles={['admin', 'leader', 'officer']}>
-        <Tooltip title={Lang('NEW_LOAN_MODAL')}>
+        <Tooltip title={Lang('NEW_PENALTY_MODAL')}>
             <Button
                 type="link"
                 className={style['add']} 

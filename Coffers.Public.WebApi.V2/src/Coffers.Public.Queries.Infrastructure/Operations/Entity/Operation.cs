@@ -5,7 +5,7 @@ namespace Coffers.Public.Queries.Infrastructure.Operations.Entity
 {
     internal sealed class OperationListItem
     {
-        internal static String Sql = @"
+        internal static readonly String Sql = @"
 select 
     op.`Id`,
     op.`Amount`,

@@ -4,7 +4,7 @@ namespace Coffers.Public.Queries.Infrastructure.Guilds.Entity
 {
     internal sealed class UserTaxList
     {
-        public static String Sql = @"
+        public static readonly String Sql = @"
 SELECT 
     u.`Id` AS UserId, 
     ut.`Tax` AS Tax,

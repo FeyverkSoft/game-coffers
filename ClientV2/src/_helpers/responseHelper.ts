@@ -34,8 +34,14 @@ export const errorHandle = (data: any): Promise<any> => {
     if ((data && data.type) || data.traceId) {
         if (data.type || data.traceId) {
             let error: string = '';
-            if (data.status === 400)
-                error = LangF('INVALID_ARGUMENT', data.errors || data.title || '');
+            if (data.status === 400) {
+                let validationMessages: string | undefined = undefined;
+
+                if (data.errors) {
+                    validationMessages = Object.keys(data.errors).map(_ => data.errors[_]).join('\n');
+                }
+                error = LangF('INVALID_ARGUMENT', validationMessages || data.title || '');
+            }
             else
                 error = LangF(data.type, data.errors || data.title || '');
             if (data.type === 'unauthorized') {

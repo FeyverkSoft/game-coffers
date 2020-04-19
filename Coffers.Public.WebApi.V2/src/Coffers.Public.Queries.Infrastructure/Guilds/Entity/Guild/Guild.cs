@@ -5,7 +5,7 @@ namespace Coffers.Public.Queries.Infrastructure.Guilds.Entity
 {
     internal sealed class Guild
     {
-        public static String Sql = @"
+        public static readonly String Sql = @"
 SELECT
     g.`Id`, 
     g.`Name`, 

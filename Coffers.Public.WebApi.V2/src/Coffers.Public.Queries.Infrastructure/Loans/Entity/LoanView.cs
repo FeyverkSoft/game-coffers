@@ -5,7 +5,7 @@ namespace Coffers.Public.Queries.Infrastructure.Loans.Entity
 {
     internal sealed class LoanView
     {
-        public static String Sql = @"
+        public static readonly String Sql = @"
 select 
     l.Id,
     l.Description,

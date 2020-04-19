@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Coffers.Public.Domain.Penalties;
 using Coffers.Public.Domain.Penalties.Entity;
+using Coffers.Types.Gamer;
 using Microsoft.EntityFrameworkCore;
 
 namespace Coffers.Public.Infrastructure.Penalties
@@ -15,7 +18,7 @@ namespace Coffers.Public.Infrastructure.Penalties
         {
             _context = context;
         }
-        
+
         public async Task<Penalty> Get(Guid id, CancellationToken cancellationToken)
         {
             return await _context.Penalties
@@ -25,7 +28,7 @@ namespace Coffers.Public.Infrastructure.Penalties
         public async Task<Penalty> Get(Guid id, Guid userId, CancellationToken cancellationToken)
         {
             return await _context.Penalties
-                .FirstOrDefaultAsync(_ => 
+                .FirstOrDefaultAsync(_ =>
                     _.Id == id &&
                     _.UserId == userId, cancellationToken);
         }
@@ -37,6 +40,12 @@ namespace Coffers.Public.Infrastructure.Penalties
                 _context.Penalties.Add(penalty);
 
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Penalty>> GetActivePenalties(CancellationToken cancellationToken)
+        {
+            return await _context.Penalties.Where(_ => _.PenaltyStatus == PenaltyStatus.Active)
+                .ToListAsync(cancellationToken);
         }
     }
 }
