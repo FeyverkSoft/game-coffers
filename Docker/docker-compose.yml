@@ -1,26 +1,26 @@
-﻿version: '3.5'
+version: '3.5'
 
 services:
   coffers-webapi:
-    image: maiznpetr/coffers-api:latest
+    image: maiznpetr/coffers-api:v2
     volumes:
       - /docker-data/coffers/logs/webapi/:/app/logs
     environment:
-      - ConnectionStrings:Coffers=Server=${SQL_URL:-coffers-mysql};Port=3306;Database=coffer;User ID=root;Password=${SQL_ROOT_USER_PASSWORD};
-      - ConnectionStrings:CoffersMigration=Server=${SQL_URL:-coffers-mysql};Port=3306;Database=coffer;User ID=root;Password=${SQL_ROOT_USER_PASSWORD};
+      - ConnectionStrings:Coffers=Server=${SQL_URL:-coffers-mariadb};Port=3306;Database=coffer;User ID=root;Password=${SQL_ROOT_USER_PASSWORD};
+      - ConnectionStrings:CoffersMigration=Server=${SQL_URL:-coffers-mariadb};Port=3306;Database=coffer;User ID=root;Password=${SQL_ROOT_USER_PASSWORD};
     depends_on:
-      - coffers-mysql
+      - coffers-mariadb
       - coffers-proxy
     restart: always
 
   coffers-client:
-    image: maiznpetr/coffers-client:latest
+    image: maiznpetr/coffers-client:v2
     depends_on:
       - coffers-proxy
     restart: always
 
   coffers-proxy:
-    image: nginx:1.15.10-alpine
+    image: nginx:1.18.0-alpine
     ports:
       - "80:80"
       - "443:443"
@@ -33,9 +33,9 @@ services:
     restart: always
 
   coffers-mysql:
-    image: mysql:8.0.17
-#    ports:
-#       - "3306:3306"
+    image: mysql:8.0.18
+    ports:
+       - "3306:3306"
     volumes:
       - /docker-data/coffers/mysql:/var/lib/mysql
     environment:
@@ -43,6 +43,19 @@ services:
       - MYSQL_USER=${SQL_USER}
       - MYSQL_PASSWORD=${SQL_PASSWORD}
 #      - MYSQL_DATABASE=coffer
+    restart: always
+
+  coffers-mariadb:
+    image: mariadb:10.3.22
+    ports:
+       - "3306:3306"
+    volumes:
+      - /docker-data/coffers/mariadb:/var/lib/mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=${SQL_ROOT_USER_PASSWORD}
+      - MYSQL_USER=${SQL_USER}
+      - MYSQL_PASSWORD=${SQL_PASSWORD}
+  #     - MYSQL_DATABASE=coffer
     restart: always
 
 volumes:

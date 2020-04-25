@@ -19,7 +19,7 @@ LEFT JOIN `Operation` uo ON uo.UserId = u.Id
                          AND uo.CreateDate < ADDDATE(@DeleteDate, INTERVAL 1 MONTH)
 WHERE 1 = 1
     AND u.GuildId = @GuildId
-    AND (u.DeletedDate IS NULL OR u.DeletedDate < @DeleteDate)
+    AND (u.DeletedDate IS NULL OR u.DeletedDate >= @DeleteDate)
     AND u.CreateDate < ADDDATE(@DeleteDate, INTERVAL 1 MONTH)
     AND u.Status IN @Statuses
 GROUP BY u.Id
