@@ -88,6 +88,47 @@ export class operationService {
             })
             .catch(catchHandle);
     }
+    
+    /**
+     * Обновить текущую операцию
+     */
+    static async editOperation(id: string, type: string, documentId: string):Promise<IOperationView> {
+        let session = authService.getCurrentSession();
+        const requestOptions: RequestInit = {
+            method: 'PUT',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+                'Authorization': 'Bearer ' + session.sessionId
+            },
+            body: JSON.stringify({
+                id: id,
+                type: type,
+                documentId: documentId,
+            })
+        };
+        return await fetch(Config.BuildUrl(`/operations/${id}/document`), requestOptions)
+            .then<BaseResponse & any>(getResponse)
+            .then(data => {
+                if (data.traceId) {
+                    return errorHandle(data);
+                }
+                return new OperationView(
+                    data.id,
+                    data.amount,
+                    data.documentId,
+                    data.documentAmount,
+                    data.documentDescription,
+                    data.userId,
+                    data.userName,
+                    data.type,
+                    data.description,
+                    data.createDate
+                );
+            })
+            .catch(catchHandle);
+    }
 
     /**
      * Получить список опеаций

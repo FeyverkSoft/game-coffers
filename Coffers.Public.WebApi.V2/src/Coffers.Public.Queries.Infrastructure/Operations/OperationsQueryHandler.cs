@@ -14,7 +14,8 @@ namespace Coffers.Public.Queries.Infrastructure.Operations
 {
     public class OperationsQueryHandler :
         IQueryHandler<GetOperationsQuery, ICollection<OperationListView>>,
-        IQueryHandler<GetDocumentsQuery, ICollection<DocumentView>>
+        IQueryHandler<GetDocumentsQuery, ICollection<DocumentView>>,
+        IQueryHandler<GetOperationQuery, OperationView>
     {
         private readonly IDbConnection _db;
 
@@ -64,6 +65,27 @@ namespace Coffers.Public.Queries.Infrastructure.Operations
                 description: _.Description,
                 documentType: _.DocumentType
             )).ToImmutableList();
+        }
+
+        public async Task<OperationView> Handle(GetOperationQuery query, CancellationToken cancellationToken)
+        {
+            var operation = await _db.QuerySingleAsync<Entity.OperationItem>(Entity.OperationItem.Sql, new
+            {
+                GuildId = query.GuildId,
+                OperationId = query.OperationId
+            });
+
+            return new OperationView(
+                operation.Id,
+                operation.Amount,
+                operation.CreateDate,
+                operation.Description,
+                operation.Type,
+                Guid.Empty == operation.DocumentId ? null : operation.DocumentId,
+                Guid.Empty == operation.DocumentId ? null : operation.DocumentAmount,
+                operation.DocumentDescription,
+                operation.UserId,
+                operation.UserName);
         }
     }
 }

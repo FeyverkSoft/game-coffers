@@ -12,9 +12,13 @@ interface CreateOperationProps {
     documentId?: string;
     parentOperationId?: string;
 }
+interface IEditOperationProps {
+    id: string;
+    type: OperationType;
+    documentId: string;
+}
 
 class OperationActions {
-
     /**
      * Метод возвращает список операций по первичному документу
      * @param props 
@@ -44,7 +48,7 @@ class OperationActions {
      */
     createOperation(props: CreateOperationProps): Function {
         return (dispatch: Function) => {
-            dispatch(request(props.id, props.type));
+            dispatch(request(props.id));
             operationService.createOperation(
                 props.id,
                 props.type,
@@ -56,18 +60,40 @@ class OperationActions {
             )
                 .then(
                     data => {
-                        dispatch(success(props.id, props.type, data));
-                        dispatch(operationsInstance.getOperations(new Date()));
+                        dispatch(success(props.id, data));
                     })
                 .catch(
                     ex => {
-                        dispatch(failure(props.id, props.type));
+                        dispatch(failure(props.id));
                         dispatch(alertInstance.error(ex));
                     });
         }
-        function request(id: string, otype: OperationType) { return { type: OperationActionsType.PROC_CREATE_OPERATION, id, otype } }
-        function success(id: string, otype: OperationType, operation: IOperationView) { return { type: OperationActionsType.SUCC_CREATE_OPERATION, id, otype, operation } }
-        function failure(id: string, otype: OperationType) { return { type: OperationActionsType.FAILED_CREATE_OPERATION, id, otype } }
+        function request(id: string) { return { type: OperationActionsType.PROC_CREATE_OPERATION, id } }
+        function success(id: string, operation: IOperationView) { return { type: OperationActionsType.SUCC_CREATE_OPERATION, id, operation } }
+        function failure(id: string) { return { type: OperationActionsType.FAILED_CREATE_OPERATION, id } }
+    }
+
+    editOperation(props: IEditOperationProps): Function {
+        return (dispatch: Function) => {
+            dispatch(request(props.id));
+            operationService.editOperation(
+                props.id,
+                props.type,
+                props.documentId,
+            )
+                .then(
+                    data => {
+                        dispatch(success(props.id, data));
+                    })
+                .catch(
+                    ex => {
+                        dispatch(failure(props.id));
+                        dispatch(alertInstance.error(ex));
+                    });
+        }
+        function request(id: string) { return { type: OperationActionsType.PROC_EDIT_OPERATION, id } }
+        function success(id: string, operation: IOperationView) { return { type: OperationActionsType.SUCC_EDIT_OPERATION, id, operation } }
+        function failure(id: string) { return { type: OperationActionsType.FAILED_EDIT_OPERATION, id } }
     }
 
     /**

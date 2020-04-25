@@ -29,6 +29,7 @@ namespace Coffers.Public.WebApi.Controllers
             [FromServices] IOperationsRepository operationsRepository,
             [FromServices] OperationCreator operationCreator,
             [FromBody] AddOperationBinding binding,
+            [FromServices] IQueryProcessor queryProcessor,
             CancellationToken cancellationToken)
         {
             var operation = await operationsRepository.Get(binding.Id, cancellationToken);
@@ -61,7 +62,34 @@ namespace Coffers.Public.WebApi.Controllers
             }
 
             await operationsRepository.Save(operation);
-            return Ok(operation);
+
+            return Ok(await queryProcessor.Process<GetOperationQuery, OperationView>(
+                new GetOperationQuery(
+                    guildId: HttpContext.GetGuildId(),
+                    operationId: binding.Id)
+                , cancellationToken));
+        }
+
+        /// <summary>
+        /// Get operation by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="queryProcessor"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet("/operations/{id}")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> GetOperation(
+            [FromRoute] Guid id,
+            [FromServices] IQueryProcessor queryProcessor,
+            CancellationToken cancellationToken)
+        {
+            return Ok(await queryProcessor.Process<GetOperationQuery, OperationView>(
+                new GetOperationQuery(
+                    guildId: HttpContext.GetGuildId(),
+                    operationId: id)
+                , cancellationToken));
         }
 
         [Authorize]
@@ -73,6 +101,7 @@ namespace Coffers.Public.WebApi.Controllers
             [FromServices] IOperationsRepository operationsRepository,
             [FromServices] DocumentSetter setter,
             [FromBody] AddOperationDocumentBinding binding,
+            [FromServices] IQueryProcessor queryProcessor,
             CancellationToken cancellationToken)
         {
             var operation = await operationsRepository.Get(id, cancellationToken);
@@ -101,7 +130,11 @@ namespace Coffers.Public.WebApi.Controllers
 
             await operationsRepository.Save(operation);
 
-            return Ok(operation);
+            return Ok(await queryProcessor.Process<GetOperationQuery, OperationView>(
+                new GetOperationQuery(
+                    guildId: HttpContext.GetGuildId(),
+                    operationId: id)
+                , cancellationToken));
         }
 
         /// <summary>

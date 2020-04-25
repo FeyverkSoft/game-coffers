@@ -1,7 +1,7 @@
 import React from "react";
-import { Lang, IOperationView, LangF, OperationType, DLang, IGamersListView } from '../_services';
+import { Lang, IOperationView, OperationType, DLang, IGamersListView } from '../_services';
 import { Table, Breadcrumb, PageHeader, DatePicker, Row, Col, Button, Tooltip } from 'antd';
-import { HomeOutlined, RedoOutlined } from '@ant-design/icons';
+import { HomeOutlined, RedoOutlined, EditFilled } from '@ant-design/icons';
 import { connect } from "react-redux";
 import { IStore, formatDateTime } from "../_helpers";
 import { operationsInstance, gamerInstance } from "../_actions";
@@ -14,6 +14,7 @@ import { IHolded, IDictionary } from "../core";
 import moment, { Moment } from "moment";
 import { AddOperationDialog } from "../_components/Operations/AddOperationDialog";
 import { Private } from "../_components/Private";
+import { EditOperationDialog } from "../_components/Operations/EditOperationDialog";
 
 interface IMainProps {
     isLoading: boolean;
@@ -28,6 +29,7 @@ interface ModalState {
 
 interface IState {
     addOperationModal: ModalState;
+    addEditOperationModal: ModalState & { operationId?: string };
     filter: string;
     date: Date,
     columns: ColumnProps<IOperationView>[];
@@ -38,6 +40,7 @@ export class _OperationsController extends React.Component<IMainProps, IState> {
         super(props);
         this.state = {
             addOperationModal: { show: false },
+            addEditOperationModal: { show: false },
             filter: '',
             date: new Date(),
             columns: [
@@ -46,6 +49,7 @@ export class _OperationsController extends React.Component<IMainProps, IState> {
                     dataIndex: 'createDate',
                     key: 'createDate',
                     defaultSortOrder: 'descend',
+                    width: 150,
                     sorter: (a: IOperationView, b: IOperationView) => {
                         return (Number(a.createDate) - Number(b.createDate));
                     },
@@ -87,6 +91,26 @@ export class _OperationsController extends React.Component<IMainProps, IState> {
                         return value;
                     }
                 },
+                {
+                    title: Lang('ACTIONS'),
+                    dataIndex: 'id',
+                    fixed: true,
+                    align: 'right',
+                    key: 'id',
+                    width: 50,
+                    render: (value: string, record: IOperationView, index: number) => {
+                        return <div >
+                            <Tooltip title={Lang('EDIT')}>
+                                <Button
+                                    disabled={record.documentId !== ''}
+                                    type="link"
+                                    icon={<EditFilled />}
+                                    onClick={() => this.toggleEditOperationDialog(record.id)}
+                                />
+                            </Tooltip>
+                        </div>;
+                    }
+                },
             ]
         }
     }
@@ -105,6 +129,10 @@ export class _OperationsController extends React.Component<IMainProps, IState> {
             this.setState({ date: value.toDate() }, this.loadData);
         }
     };
+
+    toggleEditOperationDialog = (operationId: string) => {
+        this.setState({ addEditOperationModal: { show: !this.state.addEditOperationModal.show, operationId } });
+    }
 
     getOperations = () => {
         const { date, filter } = this.state;
@@ -207,6 +235,14 @@ export class _OperationsController extends React.Component<IMainProps, IState> {
                     users={Object.keys(gamersList).map(
                         _ => gamersList[_]
                     )}
+                />
+                <EditOperationDialog
+                    onClose={this.toggleEditOperationDialog}
+                    visible={this.state.addEditOperationModal.show}
+                    users={Object.keys(gamersList).map(
+                        _ => gamersList[_]
+                    )}
+                    operation={this.getOperations().filter(_ => _.id === this.state.addEditOperationModal.operationId)[0] || {}}
                 />
             </Content>
         );

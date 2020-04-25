@@ -26,7 +26,7 @@ class _Private extends React.Component<_IPrivateProps> {
         if (!this.props.skipRoleTest && this.props.roles && this.props.roles.length > 0) {
             for (let i = 0; i < this.props.roles.length; i++) {
                 let role = this.props.roles[i].toLowerCase();
-                if (session.roles.filter(s => s.toLowerCase() === role).length > 0) {
+                if (session.roles && session.roles.filter(s => s.toLowerCase() === role).length > 0) {
                     return false;
                 }
             }

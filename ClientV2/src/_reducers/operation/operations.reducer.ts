@@ -10,7 +10,10 @@ export class IOperationsStore {
     documents: Array<IAvailableDocument> & IHolded = [];
 }
 
-export function operations(state: IOperationsStore = new IOperationsStore(), action: IAction<OperationActionsType>):
+export function operations(state: IOperationsStore = new IOperationsStore(), action: IAction<OperationActionsType> & {
+    operation: IOperationView;
+    operations: Array<IOperationView>;
+}):
     IOperationsStore {
     var clonedState = clonedeep(state);
     switch (action.type) {
@@ -31,9 +34,9 @@ export function operations(state: IOperationsStore = new IOperationsStore(), act
             return clonedState;
         }
 
-
         case OperationActionsType.SUCC_CREATE_OPERATION: {
-            clonedState.operations[formatDateTime(action.date, 'm')] = [...clonedState.operations[action.date] || [], action.operation];
+            let opData = formatDateTime(action.operation.createDate, 'm');
+            clonedState.operations[opData] = [...clonedState.operations[opData] || [], action.operation];
             clonedState.operations.holding = false;
             return clonedState;
         }
@@ -53,6 +56,27 @@ export function operations(state: IOperationsStore = new IOperationsStore(), act
             clonedState.documents.holding = false;
             return clonedState;
         }
+
+        case OperationActionsType.PROC_EDIT_OPERATION: {
+            clonedState.operations.holding = true;
+            return clonedState;
+        }
+
+        case OperationActionsType.SUCC_EDIT_OPERATION: {
+            let operations = clonedState.operations[formatDateTime(action.operation.createDate, 'm')];
+            operations.forEach(operation => {
+                if (operation.id === action.operation.id) {
+                    operation = action.operation;
+                }
+            });
+            clonedState.operations.holding = false;
+            return clonedState;
+        }
+        case OperationActionsType.FAILED_EDIT_OPERATION: {
+            clonedState.operations.holding = false;
+            return clonedState;
+        }
+
         default:
             return state
     }

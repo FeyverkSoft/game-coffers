@@ -1,4 +1,4 @@
-﻿import { createStore, applyMiddleware, Store } from 'redux';
+﻿import { createStore, applyMiddleware, Store, compose } from 'redux';
 import { rootReducer } from '../_reducers';
 import thunkMiddleware from 'redux-thunk';
 import { AlertState } from '../_reducers/alert/alert.reducer';
@@ -10,6 +10,12 @@ import { IProfileStore } from '../_reducers/profile/profile.reducer';
 import { SessionInfo } from '../_services';
 import { IOperationsStore } from '../_reducers/operation/operations.reducer';
 
+declare global {
+    interface Window {
+        __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
+    }
+}
+
 export interface IStore extends Dictionary<any> {
     alerts: AlertState;
     profile: IProfileStore;
@@ -18,14 +24,20 @@ export interface IStore extends Dictionary<any> {
     session: SessionInfo;
     operations: IOperationsStore;
 }
+
+const composeEnhancers =
+    typeof window === 'object' &&
+        window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
+        window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({} as any) : compose;
+
 let _store;
 if (process.env.NODE_ENV !== 'production') {
     _store = createStore<any, any, any, any>(
         rootReducer,
-        applyMiddleware(
+        composeEnhancers(applyMiddleware(
             thunkMiddleware,
-            logger
-        )
+            logger,
+        ))
     ) as Store<IStore, any>
 } else {
     _store = createStore<any, any, any, any>(

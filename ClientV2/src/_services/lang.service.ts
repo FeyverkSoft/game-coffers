@@ -156,6 +156,7 @@ const locString: any = {
         CHAR_IS_MAIN: 'Основа',
         PROFILE_CHARACTERS: 'Ваши персонажи',
         CHAR_ACTIONS: 'Действия',
+        ACTIONS: 'Действия',
         NEW_CHAR: 'Новый персонаж',
         DATE: 'Дата',
         OPERATIONS_PAGE: 'Список операций'

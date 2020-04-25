@@ -67,7 +67,7 @@ export class OperationView implements IOperationView {
     ) {
         this.id = id;
         this.amount = Number(amount);
-        this.documentId = String(documentId);
+        this.documentId = String(documentId || '');
         this.description = String(description || '');
         this.createDate = new Date(createDate);
         this.type = type as OperationType;
