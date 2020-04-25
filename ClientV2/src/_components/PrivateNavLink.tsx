@@ -24,7 +24,7 @@ export class PrivateNavLink extends React.Component<ILinkProps>{
         return (
             defIsHidden()
                 ? null
-                : <li><NavLink  {...this.props} /></li>
+                : <li><NavLink  {...this.props} exact/></li>
         )
     }
 }

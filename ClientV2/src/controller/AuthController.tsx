@@ -7,7 +7,7 @@ import style from './auth.module.scss';
 import { Content } from '../_components/Content/Content';
 import { Link } from 'react-router-dom';
 
-export class AuthController extends React.Component {
+export default class AuthController extends React.Component {
     render() {
         return (
             <Content>

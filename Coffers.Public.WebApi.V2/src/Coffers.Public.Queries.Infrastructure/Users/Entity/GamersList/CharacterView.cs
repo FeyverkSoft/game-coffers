@@ -14,6 +14,7 @@ from `Character`c
 where 1 = 1
 and c.UserId in @UserIds
 and c.Status in @Statuses
+order by c.IsMain desc 
 ";
         public Guid Id { get; }
         public Guid UserId { get; }

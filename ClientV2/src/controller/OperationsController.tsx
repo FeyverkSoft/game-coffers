@@ -94,12 +94,11 @@ export class _OperationsController extends React.Component<IMainProps, IState> {
                 {
                     title: Lang('ACTIONS'),
                     dataIndex: 'id',
-                    fixed: true,
-                    align: 'right',
-                    key: 'id',
+                    align: 'center',
+                    fixed: 'right',
                     width: 50,
                     render: (value: string, record: IOperationView, index: number) => {
-                        return <div >
+                        return <div>
                             <Tooltip title={Lang('EDIT')}>
                                 <Button
                                     disabled={record.documentId !== ''}
@@ -207,7 +206,7 @@ export class _OperationsController extends React.Component<IMainProps, IState> {
                         <Row gutter={[16, 16]}>
                             <Col xl={24}>
                                 {<Table
-                                    size='middle'
+                                    size='small'
                                     rowKey="id"
                                     columns={this.state.columns}
                                     pagination={false}
@@ -249,7 +248,7 @@ export class _OperationsController extends React.Component<IMainProps, IState> {
     }
 }
 
-const connectedOperationsController = connect<{}, {}, {}, IStore>(
+const OperationsController = connect<{}, {}, {}, IStore>(
     (state: IStore) => {
         const { operations } = state.operations;
         const { gamersList } = state.gamers;
@@ -268,4 +267,4 @@ const connectedOperationsController = connect<{}, {}, {}, IStore>(
         }
     })(_OperationsController);
 
-export { connectedOperationsController as OperationsController };
+export default OperationsController;

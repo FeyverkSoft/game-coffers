@@ -168,7 +168,7 @@ export class _ProfileController extends React.Component<IProfileProps, IState> {
     }
 }
 
-const connectedProfileController = connect<{}, {}, {}, IStore>(
+const ProfileController = connect<{}, {}, {}, IStore>(
     (state: IStore) => {
         const { profile, tax, characters } = state.profile;
         return { profile, tax, characters };
@@ -185,4 +185,4 @@ const connectedProfileController = connect<{}, {}, {}, IStore>(
         }
     })(_ProfileController);
 
-export { connectedProfileController as ProfileController };
+export default ProfileController;

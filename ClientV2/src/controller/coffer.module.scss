@@ -1,0 +1,48 @@
+@import "assets/_variables.scss"; // variables to override above
+
+.afk {
+    background-color: transparentize($successColor, 0.9);
+}
+
+.banned {
+    background-color: transparentize($importantColor, 0.8);
+}
+
+.active {
+}
+
+.left {
+    background-color: transparentize($black, 0.8);
+}
+
+.new {
+    background-color: transparentize($successColor, 0.8);
+}
+
+.officer {
+    button {
+        color: $errorColor;
+        font-weight: 400;
+    }
+}
+
+.leader {
+    button {
+        color: $importantColor;
+        font-weight: 500;
+    }
+}
+
+.veteran {
+    button {
+        color: $defaultColor;
+        font-weight: 400;
+    }
+}
+
+.beginner {
+    button {
+        color: 4successcolor;
+        font-weight: 200;
+    }
+}

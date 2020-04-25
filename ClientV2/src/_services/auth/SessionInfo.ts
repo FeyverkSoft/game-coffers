@@ -18,6 +18,6 @@ export class SessionInfo {
     }
 
     isActive(): boolean {
-        return this.sessionId !== undefined || this.sessionId !== null || this.sessionId !== '';
+        return this.sessionId !== undefined && this.sessionId !== null && this.sessionId !== '';
     }
 }

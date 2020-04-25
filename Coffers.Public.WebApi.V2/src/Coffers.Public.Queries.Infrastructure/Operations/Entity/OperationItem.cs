@@ -7,21 +7,21 @@ namespace Coffers.Public.Queries.Infrastructure.Operations.Entity
     {
         internal static readonly String Sql = @"
 select 
-    op.`Id`,
-    op.`Amount`,
-    op.`CreateDate`,
-    op.`Description`,
-    op.`Type`,
-    op.`DocumentId`,
+    op.`Id` as Id,
+    op.`Amount` as Amount,
+    op.`CreateDate` as CreateDate,
+    op.`Description` as Description,
+    op.`Type` as Type,
+    op.`DocumentId` as DocumentId,
     u.`Name` as UserName,
     u.`Id` as UserId,
     coalesce(l.`Description`, p.`Description`) as DocumentDescription,
     coalesce(l.`Amount`, p.`Amount`, t.`Amount`) as DocumentAmount    
-from operation op
-join user u on op.`UserId` = u.`Id`
-left join loan l on l.`Id` = op.`DocumentId`
-left join tax t on t.`Id` = op.`DocumentId`
-left join penalty p on p.`Id` = op.`DocumentId`
+from Operation op
+join User u on op.`UserId` = u.`Id`
+left join Loan l on l.`Id` = op.`DocumentId`
+left join Tax t on t.`Id` = op.`DocumentId`
+left join Penalty p on p.`Id` = op.`DocumentId`
 where 1 = 1
     AND u.GuildId = @GuildId
     AND op.Id = @OperationId

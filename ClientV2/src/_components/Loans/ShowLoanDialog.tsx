@@ -39,23 +39,23 @@ const showLoanDialog = ({ ...props }: ILoanDialogProps) => {
             }
             onCancel={() => props.onClose()}
         >
-            <Descriptions colon={true}>
-                <Descriptions.Item label={Lang("MODAL_LOAN_AMOUNT")} span={12}>
+            <Descriptions colon={true} column={1}>
+                <Descriptions.Item label={Lang("MODAL_LOAN_AMOUNT")} span={1}>
                     {String(loan.amount)}
                 </Descriptions.Item>
-                <Descriptions.Item label={Lang("MODAL_LOAN_BALANCE")} span={12}>
+                <Descriptions.Item label={Lang("MODAL_LOAN_BALANCE")} span={1}>
                     {String(loan.balance)}
                 </Descriptions.Item>
-                <Descriptions.Item label={Lang("MODAL_LOAN_DATE")} span={12}>
+                <Descriptions.Item label={Lang("MODAL_LOAN_DATE")} span={1}>
                     {formatDateTime(loan.createDate, 'd')}
                 </Descriptions.Item>
-                <Descriptions.Item label={Lang("MODAL_LOAN_EXPIREDDATE")} span={12}>
+                <Descriptions.Item label={Lang("MODAL_LOAN_EXPIREDDATE")} span={1}>
                     {formatDateTime(loan.expiredDate, 'd')}
                 </Descriptions.Item>
-                <Descriptions.Item label={Lang("MODAL_LOAN_DESCRIPTION")} span={12}>
+                <Descriptions.Item label={Lang("MODAL_LOAN_DESCRIPTION")} span={1}>
                     {loan.description}
                 </Descriptions.Item>
-                <Descriptions.Item label={Lang("MODAL_LOAN_STATUS")} span={12}>
+                <Descriptions.Item label={Lang("MODAL_LOAN_STATUS")} span={1}>
                     {DLang('LOAN_STATUS', loan.loanStatus)}
                 </Descriptions.Item>
             </Descriptions>

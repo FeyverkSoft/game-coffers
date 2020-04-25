@@ -7,6 +7,7 @@ using Coffers.Public.Queries.Guilds;
 using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Exceptions;
 using Coffers.Public.WebApi.Models.Guild;
+using Coffers.Types.Gamer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Query.Core;
@@ -70,14 +71,16 @@ namespace Coffers.Public.WebApi.Controllers
         /// This method update user roles
         /// </summary>
         /// <param name="binding"></param>
+        /// <param name="rank">Ранг игрока</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [Authorize]
         [PermissionRequired("officer", "leader")]
-        [HttpPatch("/Guilds/current/roles")]
+        [HttpPatch("/Guilds/current/roles/{rank}")]
         [ProducesResponseType(200)]
         public async Task<IActionResult> SetOrUpdateGuildTax(
             [FromBody] UpdateUserRoleBinding binding,
+            [FromRoute] GamerRank rank,
             [FromServices] IGuildRepository guildRepository,
             CancellationToken cancellationToken)
         {
@@ -86,7 +89,7 @@ namespace Coffers.Public.WebApi.Controllers
             if (guild == null)
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.GuildNotFound, "Guild not found");
 
-            guild.AddOrUpdateRole(binding.Rank, binding.Tariff.LoanTax, binding.Tariff.ExpiredLoanTax, binding.Tariff.Tax);
+            guild.AddOrUpdateRole(rank, binding.Tariff.LoanTax, binding.Tariff.ExpiredLoanTax, binding.Tariff.Tax);
 
             guildRepository.Save(guild);
 

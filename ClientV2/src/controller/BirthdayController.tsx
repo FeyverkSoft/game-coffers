@@ -167,7 +167,7 @@ const MemGamers = memoize(gamersList => {
         .sort((a, b) => a.count - b.count)
 }, it => JSON.stringify(it));
 
-const connectedLoginForm = connect<{}, {}, {}, IStore>(
+const BirthdayController = connect<{}, {}, {}, IStore>(
     (state: IStore) => {
         const date = formatDateTime(new Date(), 'm');
         const gamersList = state.gamers.gamersList[date] || {};
@@ -182,4 +182,4 @@ const connectedLoginForm = connect<{}, {}, {}, IStore>(
         }
     })(_BirthdayController);
 
-export { connectedLoginForm as BirthdayController };
+ export default BirthdayController;

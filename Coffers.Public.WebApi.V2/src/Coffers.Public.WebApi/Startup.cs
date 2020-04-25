@@ -215,6 +215,7 @@ namespace Coffers.Public.WebApi
             });
             app.UseHttpsRedirection();
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
+            app.UseAspNetCorePathBase();
 
             app.UseRouting();
 

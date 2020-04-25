@@ -17,10 +17,10 @@ select
     coalesce(up.`Amount`, 0.0) as ActivePenaltyAmount,
     coalesce(ul.`TaxAmount`, 0.0) as ActiveLoanTaxAmount,
     uc.`Name` as CharacterName
-from `user` u
+from `User` u
 left join (select 
                 sum(o.`Amount`) as Amount, 
-                o.UserId from `operation` o 
+                o.UserId from `Operation` o 
                 where 1 = 1 
                     and o.Type in ('Emission', 'Other') 
                 group by o.UserId 
@@ -28,7 +28,7 @@ left join (select
 left join (select 
                 count(c.Id) as CharCount, 
                 c.UserId  
-            from `character` c
+            from `Character` c
             where 1 = 1 
                 and c.`Status` = 'Active'
             group by c.UserId 
@@ -37,7 +37,7 @@ left join (select
                 sum(l.Amount) as Amount,
                 sum(l.TaxAmount) as TaxAmount,
                 l.UserId 
-            from `loan` l
+            from `Loan` l
             where 1 = 1 
                 and l.`LoanStatus` in ('Active', 'Expired')
             group by l.UserId
@@ -45,7 +45,7 @@ left join (select
 left join (select 
                 sum(p.Amount) as Amount,
                 p.UserId
-            from `penalty` p
+            from `Penalty` p
             where 1 = 1
                 and p.`PenaltyStatus` = 'Active'
             group by p.UserId
@@ -53,7 +53,7 @@ left join (select
 left join (select 
                 c.`Name`,
                 c.`UserId`
-            from   `character` c 
+            from   `Character` c 
             where 1 = 1
                 and c.`IsMain` = 1
                 and c.`Status` = 'Active'

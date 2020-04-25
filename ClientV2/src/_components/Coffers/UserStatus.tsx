@@ -4,6 +4,7 @@ import { Select, Button, Tooltip } from "antd"
 import { SaveFilled, CloseOutlined } from '@ant-design/icons';
 import { IF } from '../../_helpers';
 import { Lang } from '../../_services';
+import { Private } from '../Private';
 
 export interface IItem {
     value: string;
@@ -30,16 +31,18 @@ export const EditableSelect = ({ ...props }: EditableSelectProps) => {
                     props.items.map(t => <Select.Option key={t.value} value={t.value}>{t.description}</Select.Option>)
                 }
             </Select>
-            <Tooltip title={Lang('SAVE')}>
-                <Button
-                    type='link'
-                    onClick={() => {
-                        toggleEdited(false);
-                        props.onSave(selectedValue);
-                    }}
-                    icon={<SaveFilled />}
-                />
-            </Tooltip>
+            <Private roles={['admin', 'leader', 'officer']}>
+                <Tooltip title={Lang('SAVE')}>
+                    <Button
+                        type='link'
+                        onClick={() => {
+                            toggleEdited(false);
+                            props.onSave(selectedValue);
+                        }}
+                        icon={<SaveFilled />}
+                    />
+                </Tooltip>
+            </Private>
             <Tooltip title={Lang('CANCEL')}>
                 <Button
                     type='link'

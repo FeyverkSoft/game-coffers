@@ -1,8 +1,9 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Lang, IGamersListView, DLang, LangF, IGuild, GuildBalanceReport, GamerRankList, GamerRank, GamerStatus, GamerStatusList } from '../_services';
 import { Table, Breadcrumb, Row, Col, DatePicker, Layout, Tooltip, Button, Descriptions } from 'antd';
+import style from './coffer.module.scss';
 import { HomeOutlined, RedoOutlined } from '@ant-design/icons';
-import { connect } from "react-redux";
 import { IStore, formatDateTime } from "../_helpers";
 import { gamerInstance, guildInstance } from "../_actions";
 import { ColumnProps } from "antd/lib/table";
@@ -73,26 +74,30 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                     dataIndex: 'name',
                     key: 'name',
                     sorter: (a: IGamersListView, b: IGamersListView) => {
-
                         return a.name === b.name ? 0 : (a.name > b.name ? 1 : -1);
                     },
                     render: (value: string, record: IGamersListView) => {
-                        return <div>
-                            <Col style={{
-                                fontWeight: 500,
-                                padding: '.25rem .5rem',
-                            }}>
-                                {LangF('USER_CHAR_LIST', value)}
-                            </Col>
-                            <Col>
-                                <Characters
-                                    userId={record.id}
-                                    characters={record.characters}
-                                    onDeleteChar={this.onDeleteChar}
-                                    toggleAddCharModal={this.toggleAddCharModal}
-                                />
-                            </Col>
-                        </div>
+                        return {
+                            props: {
+                                className: style[record.status.toLocaleLowerCase()]
+                            },
+                            children: <div>
+                                <Col style={{
+                                    fontWeight: 500,
+                                    padding: '.25rem .5rem',
+                                }}>
+                                    {LangF('USER_CHAR_LIST', value)}
+                                </Col>
+                                <Col>
+                                    <Characters
+                                        userId={record.id}
+                                        characters={record.characters}
+                                        onDeleteChar={this.onDeleteChar}
+                                        toggleAddCharModal={this.toggleAddCharModal}
+                                    />
+                                </Col>
+                            </div>
+                        }
                     }
                 },
                 {
@@ -104,13 +109,18 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                         return a.status === b.status ? 0 : (a.status > b.status ? 1 : -1);
                     },
                     render: (value: string, record: IGamersListView) => {
-                        return this.state.isCurrentDate ? <EditableSelect
-                            value={value}
-                            items={GamerStatusList.map((_): IItem => {
-                                return { value: _, description: DLang('USER_STATUS', _) }
-                            })}
-                            onSave={(value: string) => this.props.setUserStatus(record.id, value)}
-                        /> : value
+                        return {
+                            props: {
+                                className: style[record.status.toLocaleLowerCase()]
+                            },
+                            children: this.state.isCurrentDate ? <EditableSelect
+                                value={value}
+                                items={GamerStatusList.map((_): IItem => {
+                                    return { value: _, description: DLang('USER_STATUS', _) }
+                                })}
+                                onSave={(value: string) => this.props.setUserStatus(record.id, value)}
+                            /> : value
+                        }
                     }
                 },
                 {
@@ -122,13 +132,18 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                         return a.rank === b.rank ? 0 : (a.rank > b.rank ? 1 : -1);
                     },
                     render: (value: string, record: IGamersListView) => {
-                        return this.state.isCurrentDate ? <EditableSelect
-                            value={value}
-                            items={GamerRankList.map((_): IItem => {
-                                return { value: _, description: DLang('USER_RANK', _) }
-                            })}
-                            onSave={(value: string) => this.props.setUserRank(record.id, value)}
-                        /> : value
+                        return {
+                            props: {
+                                className: `${style[record.status.toLocaleLowerCase()]} ${style[record.rank.toLocaleLowerCase()]}`
+                            },
+                            children: this.state.isCurrentDate ? <EditableSelect
+                                value={value}
+                                items={GamerRankList.map((_): IItem => {
+                                    return { value: _, description: DLang('USER_RANK', _) }
+                                })}
+                                onSave={(value: string) => this.props.setUserRank(record.id, value)}
+                            /> : value
+                        }
                     }
                 },
                 {
@@ -139,12 +154,17 @@ export class _CofferController extends React.Component<IMainProps, IState> {
 
                         return a.balance - b.balance;
                     },
-                    render: (value: number) => {
-                        return <div
-                            style={{ color: value > 0 ? 'green' : 'red' }}
-                        >
-                            {value}
-                        </div>;
+                    render: (value: number, record: IGamersListView) => {
+                        return {
+                            props: {
+                                className: style[record.status.toLocaleLowerCase()]
+                            },
+                            children: <div
+                                style={{ color: value > 0 ? 'green' : 'red' }}
+                            >
+                                {value}
+                            </div>
+                        };
                     }
                 },
                 {
@@ -152,12 +172,17 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                     dataIndex: 'loans',
                     key: 'loans',
                     render: (value: number, record: IGamersListView) => {
-                        return <Loans
-                            loans={record.loans}
-                            userId={record.id}
-                            onAddLoan={this.toggleAddLoanModal}
-                            onLoanShow={this.toggleShowLoanDialog}
-                        />
+                        return {
+                            props: {
+                                className: style[record.status.toLocaleLowerCase()]
+                            },
+                            children: <Loans
+                                loans={record.loans}
+                                userId={record.id}
+                                onAddLoan={this.toggleAddLoanModal}
+                                onLoanShow={this.toggleShowLoanDialog}
+                            />
+                        }
                     }
                 },
                 {
@@ -165,11 +190,16 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                     dataIndex: 'penalties',
                     key: 'penalties',
                     render: (value: number, record: IGamersListView) => {
-                        return <Penalties
-                            penalties={record.penalties}
-                            userId={record.id}
-                            onAddLoan={this.toggleAddPenaltyModal}
-                        />
+                        return {
+                            props: {
+                                className: style[record.status.toLocaleLowerCase()]
+                            },
+                            children: <Penalties
+                                penalties={record.penalties}
+                                userId={record.id}
+                                onAddLoan={this.toggleAddPenaltyModal}
+                            />
+                        }
                     }
                 },
             ]
@@ -273,14 +303,14 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                                 size='small'
                                 loading={guild.holding}
                             >
-                                <Descriptions size='small'>
-                                    <Descriptions.Item label={Lang("MAIN_PAGE_CHARACTERS_COUNT")} span={12}>
+                                <Descriptions size='small' key={guild.id} column={1}>
+                                    <Descriptions.Item label={Lang("MAIN_PAGE_CHARACTERS_COUNT")} span={1} key={guild.charactersCount}>
                                         {String(guild.charactersCount)}
                                     </Descriptions.Item>
-                                    <Descriptions.Item label={Lang("MAIN_PAGE_GAMERS_COUNT")} span={12}>
+                                    <Descriptions.Item label={Lang("MAIN_PAGE_GAMERS_COUNT")} span={1} key={guild.gamersCount}>
                                         {String(guild.gamersCount)}
                                     </Descriptions.Item>
-                                    <Descriptions.Item label={Lang("MAIN_RECRUITMENTSTATUS")} span={12}>
+                                    <Descriptions.Item label={Lang("MAIN_RECRUITMENTSTATUS")} span={1} key={guild.recruitmentStatus}>
                                         {DLang('RECRUITMENTSTATUS', guild.recruitmentStatus)}
                                     </Descriptions.Item>
                                 </Descriptions>
@@ -292,14 +322,14 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                                 size='small'
                                 loading={balanceReport.holding}
                             >
-                                <Descriptions size='small'>
-                                    <Descriptions.Item label={Lang("MAIN_PAGE_GUILD_BALANCE")} span={12}>
-                                        {LangF("MAIN_PAGE_GUILD_B_F", balanceReport.balance, balanceReport.gamersBalance, balanceReport.balance + balanceReport.gamersBalance)}
+                                <Descriptions size='small' column={1}>
+                                    <Descriptions.Item label={Lang("MAIN_PAGE_GUILD_BALANCE")} span={1} key={balanceReport.balance}>
+                                        {LangF("MAIN_PAGE_GUILD_B_F", balanceReport.balance, balanceReport.gamersBalance, balanceReport.balance - balanceReport.gamersBalance)}
                                     </Descriptions.Item>
-                                    <Descriptions.Item label={Lang("MAIN_PAGE_GUILD_LOANS")} span={12}>
+                                    <Descriptions.Item label={Lang("MAIN_PAGE_GUILD_LOANS")} span={1} key={balanceReport.activeLoansAmount}>
                                         {LangF("MAIN_PAGE_GUILD_LOANS_FORMAT", balanceReport.activeLoansAmount, balanceReport.repaymentLoansAmount)}
                                     </Descriptions.Item>
-                                    <Descriptions.Item label={Lang("MAIN_PAGE_EXPECTED_TAX")} span={12}>
+                                    <Descriptions.Item label={Lang("MAIN_PAGE_EXPECTED_TAX")} span={1} key={balanceReport.taxAmount}>
                                         {LangF("MAIN_PAGE_EXPECTED_TAX_FORMAT", balanceReport.taxAmount, balanceReport.expectedTaxAmount)}
                                     </Descriptions.Item>
                                 </Descriptions>
@@ -399,7 +429,7 @@ export class _CofferController extends React.Component<IMainProps, IState> {
     }
 }
 
-const connectedCofferController = connect<{}, {}, {}, IStore>(
+const CofferController = connect<{}, {}, {}, IStore>(
     (state: IStore) => {
         const gamersList = state.gamers.gamersList;
         return {
@@ -429,4 +459,4 @@ const connectedCofferController = connect<{}, {}, {}, IStore>(
         }
     })(_CofferController);
 
-export { connectedCofferController as CofferController };
+export default CofferController;

@@ -47,7 +47,11 @@ export const ProfileCharList = ({ ...props }: ICharList) => {
             title: Lang('CHAR_IS_MAIN'),
             dataIndex: 'isMain',
             key: 'isMain',
+            defaultSortOrder: 'ascend',
             width: 80,
+            sorter: (a: any, b: any) => {
+                return a ? 1 : 0;
+            },
             render: (isMain: boolean, record: ICharacter & IHolded) => {
                 return {
                     children: <Switch

@@ -7,11 +7,6 @@ namespace Coffers.Public.WebApi.Models.Guild
     public class UpdateUserRoleBinding
     {
         /// <summary>
-        /// Ранг игрока
-        /// </summary>
-        public GamerRank Rank { get; set; }
-
-        /// <summary>
         /// Тариф для игрока с этим рангом
         /// </summary>
         public TariffBinding Tariff { get; set; }
