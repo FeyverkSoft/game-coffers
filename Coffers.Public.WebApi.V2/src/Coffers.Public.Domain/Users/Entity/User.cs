@@ -16,7 +16,9 @@ namespace Coffers.Public.Domain.Users
         /// <summary>
         /// Дата обновления записи
         /// </summary>
-        public DateTime UpdateDate { get; private set; }
+        public DateTime UpdateDate { get; private set; } = DateTime.UtcNow;
+        
+        public DateTime? DeletedDate { get; private set; }
 
         /// <summary>
         /// Имя игрока
@@ -111,6 +113,12 @@ namespace Coffers.Public.Domain.Users
             Status = status;
             ConcurrencyTokens = Guid.NewGuid();
             UpdateDate = DateTime.UtcNow;
+
+            if (status == GamerStatus.Banned ||
+                status == GamerStatus.Left)
+                DeletedDate = DateTime.UtcNow;
+            else
+                DeletedDate = null;
         }
     }
 }

@@ -47,6 +47,8 @@ namespace Coffers.Public.Infrastructure.Users
                     .IsRequired();
                 b.Property(g => g.UpdateDate)
                     .IsRequired();
+                b.Property(g => g.DeletedDate)
+                    .IsRequired(false);
 
                 b.Property(o => o.ConcurrencyTokens)
                     .IsConcurrencyToken()
