@@ -45,6 +45,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Asp.SwaggerCore\Asp.Core.csproj" />
     <ProjectReference Include="..\..\Query.Core\Query.Core.csproj" />
     <ProjectReference Include="..\Coffers.DB.Migration\Coffers.DB.Migrations.csproj" />
     <ProjectReference Include="..\Coffers.Helpers\Coffers.Helpers.csproj" />

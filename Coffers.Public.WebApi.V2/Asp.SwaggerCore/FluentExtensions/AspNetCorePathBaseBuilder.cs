@@ -1,7 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Builder;
 
-namespace Coffers.Public.WebApi.Middlewares
+namespace Asp.Core.FluentExtensions
 {
     public static class AspNetCorePathBaseApplicationBuilderExtensions
     {

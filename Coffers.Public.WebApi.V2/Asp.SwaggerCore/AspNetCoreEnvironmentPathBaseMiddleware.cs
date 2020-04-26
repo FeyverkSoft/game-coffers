@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace Coffers.Public.WebApi.Middlewares
+namespace Asp.Core
 {
     internal sealed class AspNetCoreEnvironmentPathBaseMiddleware
     {

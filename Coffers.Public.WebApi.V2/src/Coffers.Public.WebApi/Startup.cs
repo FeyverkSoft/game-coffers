@@ -2,6 +2,7 @@ using System;
 using System.Data;
 using System.Net;
 using System.Text.Json.Serialization;
+using Asp.Core.FluentExtensions;
 using Coffers.DB.Migrations;
 using Coffers.Public.Queries.Infrastructure.Guilds;
 using Coffers.Public.Queries.Infrastructure.Loans;
