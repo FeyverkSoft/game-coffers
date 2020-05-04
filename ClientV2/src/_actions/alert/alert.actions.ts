@@ -1,6 +1,6 @@
-import { AlertActionsType } from "..";
 import { Alert } from "../../_services";
 import { notification } from 'antd';
+import { AlertActionsType } from "..";
 
 export class AlertActions {
     /**
@@ -11,7 +11,7 @@ export class AlertActions {
         notification.success({
             message: String(message)
         });
-        return { type: AlertActionsType.SUCCESS, alert: new Alert(String(message), 'alert-success') };
+        return AlertActionsType.SUCCESS(new Alert(String(message), 'alert-success'));
     }
     /**
      * Запушить сообщение об ошибке
@@ -21,13 +21,13 @@ export class AlertActions {
         notification.error({
             message: String(message)
         });
-        return { type: AlertActionsType.ERROR, alert: new Alert(String(message), 'alert-error') };
+        return AlertActionsType.ERROR(new Alert(String(message), 'alert-error'));
     }
     /**
      * Очистить пуш список
      */
     clear(): any {
-        return { type: AlertActionsType.CLEAR };
+        return AlertActionsType.CLEAR();
     }
     /**
      * Запушить информационное сообщение
@@ -37,14 +37,14 @@ export class AlertActions {
         notification.info({
             message: String(message)
         });
-        return { type: AlertActionsType.INFO, alert: new Alert(String(message), 'alert-info') };
+        return AlertActionsType.INFO(new Alert(String(message), 'alert-info'));
     }
     /**
      * Удалить сообщение из пуша по его id
      * @param {*} id id сообщения для удаления
      */
     delete(id: string): any {
-        return { type: AlertActionsType.DELETE, id };
+        return AlertActionsType.DELETE(id);
     }
 
 }

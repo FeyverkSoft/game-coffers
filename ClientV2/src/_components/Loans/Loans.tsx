@@ -49,7 +49,7 @@ export const Loan = React.memo(({ ...props }: ILoanProps) => {
             className={`${style['loan']} ${style[loan.loanStatus.toLowerCase()]}`}
             title={`${formatDateTime(loan.expiredDate, 'd')} ${loan.description}`}
         >
-            {loan.amount}
+            <span>{loan.amount}</span>
         </Tooltip>
     </div>
 });

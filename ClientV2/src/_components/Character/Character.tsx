@@ -43,7 +43,7 @@ export const Character = React.memo(({ ...props }: ICharacterProps) => {
         <Tooltip
             className={`${style['char_name']} ${props.character.isMain ? style['main'] : ''}`}
             title={props.character.className}>
-            {props.character.name}
+            <span>{props.character.name}</span>
         </Tooltip>
         <Private roles={['admin', 'leader', 'officer']}>
             <Tooltip title={Lang('DELETE_CHAR')}>

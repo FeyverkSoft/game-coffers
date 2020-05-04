@@ -28,7 +28,7 @@ const showLoanDialog = ({ ...props }: ILoanDialogProps) => {
                 <Private roles={['admin', 'leader', 'officer']}>
                     <IF value={loan.loanStatus === 'Active'}>
                         <Button
-                            type='danger'
+                            danger={true}
                             onClick={() => props.onCancel(loan.id)}
                             loading={loan.holding}
                         >

@@ -24,7 +24,7 @@ export const Penalties = ({ ...props }: IPenalties) => <div className={style['pe
         <Tooltip title={Lang('NEW_PENALTY_MODAL')}>
             <Button
                 type="link"
-                className={style['add']} 
+                className={style['add']}
                 icon={<PlusCircleFilled />}
                 onClick={() => props.onAddLoan(props.userId)}
             />
@@ -44,7 +44,7 @@ export const Loan = React.memo(({ ...props }: IPenalyProps) => {
             title={`${formatDateTime(penaly.createDate, 'd')} ${penaly.description}`}
         // onClick={() => props.showLoanInfo(loan.id, loan.userId)}
         >
-            {penaly.amount}
+            <span>{penaly.amount}</span>
         </Tooltip>
     </div>
 });

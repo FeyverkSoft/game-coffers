@@ -1,6 +1,6 @@
-import { gamerService, GamerInfo, IGamersListView, GamerStatus, GamerRank, ILoanView, IPenaltyView } from '../../_services';
+import { gamerService, GamerStatus, GamerRank } from '../../_services';
 import { GamerActionsType } from './GamerActionsType';
-import { alertInstance, ICallback } from '..';
+import { alertInstance } from '..';
 
 
 export class GamerActions {
@@ -9,23 +9,18 @@ export class GamerActions {
      */
     addCharacter(props: { userId: string, characterId: string, name: string, className: string, isMain: boolean }): Function {
         return (dispatch: Function) => {
-            dispatch(request(props.userId));
+            dispatch(GamerActionsType.PROC_ADD_NEW_CHARS(props.userId));
             gamerService.addNewChar(props.userId, props.characterId, props.name, props.className, props.isMain)
                 .then(
                     data => {
-                        dispatch(success(props.userId, props.characterId, props.name, props.className, props.isMain));
+                        dispatch(GamerActionsType.SUCC_ADD_NEW_CHARS(props.userId, props.characterId, props.name, props.className, props.isMain));
                     })
                 .catch(
                     ex => {
-                        dispatch(failure(props.userId));
+                        dispatch(GamerActionsType.PROC_ADD_NEW_CHARS(props.userId));
                         dispatch(alertInstance.error(ex));
                     });
         }
-        function request(userId: string) { return { type: GamerActionsType.PROC_ADD_NEW_CHARS, userId } }
-        function success(userId: string, characterId: string, name: string, className: string, isMain: boolean) {
-            return { type: GamerActionsType.SUCC_ADD_NEW_CHARS, userId, name, className, characterId, isMain }
-        }
-        function failure(userId: string) { return { type: GamerActionsType.FAILED_ADD_NEW_CHARS, userId } }
     }
 
     /**
@@ -33,21 +28,18 @@ export class GamerActions {
      */
     deleteCharacter(props: { userId: string, characterId: string }): any {
         return (dispatch: Function) => {
-            dispatch(request(props.userId));
+            dispatch(GamerActionsType.PROC_DELETE_CHARS(props.userId));
             gamerService.DeleteChar(props.userId, props.characterId)
                 .then(
                     data => {
-                        dispatch(success(props.userId, props.characterId));
+                        dispatch(GamerActionsType.SUCC_DELETE_CHARS(props.userId, props.characterId));
                     })
                 .catch(
                     ex => {
-                        dispatch(failure(props.userId));
+                        dispatch(GamerActionsType.FAILED_DELETE_CHARS(props.userId));
                         dispatch(alertInstance.error(ex));
                     });
         }
-        function request(userId: string) { return { type: GamerActionsType.PROC_DELETE_CHARS, userId } }
-        function success(userId: string, characterId: string) { return { type: GamerActionsType.SUCC_DELETE_CHARS, userId, characterId } }
-        function failure(userId: string) { return { type: GamerActionsType.FAILED_DELETE_CHARS, userId } }
     }
 
     /**
@@ -55,21 +47,18 @@ export class GamerActions {
      */
     getGamers(filter: { dateMonth: Date; gamerStatuses?: Array<GamerStatus> }): Function {
         return (dispatch: Function) => {
-            dispatch(request(filter.dateMonth));
+            dispatch(GamerActionsType.PROC_GET_GUILD_GAMERS(filter.dateMonth));
             gamerService.GetGamers(filter.dateMonth, filter.gamerStatuses)
                 .then(
                     data => {
-                        dispatch(success(data, filter.dateMonth));
+                        dispatch(GamerActionsType.SUCC_GET_GUILD_GAMERS(filter.dateMonth, data));
                     })
                 .catch(
                     ex => {
-                        dispatch(failure(filter.dateMonth));
+                        dispatch(GamerActionsType.FAILED_GET_GUILD_GAMERS(filter.dateMonth));
                         dispatch(alertInstance.error(ex));
                     });
         }
-        function request(date: Date) { return { type: GamerActionsType.PROC_GET_GUILD_GAMERS, date } }
-        function success(gamersList: Array<IGamersListView>, date: Date) { return { type: GamerActionsType.SUCC_GET_GUILD_GAMERS, gamersList, date } }
-        function failure(date: Date) { return { type: GamerActionsType.FAILED_GET_GUILD_GAMERS, date } }
     }
 
     /**
@@ -97,21 +86,18 @@ export class GamerActions {
      */
     setStatus(props: { userId: string; status: GamerStatus; }): Function {
         return (dispatch: Function) => {
-            dispatch(request(props.userId));
+            dispatch(GamerActionsType.PROC_SET_GAMER_STATUS(props.userId));
             gamerService.setStatus(props.userId, props.status)
                 .then(
                     data => {
-                        dispatch(success(props.userId, props.status));
+                        dispatch(GamerActionsType.SUCC_SET_GAMER_STATUS(props.userId, props.status));
                     })
                 .catch(
                     ex => {
-                        dispatch(failure(props.userId));
+                        dispatch(GamerActionsType.FAILED_SET_GAMER_STATUS(props.userId));
                         dispatch(alertInstance.error(ex));
                     });
         }
-        function request(userId: string) { return { type: GamerActionsType.PROC_SET_GAMER_STATUS, userId } }
-        function success(userId: string, status: GamerStatus) { return { type: GamerActionsType.SUCC_SET_GAMER_STATUS, userId, status } }
-        function failure(userId: string) { return { type: GamerActionsType.FAILED_SET_GAMER_STATUS, userId } }
     }
 
     /**
@@ -119,22 +105,19 @@ export class GamerActions {
      */
     setRank(props: { userId: string; rank: GamerRank; }): Function {
         return (dispatch: Function) => {
-            dispatch(request(props.userId));
+            dispatch(GamerActionsType.PROC_SET_GAMER_RANK(props.userId));
             gamerService.setRank(props.userId, props.rank)
                 .then(
                     data => {
-                        dispatch(success(props.userId, props.rank));
+                        dispatch(GamerActionsType.SUCC_SET_GAMER_RANK(props.userId, props.rank));
                         dispatch(gamerInstance.getGamers({ dateMonth: new Date() }));
                     })
                 .catch(
                     ex => {
+                        dispatch(GamerActionsType.FAILED_SET_GAMER_RANK(props.userId));
                         dispatch(alertInstance.error(ex));
-                        dispatch(failure(props.userId));
                     });
         }
-        function request(userId: string) { return { type: GamerActionsType.PROC_SET_GAMER_RANK, userId } }
-        function success(userId: string, rank: GamerRank) { return { type: GamerActionsType.SUCC_SET_GAMER_RANK, userId, rank } }
-        function failure(userId: string) { return { type: GamerActionsType.FAILED_SET_GAMER_RANK, userId } }
     }
 
     /**
@@ -142,11 +125,11 @@ export class GamerActions {
      */
     addLoan(loan: { userId: string; loanId: string, description: string, amount: number }): Function {
         return (dispatch: Function) => {
-            dispatch(request(loan.userId));
+            dispatch(GamerActionsType.PROC_ADD_GAMER_LOAN(loan.userId));
             gamerService.addLoan(loan.userId, loan.loanId, loan.amount, loan.description)
                 .then(
                     data => {
-                        dispatch(success(loan.userId, {
+                        dispatch(GamerActionsType.SUCC_ADD_GAMER_LOAN(loan.userId, {
                             id: String(data.id),
                             amount: Number(data.amount),
                             balance: Number(data.balance),
@@ -158,13 +141,10 @@ export class GamerActions {
                     })
                 .catch(
                     ex => {
-                        dispatch(failure(loan.userId));
+                        dispatch(GamerActionsType.FAILED_ADD_GAMER_LOAN(loan.userId));
                         dispatch(alertInstance.error(ex));
                     });
         }
-        function request(userId: string) { return { type: GamerActionsType.PROC_ADD_GAMER_LOAN, userId } }
-        function success(userId: string, loan: ILoanView) { return { type: GamerActionsType.SUCC_ADD_GAMER_LOAN, userId, loan } }
-        function failure(userId: string) { return { type: GamerActionsType.FAILED_ADD_GAMER_LOAN, userId } }
     }
 
     /**
@@ -172,11 +152,11 @@ export class GamerActions {
      */
     addPenalty(penalty: { userId: string; penaltyId: string, description: string, amount: number }): Function {
         return (dispatch: Function) => {
-            dispatch(request(penalty.userId));
+            dispatch(GamerActionsType.PROC_ADD_GAMER_PENALTY(penalty.userId));
             gamerService.addPenalty(penalty.userId, penalty.penaltyId, penalty.amount, penalty.description)
                 .then(
                     data => {
-                        dispatch(success(penalty.userId, {
+                        dispatch(GamerActionsType.SUCC_ADD_GAMER_PENALTY(penalty.userId, {
                             id: data.id,
                             createDate: data.createDate,
                             amount: data.amount,
@@ -186,13 +166,10 @@ export class GamerActions {
                     })
                 .catch(
                     ex => {
-                        dispatch(failure(penalty.userId));
+                        dispatch(GamerActionsType.FAILED_ADD_GAMER_PENALTY(penalty.userId));
                         dispatch(alertInstance.error(ex));
                     });
         }
-        function request(userId: string) { return { type: GamerActionsType.PROC_ADD_GAMER_PENALTY, userId } }
-        function success(userId: string, penalty: IPenaltyView) { return { type: GamerActionsType.SUCC_ADD_GAMER_PENALTY, userId, penalty } }
-        function failure(userId: string) { return { type: GamerActionsType.FAILED_ADD_GAMER_PENALTY, userId } }
     }
 
     /**
@@ -200,21 +177,18 @@ export class GamerActions {
      */
     cancelLoan(props: { loanId: string }): Function {
         return (dispatch: Function) => {
-            dispatch(request(props.loanId));
+            dispatch(GamerActionsType.PROC_CANCEL_GAMER_LOAN(props.loanId));
             gamerService.cancelLoan(props.loanId)
                 .then(
                     data => {
-                        dispatch(success(props.loanId));
+                        dispatch(GamerActionsType.SUCC_CANCEL_GAMER_LOAN(props.loanId));
                     })
                 .catch(
                     ex => {
-                        dispatch(failure(props.loanId));
+                        dispatch(GamerActionsType.FAILED_CANCEL_GAMER_LOAN(props.loanId));
                         dispatch(alertInstance.error(ex));
                     });
         }
-        function request(loanId: string) { return { type: GamerActionsType.PROC_CANCEL_GAMER_LOAN, loanId } }
-        function success(loanId: string) { return { type: GamerActionsType.SUCC_CANCEL_GAMER_LOAN, loanId } }
-        function failure(loanId: string) { return { type: GamerActionsType.FAILED_CANCEL_GAMER_LOAN, loanId } }
     }
 
 
