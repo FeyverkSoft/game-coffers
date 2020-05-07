@@ -20,7 +20,8 @@ namespace Coffers.Public.Domain.Loans
                 return;
 
             var operations = await _operationRepository.Get(loan.Id, cancellationToken);
-            var loanAmount = loan.Amount + loan.TaxAmount + loan.PenaltyAmount;
+            // не суммируем Amount так как операция взятия займа даёт -Amount а операция выплаты даст нам Amount в итоге 0
+            var loanAmount = loan.TaxAmount + loan.PenaltyAmount;
 
             if (operations.Sum(_ => _.Amount) >= loanAmount)
                 loan.MakePaid();

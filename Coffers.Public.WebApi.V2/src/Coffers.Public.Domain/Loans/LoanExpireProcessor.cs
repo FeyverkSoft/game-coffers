@@ -24,7 +24,7 @@ namespace Coffers.Public.Domain.Loans
                 return;
 
             var operations = await _operationRepository.Get(loan.Id, cancellationToken);
-            var loanAmount = loan.Amount + loan.TaxAmount + loan.PenaltyAmount;
+            var loanAmount = loan.TaxAmount + loan.PenaltyAmount;
 
             if (operations.Sum(_ => _.Amount) >= loanAmount)
                 return;
