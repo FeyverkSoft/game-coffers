@@ -89,11 +89,15 @@ class addOperationDialog extends React.Component<IAddOperationDialog, ISate> {
                         label={Lang('OPERATION_TOUSERID')}
                     >
                         <Select
+                            showSearch
                             placeholder={Lang('OPERATION_TOUSERID')}
                             loading={isDocLoading}
+                            filterOption={(input: string, option) => {
+                                return option ? option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 : false
+                            }}
                         >
                             {
-                                users.map(t => <Select.Option key={t.id} value={t.id}>{`${t.name}`}</Select.Option>)
+                                users.map(t => <Select.Option key={t.id} value={t.id}>{`${t.name} - ${t.getMainCharacter().name}`}</Select.Option>)
                             }
                         </Select>
                     </Form.Item>

@@ -14,6 +14,9 @@ export interface IGamersListView {
     characters: Dictionary<ICharacter>;
     penalties: Dictionary<IPenaltyView>;
     loans: Dictionary<ILoanView>;
+    mainCharacterId: string;
+
+    getMainCharacter(): ICharacter;
 }
 
 export interface ICharacter {
@@ -52,6 +55,7 @@ export class GamersListView implements IGamersListView {
     status: GamerStatus;
     dateOfBirth: Date;
     name: string;
+    mainCharacterId: string = '';
 
     constructor(id: string,
         characters: Array<ICharacter>,
@@ -80,6 +84,8 @@ export class GamersListView implements IGamersListView {
                 isMain: Boolean(char.isMain),
                 id: String(char.id)
             };
+            if (char.isMain)
+                this.mainCharacterId = char.id;
         });
         penalties.forEach(penalty => {
             this.penalties[penalty.id] = {
@@ -101,5 +107,9 @@ export class GamersListView implements IGamersListView {
                 loanStatus: loan.loanStatus as LoanStatus
             };
         });
+    }
+
+    getMainCharacter(): ICharacter {
+        return this.characters[this.mainCharacterId] || this.characters[Object.keys(this.characters)[0]] || {};
     }
 }
