@@ -1,5 +1,5 @@
-import { GuildActionsType } from "../../_actions";
-import { IAction, IHolded } from "../../core";
+import { GuildActionsTypes } from "../../_actions";
+import { IHolded } from "../../core";
 import { IGuild, GuildBalanceReport, ITariff } from "../../_services";
 import clonedeep from 'lodash.clonedeep';
 
@@ -48,49 +48,48 @@ export class IGuildStore {
     }
 }
 
-export function guild(state: IGuildStore = new IGuildStore(), action: IAction<GuildActionsType>):
+export function guild(state: IGuildStore = new IGuildStore(), action: GuildActionsTypes):
     IGuildStore {
     var clonedState = clonedeep(state);
     switch (action.type) {
-        case GuildActionsType.PROC_GET_GUILD:
+        case 'PROC_GET_GUILD':
             clonedState.guild.holding = true;
             return clonedState;
 
-        case GuildActionsType.SUCC_GET_GUILD:
+        case 'SUCC_GET_GUILD':
             clonedState.guild.holding = false;
             clonedState.guild = { ...clonedState.guild, ...action.guildInfo };
-            clonedState.tariffs = action.guildInfo.tariffs;
+            //clonedState.tariffs = action.guildInfo.tariffs;
             return clonedState;
 
-        case GuildActionsType.FAILED_GET_GUILD:
+        case 'FAILED_GET_GUILD':
             clonedState.guild.holding = false;
             return clonedState;
 
 
-
-        case GuildActionsType.PROC_GET_BALANCE_REPORT:
+        case 'PROC_GET_BALANCE_REPORT':
             clonedState.reports.balanceReport.holding = true;
             return clonedState;
 
-        case GuildActionsType.SUCC_GET_BALANCE_REPORT:
-            clonedState.reports.balanceReport = { ...clonedState.reports.balanceReport, holding: false, ...action.BalanceInfo };
+        case 'SUCC_GET_BALANCE_REPORT':
+            clonedState.reports.balanceReport = { ...clonedState.reports.balanceReport, holding: false, ...action.balanceInfo };
             return clonedState;
 
-        case GuildActionsType.FAILED_GET_BALANCE_REPORT:
+        case 'FAILED_GET_BALANCE_REPORT':
             clonedState.reports.balanceReport.holding = false;
             return clonedState;
 
 
 
-        case GuildActionsType.PROC_GET_TARIFFS:
+        case 'PROC_GET_TARIFFS':
             clonedState.tariffs.holding = true;
             return clonedState;
 
-        case GuildActionsType.SUCC_GET_TARIFFS:
+        case 'SUCC_GET_TARIFFS':
             clonedState.tariffs = action.tariffs;
             return clonedState;
 
-        case GuildActionsType.FAILED_GET_TARIFFS:
+        case 'FAILED_GET_TARIFFS':
             clonedState.tariffs.holding = false;
             return clonedState;
 

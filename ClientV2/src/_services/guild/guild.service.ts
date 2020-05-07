@@ -1,5 +1,5 @@
 import { getResponse, catchHandle, errorHandle } from '../../_helpers';
-import { BaseResponse, GuildInfo, GuildBalanceReport, Tariff } from '..';
+import { BaseResponse, GuildInfo, GuildBalanceReport, Tariff, ITariff } from '..';
 import { Config } from '../../core';
 import { authService } from '..';
 
@@ -60,7 +60,7 @@ export class guildService {
             .catch(catchHandle);
     }
 
-    static async GetGuildTariffs() {
+    static async GetGuildTariffs(): Promise<Array<ITariff>> {
         let session = authService.getCurrentSession();
         const requestOptions: RequestInit = {
             method: 'GET',

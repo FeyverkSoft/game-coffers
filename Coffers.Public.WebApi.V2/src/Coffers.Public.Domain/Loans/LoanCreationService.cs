@@ -39,7 +39,7 @@ namespace Coffers.Public.Domain.Loans
                 else
                     return existsLoan;
 
-            return new Loan(id, userId, tariff?.Id, description?.Trim(), DateTime.UtcNow.AddDays(loanPeriod), amount, 0);
+            return new Loan(id, userId, tariff?.Id, guildId, description?.Trim(), DateTime.UtcNow.AddDays(loanPeriod), amount, 0);
 
         }
     }

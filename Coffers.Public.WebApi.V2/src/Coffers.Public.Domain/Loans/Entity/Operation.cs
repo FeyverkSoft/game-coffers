@@ -27,5 +27,28 @@ namespace Coffers.Public.Domain.Loans
         /// Основание для проведения операции
         /// </summary>
         public Guid? DocumentId { get; }
+
+        /// <summary>
+        /// Пользователь выполнивший операцию
+        /// </summary>
+        public Guid UserId { get; }
+        /// <summary>
+        /// Идентификатор гильдии
+        /// </summary>
+        public Guid GuildId { get; }
+
+        public DateTime CreateDate { get; } = DateTime.UtcNow;
+
+        protected Operation() { }
+
+        internal Operation(Guid id, Guid userId, Decimal amount, OperationType type, Guid? documentId, Guid guildId)
+        {
+            Id = id;
+            Amount = amount;
+            Type = type;
+            DocumentId = documentId;
+            UserId = userId;
+            GuildId = guildId;
+        }
     }
 }

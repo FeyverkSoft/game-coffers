@@ -1,4 +1,4 @@
-import { GamerActionsType } from "../../_actions";
+import { GamerActionsTypes } from "../../_actions";
 import { IHolded, Dictionary } from "../../core";
 import clonedeep from 'lodash.clonedeep';
 import { IGamersListView, ILoanView } from "../../_services/gamer/GamersListView";
@@ -9,7 +9,7 @@ export class IGamerStore {
     loans: Dictionary<ILoanView & IHolded> = {};
 }
 
-export function gamers(state: IGamerStore = new IGamerStore(), action: GamerActionsType):
+export function gamers(state: IGamerStore = new IGamerStore(), action: GamerActionsTypes):
     IGamerStore {
     var clonedState = clonedeep(state);
     switch (action.type) {

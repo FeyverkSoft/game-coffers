@@ -135,7 +135,7 @@ const locString: any = {
             Tax: 'Погашение налога',
             Sell: 'Операция продажи предмета со склада',
             Penalty: 'Погашение штрафа',
-            Loan: 'Погашение займа',
+            Loan: 'Займ',
             Exchange: 'Обмен между твинами',
             Output: 'Вывод во внешнюю систему',
             InternalOutput: 'Вывод на счёт игрока',
@@ -143,7 +143,7 @@ const locString: any = {
             InternalEmission: 'Пополнение со счёта игрока',
             Other: 'Иное',
             Deal: 'Сделка',
-            LoanTax: 'Погашение процентов'
+            LoanTax: 'Погашение процентов займа'
         },
         OPERATION_AMOUNT: 'Сумма операции',
         OPERATION_DESCRIPTION: 'Описание операции',

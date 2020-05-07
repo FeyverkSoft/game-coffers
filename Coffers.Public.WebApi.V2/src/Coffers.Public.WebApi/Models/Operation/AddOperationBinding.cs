@@ -49,7 +49,7 @@ namespace Coffers.Public.WebApi.Models.Operation
                 .NotEmpty();
 
             RuleFor(r => r.Amount)
-                .GreaterThan(0);
+                .NotEqual(0);
         }
     }
 }

@@ -24,7 +24,7 @@ export namespace AlertActionsType {
     } as const)
 }
 
-export type AlertActionsType =
+export type AlertActionsTypes =
     ReturnType<typeof AlertActionsType.SUCCESS> |
     ReturnType<typeof AlertActionsType.ERROR> |
     ReturnType<typeof AlertActionsType.INFO> |

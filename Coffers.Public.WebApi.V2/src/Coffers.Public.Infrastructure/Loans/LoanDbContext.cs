@@ -127,6 +127,11 @@ namespace Coffers.Public.Infrastructure.Loans
                     .HasForeignKey(_ => _.TariffId)
                     .HasPrincipalKey(_ => _.Id);
 
+                b.HasMany(_ => _.Operations)
+                    .WithOne()
+                    .HasForeignKey(_ => _.DocumentId)
+                    .HasPrincipalKey(_ => _.Id);
+
                 b.Property(l => l.ConcurrencyTokens)
                     .IsRequired()
                     .IsConcurrencyToken();
@@ -147,6 +152,12 @@ namespace Coffers.Public.Infrastructure.Loans
                     .IsRequired();
                 b.Property(o => o.DocumentId)
                     .IsRequired(false);
+                b.Property(o => o.UserId)
+                    .IsRequired();
+                b.Property(o => o.GuildId)
+                    .IsRequired();
+                b.Property(o => o.CreateDate)
+                    .IsRequired();
                 b.Property(o => o.Amount)
                     .HasDefaultValue(0)
                     .IsRequired();

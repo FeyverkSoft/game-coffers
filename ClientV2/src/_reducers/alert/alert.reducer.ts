@@ -1,4 +1,4 @@
-﻿import { AlertActionsType } from '../../_actions';
+﻿import { AlertActionsTypes } from '../../_actions';
 import { Alert } from '../../_services/alert/Alert';
 const count = 5;//количество отображаемых сообщений
 
@@ -9,7 +9,7 @@ export class AlertState {
     }
 }
 
-export function alerts(state: AlertState = new AlertState(), action: AlertActionsType): AlertState {
+export function alerts(state: AlertState = new AlertState(), action: AlertActionsTypes): AlertState {
     switch (action.type) {
         case 'SUCCESS_ALERT':
         case 'ERROR_ALERT':

@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using Coffers.Helpers;
+using Coffers.Types.Account;
 using Coffers.Types.Gamer;
 
 namespace Coffers.Public.Domain.Loans
@@ -25,6 +28,8 @@ namespace Coffers.Public.Domain.Loans
 
         public Guid? TariffId { get; }
         public Tariff Tariff { get; }
+
+        public IList<Operation> Operations { get; } = new List<Operation>();
 
         /// <summary>
         /// Дата создания записи
@@ -99,7 +104,7 @@ namespace Coffers.Public.Domain.Loans
 
 
         protected Loan() { }
-        public Loan(Guid id, Guid userId, Guid? tariffId, string description, DateTime expiredDate, decimal amount, decimal taxAmount)
+        internal Loan(Guid id, Guid userId, Guid? tariffId, Guid guildId, string description, DateTime expiredDate, decimal amount, decimal taxAmount)
         {
             if (amount < 0)
                 throw new ArgumentOutOfRangeException(nameof(amount), "Non-negative number required");
@@ -113,6 +118,7 @@ namespace Coffers.Public.Domain.Loans
             ExpiredDate = expiredDate;
             Amount = amount;
             TaxAmount = taxAmount;
+            Operations.Add(new Operation(id, userId, -1 * amount, OperationType.Loan, id, guildId));
         }
 
         public void MakeCancel()

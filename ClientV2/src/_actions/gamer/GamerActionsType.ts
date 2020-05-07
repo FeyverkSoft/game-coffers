@@ -139,7 +139,7 @@ export namespace GamerActionsType {
 
 }
 
-export type GamerActionsType =
+export type GamerActionsTypes =
     ReturnType<typeof GamerActionsType.PROC_GET_GUILD_GAMERS> |
     ReturnType<typeof GamerActionsType.SUCC_GET_GUILD_GAMERS> |
     ReturnType<typeof GamerActionsType.FAILED_GET_GUILD_GAMERS> |

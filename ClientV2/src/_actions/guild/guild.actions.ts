@@ -1,28 +1,28 @@
-import { guildService, GuildInfo, GuildBalanceReport, ITariff } from '../../_services';
+import { guildService} from '../../_services';
 import { GuildActionsType } from './GuildActionsType';
 import { alertInstance } from '..';
 
+/**
+ * Попытка тут сделать саги
+ */
 export class GuildActions {
     /**
      * Возвращает информацию о гильдии
      */
     GetGuild() {
         return (dispatch: Function) => {
-            dispatch(request());
+            dispatch(GuildActionsType.PROC_GET_GUILD());
             guildService.getGuild()
                 .then(
                     data => {
-                        dispatch(success(data));
+                        dispatch(GuildActionsType.SUCC_GET_GUILD(data));
                     })
                 .catch(
                     ex => {
-                        dispatch(failure());
+                        dispatch(GuildActionsType.FAILED_GET_GUILD());
                         dispatch(alertInstance.error(ex));
                     });
         }
-        function request() { return { type: GuildActionsType.PROC_GET_GUILD } }
-        function success(guildInfo: GuildInfo) { return { type: GuildActionsType.SUCC_GET_GUILD, guildInfo } }
-        function failure() { return { type: GuildActionsType.FAILED_GET_GUILD } }
     }
 
     /**
@@ -30,21 +30,18 @@ export class GuildActions {
      */
     GetGuildBalanceReport(): Function {
         return (dispatch: Function) => {
-            dispatch(request());
+            dispatch(GuildActionsType.PROC_GET_BALANCE_REPORT());
             guildService.GetGuildBalanceReport()
                 .then(
                     data => {
-                        dispatch(success(data));
+                        dispatch(GuildActionsType.SUCC_GET_BALANCE_REPORT(data));
                     })
                 .catch(
                     ex => {
-                        dispatch(failure());
+                        dispatch(GuildActionsType.FAILED_GET_BALANCE_REPORT());
                         dispatch(alertInstance.error(ex));
                     });
         }
-        function request() { return { type: GuildActionsType.PROC_GET_BALANCE_REPORT } }
-        function success(BalanceInfo: GuildBalanceReport) { return { type: GuildActionsType.SUCC_GET_BALANCE_REPORT, BalanceInfo } }
-        function failure() { return { type: GuildActionsType.FAILED_GET_BALANCE_REPORT } }
     }
 
     /**
@@ -52,21 +49,18 @@ export class GuildActions {
      */
     GetGuildTariffs(): Function {
         return (dispatch: Function) => {
-            dispatch(request());
+            dispatch(GuildActionsType.PROC_GET_TARIFFS());
             guildService.GetGuildTariffs()
                 .then(
                     data => {
-                        dispatch(success(data));
+                        dispatch(GuildActionsType.SUCC_GET_TARIFFS(data));
                     })
                 .catch(
                     ex => {
-                        dispatch(failure());
+                        dispatch(GuildActionsType.FAILED_GET_TARIFFS());
                         dispatch(alertInstance.error(ex));
                     });
         }
-        function request() { return { type: GuildActionsType.PROC_GET_TARIFFS } }
-        function success(tariffs: Array<ITariff>) { return { type: GuildActionsType.SUCC_GET_TARIFFS, tariffs } }
-        function failure() { return { type: GuildActionsType.FAILED_GET_TARIFFS } }
     }
 }
 
