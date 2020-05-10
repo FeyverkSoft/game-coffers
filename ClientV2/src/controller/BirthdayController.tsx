@@ -2,7 +2,7 @@ import React from "react";
 import { Lang, IGamersListView, ICharacter } from '../_services';
 import { Table, Breadcrumb, PageHeader } from 'antd';
 import { HomeOutlined } from '@ant-design/icons';
-import { memoize } from "lodash";
+import memoize from "lodash.memoize";
 import { connect } from "react-redux";
 import { IStore, BlendColor, formatDateTime } from "../_helpers";
 import { gamerInstance } from "../_actions";
