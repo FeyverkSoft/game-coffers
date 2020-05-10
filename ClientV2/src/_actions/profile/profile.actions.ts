@@ -1,9 +1,8 @@
 
-import { IProfile, ITax } from '../../_services';
 import { ProfileActionsType } from '../profile/ProfileActionsType';
 import { alertInstance } from '..';
 import { profileService } from '../../_services/profile/profile.service';
-import { ICharacter, Character } from '../../_services/profile/ICharacter';
+import { Character } from '../../_services/profile/ICharacter';
 
 
 export class ProfileActions {
@@ -12,21 +11,18 @@ export class ProfileActions {
      */
     Get(): Function {
         return (dispatch: Function) => {
-            dispatch(request());
+            dispatch(ProfileActionsType.PROC_GET_CURRENT_GAMER());
             profileService.getCurrentGamer()
                 .then(
                     data => {
-                        dispatch(success(data));
+                        dispatch(ProfileActionsType.SUCC_GET_CURRENT_GAMER(data));
                     })
                 .catch(
                     ex => {
-                        dispatch(failure());
+                        dispatch(ProfileActionsType.FAILED_GET_CURRENT_GAMER());
                         dispatch(alertInstance.error(ex));
                     });
         }
-        function request() { return { type: ProfileActionsType.PROC_GET_PROFILE } }
-        function success(profile: IProfile) { return { type: ProfileActionsType.SUCC_GET_PROFILE, profile } }
-        function failure() { return { type: ProfileActionsType.FAILED_GET_PROFILE } }
     }
 
     /**
@@ -34,21 +30,18 @@ export class ProfileActions {
      */
     GetTax(): Function {
         return (dispatch: Function) => {
-            dispatch(request());
+            dispatch(ProfileActionsType.PROC_GET_CURRENT_TAX());
             profileService.GetTax()
                 .then(
                     data => {
-                        dispatch(success(data));
+                        dispatch(ProfileActionsType.SUCC_GET_CURRENT_TAX(data));
                     })
                 .catch(
                     ex => {
-                        dispatch(failure());
+                        dispatch(ProfileActionsType.FAILED_GET_CURRENT_TAX());
                         dispatch(alertInstance.error(ex));
                     });
         }
-        function request() { return { type: ProfileActionsType.PROC_GET_TAX } }
-        function success(tax: ITax) { return { type: ProfileActionsType.SUCC_GET_TAX, tax } }
-        function failure() { return { type: ProfileActionsType.FAILED_GET_TAX } }
     }
 
     /**
@@ -56,21 +49,18 @@ export class ProfileActions {
      */
     GetChars(): Function {
         return (dispatch: Function) => {
-            dispatch(request());
+            dispatch(ProfileActionsType.PROC_GET_CURRENT_CHARACTERS());
             profileService.GetCharList()
                 .then(
                     data => {
-                        dispatch(success(data));
+                        dispatch(ProfileActionsType.SUCC_GET_CURRENT_CHARACTERS(data));
                     })
                 .catch(
                     ex => {
-                        dispatch(failure());
+                        dispatch(ProfileActionsType.FAILED_GET_CURRENT_CHARACTERS());
                         dispatch(alertInstance.error(ex));
                     });
         }
-        function request() { return { type: ProfileActionsType.PROC_GET_CHARACTERS } }
-        function success(chars: Array<ICharacter>) { return { type: ProfileActionsType.SUCC_GET_CHARACTERS, chars } }
-        function failure() { return { type: ProfileActionsType.FAILED_GET_CHARACTERS } }
     }
 
     /**
@@ -78,21 +68,18 @@ export class ProfileActions {
      */
     SetMainChar(charId: string): Function {
         return (dispatch: Function) => {
-            dispatch(request(charId));
+            dispatch(ProfileActionsType.PROC_CURRENT_SET_MAIN(charId));
             profileService.SetMainChar(charId)
                 .then(
                     data => {
-                        dispatch(success(charId));
+                        dispatch(ProfileActionsType.SUCC_CURRENT_SET_MAIN(charId));
                     })
                 .catch(
                     ex => {
-                        dispatch(failure(charId));
+                        dispatch(ProfileActionsType.FAILED_CURRENT_SET_MAIN(charId));
                         dispatch(alertInstance.error(ex));
                     });
         }
-        function request(id: string) { return { type: ProfileActionsType.PROC_SET_MAIN, id } }
-        function success(id: string) { return { type: ProfileActionsType.SUCC_SET_MAIN, id } }
-        function failure(id: string) { return { type: ProfileActionsType.FAILED_SET_MAIN, id } }
     }
 
     /**
@@ -100,22 +87,19 @@ export class ProfileActions {
      */
     DeleteChar(charId: string): Function {
         return (dispatch: Function) => {
-            dispatch(request(charId));
+            dispatch(ProfileActionsType.PROC_CURRENT_DELETE_CHAR(charId));
             profileService.DeleteChar(charId)
                 .then(
                     data => {
-                        dispatch(success(charId));
+                        dispatch(ProfileActionsType.SUCC_CURRENT_DELETE_CHAR(charId));
                         dispatch(profileInstance.GetTax());
                     })
                 .catch(
                     ex => {
-                        dispatch(failure(charId));
+                        dispatch(ProfileActionsType.FAILED_CURRENT_DELETE_CHAR(charId));
                         dispatch(alertInstance.error(ex));
                     });
         }
-        function request(id: string) { return { type: ProfileActionsType.PROC_DELETE_CHAR, id } }
-        function success(id: string) { return { type: ProfileActionsType.SUCC_DELETE_CHAR, id } }
-        function failure(id: string) { return { type: ProfileActionsType.FAILED_DELETE_CHAR, id } }
     }
 
     /**
@@ -126,22 +110,19 @@ export class ProfileActions {
      */
     AddChar(props: { id: string, name: string, className: string, isMain: boolean }): Function {
         return (dispatch: Function) => {
-            dispatch(request());
+            dispatch(ProfileActionsType.PROC_CURRENT_ADD_NEW_CHAR());
             profileService.AddNewChar(props.id, props.name, props.className, props.isMain)
                 .then(
                     data => {
-                        dispatch(success(new Character(props.id, props.name, props.className, props.isMain)));
+                        dispatch(ProfileActionsType.SUCC_CURRENT_ADD_NEW_CHAR(new Character(props.id, props.name, props.className, props.isMain)));
                         dispatch(profileInstance.GetTax());
                     })
                 .catch(
                     ex => {
-                        dispatch(failure());
+                        dispatch(ProfileActionsType.FAILED_CURRENT_ADD_NEW_CHAR());
                         dispatch(alertInstance.error(ex));
                     });
         }
-        function request() { return { type: ProfileActionsType.PROC_ADD_NEW_CHAR } }
-        function success(char: ICharacter) { return { type: ProfileActionsType.SUCC_ADD_NEW_CHAR, char } }
-        function failure() { return { type: ProfileActionsType.FAILED_ADD_NEW_CHAR } }
     }
 }
 

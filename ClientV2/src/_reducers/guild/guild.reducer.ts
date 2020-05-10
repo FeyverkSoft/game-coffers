@@ -50,7 +50,7 @@ export class IGuildStore {
 
 export function guild(state: IGuildStore = new IGuildStore(), action: GuildActionsTypes):
     IGuildStore {
-    var clonedState = clonedeep(state);
+    const clonedState = clonedeep(state);
     switch (action.type) {
         case 'PROC_GET_GUILD':
             clonedState.guild.holding = true;

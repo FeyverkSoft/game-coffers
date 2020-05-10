@@ -1,5 +1,5 @@
-import { ProfileActionsType } from "../../_actions";
-import { IAction, IHolded } from "../../core";
+import { ProfileActionsTypes } from "../../_actions";
+import { IHolded } from "../../core";
 import { IProfile, Profile, ITax, UserTax } from "../../_services";
 import clonedeep from 'lodash.clonedeep';
 import { ICharacter } from "../../_services/profile/ICharacter";
@@ -10,22 +10,22 @@ export class IProfileStore {
     characters: Array<ICharacter & IHolded> & IHolded = [];
 }
 
-export function profile(state: IProfileStore = new IProfileStore(), action: IAction<ProfileActionsType>):
+export function profile(state: IProfileStore = new IProfileStore(), action: ProfileActionsTypes):
     IProfileStore {
-    var clonedState = clonedeep(state);
+    const clonedState = clonedeep(state);
     switch (action.type) {
         /**
         * Секция обработчика события получения профиля
         */
-        case ProfileActionsType.PROC_GET_PROFILE: {
+        case 'PROC_GET_CURRENT_GAMER': {
             clonedState.profile.holding = true;
             return clonedState;
         }
-        case ProfileActionsType.SUCC_GET_PROFILE: {
+        case 'SUCC_GET_CURRENT_GAMER': {
             clonedState.profile = { ...clonedState.profile, ...action.profile, holding: false }
             return clonedState;
         }
-        case ProfileActionsType.FAILED_GET_PROFILE: {
+        case 'FAILED_GET_CURRENT_GAMER': {
             clonedState.profile.holding = false;
             return clonedState;
         }
@@ -33,15 +33,15 @@ export function profile(state: IProfileStore = new IProfileStore(), action: IAct
         /**
         * Секция обработчика события получения налога
         */
-        case ProfileActionsType.PROC_GET_TAX: {
+        case 'PROC_GET_CURRENT_TAX': {
             clonedState.tax.holding = true;
             return clonedState;
         }
-        case ProfileActionsType.SUCC_GET_TAX: {
+        case 'SUCC_GET_CURRENT_TAX': {
             clonedState.tax = { ...clonedState.tax, ...action.tax, holding: false }
             return clonedState;
         }
-        case ProfileActionsType.FAILED_GET_TAX: {
+        case 'FAILED_GET_CURRENT_TAX': {
             clonedState.tax.holding = false;
             return clonedState;
         }
@@ -49,16 +49,16 @@ export function profile(state: IProfileStore = new IProfileStore(), action: IAct
         /**
         * Секция обработчика события получения списка персонажей
         */
-        case ProfileActionsType.PROC_GET_CHARACTERS: {
+        case 'PROC_GET_CURRENT_CHARACTERS': {
             clonedState.characters.holding = true;
             return clonedState;
         }
-        case ProfileActionsType.SUCC_GET_CHARACTERS: {
+        case 'SUCC_GET_CURRENT_CHARACTERS': {
             clonedState.characters = [...action.chars];
             clonedState.characters.holding = false;
             return clonedState;
         }
-        case ProfileActionsType.FAILED_GET_CHARACTERS: {
+        case 'FAILED_GET_CURRENT_CHARACTERS': {
             clonedState.characters.holding = false;
             return clonedState;
         }
@@ -66,7 +66,7 @@ export function profile(state: IProfileStore = new IProfileStore(), action: IAct
         /**
         * Секция обработчика события установки перса как основы
         */
-        case ProfileActionsType.PROC_SET_MAIN: {
+        case 'PROC_CURRENT_SET_MAIN': {
             clonedState.characters.forEach(ch => {
                 if (ch.id === action.id) {
                     ch.holding = true;
@@ -74,7 +74,7 @@ export function profile(state: IProfileStore = new IProfileStore(), action: IAct
             });
             return clonedState;
         }
-        case ProfileActionsType.SUCC_SET_MAIN: {
+        case 'SUCC_CURRENT_SET_MAIN': {
             clonedState.characters.forEach(ch => {
                 if (ch.id === action.id) {
                     ch.isMain = true;
@@ -86,7 +86,7 @@ export function profile(state: IProfileStore = new IProfileStore(), action: IAct
             });
             return clonedState;
         }
-        case ProfileActionsType.FAILED_SET_MAIN: {
+        case 'FAILED_CURRENT_SET_MAIN': {
             clonedState.characters.forEach(ch => {
                 if (ch.id === action.id) {
                     ch.holding = false;
@@ -98,7 +98,7 @@ export function profile(state: IProfileStore = new IProfileStore(), action: IAct
         /**
         * Секция обработчика события удаления перса
         */
-        case ProfileActionsType.PROC_DELETE_CHAR: {
+        case 'PROC_CURRENT_DELETE_CHAR': {
             clonedState.characters.forEach(ch => {
                 if (ch.id === action.id) {
                     ch.holding = true;
@@ -106,7 +106,7 @@ export function profile(state: IProfileStore = new IProfileStore(), action: IAct
             });
             return clonedState;
         }
-        case ProfileActionsType.SUCC_DELETE_CHAR: {
+        case 'SUCC_CURRENT_DELETE_CHAR': {
 
             if (clonedState.characters.filter(ch => ch.id === action.id)[0].name === clonedState.profile.characterName)
                 clonedState.profile.characterName = '';
@@ -115,7 +115,7 @@ export function profile(state: IProfileStore = new IProfileStore(), action: IAct
 
             return clonedState;
         }
-        case ProfileActionsType.FAILED_DELETE_CHAR: {
+        case 'FAILED_CURRENT_DELETE_CHAR': {
             clonedState.characters.forEach(ch => {
                 if (ch.id === action.id) {
                     ch.holding = false;
@@ -128,11 +128,11 @@ export function profile(state: IProfileStore = new IProfileStore(), action: IAct
         /**
         * Секция обработчика события добавления нового персонажа
         */
-        case ProfileActionsType.PROC_ADD_NEW_CHAR: {
+        case 'PROC_CURRENT_ADD_NEW_CHAR': {
             clonedState.characters.holding = true;
             return clonedState;
         }
-        case ProfileActionsType.SUCC_ADD_NEW_CHAR: {
+        case 'SUCC_CURRENT_ADD_NEW_CHAR': {
             clonedState.characters.holding = false;
             clonedState.profile.charCount++;
             clonedState.characters.push(action.char);
@@ -144,10 +144,10 @@ export function profile(state: IProfileStore = new IProfileStore(), action: IAct
                         ch.isMain = false;
                     }
                 });
-            };
+            }
             return clonedState;
         }
-        case ProfileActionsType.FAILED_ADD_NEW_CHAR: {
+        case 'FAILED_CURRENT_ADD_NEW_CHAR': {
             clonedState.characters.holding = false;
             return clonedState;
         }

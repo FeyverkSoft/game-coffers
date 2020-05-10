@@ -1,7 +1,7 @@
 import { GamerActionsTypes } from "../../_actions";
 import { IHolded, Dictionary } from "../../core";
 import clonedeep from 'lodash.clonedeep';
-import { IGamersListView, ILoanView } from "../../_services/gamer/GamersListView";
+import { IGamersListView, ILoanView } from "../../_services";
 import { formatDateTime } from "../../_helpers";
 
 export class IGamerStore {
@@ -11,7 +11,7 @@ export class IGamerStore {
 
 export function gamers(state: IGamerStore = new IGamerStore(), action: GamerActionsTypes):
     IGamerStore {
-    var clonedState = clonedeep(state);
+    const clonedState = clonedeep(state);
     switch (action.type) {
         /**
          * Секция получения информации о списке игроков в гильдии

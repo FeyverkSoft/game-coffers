@@ -13,21 +13,21 @@ export const formatDateTime = (dateTime: Date | string, short?: dateFormat): str
     switch (short) {
         case 'm': {
             let values: Array<number | string> = [date.getFullYear(), date.getMonth() + 1, date.getDate()];
-            for (let id in values) {
+            for (const id in values) {
                 values[id] = values[id].toString().replace(/^([0-9])$/, '0$1');
             }
             return `${values[0]}-${values[1]}`.replace(' ', ' ');
         }
         case 'd': {
             let values: Array<number | string> = [date.getFullYear(), date.getMonth() + 1, date.getDate()];
-            for (let id in values) {
+            for (const id in values) {
                 values[id] = values[id].toString().replace(/^([0-9])$/, '0$1');
             }
             return `${values[0]}-${values[1]}-${values[2]}`.replace(' ', ' ');
         }
         case 'h': {
             let values: Array<number | string> = [date.getFullYear(), date.getMonth() + 1, date.getDate()];
-            for (let id in values) {
+            for (const id in values) {
                 values[id] = values[id].toString().replace(/^([0-9])$/, '0$1');
             }
             return `${values[0]}-${values[1]}-${values[2]} ${date.toLocaleTimeString()}`.replace(' ', ' ');

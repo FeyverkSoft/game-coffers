@@ -1,5 +1,4 @@
-import { SessionActionsType } from "../../_actions";
-import { IAction } from "../../core";
+import { SessionActionsTypes } from "../../_actions";
 import { SessionInfo } from "../../_services";
 
 let localStorageSession: string | null = localStorage.getItem('session');
@@ -9,21 +8,21 @@ try {
 } catch (ex) { }
 const initialState: SessionInfo = sessionInfo ? new SessionInfo(sessionInfo) : new SessionInfo();
 
-export function session(state = initialState, action: IAction<SessionActionsType>): SessionInfo {
+export function session(state = initialState, action: SessionActionsTypes): SessionInfo {
     switch (action.type) {
-        case SessionActionsType.CREATE_SESSION:
+        case 'CREATE_SESSION':
             return new SessionInfo({ holding: true });
 
-        case SessionActionsType.CREATE_SESSION_SUCCESS:
+        case 'CREATE_SESSION_SUCCESS':
             return new SessionInfo(action.session);
 
-        case SessionActionsType.CREATE_SESSION_FAILURE:
+        case 'CREATE_SESSION_FAILURE':
             return new SessionInfo();
 
-        case SessionActionsType.CLOSING_SESSION:
+        case 'CLOSING_SESSION':
             return new SessionInfo({ holding: true });
 
-        case SessionActionsType.CLOSED_SESSION:
+        case 'CLOSED_SESSION':
             return new SessionInfo();
         default:
             return state

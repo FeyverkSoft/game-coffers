@@ -1,7 +1,6 @@
-import { OperationType, operationService, IOperationView, OperationView } from '../../_services';
+import { OperationType, operationService } from '../../_services';
 import { alertInstance } from '..';
 import { OperationActionsType } from './OperationActionsType';
-import { IAvailableDocument } from '../../_services/operation/IAvailableDocuments';
 
 interface CreateOperationProps {
     id: string;
@@ -25,21 +24,18 @@ class OperationActions {
      */
     getOperations(date: Date): Function {
         return (dispatch: Function) => {
-            dispatch(request(date));
+            dispatch(OperationActionsType.PROC_GET_OPERATIONS(date));
             operationService.getOperations(date)
                 .then(
                     data => {
-                        dispatch(success(date, data));
+                        dispatch(OperationActionsType.SUCC_GET_OPERATIONS(date, data));
                     })
                 .catch(
                     ex => {
-                        dispatch(failure(date));
+                        dispatch(OperationActionsType.FAILED_GET_OPERATIONS(date));
                         dispatch(alertInstance.error(ex));
                     });
         }
-        function request(date: Date) { return { type: OperationActionsType.PROC_GET_OPERATIONS, date } }
-        function success(date: Date, operations: Array<IOperationView>) { return { type: OperationActionsType.SUCC_GET_OPERATIONS, date, operations } }
-        function failure(date: Date) { return { type: OperationActionsType.FAILED_GET_OPERATIONS, date } }
     }
 
     /**
@@ -48,7 +44,7 @@ class OperationActions {
      */
     createOperation(props: CreateOperationProps): Function {
         return (dispatch: Function) => {
-            dispatch(request(props.id));
+            dispatch(OperationActionsType.PROC_CREATE_OPERATION(props.id));
             operationService.createOperation(
                 props.id,
                 props.type,
@@ -60,22 +56,19 @@ class OperationActions {
             )
                 .then(
                     data => {
-                        dispatch(success(props.id, data));
+                        dispatch(OperationActionsType.SUCC_CREATE_OPERATION(props.id, data));
                     })
                 .catch(
                     ex => {
-                        dispatch(failure(props.id));
+                        dispatch(OperationActionsType.FAILED_CREATE_OPERATION(props.id));
                         dispatch(alertInstance.error(ex));
                     });
         }
-        function request(id: string) { return { type: OperationActionsType.PROC_CREATE_OPERATION, id } }
-        function success(id: string, operation: IOperationView) { return { type: OperationActionsType.SUCC_CREATE_OPERATION, id, operation } }
-        function failure(id: string) { return { type: OperationActionsType.FAILED_CREATE_OPERATION, id } }
     }
 
     editOperation(props: IEditOperationProps): Function {
         return (dispatch: Function) => {
-            dispatch(request(props.id));
+            dispatch(OperationActionsType.PROC_EDIT_OPERATION(props.id));
             operationService.editOperation(
                 props.id,
                 props.type,
@@ -83,17 +76,14 @@ class OperationActions {
             )
                 .then(
                     data => {
-                        dispatch(success(props.id, data));
+                        dispatch(OperationActionsType.SUCC_EDIT_OPERATION(props.id, data));
                     })
                 .catch(
                     ex => {
-                        dispatch(failure(props.id));
+                        dispatch(OperationActionsType.FAILED_EDIT_OPERATION(props.id));
                         dispatch(alertInstance.error(ex));
                     });
         }
-        function request(id: string) { return { type: OperationActionsType.PROC_EDIT_OPERATION, id } }
-        function success(id: string, operation: IOperationView) { return { type: OperationActionsType.SUCC_EDIT_OPERATION, id, operation } }
-        function failure(id: string) { return { type: OperationActionsType.FAILED_EDIT_OPERATION, id } }
     }
 
     /**
@@ -101,21 +91,18 @@ class OperationActions {
      */
     getDocuments(): Function {
         return (dispatch: Function) => {
-            dispatch(request());
+            dispatch(OperationActionsType.PROC_GET_DOCUMENTS());
             operationService.getDocuments()
                 .then(
                     data => {
-                        dispatch(success(data));
+                        dispatch(OperationActionsType.SUCC_GET_DOCUMENTS(data));
                     })
                 .catch(
                     ex => {
-                        dispatch(failure());
+                        dispatch(OperationActionsType.FAILED_GET_DOCUMENTS());
                         dispatch(alertInstance.error(ex));
                     });
         }
-        function request() { return { type: OperationActionsType.PROC_GET_DOCUMENTS } }
-        function success(documents: Array<IAvailableDocument>) { return { type: OperationActionsType.SUCC_GET_DOCUMENTS, documents } }
-        function failure() { return { type: OperationActionsType.FAILED_GET_DOCUMENTS } }
     }
 }
 

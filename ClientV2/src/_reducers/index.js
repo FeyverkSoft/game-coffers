@@ -21,4 +21,4 @@ export const rootReducer = (state, action) => {
         state = undefined
     }
     return appReducer(state, action)
-}
+};

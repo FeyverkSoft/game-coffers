@@ -1,5 +1,5 @@
-import { OperationActionsType } from "../../_actions";
-import { IAction, IHolded, IDictionary } from "../../core";
+import { OperationActionsTypes } from "../../_actions";
+import { IHolded, IDictionary } from "../../core";
 import { IOperationView } from "../../_services";
 import clonedeep from 'lodash.clonedeep';
 import { formatDateTime } from "../../_helpers";
@@ -10,31 +10,32 @@ export class IOperationsStore {
     documents: Array<IAvailableDocument> & IHolded = [];
 }
 
-export function operations(state: IOperationsStore = new IOperationsStore(), action: IAction<OperationActionsType> & {
+export function operations(state: IOperationsStore = new IOperationsStore(), action: OperationActionsTypes & {
     operation: IOperationView;
     operations: Array<IOperationView>;
 }):
     IOperationsStore {
-    var clonedState = clonedeep(state);
+    const clonedState = clonedeep(state);
     switch (action.type) {
-        case OperationActionsType.PROC_GET_OPERATIONS: {
-            clonedState.operations[formatDateTime(action.date, 'm')] = [...clonedState.operations[action.date] || []];
+        case 'PROC_GET_OPERATIONS': {
+            let opData = formatDateTime(action.date, 'm');
+            clonedState.operations[opData] = [...clonedState.operations[opData] || []];
             clonedState.operations.holding = true;
             return clonedState;
         }
 
-        case OperationActionsType.SUCC_GET_OPERATIONS: {
+        case 'SUCC_GET_OPERATIONS': {
             clonedState.operations[formatDateTime(action.date, 'm')] = action.operations;
             clonedState.operations.holding = false;
             return clonedState;
         }
 
-        case OperationActionsType.FAILED_GET_OPERATIONS: {
+        case 'FAILED_GET_OPERATIONS': {
             clonedState.operations.holding = false;
             return clonedState;
         }
 
-        case OperationActionsType.SUCC_CREATE_OPERATION: {
+        case 'SUCC_CREATE_OPERATION': {
             let opData = formatDateTime(action.operation.createDate, 'm');
             clonedState.operations[opData] = [...clonedState.operations[opData] || [], action.operation];
             clonedState.operations.holding = false;
@@ -42,27 +43,27 @@ export function operations(state: IOperationsStore = new IOperationsStore(), act
         }
 
 
-        case OperationActionsType.PROC_GET_DOCUMENTS: {
+        case 'PROC_GET_DOCUMENTS': {
             clonedState.documents.holding = true;
             return clonedState;
         }
 
-        case OperationActionsType.SUCC_GET_DOCUMENTS: {
+        case 'SUCC_GET_DOCUMENTS': {
             clonedState.documents = action.documents;
             return clonedState;
         }
 
-        case OperationActionsType.FAILED_GET_DOCUMENTS: {
+        case 'FAILED_GET_DOCUMENTS': {
             clonedState.documents.holding = false;
             return clonedState;
         }
 
-        case OperationActionsType.PROC_EDIT_OPERATION: {
+        case 'PROC_EDIT_OPERATION': {
             clonedState.operations.holding = true;
             return clonedState;
         }
 
-        case OperationActionsType.SUCC_EDIT_OPERATION: {
+        case 'SUCC_EDIT_OPERATION': {
             let operations = clonedState.operations[formatDateTime(action.operation.createDate, 'm')];
             operations.forEach(operation => {
                 if (operation.id === action.operation.id) {
@@ -72,7 +73,7 @@ export function operations(state: IOperationsStore = new IOperationsStore(), act
             clonedState.operations.holding = false;
             return clonedState;
         }
-        case OperationActionsType.FAILED_EDIT_OPERATION: {
+        case 'FAILED_EDIT_OPERATION': {
             clonedState.operations.holding = false;
             return clonedState;
         }

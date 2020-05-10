@@ -1,5 +1,5 @@
 ﻿import { AlertActionsTypes } from '../../_actions';
-import { Alert } from '../../_services/alert/Alert';
+import { Alert } from '../../_services';
 const count = 5;//количество отображаемых сообщений
 
 export class AlertState {
