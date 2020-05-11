@@ -11,6 +11,7 @@ const locString: any = {
         RESOURCE_NOT_FOUND: 'Resource {0} not found;'
     },
     ru: {
+        EDIT_BALANCE: 'Изменить баланс',
         SAVE: 'Сохранить',
         DELETE_CHAR: 'Удалить персонажа',
         NOT_FOUND: 'Ресурс {0} не найден;',

@@ -3,7 +3,7 @@ import { Lang, IOperationView, OperationType, DLang, IGamersListView } from '../
 import { Table, Breadcrumb, PageHeader, DatePicker, Row, Col, Button, Tooltip } from 'antd';
 import { HomeOutlined, RedoOutlined, EditFilled } from '@ant-design/icons';
 import { connect } from "react-redux";
-import { IStore, formatDateTime } from "../_helpers";
+import { IStore, formatDateTime, IF } from "../_helpers";
 import { operationsInstance, gamerInstance } from "../_actions";
 import { ColumnProps } from "antd/lib/table";
 import style from './bd.module.scss';
@@ -235,14 +235,16 @@ export class _OperationsController extends React.Component<IMainProps, IState> {
                         _ => gamersList[_]
                     )}
                 />
-                <EditOperationDialog
-                    onClose={this.toggleEditOperationDialog}
-                    visible={this.state.addEditOperationModal.show}
-                    users={Object.keys(gamersList).map(
-                        _ => gamersList[_]
-                    )}
-                    operation={this.getOperations().filter(_ => _.id === this.state.addEditOperationModal.operationId)[0] || {}}
-                />
+                <IF value={this.state.addEditOperationModal.show}>
+                    <EditOperationDialog
+                        onClose={this.toggleEditOperationDialog}
+                        visible={this.state.addEditOperationModal.show}
+                        users={Object.keys(gamersList).map(
+                            _ => gamersList[_]
+                        )}
+                        operation={this.getOperations().filter(_ => _.id === this.state.addEditOperationModal.operationId)[0] || {}}
+                    />
+                </IF>
             </Content>
         );
     }

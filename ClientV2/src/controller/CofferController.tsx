@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import { Lang, IGamersListView, DLang, LangF, IGuild, GuildBalanceReport, GamerRankList, GamerRank, GamerStatus, GamerStatusList } from '../_services';
 import { Table, Breadcrumb, Row, Col, DatePicker, Layout, Tooltip, Button, Descriptions } from 'antd';
 import style from './coffer.module.scss';
-import { HomeOutlined, RedoOutlined } from '@ant-design/icons';
-import { IStore, formatDateTime } from "../_helpers";
+import { HomeOutlined, RedoOutlined, EditFilled } from '@ant-design/icons';
+import { IStore, formatDateTime, IF } from "../_helpers";
 import { gamerInstance, guildInstance } from "../_actions";
 import { ColumnProps } from "antd/lib/table";
 import { Content } from "../_components/Content/Content";
@@ -23,6 +23,7 @@ import { ShowLoanDialog } from "../_components/Loans/ShowLoanDialog";
 import { AddUserDialog } from "../_components/Coffers/AddUserDialog";
 import { Private } from "../_components/Private";
 import { EditableSelect, IItem } from "../_components/Coffers/UserStatus";
+import { AddOperationDialog } from "../_components/Operations/AddOperationDialog";
 
 
 interface IMainProps {
@@ -48,6 +49,7 @@ interface IState {
     addCharacterModal: ModalState;
     addLoanModal: ModalState;
     addPenaltyModal: ModalState;
+    addOperationModal: ModalState & { userId?: string; };
     showLoanDialog: ModalState & { loanId?: string; userId?: string; };
     addUserDialog: ModalState;
     filter: string;
@@ -60,6 +62,7 @@ export class _CofferController extends React.Component<IMainProps, IState> {
     constructor(props: IMainProps) {
         super(props);
         this.state = {
+            addOperationModal: { show: false },
             addCharacterModal: { show: false },
             addLoanModal: { show: false },
             addPenaltyModal: { show: false },
@@ -163,6 +166,16 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                                 style={{ color: value > 0 ? 'green' : 'red' }}
                             >
                                 {value}
+                                <Private roles={['admin', 'leader', 'officer']}>
+                                    <Tooltip title={Lang('EDIT_BALANCE')}>
+                                        <Button
+                                            type="link"
+                                            className={style['add']}
+                                            icon={<EditFilled />}
+                                            onClick={() => this.toggleAddOperationDialog(record.id)}
+                                        />
+                                    </Tooltip>
+                                </Private>
                             </div>
                         };
                     }
@@ -278,6 +291,10 @@ export class _CofferController extends React.Component<IMainProps, IState> {
         this.setState({ addUserDialog: { show: !this.state.addUserDialog.show } });
     }
 
+    toggleAddOperationDialog = (userId?: string) => {
+        this.setState({ addOperationModal: { show: !this.state.addOperationModal.show, userId } });
+    }
+
     render() {
         const { isLoading, guild, balanceReport } = this.props;
         const { date } = this.state;
@@ -355,7 +372,7 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                                             placeholder="введите текст для поиска"
                                             enterButton='search'
                                             onSearch={(value: string) => {
-                                                this.setState({ filter: (value || '').toLowerCase() });
+                                                this.setState({ filter: (value || '').toLowerCase().trim() });
                                             }}
                                         />
                                     </Col>
@@ -424,6 +441,14 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                     onClose={this.toggleAddUserDialog}
                     visible={this.state.addUserDialog.show}
                 />
+                <IF value={this.state.addOperationModal.show}>
+                    <AddOperationDialog
+                        onClose={this.toggleAddOperationDialog}
+                        visible={this.state.addOperationModal.show}
+                        userId={this.state.addOperationModal.userId}
+                        users={this.getGamers()}
+                    />
+                </IF>
             </Content>
         );
     }

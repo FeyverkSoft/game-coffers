@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { RefObject, createRef } from 'react';
 import { Modal, Form, Select, Input } from 'antd';
 import { Lang, DLang, OperationTypeList, OperationType, IGamersListView } from '../../_services';
 import { connect } from 'react-redux';
@@ -7,11 +7,13 @@ import { getGuid, IF } from '../../_helpers';
 import { operationsInstance } from '../../_actions';
 import { IAvailableDocument } from '../../_services/operation/IAvailableDocuments';
 import { IDictionary } from '../../core';
+import { FormInstance } from 'antd/lib/form';
 
 interface IAddOperationDialog {
     availableDocuments: Array<IAvailableDocument>;
     isDocLoading?: boolean;
     visible?: boolean;
+    userId?: string;
     users: Array<IGamersListView>;
 
     onClose(): void;
@@ -24,11 +26,20 @@ interface ISate {
     userId?: string;
 }
 class addOperationDialog extends React.Component<IAddOperationDialog, ISate> {
-    constructor(props: IAddOperationDialog) {
-        super(props);
-        this.state = {
-            showDocument: false
-        }
+    formRef: RefObject<FormInstance> = createRef<FormInstance>();
+
+    state: ISate = {
+        showDocument: false
+    };
+
+    componentDidMount = () => {
+        setTimeout(() => {
+            if (this.formRef.current) {
+                this.formRef.current.setFieldsValue({
+                    userId: this.props.userId || ''
+                });
+            }
+        }, 150);
     }
 
     onFinish = (formData: IDictionary<string>) => {
@@ -66,8 +77,10 @@ class addOperationDialog extends React.Component<IAddOperationDialog, ISate> {
                 <Form
                     layout='vertical'
                     id='add-op-form'
+                    initialValues={{ type: 'Other' }}
                     onValuesChange={this.onChange}
                     onFinish={this.onFinish}
+                    ref={this.formRef}
                 >
                     <Form.Item
                         name="amount"
@@ -126,7 +139,6 @@ class addOperationDialog extends React.Component<IAddOperationDialog, ISate> {
                     >
                         <Select
                             placeholder={Lang('OPERATION_TYPE')}
-                            defaultValue={'Other'}
                         >
                             {
                                 OperationTypeList.map(t => <Select.Option key={t} value={t}>{DLang('OPERATIONS_TYPE', t)}</Select.Option>)
@@ -159,6 +171,7 @@ class addOperationDialog extends React.Component<IAddOperationDialog, ISate> {
 
 interface AddOperationDialogProps {
     users: Array<IGamersListView>;
+    userId?: string;
 }
 const connectedAddOperationDialog = connect<{}, {}, any, IStore>(
     (state: IStore, props: AddOperationDialogProps) => {

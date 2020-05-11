@@ -1,4 +1,4 @@
-import React, { RefObject } from 'react';
+import React, { RefObject, createRef } from 'react';
 import { Modal, Form, Select } from 'antd';
 import { Lang, DLang, OperationTypeList, OperationType, IGamersListView, IOperationView } from '../../_services';
 import { connect } from 'react-redux';
@@ -25,14 +25,18 @@ interface ISate {
     documentType?: OperationType;
 }
 class editOperationDialog extends React.Component<IEditOperationDialog, ISate> {
-    formRef: RefObject<FormInstance>;
+    formRef: RefObject<FormInstance> = createRef<FormInstance>();
+    state: ISate = {
+        showDocument: false
+    }
 
-    constructor(props: IEditOperationDialog) {
-        super(props);
-        this.state = {
-            showDocument: false
-        }
-        this.formRef = React.createRef<FormInstance>();
+    componentDidMount = () => {
+        setTimeout(() => {
+            if (this.formRef.current) {
+                const { operation } = this.props;
+                this.formRef.current.setFieldsValue(operation);
+            }
+        }, 150);
     }
 
     onFinish = (formData: IDictionary<string>) => {
@@ -57,9 +61,7 @@ class editOperationDialog extends React.Component<IEditOperationDialog, ISate> {
     }
 
     render = () => {
-        const { isDocLoading, availableDocuments, visible, users, operation } = this.props;
-        if (this.formRef.current)
-            this.formRef.current.setFieldsValue(operation);
+        const { isDocLoading, availableDocuments, visible, operation } = this.props;
         return (
             <Modal
                 title={Lang('EDIT_OPERATION_MODAL')}
@@ -85,7 +87,6 @@ class editOperationDialog extends React.Component<IEditOperationDialog, ISate> {
                     >
                         <Select
                             placeholder={Lang('OPERATION_TYPE')}
-                            defaultValue={operation.type}
                         >
                             {
                                 OperationTypeList.map(t => <Select.Option key={t} value={t}>{DLang('OPERATIONS_TYPE', t)}</Select.Option>)
