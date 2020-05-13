@@ -14,7 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Query.Core\Query.Core.csproj" />
+    <ProjectReference Include="..\..\Lib\Query.Core\Query.Core.csproj" />
     <ProjectReference Include="..\Coffers.Public.Domain\Coffers.Public.Domain.csproj" />
   </ItemGroup>
 

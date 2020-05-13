@@ -50,6 +50,8 @@ namespace Coffers.Public.Infrastructure.Operations
 
                 b.Property(o => o.ParentOperationId)
                     .IsRequired(false);
+
+                b.Ignore(_ => _.Events);
             });
 
             modelBuilder.Entity<Loan>(b =>

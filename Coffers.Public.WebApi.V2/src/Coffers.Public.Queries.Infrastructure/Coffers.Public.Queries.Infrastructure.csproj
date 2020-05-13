@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Query.Core\Query.Core.csproj" />
+    <ProjectReference Include="..\..\Lib\Query.Core\Query.Core.csproj" />
     <ProjectReference Include="..\Coffers.Helpers\Coffers.Helpers.csproj" />
     <ProjectReference Include="..\Coffers.Public.Queries\Coffers.Public.Queries.csproj" />
     <ProjectReference Include="..\Coffers.Types\Coffers.Types.csproj" />
