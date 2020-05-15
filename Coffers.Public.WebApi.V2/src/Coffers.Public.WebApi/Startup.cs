@@ -13,6 +13,7 @@ using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Extensions;
 using Coffers.Public.WebApi.Filters;
 using Coffers.Public.WebApi.Middlewares;
+using Core.Rabbita.InProc.FluentExtensions;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
@@ -158,7 +159,7 @@ namespace Coffers.Public.WebApi
             services.AddScoped<Domain.Operations.OperationCreator>();
             services.AddScoped<Domain.Operations.DocumentValidator>();
             services.AddScoped<Domain.Operations.DocumentSetter>();
-            
+
 
             #endregion
 
@@ -199,6 +200,12 @@ namespace Coffers.Public.WebApi
             services.AddHostedService<Infrastructure.Loans.LoanRecurrentProcessor>();
             services.AddHostedService<Infrastructure.Penalties.PenaltyRecurrentProcessor>();
             services.AddSwagger();
+
+            services.AddEventBus();
+            services.AddEventProcessor(registry =>
+            {
+                registry.Register<EventHandlers.LoanOperationCreatedEventHandler>();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

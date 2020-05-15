@@ -1,4 +1,4 @@
 ﻿namespace Core.Rabbita
 {
-    public interface ICommand { }
+    public interface ICommand: IMessage { }
 }

@@ -1,4 +1,4 @@
 ﻿namespace Core.Rabbita
 {
-    public interface IEvent { }
+    public interface IEvent: IMessage { }
 }

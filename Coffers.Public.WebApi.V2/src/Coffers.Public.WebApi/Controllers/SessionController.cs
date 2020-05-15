@@ -5,9 +5,11 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Coffers.Public.Domain.Authorization;
+using Coffers.Public.Domain.Operations.Events;
 using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Exceptions;
 using Coffers.Public.WebApi.Models.Auth;
+using Core.Rabbita;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -65,6 +67,16 @@ namespace Coffers.Public.WebApi.Controllers
                 GuildId = gamer.GuildId,
                 Roles = roles.Distinct(StringComparer.InvariantCultureIgnoreCase).ToArray()
             });
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> Re(
+            [FromServices] IEventBus bus,
+            CancellationToken cancellationToken)
+        {
+            await bus.Send(new LoanOperationCreated(Guid.NewGuid(), Guid.NewGuid()));
+            return Ok(new { });
         }
 
         [HttpDelete]

@@ -28,6 +28,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{21DECC5D-02E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Rabbita", "Lib\Core.Rabbita\Core.Rabbita.csproj", "{B5AFC86B-A71A-46C8-8EC5-4F33636596CE}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Rabbita.InProc", "Lib\Core.Rabbita.InProc\Core.Rabbita.InProc.csproj", "{29041A5E-5BBE-4E45-8A00-D9DCAB8B3CA6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,6 +80,10 @@ Global
 		{B5AFC86B-A71A-46C8-8EC5-4F33636596CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5AFC86B-A71A-46C8-8EC5-4F33636596CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B5AFC86B-A71A-46C8-8EC5-4F33636596CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29041A5E-5BBE-4E45-8A00-D9DCAB8B3CA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29041A5E-5BBE-4E45-8A00-D9DCAB8B3CA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29041A5E-5BBE-4E45-8A00-D9DCAB8B3CA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29041A5E-5BBE-4E45-8A00-D9DCAB8B3CA6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -94,6 +100,7 @@ Global
 		{36221D59-045A-4F26-B92C-8E343A62F6F1} = {343B916F-3AA1-4745-B51A-E1A98D3BDE08}
 		{72748CB8-A47B-4E76-8BEF-40DEF3E68DA5} = {21DECC5D-02EC-4CEE-BE2F-09A139653AB3}
 		{B5AFC86B-A71A-46C8-8EC5-4F33636596CE} = {21DECC5D-02EC-4CEE-BE2F-09A139653AB3}
+		{29041A5E-5BBE-4E45-8A00-D9DCAB8B3CA6} = {21DECC5D-02EC-4CEE-BE2F-09A139653AB3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2E6C263F-F130-461B-8A90-C9F19C17DC07}
