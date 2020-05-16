@@ -38,8 +38,17 @@ export interface IOperationView {
      * Дата проведения операции
      */
     createDate: Date;
+
+    parrentOperation?: ParrentOperationView;
 }
 
+export interface ParrentOperationView {
+    id: string;
+    /**
+     * Описание операции
+     */
+    description: string;
+}
 
 export class OperationView implements IOperationView {
     id: string;
@@ -52,6 +61,7 @@ export class OperationView implements IOperationView {
     type: OperationType;
     description: string;
     createDate: Date;
+    parrentOperation?: ParrentOperationView;
 
     constructor(
         id: string,
@@ -63,7 +73,8 @@ export class OperationView implements IOperationView {
         userName: string,
         type: OperationType,
         description: string,
-        createDate: Date
+        createDate: Date,
+        parrentOperation?: ParrentOperationView
     ) {
         this.id = id;
         this.amount = Number(amount);
@@ -75,5 +86,6 @@ export class OperationView implements IOperationView {
         this.documentDescription = String(documentDescription || '');
         this.userId = String(userId);
         this.userName = String(userName || '');
+        this.parrentOperation = parrentOperation;
     }
 }

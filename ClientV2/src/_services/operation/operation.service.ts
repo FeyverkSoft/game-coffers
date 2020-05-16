@@ -36,7 +36,11 @@ export class operationService {
                     _.userName,
                     _.type,
                     _.description,
-                    _.createDate
+                    _.createDate,
+                    {
+                        description: (_.parrentOperation || {}).description,
+                        id: (_.parrentOperation || {}).id
+                    }
                 ));
             })
             .catch(catchHandle);
@@ -88,11 +92,11 @@ export class operationService {
             })
             .catch(catchHandle);
     }
-    
+
     /**
      * Обновить текущую операцию
      */
-    static async editOperation(id: string, type: string, documentId: string):Promise<IOperationView> {
+    static async editOperation(id: string, type: string, documentId: string): Promise<IOperationView> {
         let session = authService.getCurrentSession();
         const requestOptions: RequestInit = {
             method: 'PUT',

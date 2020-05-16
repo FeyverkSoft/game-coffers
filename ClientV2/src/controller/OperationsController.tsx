@@ -81,7 +81,16 @@ export class _OperationsController extends React.Component<IMainProps, IState> {
                 {
                     title: Lang('OPERATION_DESCRIPTION'),
                     dataIndex: 'description',
-                    key: 'description'
+                    key: 'description',
+                    render: (value: string, record: IOperationView, index: number) => {
+                        if (record.parrentOperation)
+                            return <div>
+                                <Tooltip title={record.parrentOperation.description}>
+                                   <span>{value}</span>
+                                </Tooltip>
+                            </div>;
+                        return value;
+                    }
                 },
                 {
                     title: Lang('DOCUMENT_DESCRIPTION'),

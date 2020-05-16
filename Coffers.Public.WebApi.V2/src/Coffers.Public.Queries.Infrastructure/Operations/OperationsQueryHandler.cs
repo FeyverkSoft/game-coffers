@@ -37,26 +37,8 @@ namespace Coffers.Public.Queries.Infrastructure.Operations
             var operations = await _db.QueryAsync<Entity.OperationListItem>(Entity.OperationListItem.Sql, new
             {
                 GuildId = query.GuildId,
-                DateMonth = dateMonth,
-                Operations = new Guid[] { }
+                DateMonth = dateMonth
             });
-
-            var parrentOperations = (await _db.QueryAsync<Entity.OperationListItem>(Entity.OperationListItem.Sql, new
-            {
-                GuildId = query.GuildId,
-                Operations = operations.Where(_ => _.ParentOperationId != null).Select(_ => _.ParentOperationId)
-            })).Select(_ => new OperationListView(
-                _.Id,
-                _.Amount,
-                _.CreateDate,
-                _.Description,
-                _.Type,
-                Guid.Empty == _.DocumentId ? null : _.DocumentId,
-                Guid.Empty == _.DocumentId ? null : _.DocumentAmount,
-                _.DocumentDescription,
-                _.UserId,
-                _.UserName,
-                null));
 
             return operations.Select(_ => new OperationListView(
                 _.Id,
@@ -69,7 +51,8 @@ namespace Coffers.Public.Queries.Infrastructure.Operations
                 _.DocumentDescription,
                 _.UserId,
                 _.UserName,
-                parrentOperations.FirstOrDefault(po => po.Id == _.Id))).ToImmutableList();
+                _.ParentOperationId != null ? new ParrentOperationView(_.ParentOperationId.Value, _.ParentOperationDescription) : null
+            )).ToImmutableList();
         }
 
         public async Task<ICollection<DocumentView>> Handle(GetDocumentsQuery query, CancellationToken cancellationToken)

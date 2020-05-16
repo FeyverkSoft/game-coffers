@@ -53,7 +53,7 @@ namespace Coffers.Public.Queries.Operations
         /// </summary>
         public String UserName { get; }
 
-        public OperationListView ParrentOperation { get; }
+        public ParrentOperationView ParrentOperation { get; }
 
         public OperationListView(
             in Guid id,
@@ -66,10 +66,27 @@ namespace Coffers.Public.Queries.Operations
             in String documentDescription,
             in Guid userId,
             in String userName,
-            in OperationListView parrentOperation = null)
+            in ParrentOperationView parrentOperation = null)
             => (Id, Amount, CreateDate, Description, Type, DocumentId, DocumentAmount, DocumentDescription, UserId,
                     UserName, ParrentOperation) =
                 (id, amount, date, description, type, documentId, documentAmount, documentDescription, userId,
                     userName, parrentOperation);
+    }
+
+    public sealed class ParrentOperationView
+    {
+        /// <summary>
+        /// Идентификатор платёжной операции
+        /// </summary>
+        public Guid Id { get; }
+
+        /// <summary>
+        /// Описание операции
+        /// </summary>
+        public String Description { get; }
+
+        public ParrentOperationView(in Guid id, in String description)
+            => (Id, Description)
+                = (id, description);
     }
 }
