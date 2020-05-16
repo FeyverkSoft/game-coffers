@@ -7,6 +7,7 @@ namespace Core.Rabbita.InProc
     internal sealed class InProcCommandBus : ICommandBus
     {
         private AsyncConcurrentQueue<ICommand> Queue { get; }
+
         public InProcCommandBus(AsyncConcurrentQueue<ICommand> queue)
         {
             Queue = queue;
@@ -19,8 +20,7 @@ namespace Core.Rabbita.InProc
 
         public async Task Send(IEnumerable<ICommand> messages)
         {
-            foreach (var message in messages)
-            {
+            foreach (var message in messages){
                 await Queue.EnqueueAsync(message);
             }
         }

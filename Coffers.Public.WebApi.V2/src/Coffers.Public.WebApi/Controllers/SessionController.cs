@@ -69,7 +69,7 @@ namespace Coffers.Public.WebApi.Controllers
             });
         }
 
-        /*[AllowAnonymous]
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Re(
             [FromServices] IEventBus bus,
@@ -77,7 +77,7 @@ namespace Coffers.Public.WebApi.Controllers
         {
             await bus.Send(new LoanOperationCreated(Guid.NewGuid(), Guid.NewGuid()));
             return Ok(new { });
-        }*/
+        }
 
         [HttpDelete]
         [Authorize]

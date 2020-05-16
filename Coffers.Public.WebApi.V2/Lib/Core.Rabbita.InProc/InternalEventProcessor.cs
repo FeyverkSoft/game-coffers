@@ -28,31 +28,28 @@ namespace Core.Rabbita.InProc
             _logger = logger;
         }
 
-        internal async void ListenMessages(CancellationToken cancellationToken)
+        private async void ListenMessages(CancellationToken cancellationToken)
         {
             await Task.Yield();
             using var scope = _provider.CreateScope();
-            while (!cancellationToken.IsCancellationRequested)
-            {
+            while (!cancellationToken.IsCancellationRequested){
                 cancellationToken.ThrowIfCancellationRequested();
-                try
-                {
-                    if (_queue.Count > 0)
-                    {
+                try{
+                    if (_queue.Count > 0){
                         var message = await _queue.DequeueAsync(cancellationToken);
                         var processor = scope.ServiceProvider.GetService(_dispatchers.GetHandlerFor(message));
                         var method = processor.GetType().GetMethod(nameof(IEventHandler<IEvent>.Handle));
-                        try
-                        {
-                            await (Task)method.Invoke(processor, new Object[] { message, cancellationToken });
+                        try{
+                            await (Task) method.Invoke(processor, new Object[] {message, cancellationToken});
                         }
-                        catch (Exception e)
-                        {
+                        catch (Exception e){
                             _logger.LogError($"{processor}: {e.Message}", e);
                         }
                     }
                 }
-                catch (InvalidOperationException e) { _logger.LogError(e.Message, e); }
+                catch (InvalidOperationException e){
+                    _logger.LogError(e.Message, e);
+                }
 
                 await Task.Delay(1, cancellationToken);
             }
