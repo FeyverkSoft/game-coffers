@@ -201,11 +201,11 @@ namespace Coffers.Public.WebApi
             services.AddHostedService<Infrastructure.Penalties.PenaltyRecurrentProcessor>();
             services.AddSwagger();
 
-            services.AddEventBus();
+            /*services.AddEventBus();
             services.AddEventProcessor(registry =>
             {
                 registry.Register<EventHandlers.LoanOperationCreatedEventHandler>();
-            });
+            });*/
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

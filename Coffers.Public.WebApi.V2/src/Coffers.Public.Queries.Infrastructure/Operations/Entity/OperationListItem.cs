@@ -16,7 +16,8 @@ select
     u.`Name` as UserName,
     u.`Id` as UserId,
     coalesce(l.`Description`, p.`Description`) as DocumentDescription,
-    coalesce(l.`Amount`, p.`Amount`, t.`Amount`) as DocumentAmount    
+    coalesce(l.`Amount`, p.`Amount`, t.`Amount`) as DocumentAmount,    
+    op.`ParentOperationId` as ParentOperationId
 from Operation op
 join User u on op.`UserId` = u.`Id`
 left join Loan l on l.`Id` = op.`DocumentId`
@@ -24,8 +25,11 @@ left join Tax t on t.`Id` = op.`DocumentId`
 left join Penalty p on p.`Id` = op.`DocumentId`
 where 1 = 1
     AND u.GuildId = @GuildId
-    AND op.CreateDate >= @DateMonth
-    AND op.CreateDate < ADDDATE(@DateMonth, INTERVAL 1 MONTH)
+    AND (
+        (op.CreateDate >= @DateMonth AND op.CreateDate < ADDDATE(@DateMonth, INTERVAL 1 MONTH))
+        OR 
+        op.Id IN @Operations
+    )
 order by op.`CreateDate` desc 
 ";
 
@@ -39,5 +43,6 @@ order by op.`CreateDate` desc
         public String DocumentDescription { get; }
         public Guid UserId { get; }
         public String UserName { get; }
+        public Guid? ParentOperationId { get; }
     }
 }
