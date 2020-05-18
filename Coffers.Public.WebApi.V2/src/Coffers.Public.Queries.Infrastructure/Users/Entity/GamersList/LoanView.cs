@@ -25,6 +25,7 @@ and (
     or l.LoanStatus in ('Active', 'Expired')
 )
 group by l.Id
+order by l.CreateDate asc 
 ";
 
         public Guid Id { get; }
