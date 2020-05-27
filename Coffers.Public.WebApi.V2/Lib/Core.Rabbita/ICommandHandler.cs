@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 
 namespace Core.Rabbita
 {
-    public interface IEventHandler { }
+    public interface ICommandHandler { }
 
-    public interface IEventHandler<in T> : IEventHandler where T : IEvent, IMessage
+    public interface ICommandHandler<in T> : ICommandHandler where T : ICommand, IMessage
     {
         public Task Handle(T message, CancellationToken cancellationToken);
     }

@@ -9,7 +9,7 @@ namespace Coffers.Public.WebApi.EventHandlers
     {
         public Task Handle(LoanOperationCreated message, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            return Task.Delay(50000, cancellationToken);
         }
     }
 }

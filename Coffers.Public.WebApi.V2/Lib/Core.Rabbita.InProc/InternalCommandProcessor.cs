@@ -9,17 +9,17 @@ using Microsoft.Extensions.Logging;
 
 namespace Core.Rabbita.InProc
 {
-    internal sealed class InternalEventProcessor : BackgroundService
+    internal sealed class InternalCommandProcessor : BackgroundService
     {
-        private readonly AsyncConcurrentQueue<IEvent> _queue;
-        private readonly IEventHandlerRegistry _dispatchers;
+        private readonly AsyncConcurrentQueue<ICommand> _queue;
+        private readonly ICommandHandlerRegistry _dispatchers;
         private readonly IServiceProvider _provider;
         private readonly ILogger _logger;
 
-        public InternalEventProcessor(
-            AsyncConcurrentQueue<IEvent> queue,
+        public InternalCommandProcessor(
+            AsyncConcurrentQueue<ICommand> queue,
             IServiceProvider provider,
-            IEventHandlerRegistry dispatchers,
+            ICommandHandlerRegistry dispatchers,
             ILogger<InternalEventProcessor> logger)
         {
             _queue = queue;
@@ -28,7 +28,7 @@ namespace Core.Rabbita.InProc
             _logger = logger;
         }
 
-        private async void ListenEvent(CancellationToken cancellationToken)
+        private async void ListenCommand(CancellationToken cancellationToken)
         {
             await Task.Yield();
             using var scope = _provider.CreateScope();
@@ -39,20 +39,15 @@ namespace Core.Rabbita.InProc
                             var message = await _queue.DequeueAsync(cancellationToken);
                             var processor = scope.ServiceProvider.GetService(_dispatchers.GetHandlerFor(message));
                             var method = processor.GetType().GetMethod(nameof(IEventHandler<IEvent>.Handle));
-                            try{
-                                ThreadPool.QueueUserWorkItem(async state =>
-                                {
-                                    try{
-                                        await (Task) method.Invoke(processor, new Object[] {message, cancellationToken});
-                                    }
-                                    catch (Exception e){
-                                        _logger.LogError(e, $"{processor}: {e.Message}");
-                                    }
-                                });
-                            }
-                            catch (Exception e){
-                                _logger.LogError(e, $"{processor}: {e.Message}");
-                            }
+                            ThreadPool.QueueUserWorkItem(async state =>
+                            {
+                                try{
+                                    await (Task) method.Invoke(processor, new Object[] {message, cancellationToken});
+                                }
+                                catch (Exception e){
+                                    _logger.LogError(e, $"{processor}: {e.Message}");
+                                }
+                            });
                         }
                     }
                     catch (InvalidOperationException e){
@@ -67,7 +62,7 @@ namespace Core.Rabbita.InProc
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            ListenEvent(stoppingToken);
+            ListenCommand(stoppingToken);
             return Task.CompletedTask;
         }
     }
