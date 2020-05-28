@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Coffers.Public.Domain.Operations.Events;
 using Coffers.Types.Account;
-using Core.Rabbita;
+using Rabbita.Core;
 
 namespace Coffers.Public.Domain.Operations.Entity
 {

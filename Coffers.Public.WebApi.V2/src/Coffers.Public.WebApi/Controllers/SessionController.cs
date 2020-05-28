@@ -9,9 +9,9 @@ using Coffers.Public.Domain.Operations.Events;
 using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Exceptions;
 using Coffers.Public.WebApi.Models.Auth;
-using Core.Rabbita;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Rabbita.Core;
 
 namespace Coffers.Public.WebApi.Controllers
 {

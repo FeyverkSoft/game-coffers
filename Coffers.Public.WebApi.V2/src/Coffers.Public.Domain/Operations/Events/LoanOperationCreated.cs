@@ -1,5 +1,5 @@
 ﻿using System;
-using Core.Rabbita;
+using Rabbita.Core;
 
 namespace Coffers.Public.Domain.Operations.Events
 {

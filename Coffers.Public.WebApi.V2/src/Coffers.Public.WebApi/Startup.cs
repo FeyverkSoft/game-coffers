@@ -13,7 +13,6 @@ using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Extensions;
 using Coffers.Public.WebApi.Filters;
 using Coffers.Public.WebApi.Middlewares;
-using Core.Rabbita.InProc.FluentExtensions;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
@@ -26,6 +25,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MySql.Data.MySqlClient;
 using Query.Core.FluentExtensions;
+using Rabbita.InProc.FluentExtensions;
 
 namespace Coffers.Public.WebApi
 {

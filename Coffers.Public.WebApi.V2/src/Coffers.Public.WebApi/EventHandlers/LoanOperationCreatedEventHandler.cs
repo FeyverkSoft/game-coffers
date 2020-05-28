@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Coffers.Public.Domain.Operations.Events;
-using Core.Rabbita;
+using Rabbita.Core;
 
 namespace Coffers.Public.WebApi.EventHandlers
 {
