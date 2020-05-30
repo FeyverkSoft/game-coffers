@@ -69,18 +69,6 @@ namespace Coffers.Public.WebApi.Controllers
             });
         }
 
-
-        [AllowAnonymous]
-        [HttpGet]
-        public async Task<IActionResult> Re(
-            [FromServices] IEventBus bus,
-            CancellationToken cancellationToken)
-        {
-            await bus.Send(new LoanOperationCreated(Guid.NewGuid(), Guid.NewGuid()));
-            return Ok(new { });
-        }  
-
-
         [HttpDelete]
         [Authorize]
         [ProducesResponseType(200)]

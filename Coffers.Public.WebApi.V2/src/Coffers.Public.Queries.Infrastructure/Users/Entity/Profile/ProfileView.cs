@@ -22,7 +22,7 @@ left join (select
                 sum(o.`Amount`) as Amount, 
                 o.UserId from `Operation` o 
                 where 1 = 1 
-                    and o.Type in ('Emission', 'Other') 
+                    and o.Type in ('Emission', 'Other', 'Tax') 
                 group by o.UserId 
             ) as uo on  uo.`UserId` = u.`Id`
 left join (select 

@@ -27,12 +27,13 @@ LEFT JOIN (
         o.`GuildId`, 
         SUM(o.Amount) AS Balance /*Баланс гильдии на момент запроса*/
     FROM   `Operation` o 
-    WHERE  o.`GuildId` = @GuildId
+    WHERE  o.`GuildId` = @GuildId 
+      AND o.`Type` not in ('Tax')
 ) gs ON ls.`GuildId` = gs.`GuildId`
 LEFT JOIN (
     SELECT 
         o.GuildId, 
-        SUM(o.Amount) AS TaxAmount  /*Уплаченная сумма налогов на текущий момент*/
+        ABS(SUM(o.Amount)) AS TaxAmount  /*Уплаченная сумма налогов на текущий момент*/
     FROM `Operation` o 
     WHERE  1 = 1
     AND o.`GuildId` = @GuildId
@@ -47,7 +48,7 @@ LEFT JOIN (
     FROM `Operation` o 
     WHERE  1 = 1
     AND o.`GuildId` = @GuildId
-    AND o.`Type` = 'Other'
+    AND o.`Type` in ('Other', 'Tax')
 ) gm ON gm.`GuildId` = ls.`GuildId`
 ";
 

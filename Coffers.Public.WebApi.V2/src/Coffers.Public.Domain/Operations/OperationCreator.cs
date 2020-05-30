@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Coffers.Public.Domain.Operations.Entity;
 using Coffers.Types.Account;
 
@@ -35,18 +36,21 @@ namespace Coffers.Public.Domain.Operations
             if (amount == 0m)
                 throw new ArgumentException("OperationCreator: Value mustn't be zero", nameof(amount));
 
-            if (documentId != null)
-                await _validator.Validate(type, documentId.Value, userId, cancellationToken);
-
-            return new Operation(
+            var operation = new Operation(
                 id,
                 guildId,
                 userId,
                 amount,
-                documentId,
-                type,
                 parentOperationId,
                 description?.Trim());
+
+            if (documentId != null)
+            {
+                await _validator.Validate(type, documentId.Value, userId, cancellationToken);
+                operation.SetDocument(type, documentId.Value);
+            }
+
+            return operation;
         }
     }
 }

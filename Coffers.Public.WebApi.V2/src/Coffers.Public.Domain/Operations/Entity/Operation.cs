@@ -58,9 +58,9 @@ namespace Coffers.Public.Domain.Operations.Entity
 
         protected Operation() { }
 
-        public Operation(Guid id, Guid guildId, Guid userId, Decimal amount, Guid? documentId, OperationType type, Guid? parentOperationId, String description)
-        => (Id, GuildId, UserId, Amount, DocumentId, Type, ParentOperationId, Description)
-            = (id, guildId, userId, amount, documentId, type, parentOperationId, description);
+        public Operation(Guid id, Guid guildId, Guid userId, Decimal amount, Guid? parentOperationId, String description)
+        => (Id, GuildId, UserId, Amount, ParentOperationId, Description)
+            = (id, guildId, userId, amount, parentOperationId, description);
 
         internal void SetDocument(OperationType type, Guid documentId)
         {
