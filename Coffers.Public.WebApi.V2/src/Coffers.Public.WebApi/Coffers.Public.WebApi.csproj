@@ -48,7 +48,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Lib\Asp.SwaggerCore\Asp.Core.csproj" />
-    <ProjectReference Include="..\..\Lib\Core.Rabbita.InProc\Core.Rabbita.InProc.csproj" />
     <ProjectReference Include="..\..\Lib\Query.Core\Query.Core.csproj" />
     <ProjectReference Include="..\Coffers.DB.Migration\Coffers.DB.Migrations.csproj" />
     <ProjectReference Include="..\Coffers.Helpers\Coffers.Helpers.csproj" />

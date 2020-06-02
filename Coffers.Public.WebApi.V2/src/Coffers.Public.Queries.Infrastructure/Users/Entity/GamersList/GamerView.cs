@@ -15,7 +15,7 @@ SELECT
     COALESCE(SUM(uo.Amount),0) AS Balance
 FROM `User` u
 LEFT JOIN `Operation` uo ON uo.UserId = u.Id 
-                         AND uo.Type IN ('Emission', 'Other') 
+                         AND uo.Type IN ('Emission', 'Other', 'Tax') 
                          AND uo.CreateDate < ADDDATE(@DeleteDate, INTERVAL 1 MONTH)
 WHERE 1 = 1
     AND u.GuildId = @GuildId
