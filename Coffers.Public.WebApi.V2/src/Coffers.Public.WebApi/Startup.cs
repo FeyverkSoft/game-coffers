@@ -205,6 +205,7 @@ namespace Coffers.Public.WebApi
             services.AddEventProcessor(registry =>
             {
                 registry.Register<EventHandlers.LoanOperationCreatedEventHandler>();
+                registry.Register<EventHandlers.PenaltyOperationCreatedEventHandler>();
             });
         }
 

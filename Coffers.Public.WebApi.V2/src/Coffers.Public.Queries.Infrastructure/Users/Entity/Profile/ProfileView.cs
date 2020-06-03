@@ -36,7 +36,7 @@ left join (select
 left join (select 
                 sum(l.Amount) as Amount,
                 sum(l.TaxAmount) as TaxAmount,
-                l.UserId 
+                l.UserId  
             from `Loan` l
             where 1 = 1 
                 and l.`LoanStatus` in ('Active', 'Expired')
