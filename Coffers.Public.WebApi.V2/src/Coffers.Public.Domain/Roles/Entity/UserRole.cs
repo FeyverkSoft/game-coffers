@@ -1,7 +1,7 @@
 ﻿using System;
 using Coffers.Types.Gamer;
 
-namespace Coffers.Public.Domain.Roles
+namespace Coffers.Public.Domain.Roles.Entity
 {
     public sealed class UserRole
     {

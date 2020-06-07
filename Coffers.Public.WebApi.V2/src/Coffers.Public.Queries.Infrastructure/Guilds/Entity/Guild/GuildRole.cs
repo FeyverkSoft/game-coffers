@@ -1,7 +1,7 @@
 ﻿using System;
 using Coffers.Types.Gamer;
 
-namespace Coffers.Public.Queries.Infrastructure.Guilds.Entity
+namespace Coffers.Public.Queries.Infrastructure.Guilds.Entity.Guild
 {
     internal sealed class GuildRole
     {

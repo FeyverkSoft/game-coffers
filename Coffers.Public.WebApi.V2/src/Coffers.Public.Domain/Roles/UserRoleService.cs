@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Coffers.Helpers;
+using Coffers.Public.Domain.Roles.Entity;
 using Coffers.Types.Gamer;
 
 namespace Coffers.Public.Domain.Roles

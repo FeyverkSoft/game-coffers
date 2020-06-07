@@ -1,7 +1,7 @@
 ﻿using System;
 using FluentValidation;
 
-namespace Coffers.Public.WebApi.Models.User
+namespace Coffers.Public.WebApi.Models.Penalty
 {
     public class AddPenaltyBinding
     {

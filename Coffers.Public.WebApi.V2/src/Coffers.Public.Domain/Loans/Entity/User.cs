@@ -1,7 +1,7 @@
 ﻿using System;
 using Coffers.Types.Gamer;
 
-namespace Coffers.Public.Domain.Loans
+namespace Coffers.Public.Domain.Loans.Entity
 {
     public sealed class User
     {

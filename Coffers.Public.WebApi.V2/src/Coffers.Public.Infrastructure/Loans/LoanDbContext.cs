@@ -1,5 +1,6 @@
 ﻿using System;
 using Coffers.Public.Domain.Loans;
+using Coffers.Public.Domain.Loans.Entity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Coffers.Public.Infrastructure.Loans

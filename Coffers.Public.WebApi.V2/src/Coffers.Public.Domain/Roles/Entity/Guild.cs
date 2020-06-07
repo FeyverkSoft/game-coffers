@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Coffers.Types.Gamer;
 
-namespace Coffers.Public.Domain.Roles
+namespace Coffers.Public.Domain.Roles.Entity
 {
     public sealed class Guild
     {

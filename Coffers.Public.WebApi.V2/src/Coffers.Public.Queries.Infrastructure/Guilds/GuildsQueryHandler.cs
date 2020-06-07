@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Coffers.Helpers;
 using Coffers.Public.Queries.Guilds;
 using Coffers.Public.Queries.Infrastructure.Guilds.Entity;
+using Coffers.Public.Queries.Infrastructure.Guilds.Entity.Guild;
+using Coffers.Public.Queries.Infrastructure.Guilds.Entity.GuildBalance;
 using Query.Core;
 using Dapper;
 

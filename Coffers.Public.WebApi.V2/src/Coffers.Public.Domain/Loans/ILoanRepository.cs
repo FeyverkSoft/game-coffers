@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Coffers.Public.Domain.Loans.Entity;
 
 namespace Coffers.Public.Domain.Loans
 {

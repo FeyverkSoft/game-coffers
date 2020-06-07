@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Coffers.Public.Domain.Roles;
+using Coffers.Public.Domain.Roles.Entity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Coffers.Public.Infrastructure.Roles

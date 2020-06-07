@@ -7,6 +7,7 @@ using Coffers.Public.Domain.Penalties;
 using Coffers.Public.Queries.Penalties;
 using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Exceptions;
+using Coffers.Public.WebApi.Models.Penalty;
 using Coffers.Public.WebApi.Models.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Coffers.Helpers;
 using Coffers.Types.Account;
 using Coffers.Types.Gamer;
 
-namespace Coffers.Public.Domain.Loans
+namespace Coffers.Public.Domain.Loans.Entity
 {
     /// <summary>
     /// Сущность хранит займы игрока
@@ -21,6 +21,7 @@ namespace Coffers.Public.Domain.Loans
         /// Идентификатор игрока
         /// </summary>
         public Guid UserId { get; }
+
         /// <summary>
         /// Buhjr
         /// </summary>
@@ -77,13 +78,16 @@ namespace Coffers.Public.Domain.Loans
         /// Токен конкуренции, предназначен для разруливания согласованности данных, при ассинхроных запросаз
         /// </summary>
         public Guid ConcurrencyTokens { get; private set; } = Guid.NewGuid();
+
         public Boolean IsActive => LoanStatus == LoanStatus.Active ||
                                    LoanStatus == LoanStatus.Expired;
+
         /// <summary>
         /// Займ стух?
         /// </summary>
         public Boolean IsExpired => ExpiredDate < DateTime.UtcNow ||
                                     LoanStatus == LoanStatus.Expired;
+
         /// <summary>
         /// Займ без налога?
         /// </summary>
@@ -94,16 +98,18 @@ namespace Coffers.Public.Domain.Loans
         /// Время существования займа
         /// </summary>
         internal Int32 Lifetime =>
-           (Int32)Math.Floor((DateTime.UtcNow.Trunc(DateTruncType.Day) - (IsActive ? CreateDate : UpdateDate).Trunc(DateTruncType.Day)).TotalDays);
+            (Int32) Math.Floor((DateTime.UtcNow.Trunc(DateTruncType.Day) - (IsActive ? CreateDate : UpdateDate).Trunc(DateTruncType.Day)).TotalDays);
+
         /// <summary>
         /// Время просрочки в днях
         /// </summary>
         internal Int32 ExpireLifetime =>
-            (Int32)Math.Floor((DateTime.UtcNow.Trunc(DateTruncType.Day) - ExpiredDate.Trunc(DateTruncType.Day))
+            (Int32) Math.Floor((DateTime.UtcNow.Trunc(DateTruncType.Day) - ExpiredDate.Trunc(DateTruncType.Day))
                 .TotalDays);
 
 
         protected Loan() { }
+
         internal Loan(Guid id, Guid userId, Guid? tariffId, Guid guildId, string description, DateTime expiredDate, decimal amount, decimal taxAmount)
         {
             if (amount < 0)
@@ -128,6 +134,16 @@ namespace Coffers.Public.Domain.Loans
 
             if (!IsActive)
                 throw new InvalidOperationException($"Incorrect current loan state; State:{LoanStatus}; Id:{Id}");
+
+            if (Operations.Count > 1)
+                throw new InvalidOperationException($"Incorrect loan; There should not be any loan transactions.");
+
+            var reverseOperations = Operations.Select(operation =>
+                new Operation(Guid.NewGuid(), operation.UserId, -1 * operation.Amount, OperationType.Loan, operation.DocumentId, operation.GuildId)).ToList();
+
+            foreach (var reverseOperation in reverseOperations){
+                Operations.Add(reverseOperation);
+            }
 
             LoanStatus = LoanStatus.Canceled;
             UpdateDate = DateTime.UtcNow;
@@ -184,6 +200,7 @@ namespace Coffers.Public.Domain.Loans
         /// </summary>
         /// <returns></returns>
         internal Decimal GetTaxAmountPerDay() => IsFreeTax ? 0 : Amount * (Tariff.ExpiredLoanTax / 100);
+
         /// <summary>
         /// Сумма штрафа за просрочку в день
         /// </summary>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Coffers.Public.Domain.Roles.Entity;
 
 namespace Coffers.Public.Domain.Roles
 {

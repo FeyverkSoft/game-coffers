@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Coffers.Public.Queries.Infrastructure.Guilds.Entity
+namespace Coffers.Public.Queries.Infrastructure.Guilds.Entity.GuildBalance
 {
     internal sealed class GuildBalance
     {

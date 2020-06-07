@@ -1,4 +1,5 @@
 ﻿using System;
+using Coffers.Public.Domain.Loans.Entity;
 
 namespace Coffers.Public.Domain.Loans
 {

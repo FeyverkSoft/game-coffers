@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Coffers.Public.Domain.Loans
+namespace Coffers.Public.Domain.Loans.Entity
 {
     public class Tariff
     {

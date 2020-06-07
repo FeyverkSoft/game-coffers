@@ -1,4 +1,6 @@
 ﻿using System;
+using Coffers.Public.Domain.Users.Entity;
+
 namespace Coffers.Public.Domain.Users
 {
     public sealed class CharacterAlreadyExists : Exception

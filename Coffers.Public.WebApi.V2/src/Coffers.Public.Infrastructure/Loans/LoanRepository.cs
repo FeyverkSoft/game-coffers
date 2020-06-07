@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Coffers.Public.Domain.Loans;
+using Coffers.Public.Domain.Loans.Entity;
 using Coffers.Types.Gamer;
 using Microsoft.EntityFrameworkCore;
 

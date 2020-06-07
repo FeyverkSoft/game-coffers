@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Coffers.Public.Domain.Roles
+namespace Coffers.Public.Domain.Roles.Entity
 {
     public class Tariff
     {

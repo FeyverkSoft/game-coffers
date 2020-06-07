@@ -1,7 +1,7 @@
 ﻿using System;
 using Coffers.Types.Account;
 
-namespace Coffers.Public.Domain.Loans
+namespace Coffers.Public.Domain.Loans.Entity
 {
     /// <summary>
     /// Операция над счетами
