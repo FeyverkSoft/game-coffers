@@ -49,7 +49,10 @@ namespace Coffers.Public.Domain.Operations
                 await _validator.Validate(type, documentId.Value, userId, cancellationToken);
                 operation.SetDocument(type, documentId.Value);
             }
-
+            else{
+                operation.SetOperationWithoutDocument(type);
+            }
+            
             return operation;
         }
     }

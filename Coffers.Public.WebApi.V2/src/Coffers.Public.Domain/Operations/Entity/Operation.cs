@@ -20,6 +20,7 @@ namespace Coffers.Public.Domain.Operations.Entity
         /// Идентификатор гильдии
         /// </summary>
         public Guid GuildId { get; }
+
         /// <summary>
         /// Пользователь выполнивший операцию
         /// </summary>
@@ -29,6 +30,7 @@ namespace Coffers.Public.Domain.Operations.Entity
         /// Ссылка на родительскую проводку
         /// </summary>
         public Guid? ParentOperationId { get; }
+
         /// <summary>
         /// Дата создания записи
         /// </summary>
@@ -59,8 +61,8 @@ namespace Coffers.Public.Domain.Operations.Entity
         protected Operation() { }
 
         public Operation(Guid id, Guid guildId, Guid userId, Decimal amount, Guid? parentOperationId, String description)
-        => (Id, GuildId, UserId, Amount, ParentOperationId, Description)
-            = (id, guildId, userId, amount, parentOperationId, description);
+            => (Id, GuildId, UserId, Amount, ParentOperationId, Description)
+                = (id, guildId, userId, amount, parentOperationId, description);
 
         internal void SetDocument(OperationType type, Guid documentId)
         {
@@ -72,31 +74,33 @@ namespace Coffers.Public.Domain.Operations.Entity
             Type = type;
             DocumentId = documentId;
 
-            switch (type)
-            {
-                case OperationType.Tax:
-                    break;
-                case OperationType.Sell:
-                    break;
+            switch (type){
                 case OperationType.Penalty:
                     Events.Add(new PenaltyOperationCreated(Id, documentId));
                     break;
                 case OperationType.Loan:
                     Events.Add(new LoanOperationCreated(Id, documentId));
                     break;
+                case OperationType.Tax:
+                case OperationType.Sell:
                 case OperationType.Emission:
-                    break;
                 case OperationType.Output:
-                    break;
                 case OperationType.Other:
-                    break;
                 case OperationType.Deal:
-                    break;
                 case OperationType.LoanTax:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
+        }
+
+        internal void SetOperationWithoutDocument(OperationType type)
+        {
+            if (Type == type)
+                return;
+            if (DocumentId != null)
+                throw new InvalidOperationException("У данной операции уже есть документ. Изменение такой операции невозможно");
+            Type = type;
         }
     }
 }
