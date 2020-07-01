@@ -14,14 +14,22 @@ SELECT
 FROM (
     SELECT 
         u.GuildId, 
-        SUM(l.Amount) + SUM(l.PenaltyAmount) AS ActiveLoansAmount, /*Сумма активных займов*/
-        SUM(case when o.Amount > 0 then  o.Amount else 0 END) AS RepaymentLoansAmount /*Сумма уже уплаченная от суммы займов*/
+        SUM(l.Amount) + SUM(l.PenaltyAmount) AS ActiveLoansAmount /*Сумма активных займов*/
     FROM `User` u
     LEFT JOIN `Loan` l ON u.Id = l.UserId AND l.`LoanStatus` IN ('Active', 'Expired')
-    LEFT JOIN `Operation` o ON o.`DocumentId` = l.Id 
     WHERE  1 = 1
     AND u.`GuildId` = @GuildId
 ) ls
+LEFT JOIN (
+    SELECT 
+        o.GuildId, 
+        SUM(case when o.Amount > 0 then o.Amount else 0 END) AS RepaymentLoansAmount /*Сумма уже уплаченная от суммы займов*/
+    FROM `Operation` o
+    JOIN `Loan` l ON o.DocumentId = l.Id AND l.`LoanStatus` IN ('Active', 'Expired')
+    WHERE  1 = 1
+    AND o.`GuildId` = @GuildId
+    AND o.Type = 'Loan'
+) lo ON lo.`GuildId` = ls.`GuildId`
 LEFT JOIN (
     SELECT 
         o.`GuildId`, 
