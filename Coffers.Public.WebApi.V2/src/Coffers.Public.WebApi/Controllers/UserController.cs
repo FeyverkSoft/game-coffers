@@ -300,7 +300,6 @@ namespace Coffers.Public.WebApi.Controllers
         }
 
         [Authorize]
-        [PermissionRequired("admin", "officer", "leader")]
         [HttpPost("/gamers/current/characters")]
         [ProducesResponseType(201)]
         public async Task<IActionResult> SelfAddCharacter(
