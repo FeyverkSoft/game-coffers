@@ -7,7 +7,7 @@ using Coffers.Public.WebApi.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Coffers.Public.Domain.NestContracts;
-using Coffers.Public.Queries.Users;
+using Coffers.Public.Queries.NestContract;
 using Coffers.Public.WebApi.Exceptions;
 using Coffers.Public.WebApi.Models.NestContract;
 using Query.Core;
@@ -27,8 +27,8 @@ namespace Coffers.Public.WebApi.Controllers
         /// <returns></returns>
         [Authorize]
         [HttpGet("/gamers/current/contracts")]
-        [ProducesResponseType(typeof(ICollection<GamersListView>), 200)]
-        public async Task<ActionResult<GamersListView>> GetCurrentContracts(
+        [ProducesResponseType(typeof(ICollection<NestContractView>), 200)]
+        public async Task<ActionResult<ICollection<NestContractView>>> GetCurrentContracts(
             [FromServices] IQueryProcessor queryProcessor,
             CancellationToken cancellationToken)
         {
@@ -43,15 +43,16 @@ namespace Coffers.Public.WebApi.Controllers
         /// <returns></returns>
         [Authorize]
         [HttpPost("/gamers/current/contracts")]
-        [ProducesResponseType(typeof(ICollection<GamersListView>), 200)]
-        public async Task<ActionResult<GamersListView>> AddCurrentContracts(
+        [ProducesResponseType(typeof(NestContractView), 200)]
+        public async Task<ActionResult<NestContractView>> AddCurrentContracts(
             [FromBody] NestContractBinding binding,
             [FromServices] NestContractCreator contractCreator,
             [FromServices] INestContractRepository repository,
+            [FromServices] IQueryProcessor queryProcessor,
             CancellationToken cancellationToken)
         {
             try{
-                var contract = await contractCreator.Create(HttpContext.GetUserId(), HttpContext.GetGuildId(), binding.NestId, binding.Id,
+                var contract = await contractCreator.Create(HttpContext.GetUserId(), HttpContext.GetGuildId(), binding.Id, binding.NestId,
                     binding.Reward, binding.CharacterName, cancellationToken);
                 await repository.Save(contract, cancellationToken);
             }
@@ -62,7 +63,10 @@ namespace Coffers.Public.WebApi.Controllers
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.NestNotFound, e.Message);
             }
 
-            return Ok(new { });
+            return Ok(await queryProcessor.Process<NestContractQuery, NestContractView>(new NestContractQuery(
+                    guildId: HttpContext.GetGuildId(),
+                    nestContractId: binding.Id),
+                cancellationToken));
         }
 
         /// <summary>
@@ -73,12 +77,32 @@ namespace Coffers.Public.WebApi.Controllers
         /// <returns></returns>
         [Authorize]
         [HttpDelete("/gamers/current/contracts/{contractId}")]
-        [ProducesResponseType(typeof(ICollection<GamersListView>), 200)]
-        public async Task<ActionResult<GamersListView>> CloseContract(
+        [ProducesResponseType(typeof(NestContractView), 200)]
+        public async Task<ActionResult<NestContractView>> CloseContract(
             [FromRoute] Guid contractId,
             CancellationToken cancellationToken)
         {
             return Ok();
+        }
+
+        /// <summary>
+        /// This method get contract
+        /// </summary>
+        /// <param name="binding"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet("/gamers/contracts/{contractId}")]
+        [ProducesResponseType(typeof(NestContractView), 200)]
+        public async Task<ActionResult<NestContractView>> GetContract(
+            [FromRoute] Guid contractId,
+            [FromServices] IQueryProcessor queryProcessor,
+            CancellationToken cancellationToken)
+        {
+            return Ok(await queryProcessor.Process<NestContractQuery, NestContractView>(new NestContractQuery(
+                    guildId: HttpContext.GetGuildId(),
+                    nestContractId: contractId),
+                cancellationToken));
         }
     }
 }

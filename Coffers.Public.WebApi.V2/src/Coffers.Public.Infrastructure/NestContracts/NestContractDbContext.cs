@@ -1,4 +1,5 @@
-﻿using Coffers.Public.Domain.NestContracts;
+﻿using System;
+using Coffers.Public.Domain.NestContracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace Coffers.Public.Infrastructure.NestContracts
@@ -50,6 +51,14 @@ namespace Coffers.Public.Infrastructure.NestContracts
                     .IsRequired();
 
                 b.Property(n => n.NestId)
+                    .IsRequired();
+                
+                b.Property(n => n.Reward)
+                    .HasMaxLength(512)
+                    .IsRequired();
+                b.Property(n => n.Status)
+                    .HasConversion<String>()
+                    .HasMaxLength(16)
                     .IsRequired();
 
                 b.Property(l => l.ConcurrencyTokens)

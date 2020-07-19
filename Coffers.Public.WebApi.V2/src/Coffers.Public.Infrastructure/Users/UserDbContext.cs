@@ -1,5 +1,4 @@
 ﻿using System;
-using Coffers.Public.Domain.Users;
 using Coffers.Public.Domain.Users.Entity;
 using Microsoft.EntityFrameworkCore;
 

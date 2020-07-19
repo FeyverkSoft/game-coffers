@@ -33,7 +33,7 @@ namespace Coffers.Public.Infrastructure.NestContracts
 
         async Task<Nest?> INestGetter.Get(Guid nestId, Guid guildId, CancellationToken cancellationToken)
         {
-            return await _context.Nests.SingleOrDefaultAsync(_ => _.GuildId != guildId &&
+            return await _context.Nests.SingleOrDefaultAsync(_ => _.GuildId == guildId &&
                                                                   _.Id == nestId &&
                                                                   !_.IsHidden, cancellationToken);
         }

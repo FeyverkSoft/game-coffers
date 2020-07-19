@@ -460,6 +460,13 @@ namespace Coffers.DB.Migrations
 
                 b.Property(n => n.UserId)
                     .IsRequired();
+                b.Property(n => n.Reward)
+                    .HasMaxLength(512)
+                    .IsRequired();
+                b.Property(n => n.Status)
+                    .HasConversion<String>()
+                    .HasMaxLength(16)
+                    .IsRequired();
                 b.HasOne(n => n.User)
                     .WithMany()
                     .HasForeignKey(_ => _.UserId)
