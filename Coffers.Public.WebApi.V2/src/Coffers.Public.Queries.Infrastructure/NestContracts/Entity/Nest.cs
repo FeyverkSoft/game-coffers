@@ -1,18 +1,20 @@
 ﻿using System;
 
-namespace Coffers.Public.Queries.Infrastructure.NestContracts
+namespace Coffers.Public.Queries.Infrastructure.NestContracts.Entity
 {
     public sealed class Nest
     {
+        public static String Sql { get; } = "";
+        
         /// <summary>
         /// Идентификатор логова/инстанса
         /// </summary>
         public Guid Id { get; }
 
         /// <summary>
-        /// гильдия которая добавила логово/инстанс в список
+        /// Название логова
         /// </summary>
-        public Guid GuildId { get; }
+        public String Name { get; }
 
         /// <summary>
         /// Признак того что логово было убрано/скрыто/удалено
