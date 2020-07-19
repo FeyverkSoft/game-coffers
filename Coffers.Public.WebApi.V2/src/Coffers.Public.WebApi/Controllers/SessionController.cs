@@ -5,13 +5,11 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Coffers.Public.Domain.Authorization;
-using Coffers.Public.Domain.Operations.Events;
 using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Exceptions;
 using Coffers.Public.WebApi.Models.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Rabbita.Core;
 
 namespace Coffers.Public.WebApi.Controllers
 {

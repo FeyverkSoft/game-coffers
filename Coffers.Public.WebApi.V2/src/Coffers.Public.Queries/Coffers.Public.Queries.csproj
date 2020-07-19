@@ -18,5 +18,9 @@
     <ProjectReference Include="..\Coffers.Public.Domain\Coffers.Public.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="NestContract" />
+  </ItemGroup>
+
 </Project>
 

@@ -162,6 +162,18 @@ namespace Coffers.Public.WebApi
 
 
             #endregion
+            
+            #region NestContracts
+
+            services.AddDbContext<Infrastructure.NestContracts.NestContractDbContext>(options =>
+            {
+                options.UseMySql(Configuration.GetConnectionString("Coffers"));
+            });
+            services.AddScoped<Domain.NestContracts.INestContractRepository, Infrastructure.NestContracts.NestContractRepository>();
+            services.AddScoped<Domain.NestContracts.INestGetter, Infrastructure.NestContracts.NestContractRepository>();
+            services.AddScoped<Domain.NestContracts.NestContractCreator>();
+
+            #endregion
 
             services.AddScoped<Domain.Authorization.UserSecurityService>();
 

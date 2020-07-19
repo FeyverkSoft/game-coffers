@@ -1,5 +1,4 @@
 ﻿using System;
-using Coffers.Types.Gamer;
 using FluentValidation;
 
 namespace Coffers.Public.WebApi.Models.Guild

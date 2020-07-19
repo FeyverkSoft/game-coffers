@@ -99,9 +99,9 @@ namespace Coffers.DB.Migrations
             {
                 b.ToTable(nameof(UserRole));
 
-                b.HasIndex(gt => new { gt.UserRoleId, gt.GuildId })
+                b.HasIndex(gt => new {gt.UserRoleId, gt.GuildId})
                     .IsUnique();
-                b.HasKey(gt => new { gt.UserRoleId, gt.GuildId });
+                b.HasKey(gt => new {gt.UserRoleId, gt.GuildId});
                 b.Property(gt => gt.UserRoleId)
                     .HasConversion<String>()
                     .HasMaxLength(32)
@@ -197,7 +197,6 @@ namespace Coffers.DB.Migrations
                     updateDate: new DateTime(2020, 01, 30, 7, 35, 9, DateTimeKind.Utc),
                     dateOfBirth: new DateTime(2020, 01, 30, 7, 35, 9, DateTimeKind.Utc)
                 ));
-
             });
 
             modelBuilder.Entity<Character>(b =>
@@ -312,7 +311,6 @@ namespace Coffers.DB.Migrations
                 b.Property(l => l.ConcurrencyTokens)
                     .IsRequired()
                     .IsConcurrencyToken();
-
             });
 
             modelBuilder.Entity<Penalty>(b =>
@@ -350,7 +348,6 @@ namespace Coffers.DB.Migrations
                 b.Property(l => l.ConcurrencyTokens)
                     .IsRequired()
                     .IsConcurrencyToken();
-
             });
 
             modelBuilder.Entity<Operation>(b =>
@@ -414,8 +411,72 @@ namespace Coffers.DB.Migrations
                 b.Property(l => l.ConcurrencyTokens)
                     .IsRequired()
                     .IsConcurrencyToken();
-
             });
+
+            
+            
+            modelBuilder.Entity<Nest>(b =>
+            {
+                b.ToTable(nameof(Nest));
+
+                b.HasIndex(g => g.Id)
+                    .IsUnique();
+                b.HasKey(g => g.Id);
+                b.Property(g => g.Id)
+                    .HasColumnName("Id")
+                    .IsRequired();
+
+                b.Property(g => g.IsHidden);
+
+                b.Property(g => g.Name)
+                    .HasColumnName("Name")
+                    .HasMaxLength(512)
+                    .IsRequired();
+
+                b.Property(n => n.GuildId)
+                    .IsRequired();
+
+                b.HasOne(n => n.Guild)
+                    .WithMany()
+                    .HasForeignKey(_ => _.GuildId)
+                    .HasPrincipalKey(_ => _.Id);
+            });
+            
+            modelBuilder.Entity<NestContract>(b =>
+            {
+                b.ToTable(nameof(NestContract));
+
+                b.HasIndex(g => g.Id)
+                    .IsUnique();
+                b.HasKey(g => g.Id);
+                b.Property(g => g.Id)
+                    .HasColumnName("Id")
+                    .IsRequired();
+                
+                b.Property(g => g.CharacterName)
+                    .HasColumnName("Name")
+                    .HasMaxLength(64)
+                    .IsRequired();
+
+                b.Property(n => n.UserId)
+                    .IsRequired();
+                b.HasOne(n => n.User)
+                    .WithMany()
+                    .HasForeignKey(_ => _.UserId)
+                    .HasPrincipalKey(_ => _.Id);
+                
+                b.Property(n => n.NestId)
+                    .IsRequired();
+                b.HasOne(n => n.Nest)
+                    .WithMany()
+                    .HasForeignKey(_ => _.NestId)
+                    .HasPrincipalKey(_ => _.Id);
+                
+                b.Property(l => l.ConcurrencyTokens)
+                    .IsRequired()
+                    .IsConcurrencyToken();
+            });
+
             base.OnModelCreating(modelBuilder);
         }
     }
