@@ -29,7 +29,7 @@ namespace Query.Core
         public Type HandlerFor(Type queryType)
         {
             if (!_handlers.TryGetValue(queryType, out var type))
-                throw new KeyNotFoundException("Not found Hanlder");
+                throw new KeyNotFoundException("Not found Handler");
             return type;
         }
     }
