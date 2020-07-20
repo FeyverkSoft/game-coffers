@@ -28,7 +28,13 @@ namespace Coffers.Public.Queries.Infrastructure.NestContracts
                 NestContractId = query.NestContractId,
                 GuildId = query.GuildId
             });
-            return new NestContractView();
+            return new NestContractView(
+                id: nestContract.Id,
+                userId: nestContract.UserId,
+                reward: nestContract.Reward,
+                characterName: nestContract.CharacterName,
+                nestName: nestContract.NestName
+            );
         }
 
 
