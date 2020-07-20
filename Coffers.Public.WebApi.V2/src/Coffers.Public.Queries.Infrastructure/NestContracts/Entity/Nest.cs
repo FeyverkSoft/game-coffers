@@ -4,7 +4,11 @@ namespace Coffers.Public.Queries.Infrastructure.NestContracts.Entity
 {
     public sealed class Nest
     {
-        public static String Sql { get; } = "";
+        public static String Sql { get; } = @"
+select * from `Nest` n 
+where 1 = 1 
+and `GuildId` = @GuildId
+and `IsHidden` = 0";
         
         /// <summary>
         /// Идентификатор логова/инстанса
@@ -19,6 +23,6 @@ namespace Coffers.Public.Queries.Infrastructure.NestContracts.Entity
         /// <summary>
         /// Признак того что логово было убрано/скрыто/удалено
         /// </summary>
-        public Boolean IsHidden { get; }
+        public Boolean IsHidden { get; } 
     }
 }

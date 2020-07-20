@@ -24,5 +24,6 @@ namespace Coffers.Public.WebApi.Exceptions
         public const String OperationNotFound = "operation_not_found";
         public const String ContractAlreadyExists = "contract_already_exists";
         public const String NestNotFound = "nest_not_found";
+        public const String ContractNotFound  = "contract_not_found";
     }
 }

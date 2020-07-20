@@ -6,6 +6,7 @@ using Asp.Core.FluentExtensions;
 using Coffers.DB.Migrations;
 using Coffers.Public.Queries.Infrastructure.Guilds;
 using Coffers.Public.Queries.Infrastructure.Loans;
+using Coffers.Public.Queries.Infrastructure.NestContracts;
 using Coffers.Public.Queries.Infrastructure.Operations;
 using Coffers.Public.Queries.Infrastructure.Penalties;
 using Coffers.Public.Queries.Infrastructure.Users;
@@ -54,14 +55,8 @@ namespace Coffers.Public.WebApi
             //    .AddHttpMessageHandler<LoggingDelegatingHandler>();
 
             services
-                .AddMvc(options =>
-                {
-                    options.Filters.Add(typeof(ErrorHandlingFilter));
-                })
-                .AddFluentValidation(cfg =>
-                {
-                    cfg.RegisterValidatorsFromAssemblyContaining<Startup>();
-                })
+                .AddMvc(options => { options.Filters.Add(typeof(ErrorHandlingFilter)); })
+                .AddFluentValidation(cfg => { cfg.RegisterValidatorsFromAssemblyContaining<Startup>(); })
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.IgnoreNullValues = true;
@@ -75,7 +70,7 @@ namespace Coffers.Public.WebApi
                 options.UseMySql(Configuration.GetConnectionString("Coffers"));
             });
 
-            #region  GuildCreate
+            #region GuildCreate
 
             services.AddDbContext<Infrastructure.Admin.GuildCreate.GuildsDbContext>(options =>
             {
@@ -87,7 +82,7 @@ namespace Coffers.Public.WebApi
 
             #endregion
 
-            #region  UserRegistration
+            #region UserRegistration
 
             services.AddDbContext<Infrastructure.UserRegistration.UserDbContext>(options =>
             {
@@ -98,12 +93,9 @@ namespace Coffers.Public.WebApi
 
             #endregion
 
-            #region  Users
+            #region Users
 
-            services.AddDbContext<Infrastructure.Users.UserDbContext>(options =>
-            {
-                options.UseMySql(Configuration.GetConnectionString("Coffers"));
-            });
+            services.AddDbContext<Infrastructure.Users.UserDbContext>(options => { options.UseMySql(Configuration.GetConnectionString("Coffers")); });
             services.AddScoped<Domain.Users.IUserRepository, Infrastructure.Users.UserRepository>();
 
             #endregion
@@ -113,29 +105,25 @@ namespace Coffers.Public.WebApi
             #endregion
 
             #region Roles
-            services.AddDbContext<Infrastructure.Roles.GuildsDbContext>(options =>
-            {
-                options.UseMySql(Configuration.GetConnectionString("Coffers"));
-            });
+
+            services.AddDbContext<Infrastructure.Roles.GuildsDbContext>(options => { options.UseMySql(Configuration.GetConnectionString("Coffers")); });
             services.AddScoped<Domain.Roles.IGuildRepository, Infrastructure.Roles.GuildRepository>();
+
             #endregion
 
             #region Penalty
-            services.AddDbContext<Infrastructure.Penalties.PenaltyDbContext>(options =>
-            {
-                options.UseMySql(Configuration.GetConnectionString("Coffers"));
-            });
+
+            services.AddDbContext<Infrastructure.Penalties.PenaltyDbContext>(options => { options.UseMySql(Configuration.GetConnectionString("Coffers")); });
             services.AddScoped<Domain.Penalties.IPenaltyRepository, Infrastructure.Penalties.PenaltyRepository>();
             services.AddScoped<Domain.Penalties.IUserRepository, Infrastructure.Penalties.UserRepository>();
             services.AddScoped<Domain.Penalties.IOperationRepository, Infrastructure.Penalties.OperationRepository>();
             services.AddScoped<Domain.Penalties.PenaltyProcessor>();
+
             #endregion
 
             #region Loan
-            services.AddDbContext<Infrastructure.Loans.LoanDbContext>(options =>
-            {
-                options.UseMySql(Configuration.GetConnectionString("Coffers"));
-            });
+
+            services.AddDbContext<Infrastructure.Loans.LoanDbContext>(options => { options.UseMySql(Configuration.GetConnectionString("Coffers")); });
             services.AddScoped<Domain.Loans.ILoanRepository, Infrastructure.Loans.LoanRepository>();
             services.AddScoped<Domain.Loans.IGuildRepository, Infrastructure.Loans.GuildRepository>();
             services.AddScoped<Domain.Loans.IOperationRepository, Infrastructure.Loans.OperationRepository>();
@@ -145,24 +133,19 @@ namespace Coffers.Public.WebApi
             services.AddScoped<Domain.Loans.LoanTaxProcessor>();
             services.AddScoped<Domain.Loans.LoanProcessor>();
 
-
             #endregion
 
             #region Operations
 
-            services.AddDbContext<Infrastructure.Operations.OperationDbContext>(options =>
-            {
-                options.UseMySql(Configuration.GetConnectionString("Coffers"));
-            });
+            services.AddDbContext<Infrastructure.Operations.OperationDbContext>(options => { options.UseMySql(Configuration.GetConnectionString("Coffers")); });
             services.AddScoped<Domain.Operations.IOperationsRepository, Infrastructure.Operations.OperationRepository>();
             services.AddScoped<Domain.Operations.IDocumentRepository, Infrastructure.Operations.DocumentRepository>();
             services.AddScoped<Domain.Operations.OperationCreator>();
             services.AddScoped<Domain.Operations.DocumentValidator>();
             services.AddScoped<Domain.Operations.DocumentSetter>();
 
-
             #endregion
-            
+
             #region NestContracts
 
             services.AddDbContext<Infrastructure.NestContracts.NestContractDbContext>(options =>
@@ -186,6 +169,7 @@ namespace Coffers.Public.WebApi
                 registry.Register<OperationsQueryHandler>();
                 registry.Register<LoanQueryHandler>();
                 registry.Register<PenaltyQueryHandler>();
+                registry.Register<NestContractQueryHandler>();
             });
 
 
@@ -201,12 +185,15 @@ namespace Coffers.Public.WebApi
                     options.DefaultChallengeScheme = "Token";
                 })
                 .AddScheme<AuthenticationSchemeOptions, SessionAuthenticationHandler>("Token", "Token", o => { });
+
             #endregion
 
             #region Включение миграции в проект
+
             services.AddDbContext<MigrateDbContext>(options =>
                 options.UseMySql(Configuration.GetConnectionString("CoffersMigration")));
             services.AddHostedService<MigrateService<MigrateDbContext>>();
+
             #endregion
 
             services.AddHostedService<Infrastructure.Loans.LoanRecurrentProcessor>();
@@ -224,10 +211,10 @@ namespace Coffers.Public.WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
+            if (env.IsDevelopment()){
                 app.UseDeveloperExceptionPage();
             }
+
             app.UseCors(builder =>
             {
                 builder.AllowAnyOrigin();
@@ -243,16 +230,11 @@ namespace Coffers.Public.WebApi
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("v1/swagger.json", "Coffer Api v2"); });
-            app.UseRewriter(new RewriteOptions().AddRedirect(@"^$", "swagger", (Int32)HttpStatusCode.Redirect));
+            app.UseRewriter(new RewriteOptions().AddRedirect(@"^$", "swagger", (Int32) HttpStatusCode.Redirect));
         }
     }
 }
-
-

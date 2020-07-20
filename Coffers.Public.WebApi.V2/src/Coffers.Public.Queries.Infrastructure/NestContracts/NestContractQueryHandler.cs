@@ -1,14 +1,18 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Coffers.Public.Queries.Loans;
 using Coffers.Public.Queries.NestContract;
 using Query.Core;
 using Dapper;
 
 namespace Coffers.Public.Queries.Infrastructure.NestContracts
 {
-    public sealed class NestContractQueryHandler : IQueryHandler<NestContractQuery, NestContractView>
+    public sealed class NestContractQueryHandler :
+        IQueryHandler<NestContractQuery, NestContractView>,
+        IQueryHandler<NestsQuery, IEnumerable<NestView>>,
+        IQueryHandler<NestContractsQuery, IEnumerable<NestContractView>>
     {
         private readonly IDbConnection _db;
 
@@ -25,6 +29,25 @@ namespace Coffers.Public.Queries.Infrastructure.NestContracts
                 GuildId = query.GuildId
             });
             return new NestContractView();
+        }
+
+
+        async Task<IEnumerable<NestView>> IQueryHandler<NestsQuery, IEnumerable<NestView>>.Handle(NestsQuery query, CancellationToken cancellationToken)
+        {
+            var nest = await _db.QueryAsync<Entity.Nest>(Entity.Nest.Sql, new
+            {
+                GuildId = query.GuildId
+            });
+            return nest.Select(_ => new NestView(
+                id: _.Id,
+                name: _.Name,
+                guildId: query.GuildId));
+        }
+
+        async Task<IEnumerable<NestContractView>> IQueryHandler<NestContractsQuery, IEnumerable<NestContractView>>.Handle(NestContractsQuery query,
+            CancellationToken cancellationToken)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

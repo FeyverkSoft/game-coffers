@@ -32,7 +32,9 @@ namespace Coffers.Public.WebApi.Controllers
             [FromServices] IQueryProcessor queryProcessor,
             CancellationToken cancellationToken)
         {
-            return Ok();
+            return Ok(await queryProcessor.Process<NestContractsQuery, IEnumerable<NestContractView>>(new NestContractsQuery(
+                guildId: HttpContext.GetGuildId(),
+                userId: HttpContext.GetUserId()), cancellationToken));
         }
 
         /// <summary>
@@ -99,10 +101,29 @@ namespace Coffers.Public.WebApi.Controllers
             [FromServices] IQueryProcessor queryProcessor,
             CancellationToken cancellationToken)
         {
-            return Ok(await queryProcessor.Process<NestContractQuery, NestContractView>(new NestContractQuery(
+            var contract = await queryProcessor.Process<NestContractQuery, NestContractView>(new NestContractQuery(
                     guildId: HttpContext.GetGuildId(),
                     nestContractId: contractId),
-                cancellationToken));
+                cancellationToken);
+            if (contract == null)
+                throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.ContractNotFound, $"Contract {contractId} fot found");
+            return Ok(contract);
+        }
+
+        /// <summary>
+        /// This method return nests list
+        /// </summary>
+        /// <param name="binding"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet("/guilds/current/nests")]
+        [ProducesResponseType(typeof(IEnumerable<NestView>), 200)]
+        public async Task<ActionResult<IEnumerable<NestView>>> GetNests(
+            [FromServices] IQueryProcessor queryProcessor,
+            CancellationToken cancellationToken)
+        {
+            return Ok(await queryProcessor.Process<NestsQuery, IEnumerable<NestView>>(new NestsQuery(guildId: HttpContext.GetGuildId()), cancellationToken));
         }
     }
 }
