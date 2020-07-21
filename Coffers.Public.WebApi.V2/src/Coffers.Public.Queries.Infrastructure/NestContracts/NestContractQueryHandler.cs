@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading;
@@ -13,7 +14,7 @@ namespace Coffers.Public.Queries.Infrastructure.NestContracts
         IQueryHandler<NestContractQuery, NestContractView>,
         IQueryHandler<NestsQuery, IEnumerable<NestView>>,
         IQueryHandler<NestContractsQuery, IEnumerable<NestContractView>>,
-        IQueryHandler<GuildNestContractsQuery, IDictionary<GuildNestContractView>>
+        IQueryHandler<GuildNestContractsQuery, IDictionary<String, IEnumerable<GuildNestContractView>>>
     {
         private readonly IDbConnection _db;
 
@@ -36,7 +37,7 @@ namespace Coffers.Public.Queries.Infrastructure.NestContracts
                 characterName: nestContract.CharacterName,
                 nestName: nestContract.NestName
             );
-        }      
+        }
 
         async Task<IEnumerable<NestView>> IQueryHandler<NestsQuery, IEnumerable<NestView>>.Handle(NestsQuery query, CancellationToken cancellationToken)
         {
@@ -68,22 +69,21 @@ namespace Coffers.Public.Queries.Infrastructure.NestContracts
             ));
         }
 
-        async Task<IDictionary<GuildNestContractView>> IQueryHandler<GuildNestContractsQuery, IDictionary<GuildNestContractView>>.Handle(GuildNestContractsQuery query,
-            CancellationToken cancellationToken)
+        async Task<IDictionary<String, IEnumerable<GuildNestContractView>>>
+            IQueryHandler<GuildNestContractsQuery, IDictionary<String, IEnumerable<GuildNestContractView>>>.Handle(
+                GuildNestContractsQuery query,
+                CancellationToken cancellationToken)
         {
             var nestContracts = await _db.QueryAsync<Entity.GuildNestContracts>(Entity.GuildNestContracts.Sql, new
             {
                 GuildId = query.GuildId
             });
 
-            return nestContracts.Select(nestContract => new NestContractView(
+            return nestContracts.GroupBy(_ => _.NestName, nestContract => new GuildNestContractView(
                 id: nestContract.Id,
-                userId: nestContract.UserId,
                 reward: nestContract.Reward,
-                characterName: nestContract.CharacterName,
-                nestName: nestContract.NestName
-            ));
+                characterName: nestContract.CharacterName
+            )).ToDictionary(_ => _.Key, _ => (IEnumerable<GuildNestContractView>) _.ToList());
         }
-
     }
 }

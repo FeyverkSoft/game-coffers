@@ -6,12 +6,12 @@ namespace Coffers.Public.Domain.NestContracts
     public sealed class NestContract
     {
         public Guid Id { get; }
-        
+
         /// <summary>
         /// Идентификатор игрока
         /// </summary>
         public Guid UserId { get; }
-        
+
         public Guid NestId { get; }
 
         public String CharacterName { get; }
@@ -24,9 +24,9 @@ namespace Coffers.Public.Domain.NestContracts
         /// <summary>
         /// Состояние контракта
         /// </summary>
-        public NestContractStatus Status { get; } = NestContractStatus.Active;
+        public NestContractStatus Status { get; private set; } = NestContractStatus.Active;
 
-        public Guid ConcurrencyTokens { get; } = Guid.NewGuid();
+        public Guid ConcurrencyTokens { get; private set; } = Guid.NewGuid();
 
         protected NestContract() { }
 

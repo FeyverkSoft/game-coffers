@@ -7,6 +7,7 @@ namespace Coffers.Public.Queries.NestContract
     public sealed class GuildNestContractView
     {
         public Guid Id { get; }
+
         /// <summary>
         /// Ник чара
         /// </summary>
@@ -16,6 +17,9 @@ namespace Coffers.Public.Queries.NestContract
         /// Описание награды
         /// </summary>
         public String Reward { get; }
-    }
 
+        public GuildNestContractView(Guid id, String characterName, String reward) =>
+            (Id, CharacterName, Reward) =
+            (id, characterName, reward);
+    }
 }

@@ -53,18 +53,15 @@ namespace Coffers.Public.WebApi.Controllers
             [FromServices] IQueryProcessor queryProcessor,
             CancellationToken cancellationToken)
         {
-            try
-            {
+            try{
                 var contract = await contractCreator.Create(HttpContext.GetUserId(), HttpContext.GetGuildId(), binding.Id, binding.NestId,
                     binding.Reward, binding.CharacterName, cancellationToken);
                 await repository.Save(contract, cancellationToken);
             }
-            catch (ContractAlreadyExistsException e)
-            {
+            catch (ContractAlreadyExistsException e){
                 throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.ContractAlreadyExists, e.Message);
             }
-            catch (NestNotFoundException e)
-            {
+            catch (NestNotFoundException e){
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.NestNotFound, e.Message);
             }
 
@@ -148,12 +145,12 @@ namespace Coffers.Public.WebApi.Controllers
         /// <returns></returns>
         [Authorize]
         [HttpGet("/guilds/current/contracts")]
-        [ProducesResponseType(typeof(IDictionary<GuildNestContractView>), 200)]
-        public async Task<ActionResult<IDictionary<GuildNestContractView>>> GetNestContracts(
+        [ProducesResponseType(typeof(Dictionary<String, IEnumerable<GuildNestContractView>>), 200)]
+        public async Task<ActionResult<IDictionary<String, IEnumerable<GuildNestContractView>>>> GetNestContracts(
             [FromServices] IQueryProcessor queryProcessor,
             CancellationToken cancellationToken)
         {
-            return Ok(await queryProcessor.Process<GuildNestContractsQuery, IDictionary<GuildNestContractView>>(new GuildNestContractsQuery(
+            return Ok(await queryProcessor.Process<GuildNestContractsQuery, IDictionary<String, IEnumerable<GuildNestContractView>>>(new GuildNestContractsQuery(
                 guildId: HttpContext.GetGuildId()), cancellationToken));
         }
     }

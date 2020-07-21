@@ -6,7 +6,7 @@ using Query.Core;
 
 namespace Coffers.Public.Queries.NestContract
 {
-    public sealed class GuildNestContractsQuery : IQuery<IDictionary<GuildNestContractView>>
+    public sealed class GuildNestContractsQuery : IQuery<IDictionary<String, IEnumerable<GuildNestContractView>>>
     {
         public Guid GuildId { get; }
 
