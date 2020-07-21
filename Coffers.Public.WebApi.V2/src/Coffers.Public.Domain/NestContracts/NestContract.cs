@@ -38,5 +38,11 @@ namespace Coffers.Public.Domain.NestContracts
             CharacterName = characterName;
             Reward = reward;
         }
+
+        public void Close()
+        {
+            Status = NestContractStatus.Closed;
+            ConcurrencyTokens = Guid.NewGuid();
+        }
     }
 }

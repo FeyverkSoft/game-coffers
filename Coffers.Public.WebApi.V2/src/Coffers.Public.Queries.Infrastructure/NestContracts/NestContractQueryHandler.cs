@@ -12,7 +12,8 @@ namespace Coffers.Public.Queries.Infrastructure.NestContracts
     public sealed class NestContractQueryHandler :
         IQueryHandler<NestContractQuery, NestContractView>,
         IQueryHandler<NestsQuery, IEnumerable<NestView>>,
-        IQueryHandler<NestContractsQuery, IEnumerable<NestContractView>>
+        IQueryHandler<NestContractsQuery, IEnumerable<NestContractView>>,
+        IQueryHandler<GuildNestContractsQuery, IDictionary<GuildNestContractView>>
     {
         private readonly IDbConnection _db;
 
@@ -35,8 +36,7 @@ namespace Coffers.Public.Queries.Infrastructure.NestContracts
                 characterName: nestContract.CharacterName,
                 nestName: nestContract.NestName
             );
-        }
-
+        }      
 
         async Task<IEnumerable<NestView>> IQueryHandler<NestsQuery, IEnumerable<NestView>>.Handle(NestsQuery query, CancellationToken cancellationToken)
         {
@@ -53,7 +53,37 @@ namespace Coffers.Public.Queries.Infrastructure.NestContracts
         async Task<IEnumerable<NestContractView>> IQueryHandler<NestContractsQuery, IEnumerable<NestContractView>>.Handle(NestContractsQuery query,
             CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            var nestContracts = await _db.QueryAsync<Entity.UserNestContracts>(Entity.UserNestContracts.Sql, new
+            {
+                UserId = query.UserId,
+                GuildId = query.GuildId
+            });
+
+            return nestContracts.Select(nestContract => new NestContractView(
+                id: nestContract.Id,
+                userId: nestContract.UserId,
+                reward: nestContract.Reward,
+                characterName: nestContract.CharacterName,
+                nestName: nestContract.NestName
+            ));
         }
+
+        async Task<IDictionary<GuildNestContractView>> IQueryHandler<GuildNestContractsQuery, IDictionary<GuildNestContractView>>.Handle(GuildNestContractsQuery query,
+            CancellationToken cancellationToken)
+        {
+            var nestContracts = await _db.QueryAsync<Entity.GuildNestContracts>(Entity.GuildNestContracts.Sql, new
+            {
+                GuildId = query.GuildId
+            });
+
+            return nestContracts.Select(nestContract => new NestContractView(
+                id: nestContract.Id,
+                userId: nestContract.UserId,
+                reward: nestContract.Reward,
+                characterName: nestContract.CharacterName,
+                nestName: nestContract.NestName
+            ));
+        }
+
     }
 }

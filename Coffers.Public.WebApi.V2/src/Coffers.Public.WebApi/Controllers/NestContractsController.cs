@@ -53,15 +53,18 @@ namespace Coffers.Public.WebApi.Controllers
             [FromServices] IQueryProcessor queryProcessor,
             CancellationToken cancellationToken)
         {
-            try{
+            try
+            {
                 var contract = await contractCreator.Create(HttpContext.GetUserId(), HttpContext.GetGuildId(), binding.Id, binding.NestId,
                     binding.Reward, binding.CharacterName, cancellationToken);
                 await repository.Save(contract, cancellationToken);
             }
-            catch (ContractAlreadyExistsException e){
+            catch (ContractAlreadyExistsException e)
+            {
                 throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.ContractAlreadyExists, e.Message);
             }
-            catch (NestNotFoundException e){
+            catch (NestNotFoundException e)
+            {
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.NestNotFound, e.Message);
             }
 
@@ -82,9 +85,22 @@ namespace Coffers.Public.WebApi.Controllers
         [ProducesResponseType(typeof(NestContractView), 200)]
         public async Task<ActionResult<NestContractView>> CloseContract(
             [FromRoute] Guid contractId,
+            [FromServices] INestContractRepository repository,
+            [FromServices] IQueryProcessor queryProcessor,
             CancellationToken cancellationToken)
         {
-            return Ok();
+            var contract = await repository.Get(contractId, cancellationToken);
+
+            if (contract == null || contract.UserId != HttpContext.GetUserId())
+                throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.ContractNotFound, $"Contract {contractId} fot found");
+
+            contract.Close();
+            await repository.Save(contract, cancellationToken);
+
+            return Ok(await queryProcessor.Process<NestContractQuery, NestContractView>(new NestContractQuery(
+                    guildId: HttpContext.GetGuildId(),
+                    nestContractId: contractId),
+                cancellationToken));
         }
 
         /// <summary>
@@ -113,7 +129,6 @@ namespace Coffers.Public.WebApi.Controllers
         /// <summary>
         /// This method return nests list
         /// </summary>
-        /// <param name="binding"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [Authorize]
@@ -124,6 +139,22 @@ namespace Coffers.Public.WebApi.Controllers
             CancellationToken cancellationToken)
         {
             return Ok(await queryProcessor.Process<NestsQuery, IEnumerable<NestView>>(new NestsQuery(guildId: HttpContext.GetGuildId()), cancellationToken));
+        }
+
+        /// <summary>
+        /// This method return nestscontracts
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet("/guilds/current/contracts")]
+        [ProducesResponseType(typeof(IDictionary<GuildNestContractView>), 200)]
+        public async Task<ActionResult<IDictionary<GuildNestContractView>>> GetNestContracts(
+            [FromServices] IQueryProcessor queryProcessor,
+            CancellationToken cancellationToken)
+        {
+            return Ok(await queryProcessor.Process<GuildNestContractsQuery, IDictionary<GuildNestContractView>>(new GuildNestContractsQuery(
+                guildId: HttpContext.GetGuildId()), cancellationToken));
         }
     }
 }

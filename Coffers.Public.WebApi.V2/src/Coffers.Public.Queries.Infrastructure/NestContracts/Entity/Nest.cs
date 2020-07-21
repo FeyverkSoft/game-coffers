@@ -2,7 +2,7 @@
 
 namespace Coffers.Public.Queries.Infrastructure.NestContracts.Entity
 {
-    public sealed class Nest
+    internal sealed class Nest
     {
         public static String Sql { get; } = @"
 select * from `Nest` n 

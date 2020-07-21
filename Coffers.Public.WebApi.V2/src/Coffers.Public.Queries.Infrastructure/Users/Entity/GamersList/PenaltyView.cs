@@ -1,9 +1,10 @@
 ﻿using System;
+
 using Coffers.Types.Gamer;
 
 namespace Coffers.Public.Queries.Infrastructure.Users.Entity.GamersList
 {
-    class PenaltyView
+    internal sealed class PenaltyView
     {
         public static readonly String Sql = @"
 select 

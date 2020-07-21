@@ -3,7 +3,7 @@ using Coffers.Types.Account;
 
 namespace Coffers.Public.Queries.Infrastructure.Operations.Entity
 {
-    public sealed class DocumentView
+    internal sealed class DocumentView
     {
         internal static readonly String Sql = @"
 SELECT 

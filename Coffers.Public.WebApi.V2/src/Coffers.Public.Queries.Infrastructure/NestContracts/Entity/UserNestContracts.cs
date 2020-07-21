@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Coffers.Public.Queries.Infrastructure.NestContracts.Entity
 {
-    internal sealed class NestContract
+    public sealed class UserNestContracts
     {
         public static String Sql { get; } = @"
 select 
@@ -14,8 +16,8 @@ select
 from `NestContract` nc 
 join `Nest` n on n.Id = nc.NestId 
 where 1 = 1 
-and `GuildId` = @GuildId
-and nc.`Id` = @NestContractId";
+and n.`GuildId` = @GuildId
+and nc.`UserId` = @UserId";
 
         public Guid Id { get; }
 
