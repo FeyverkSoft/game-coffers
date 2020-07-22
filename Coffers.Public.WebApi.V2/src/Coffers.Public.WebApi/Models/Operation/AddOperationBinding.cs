@@ -36,7 +36,7 @@ namespace Coffers.Public.WebApi.Models.Operation
         /// <summary>
         /// Описание операции
         /// </summary>
-        public String Description { get; set; }
+        public String? Description { get; set; }
     }
 
     public class AddOperationBindingValidator : AbstractValidator<AddOperationBinding>

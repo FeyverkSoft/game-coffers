@@ -22,7 +22,7 @@ namespace Coffers.Public.WebApi.Models.User
         /// <summary>
         /// Is main character
         /// </summary>
-        public Boolean IsMain { get; set; }
+        public Boolean IsMain { get; set; } = false;
     }
     public sealed class AddCharacterBindingValidator : AbstractValidator<AddCharacterBinding>
     {

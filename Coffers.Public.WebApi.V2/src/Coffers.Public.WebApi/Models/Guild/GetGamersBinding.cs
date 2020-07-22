@@ -15,7 +15,7 @@ namespace Coffers.Public.WebApi.Models.Guild
         /// <summary>
         /// Gamer statuses list
         /// </summary>
-        public List<GamerStatus> GamerStatuses { get; set; }
+        public List<GamerStatus>? GamerStatuses { get; set; }
     }
 
     public class GetGamersBindingValidator : AbstractValidator<GetGamersBinding>
