@@ -4,7 +4,7 @@
   @include flex();
   align-items: flex-start;
   @media screen and (max-width: $mobile-L) {
-    flex-direction: column;
+    flex-wrap: wrap;
   }
   .add {
     @include flex();

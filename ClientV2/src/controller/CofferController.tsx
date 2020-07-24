@@ -84,11 +84,11 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                             props: {
                                 className: style[record.status.toLocaleLowerCase()]
                             },
-                            children: <div>
+                            children: <div className={style['title']}>
                                 <Col style={{
                                     fontWeight: 500,
                                     padding: '.25rem .5rem',
-                                }}>
+                                }} className={style['sub-title']}>
                                     {LangF('USER_CHAR_LIST', value)}
                                 </Col>
                                 <Col>
@@ -116,13 +116,25 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                             props: {
                                 className: style[record.status.toLocaleLowerCase()]
                             },
-                            children: this.state.isCurrentDate ? <EditableSelect
-                                value={value}
-                                items={GamerStatusList.map((_): IItem => {
-                                    return { value: _, description: DLang('USER_STATUS', _) }
-                                })}
-                                onSave={(value: string) => this.props.setUserStatus(record.id, value)}
-                            /> : value
+                            children: <div className={style['title']}>
+                                <Col style={{
+                                    fontWeight: 500,
+                                    padding: '.25rem .5rem',
+                                }} className={style['sub-title']}>
+                                    {Lang('USER_ROW_STATUS')}
+                                </Col>
+                                <Col>
+                                    {
+                                        this.state.isCurrentDate ? <EditableSelect
+                                            value={value}
+                                            items={GamerStatusList.map((_): IItem => {
+                                                return { value: _, description: DLang('USER_STATUS', _) }
+                                            })}
+                                            onSave={(value: string) => this.props.setUserStatus(record.id, value)}
+                                        /> : value
+                                    }
+                                </Col>
+                            </div>
                         }
                     }
                 },
@@ -139,13 +151,22 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                             props: {
                                 className: `${style[record.status.toLocaleLowerCase()]} ${style[record.rank.toLocaleLowerCase()]}`
                             },
-                            children: this.state.isCurrentDate ? <EditableSelect
-                                value={value}
-                                items={GamerRankList.map((_): IItem => {
-                                    return { value: _, description: DLang('USER_RANK', _) }
-                                })}
-                                onSave={(value: string) => this.props.setUserRank(record.id, value)}
-                            /> : value
+                            children: <div className={style['title']}>
+                                <Col style={{
+                                    fontWeight: 500,
+                                    padding: '.25rem .5rem',
+                                }} className={style['sub-title']}>
+                                    {Lang('USER_ROW_RANK')}
+                                </Col>
+                                <Col>{this.state.isCurrentDate ? <EditableSelect
+                                    value={value}
+                                    items={GamerRankList.map((_): IItem => {
+                                        return { value: _, description: DLang('USER_RANK', _) }
+                                    })}
+                                    onSave={(value: string) => this.props.setUserRank(record.id, value)}
+                                /> : value}
+                                </Col>
+                            </div>
                         }
                     }
                 },
@@ -162,20 +183,26 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                             props: {
                                 className: style[record.status.toLocaleLowerCase()]
                             },
-                            children: <div
-                                style={{ color: value > 0 ? 'green' : 'red' }}
-                            >
-                                {value}
-                                <Private roles={['admin', 'leader', 'officer']}>
-                                    <Tooltip title={Lang('EDIT_BALANCE')}>
-                                        <Button
-                                            type="link"
-                                            className={style['add']}
-                                            icon={<EditFilled />}
-                                            onClick={() => this.toggleAddOperationDialog(record.id)}
-                                        />
-                                    </Tooltip>
-                                </Private>
+                            children: <div className={style['title']} style={{ color: value > 0 ? 'green' : 'red' }}>
+                                <Col style={{
+                                    fontWeight: 500,
+                                    padding: '.25rem .5rem',
+                                }} className={style['sub-title']}>
+                                    {Lang('USER_ROW_BALANCE')}
+                                </Col>
+                                <Col>
+                                    {value}
+                                    <Private roles={['admin', 'leader', 'officer']}>
+                                        <Tooltip title={Lang('EDIT_BALANCE')}>
+                                            <Button
+                                                type="link"
+                                                className={style['add']}
+                                                icon={<EditFilled />}
+                                                onClick={() => this.toggleAddOperationDialog(record.id)}
+                                            />
+                                        </Tooltip>
+                                    </Private>
+                                </Col>
                             </div>
                         };
                     }
@@ -189,12 +216,22 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                             props: {
                                 className: style[record.status.toLocaleLowerCase()]
                             },
-                            children: <Loans
-                                loans={record.loans}
-                                userId={record.id}
-                                onAddLoan={this.toggleAddLoanModal}
-                                onLoanShow={this.toggleShowLoanDialog}
-                            />
+                            children: <div className={style['title']}>
+                                <Col style={{
+                                    fontWeight: 500,
+                                    padding: '.25rem .5rem',
+                                }} className={style['sub-title']}>
+                                    {Lang('USER_ROW_LOANS')}
+                                </Col>
+                                <Col>
+                                    <Loans
+                                        loans={record.loans}
+                                        userId={record.id}
+                                        onAddLoan={this.toggleAddLoanModal}
+                                        onLoanShow={this.toggleShowLoanDialog}
+                                    />
+                                </Col>
+                            </div>
                         }
                     }
                 },
@@ -207,11 +244,20 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                             props: {
                                 className: style[record.status.toLocaleLowerCase()]
                             },
-                            children: <Penalties
-                                penalties={record.penalties}
-                                userId={record.id}
-                                onAddLoan={this.toggleAddPenaltyModal}
-                            />
+                            children: <div className={style['title']}>
+                                <Col style={{
+                                    fontWeight: 500,
+                                    padding: '.25rem .5rem',
+                                }} className={style['sub-title']}>
+                                    {Lang('USER_ROW_LOANS')}
+                                </Col>
+                                <Col><Penalties
+                                    penalties={record.penalties}
+                                    userId={record.id}
+                                    onAddLoan={this.toggleAddPenaltyModal}
+                                />
+                                </Col>
+                            </div>
                         }
                     }
                 },
@@ -388,7 +434,7 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                                 </Row>
                                 <Row gutter={[16, 16]}>
                                     <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                                        {<Table
+                                        {<Table className={style['characters-table']}
                                             size='small'
                                             rowKey="id"
                                             columns={this.state.columns}

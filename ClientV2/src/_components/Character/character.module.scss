@@ -2,8 +2,8 @@
 .chars_wrapper {
   @include flex();
   align-items: flex-start;
-  @media screen and (max-width: $mobile-L) {
-    flex-direction: column;
+  @media screen and (max-width: $tablet) {
+    flex-wrap: wrap;
   }
   .add {
     @include flex();
