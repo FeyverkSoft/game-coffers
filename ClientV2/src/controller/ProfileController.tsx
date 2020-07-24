@@ -13,6 +13,7 @@ import { Card } from '../_components/Base/Card';
 import { TaxCard } from '../_components/Profile/TaxCard';
 import { ICharacter } from '../_services/profile/ICharacter';
 import { ProfileCharList } from '../_components/Profile/ProfileCharList';
+import { ProfileNestList } from '../_components/Profile/ProfileNestList';
 import { AddCharDialog } from '../_components/Character/AddCharDialog';
 
 interface IProfileProps {
@@ -85,13 +86,13 @@ export class _ProfileController extends React.Component<IProfileProps, IState> {
             </Breadcrumb>
             <Layout>
                 <Row gutter={[16, 16]}>
-                    <Col xs={24} sm={24} md={14} lg={8} xl={6}>
+                    <Col xs={24} sm={24} md={14} lg={8} xl={8} xxl={6}>
                         <ProfileCard
                             profile={profile}
                             isLoading={profile.holding !== false}
                         />
                     </Col>
-                    <Col xs={24} sm={12} md={5} lg={4} xl={2} >
+                    <Col xs={24} sm={12} md={5} lg={4} xl={3} xxl={2} >
                         <Card
                             loading={profile.holding}>
                             <Statistic
@@ -101,7 +102,7 @@ export class _ProfileController extends React.Component<IProfileProps, IState> {
                                 precision={0} />
                         </Card>
                     </Col>
-                    <Col xs={24} sm={12} md={5} lg={4} xl={2} >
+                    <Col xs={24} sm={12} md={5} lg={4} xl={3} xxl={2} >
                         <Card
                             loading={profile.holding}
                         >
@@ -113,7 +114,7 @@ export class _ProfileController extends React.Component<IProfileProps, IState> {
                             />
                         </Card>
                     </Col>
-                    <Col xs={24} sm={12} md={6} lg={4} xl={3} >
+                    <Col xs={24} sm={12} md={6} lg={4} xl={5} xxl={3} >
                         <Card
                             loading={profile.holding}
                         >
@@ -125,7 +126,7 @@ export class _ProfileController extends React.Component<IProfileProps, IState> {
                             />
                         </Card>
                     </Col>
-                    <Col xs={24} sm={12} md={6} lg={4} xl={3} >
+                    <Col xs={24} sm={12} md={6} lg={4} xl={5} xxl={3} >
                         <Card
                             loading={profile.holding}
                         >
@@ -138,7 +139,7 @@ export class _ProfileController extends React.Component<IProfileProps, IState> {
                             />
                         </Card>
                     </Col>
-                    <Col xs={24} sm={24} md={12} lg={24} xl={8} >
+                    <Col xs={24} sm={24} md={12} lg={24} xl={24} xxl={8} >
                         <TaxCard
                             loading={tax.holding}
                             tax={tax}
@@ -149,6 +150,15 @@ export class _ProfileController extends React.Component<IProfileProps, IState> {
                 <Row gutter={[16, 16]}>
                     <Col xs={24} sm={24} md={24} lg={12} xl={12} >
                         <ProfileCharList
+                            characters={characters}
+                            loading={characters.holding}
+                            SetMainChar={this.setMainChar}
+                            DeleteChar={this.deleteChar}
+                            AddChar={this.toggleAddCharModal}
+                        />
+                    </Col>
+                    <Col xs={24} sm={24} md={24} lg={12} xl={12} >
+                        <ProfileNestList
                             characters={characters}
                             loading={characters.holding}
                             SetMainChar={this.setMainChar}

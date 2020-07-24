@@ -12,6 +12,7 @@ const locString: any = {
     },
     ru: {
         EDIT_BALANCE: 'Изменить баланс',
+        PROFILE_NESTS: 'Мои контракты',
         SAVE: 'Сохранить',
         DELETE_CHAR: 'Удалить персонажа',
         NOT_FOUND: 'Ресурс {0} не найден;',
