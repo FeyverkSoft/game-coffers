@@ -1,4 +1,4 @@
-import { SessionActionsTypes } from "../../_actions";
+import { SessionActionsTypes } from "../../_actions/SessionActionsType";
 import { SessionInfo } from "../../_services";
 
 let localStorageSession: string | null = localStorage.getItem('session');

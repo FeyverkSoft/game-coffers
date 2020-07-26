@@ -1,5 +1,5 @@
 import { LangF } from '../_services';
-import { sessionInstance } from '../_actions';
+import { sessionInstance } from '../_actions/session.actions';
 import { store } from '.';
 
 

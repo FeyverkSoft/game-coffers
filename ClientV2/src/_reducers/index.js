@@ -5,6 +5,7 @@ import { alerts } from './alert/alert.reducer.ts';
 import { profile } from './profile/profile.reducer.ts';
 import { gamers } from './gamer/gamer.reducer.ts';
 import { operations } from './operation/operations.reducer.ts';
+import { nests } from './nests/nest.reducer.ts';
 
 const appReducer = combineReducers({
     session,
@@ -12,7 +13,8 @@ const appReducer = combineReducers({
     alerts,
     guild,
     gamers,
-    operations
+    operations,
+    nests
 });
 
 export const rootReducer = (state, action) => {

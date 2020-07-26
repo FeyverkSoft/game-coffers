@@ -1,6 +1,7 @@
 import { history } from '../_helpers';
 import { authService } from "../_services";
-import { alertInstance, SessionActionsType } from '.';
+import { alertInstance } from './alert/alert.actions';
+import { SessionActionsType } from './SessionActionsType';
 
 export class SessionActions {
     /**

@@ -1,5 +1,5 @@
 import { OperationType, operationService } from '../../_services';
-import { alertInstance } from '..';
+import { alertInstance } from '../alert/alert.actions';
 import { OperationActionsType } from './OperationActionsType';
 
 interface CreateOperationProps {

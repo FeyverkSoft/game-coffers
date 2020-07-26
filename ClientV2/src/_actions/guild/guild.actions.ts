@@ -1,6 +1,6 @@
 import { guildService} from '../../_services';
 import { GuildActionsType } from './GuildActionsType';
-import { alertInstance } from '..';
+import { alertInstance } from '../alert/alert.actions';
 
 /**
  * Попытка тут сделать саги

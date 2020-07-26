@@ -3,7 +3,7 @@ import { Modal, Form, Select } from 'antd';
 import { Lang, DLang, OperationTypeList, OperationType, IGamersListView, IOperationView } from '../../_services';
 import { connect } from 'react-redux';
 import { IStore } from '../../_helpers/store';
-import { operationsInstance } from '../../_actions';
+import { operationsInstance } from '../../_actions/operation/operation.actions';
 import { IAvailableDocument } from '../../_services/operation/IAvailableDocuments';
 import { IDictionary } from '../../core';
 import { IF } from '../../_helpers';

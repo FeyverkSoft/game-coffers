@@ -4,7 +4,8 @@ import { Table, Breadcrumb, PageHeader, DatePicker, Row, Col, Button, Tooltip } 
 import { HomeOutlined, RedoOutlined, EditFilled } from '@ant-design/icons';
 import { connect } from "react-redux";
 import { IStore, formatDateTime, IF } from "../_helpers";
-import { operationsInstance, gamerInstance } from "../_actions";
+import { gamerInstance } from "../_actions/gamer/gamer.actions";
+import { operationsInstance } from "../_actions/operation/operation.actions";
 import { ColumnProps } from "antd/lib/table";
 import style from './bd.module.scss';
 import { Content } from "../_components/Content/Content";
@@ -86,7 +87,7 @@ export class _OperationsController extends React.Component<IMainProps, IState> {
                         if (record.parrentOperation)
                             return <div>
                                 <Tooltip title={record.parrentOperation.description}>
-                                   <span>{value}</span>
+                                    <span>{value}</span>
                                 </Tooltip>
                             </div>;
                         return value;

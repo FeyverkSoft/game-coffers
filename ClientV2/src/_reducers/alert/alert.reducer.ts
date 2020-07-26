@@ -1,4 +1,4 @@
-﻿import { AlertActionsTypes } from '../../_actions';
+﻿import { AlertActionsTypes } from '../../_actions/alert/AlertActionsType';
 import { Alert } from '../../_services';
 const count = 5;//количество отображаемых сообщений
 

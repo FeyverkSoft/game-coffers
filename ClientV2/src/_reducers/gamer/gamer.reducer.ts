@@ -1,4 +1,4 @@
-import { GamerActionsTypes } from "../../_actions";
+import { GamerActionsTypes } from "../../_actions/gamer/GamerActionsType";
 import { IHolded, Dictionary } from "../../core";
 import clonedeep from 'lodash.clonedeep';
 import { IGamersListView, ILoanView } from "../../_services";

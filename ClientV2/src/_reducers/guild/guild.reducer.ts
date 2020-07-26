@@ -1,4 +1,4 @@
-import { GuildActionsTypes } from "../../_actions";
+import { GuildActionsTypes } from "../../_actions/guild/GuildActionsType";
 import { IHolded } from "../../core";
 import { IGuild, GuildBalanceReport, ITariff } from "../../_services";
 import clonedeep from 'lodash.clonedeep';

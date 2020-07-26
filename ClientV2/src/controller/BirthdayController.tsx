@@ -5,7 +5,7 @@ import { HomeOutlined } from '@ant-design/icons';
 import memoize from "lodash.memoize";
 import { connect } from "react-redux";
 import { IStore, BlendColor, formatDateTime } from "../_helpers";
-import { gamerInstance } from "../_actions";
+import { gamerInstance } from "../_actions/gamer/gamer.actions";
 import { ColumnProps } from "antd/lib/table";
 import style from './bd.module.scss';
 import { Content } from "../_components/Content/Content";

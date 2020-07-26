@@ -15,17 +15,21 @@ import { ICharacter } from '../_services/profile/ICharacter';
 import { ProfileCharList } from '../_components/Profile/ProfileCharList';
 import { ProfileNestList } from '../_components/Profile/ProfileNestList';
 import { AddCharDialog } from '../_components/Character/AddCharDialog';
+import { Nest } from '../_services/nest/Nest';
+import { nestsInstance } from '../_actions/nest/nests.actions';
 
 interface IProfileProps {
     Get: Function;
     GetTax: Function;
     GetCharacters: Function;
+    GetNests: Function;
     SetMainChar(charId: string): void;
     DeleteChar(charId: string): void;
     AddChar(id: string, name: string, className: string, isMain: boolean): void;
     profile: IProfile & IHolded;
     tax: ITax & IHolded;
     characters: Array<ICharacter> & IHolded;
+    nests: Array<Nest> & IHolded;
 }
 
 interface IState {
@@ -47,6 +51,8 @@ export class _ProfileController extends React.Component<IProfileProps, IState> {
             this.props.GetTax();
         if (this.props.characters === undefined || this.props.characters.length === 0)
             this.props.GetCharacters();
+        if (this.props.nests === undefined || this.props.nests.length === 0)
+            this.props.GetNests();
     }
 
     setMainChar = (charId: string) => {
@@ -188,6 +194,7 @@ const ProfileController = connect<{}, {}, {}, IStore>(
             Get: () => dispatch(profileInstance.Get()),
             GetTax: () => dispatch(profileInstance.GetTax()),
             GetCharacters: () => dispatch(profileInstance.GetChars()),
+            GetNests: () => dispatch(nestsInstance.getNestList()),
             SetMainChar: (charId: string) => dispatch(profileInstance.SetMainChar(charId)),
             DeleteChar: (charId: string) => dispatch(profileInstance.DeleteChar(charId)),
             AddChar: (id: string, name: string, className: string, isMain: boolean) =>

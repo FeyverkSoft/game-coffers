@@ -5,7 +5,8 @@ import { Table, Breadcrumb, Row, Col, DatePicker, Layout, Tooltip, Button, Descr
 import style from './coffer.module.scss';
 import { HomeOutlined, RedoOutlined, EditFilled } from '@ant-design/icons';
 import { IStore, formatDateTime, IF } from "../_helpers";
-import { gamerInstance, guildInstance } from "../_actions";
+import { gamerInstance } from "../_actions/gamer/gamer.actions";
+import { guildInstance } from "../_actions/guild/guild.actions";
 import { ColumnProps } from "antd/lib/table";
 import { Content } from "../_components/Content/Content";
 import { Link } from "react-router-dom";
@@ -88,7 +89,7 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                                 <Col style={{
                                     fontWeight: 500,
                                     padding: '.25rem .5rem',
-                                }} className={style['sub-title']}>
+                                }} className={`${style['sub-title']} ${style['sub-name']}`}>
                                     {LangF('USER_CHAR_LIST', value)}
                                 </Col>
                                 <Col>
@@ -249,7 +250,7 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                                     fontWeight: 500,
                                     padding: '.25rem .5rem',
                                 }} className={style['sub-title']}>
-                                    {Lang('USER_ROW_LOANS')}
+                                    {Lang('USER_ROW_PENALTIES')}
                                 </Col>
                                 <Col><Penalties
                                     penalties={record.penalties}

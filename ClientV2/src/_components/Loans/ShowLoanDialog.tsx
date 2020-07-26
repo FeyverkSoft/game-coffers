@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { IStore } from '../../_helpers/store';
 import { Private } from '../Private';
 import { IF } from '../../_helpers';
-import { gamerInstance } from '../../_actions';
+import { gamerInstance } from '../../_actions/gamer/gamer.actions';
 import { IHolded } from '../../core';
 
 interface ILoanDialogProps {

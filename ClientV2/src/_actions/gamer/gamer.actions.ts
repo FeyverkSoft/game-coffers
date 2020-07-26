@@ -1,6 +1,6 @@
 import { gamerService, GamerStatus, GamerRank } from '../../_services';
 import { GamerActionsType } from './GamerActionsType';
-import { alertInstance } from '..';
+import { alertInstance } from '../alert/alert.actions';
 
 
 export class GamerActions {

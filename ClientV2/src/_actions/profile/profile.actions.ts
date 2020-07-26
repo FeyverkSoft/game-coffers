@@ -1,6 +1,6 @@
 
 import { ProfileActionsType } from '../profile/ProfileActionsType';
-import { alertInstance } from '..';
+import { alertInstance } from '../alert/alert.actions';
 import { profileService } from '../../_services/profile/profile.service';
 import { Character } from '../../_services/profile/ICharacter';
 

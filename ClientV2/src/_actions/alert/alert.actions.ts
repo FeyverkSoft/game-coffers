@@ -1,6 +1,6 @@
 import { Alert } from "../../_services";
 import { notification } from 'antd';
-import { AlertActionsType } from "..";
+import { AlertActionsType } from "../alert/AlertActionsType";
 
 export class AlertActions {
     /**

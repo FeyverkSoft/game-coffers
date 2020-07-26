@@ -53,6 +53,9 @@
         .sub-title {
             display: none;
         }
+        .sub-name {
+            display: flex!important;
+        }
     }
 
     @media screen and (max-width: $tablet) {

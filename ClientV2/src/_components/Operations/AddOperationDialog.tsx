@@ -4,7 +4,7 @@ import { Lang, DLang, OperationTypeList, OperationType, IGamersListView } from '
 import { connect } from 'react-redux';
 import { IStore } from '../../_helpers/store';
 import { getGuid, IF } from '../../_helpers';
-import { operationsInstance } from '../../_actions';
+import { operationsInstance } from '../../_actions/operation/operation.actions';
 import { IAvailableDocument } from '../../_services/operation/IAvailableDocuments';
 import { IDictionary } from '../../core';
 import { FormInstance } from 'antd/lib/form';

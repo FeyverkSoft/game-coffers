@@ -1,4 +1,4 @@
-import { ProfileActionsTypes } from "../../_actions";
+import { ProfileActionsTypes } from "../../_actions/profile/ProfileActionsType";
 import { IHolded } from "../../core";
 import { IProfile, Profile, ITax, UserTax } from "../../_services";
 import clonedeep from 'lodash.clonedeep';

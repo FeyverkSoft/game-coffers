@@ -2,7 +2,7 @@ import * as React from 'react';
 import { NavLink } from "react-router-dom";
 import { IStore } from "../../_helpers";
 import { connect } from "react-redux";
-import { profileInstance } from "../../_actions";
+import { profileInstance } from "../../_actions/profile/profile.actions";
 import { Button } from "antd";
 import { UserOutlined } from '@ant-design/icons';
 

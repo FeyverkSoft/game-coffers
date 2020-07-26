@@ -1,4 +1,4 @@
-import { OperationActionsTypes } from "../../_actions";
+import { OperationActionsTypes } from "../../_actions/operation/OperationActionsType";
 import { IHolded, IDictionary } from "../../core";
 import { IOperationView } from "../../_services";
 import clonedeep from 'lodash.clonedeep';

@@ -4,7 +4,7 @@ import { Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { IStore } from '../../_helpers';
 import { Lang } from '../../_services';
-import { sessionInstance } from '../../_actions';
+import { sessionInstance } from '../../_actions/session.actions';
 
 interface UserFormProps {
     isLoading: boolean,
