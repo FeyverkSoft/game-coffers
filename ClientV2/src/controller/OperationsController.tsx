@@ -197,7 +197,7 @@ export class _OperationsController extends React.Component<IMainProps, IState> {
                             <Col xs={14} sm={15} md={18} lg={18} xl={21}>
                                 <Search
                                     placeholder="введите текст для поиска"
-                                    enterButton='search'
+                                    enterButton={Lang('search')}
                                     onSearch={(value: string) => {
                                         this.setState({ filter: (value || '').toLowerCase() });
                                     }}

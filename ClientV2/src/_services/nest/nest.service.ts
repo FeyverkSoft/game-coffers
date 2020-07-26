@@ -10,7 +10,7 @@ export class nestService {
     /**
      * Добавить новый контракт игроку
      */
-    static async addContract(id: string, nestId: string, characterName: string, reward: string): Promise<void> {
+    static async addContract(id: string, nestId: string, characterName: string, reward: string): Promise<Contract> {
         let session = authService.getCurrentSession();
         const requestOptions: RequestInit = {
             method: 'POST',
@@ -23,11 +23,12 @@ export class nestService {
             body: JSON.stringify({ id: id, nestId: nestId, characterName: characterName, reward: reward })
         };
         return await fetch(Config.BuildUrl(`/gamers/current/contracts`), requestOptions)
-            .then<BaseResponse>(getResponse)
+            .then<BaseResponse & Contract>(getResponse)
             .then(data => {
                 if ((data && data.type) || data.traceId) {
                     return errorHandle(data);
                 }
+                return new Contract(data.id, data.nestName, data.characterName, data.reward);
             })
             .catch(catchHandle);
     }
@@ -106,7 +107,7 @@ export class nestService {
             })
             .catch(catchHandle);
     }
-    
+
     /**
      * Получить список контрактов в гильдии
      */

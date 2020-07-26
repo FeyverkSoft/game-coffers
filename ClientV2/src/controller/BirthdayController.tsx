@@ -114,7 +114,7 @@ export class _BirthdayController extends React.Component<IMainProps, IBDState> {
                     >
                         <Search
                             placeholder="введите текст для поиска"
-                            enterButton='search'
+                            enterButton={Lang('search')}
                             onSearch={(value: string) => {
                                 this.setState({ filter: (value || '').toLowerCase() });
                             }}
@@ -182,4 +182,4 @@ const BirthdayController = connect<{}, {}, {}, IStore>(
         }
     })(_BirthdayController);
 
- export default BirthdayController;
+export default BirthdayController;

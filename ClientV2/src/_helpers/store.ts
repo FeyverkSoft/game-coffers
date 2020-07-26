@@ -7,6 +7,7 @@ import logger from 'redux-logger';
 import { IGuildStore } from '../_reducers/guild/guild.reducer';
 import { IGamerStore } from '../_reducers/gamer/gamer.reducer';
 import { IProfileStore } from '../_reducers/profile/profile.reducer';
+import { NestsStore } from '../_reducers/nests/nest.reducer';
 import { SessionInfo } from '../_services';
 import { IOperationsStore } from '../_reducers/operation/operations.reducer';
 
@@ -23,6 +24,7 @@ export interface IStore extends Dictionary<any> {
     guild: IGuildStore;
     session: SessionInfo;
     operations: IOperationsStore;
+    nests: NestsStore;
 }
 
 const composeEnhancers =

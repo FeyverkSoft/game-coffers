@@ -13,16 +13,19 @@ import { Card } from '../_components/Base/Card';
 import { TaxCard } from '../_components/Profile/TaxCard';
 import { ICharacter } from '../_services/profile/ICharacter';
 import { ProfileCharList } from '../_components/Profile/ProfileCharList';
-import { ProfileNestList } from '../_components/Profile/ProfileNestList';
+import { ProfileNestList } from '../_components/Nests/ProfileNestList';
 import { AddCharDialog } from '../_components/Character/AddCharDialog';
 import { Nest } from '../_services/nest/Nest';
 import { nestsInstance } from '../_actions/nest/nests.actions';
+import { Contract } from '../_services/nest/Contract';
+import { AddContractDialog } from '../_components/Nests/AddContractDialog';
 
 interface IProfileProps {
     Get: Function;
     GetTax: Function;
     GetCharacters: Function;
     GetNests: Function;
+    GetContracts: Function;
     SetMainChar(charId: string): void;
     DeleteChar(charId: string): void;
     AddChar(id: string, name: string, className: string, isMain: boolean): void;
@@ -30,17 +33,21 @@ interface IProfileProps {
     tax: ITax & IHolded;
     characters: Array<ICharacter> & IHolded;
     nests: Array<Nest> & IHolded;
+    nestContracts: Array<Contract> & IHolded;
+    DeleteContract(charId: string): void;
 }
 
 interface IState {
     showAddModal: boolean;
+    showAddContractModal: boolean;
 }
 
 export class _ProfileController extends React.Component<IProfileProps, IState> {
     constructor(props: IProfileProps) {
         super(props);
         this.state = {
-            showAddModal: false
+            showAddModal: false,
+            showAddContractModal: false,
         }
     }
 
@@ -53,6 +60,8 @@ export class _ProfileController extends React.Component<IProfileProps, IState> {
             this.props.GetCharacters();
         if (this.props.nests === undefined || this.props.nests.length === 0)
             this.props.GetNests();
+        if (this.props.nestContracts === undefined || this.props.nestContracts.length === 0)
+            this.props.GetContracts();
     }
 
     setMainChar = (charId: string) => {
@@ -75,8 +84,18 @@ export class _ProfileController extends React.Component<IProfileProps, IState> {
         this.toggleAddCharModal();
     };
 
+    deleteContract = (id: string): void => {
+        this.props.DeleteContract(id);
+    };
+
+    toggleAddContractModal = () => {
+        this.setState({ showAddContractModal: !this.state.showAddContractModal });
+    }
+
+    onAddContract = () => { }
+
     render = () => {
-        let { profile, tax, characters } = this.props;
+        let { profile, tax, characters, nestContracts } = this.props;
         return <Content>
             <Breadcrumb>
                 <Breadcrumb.Item>
@@ -165,11 +184,10 @@ export class _ProfileController extends React.Component<IProfileProps, IState> {
                     </Col>
                     <Col xs={24} sm={24} md={24} lg={12} xl={12} >
                         <ProfileNestList
-                            characters={characters}
-                            loading={characters.holding}
-                            SetMainChar={this.setMainChar}
-                            DeleteChar={this.deleteChar}
-                            AddChar={this.toggleAddCharModal}
+                            nestContract={nestContracts}
+                            loading={nestContracts.holding}
+                            DeleteContract={this.deleteContract}
+                            AddContract={this.toggleAddContractModal}
                         />
                     </Col>
                 </Row>
@@ -180,25 +198,34 @@ export class _ProfileController extends React.Component<IProfileProps, IState> {
                 onAdd={this.onAddCharacter}
                 isLoading={characters.holding}
             />
+            <AddContractDialog
+                onClose={this.toggleAddContractModal}
+                visible={this.state.showAddContractModal}
+                onAdd={this.onAddContract}
+                isLoading={nestContracts.holding}
+            />
         </Content>
     }
 }
 
 const ProfileController = connect<{}, {}, {}, IStore>(
     (state: IStore) => {
+        const { userContracts, nests } = state.nests;
         const { profile, tax, characters } = state.profile;
-        return { profile, tax, characters };
+        return { profile, tax, characters, nestContracts: userContracts, nests: nests };
     },
     (dispatch: Function) => {
         return {
             Get: () => dispatch(profileInstance.Get()),
             GetTax: () => dispatch(profileInstance.GetTax()),
             GetCharacters: () => dispatch(profileInstance.GetChars()),
-            GetNests: () => dispatch(nestsInstance.getNestList()),
             SetMainChar: (charId: string) => dispatch(profileInstance.SetMainChar(charId)),
             DeleteChar: (charId: string) => dispatch(profileInstance.DeleteChar(charId)),
             AddChar: (id: string, name: string, className: string, isMain: boolean) =>
                 dispatch(profileInstance.AddChar({ id, name, className, isMain })),
+            GetNests: () => dispatch(nestsInstance.getNestList()),
+            GetContracts: () => dispatch(nestsInstance.getMyContracts()),
+            DeleteContract: (id: string) => dispatch(nestsInstance.deleteContract({ id })),
         }
     })(_ProfileController);
 
