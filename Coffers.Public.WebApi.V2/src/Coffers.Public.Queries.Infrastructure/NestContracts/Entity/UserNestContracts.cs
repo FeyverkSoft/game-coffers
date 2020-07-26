@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Coffers.Types.Nest;
 
 namespace Coffers.Public.Queries.Infrastructure.NestContracts.Entity
 {
@@ -17,7 +18,8 @@ from `NestContract` nc
 join `Nest` n on n.Id = nc.NestId 
 where 1 = 1 
 and n.`GuildId` = @GuildId
-and nc.`UserId` = @UserId";
+and nc.`UserId` = @UserId
+and nc.`Status` IN ('Active')";
 
         public Guid Id { get; }
 

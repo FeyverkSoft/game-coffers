@@ -61,7 +61,7 @@ export const ProfileNestList = ({ ...props }: INestList) => {
                                 loading={record.holding}
                                 type="link"
                                 icon={<DeleteFilled />}
-                                onClick={() => { }/* props.DeleteChar(record.id)*/}
+                                onClick={() => props.DeleteContract(record.id)}
                             />
                         </Tooltip>
                     </div>

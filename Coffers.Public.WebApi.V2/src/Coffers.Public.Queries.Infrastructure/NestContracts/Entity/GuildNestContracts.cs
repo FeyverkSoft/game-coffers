@@ -17,6 +17,7 @@ from `NestContract` nc
 join `Nest` n on n.Id = nc.NestId 
 where 1 = 1 
 and n.`GuildId` = @GuildId
+and nc.`Status` IN ('Active')
 ";
 
         public Guid Id { get; }

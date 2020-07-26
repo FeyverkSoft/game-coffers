@@ -1,4 +1,5 @@
 ﻿using System;
+using Coffers.Types.Nest;
 
 namespace Coffers.Public.Queries.Infrastructure.NestContracts.Entity
 {
