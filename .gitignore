@@ -252,3 +252,5 @@ logs/
 # Idea
 .idea/
 /Client/docker/
+/Coffers.Public.WebApi.V2/guild
+/Coffers.Public.WebApi.V2/guild.pub

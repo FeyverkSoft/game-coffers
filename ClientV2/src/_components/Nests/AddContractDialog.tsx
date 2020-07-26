@@ -95,7 +95,7 @@ class addContractDialog extends React.Component<FormProps, ISate> {
                     />
                 </Form.Item>
                 <Form.Item
-                    name="type"
+                    name="reward"
                     label={Lang('REWARD')}
                     rules={[
                         {
