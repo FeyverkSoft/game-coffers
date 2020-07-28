@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { Table, Switch, Button, Tooltip } from 'antd';
+import { Table, Button, Tooltip } from 'antd';
 import { DeleteFilled } from '@ant-design/icons';
 import { Lang, DLang } from '../../_services';
 import { Card } from '../Base/Card';
-import { ICharacter } from '../../_services/profile/ICharacter';
 import { ColumnProps } from 'antd/lib/table';
 import { IHolded } from '../../core';
 import { Contract } from '../../_services/nest/Contract';
