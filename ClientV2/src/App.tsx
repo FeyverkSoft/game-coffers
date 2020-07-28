@@ -27,6 +27,8 @@ const AuthController = load(lazy(() => import("./controller/AuthController")));
 const ProfileController = load(lazy(() => import("./controller/ProfileController")));
 const CofferController = load(lazy(() => import("./controller/CofferController")));
 const OperationsController = load(lazy(() => import("./controller/OperationsController")));
+const ContractController = load(lazy(() => import("./controller/ContractController")));
+
 
 export const App = ({ ...props }) => {
   return (
@@ -65,6 +67,11 @@ export const App = ({ ...props }) => {
                   {Lang('BD')}
                 </HeaderLink>
               </Menu.Item>
+              <Menu.Item key="/contracts">
+                <HeaderLink to="/contracts">
+                  {Lang('CONTRACTS')}
+                </HeaderLink>
+              </Menu.Item>
             </Menu>
             <ProfileButton />
           </Private>
@@ -77,6 +84,7 @@ export const App = ({ ...props }) => {
               <PrivateRoute path='/operations' component={OperationsController} />
               <PrivateRoute path='/logout' component={LogOutController} />
               <PrivateRoute path='/birthday' component={BirthdayController} />
+              <PrivateRoute path="/contracts" component={ContractController} />
               <PrivateRoute path="/" component={CofferController} />
               <Route component={NotFoundController} />
             </Switch>

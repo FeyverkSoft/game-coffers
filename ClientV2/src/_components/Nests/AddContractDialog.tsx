@@ -1,7 +1,7 @@
 import React, { RefObject, createRef } from 'react';
 import { Form, Input, Modal, Select } from 'antd';
 import { getGuid, IStore } from '../../_helpers';
-import { Lang } from '../../_services';
+import { Lang, DLang } from '../../_services';
 import { Nest } from '../../_services/nest/Nest';
 import { connect } from 'react-redux';
 import { nestService } from '../../_services/nest/nest.service';
@@ -21,7 +21,7 @@ interface FormProps {
 interface ISate { }
 class addContractDialog extends React.Component<FormProps, ISate> {
     formRef: RefObject<FormInstance> = createRef<FormInstance>();
-    RewardList: Array<string> = ['65Gold', '165Gold', '365Gold', '465Сounter', '465Mission6', '465Mission7', '465Mission8', '465Coop6', '465Coop6', '465Coop6'];
+    RewardList: Array<string> = ['65Gold', '165Gold', '365Gold', '465Сounter', '465Mission6', '465Mission7', '465Mission8', '465Coop6', '465Coop7', '465Coop8'];
     state = { id: getGuid() };
 
     componentDidMount = () => {
@@ -107,7 +107,7 @@ class addContractDialog extends React.Component<FormProps, ISate> {
                         placeholder={Lang('REWARD')}
                     >
                         {
-                            this.RewardList.map((t: string) => <Select.Option key={t} value={t}>{Lang(t)}</Select.Option>)
+                            this.RewardList.map((t: string) => <Select.Option key={t} value={t}>{DLang('REWARD_ITEMS', t)}</Select.Option>)
                         }
                     </Select>
                 </Form.Item>

@@ -1,4 +1,4 @@
-import { getResponse, catchHandle, errorHandle } from '../../_helpers';
+import { getResponse, catchHandle, errorHandle, formatDateTime } from '../../_helpers';
 import { BaseResponse, GamerRank } from '..';
 import { Config } from '../../core';
 import { authService } from '..';
@@ -51,7 +51,7 @@ export class gamerService {
                 'Authorization': 'Bearer ' + session.sessionId
             },
         };
-        return await fetch(Config.BuildUrl(`/gamers/guilds/current`, { dateMonth: dateMonth.toISOString(), gamerStatuses: gamerStatuses }), requestOptions)
+        return await fetch(Config.BuildUrl(`/gamers/guilds/current`, { dateMonth: formatDateTime(dateMonth, 'm'), gamerStatuses: gamerStatuses }), requestOptions)
             .then<BaseResponse & any>(getResponse)
             .then(data => {
                 if ((data && data.type) || data.traceId) {

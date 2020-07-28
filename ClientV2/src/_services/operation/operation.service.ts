@@ -1,4 +1,4 @@
-import { getResponse, catchHandle, errorHandle } from '../../_helpers';
+import { getResponse, catchHandle, errorHandle, formatDateTime } from '../../_helpers';
 import { BaseResponse, OperationType, IOperationView, OperationView } from '..';
 import { Config } from '../../core';
 import { authService } from '..';
@@ -20,7 +20,7 @@ export class operationService {
                 'Authorization': 'Bearer ' + session.sessionId
             },
         };
-        return await fetch(Config.BuildUrl(`/Guilds/current/operations`, { DateMonth: DateMonth.toISOString() }), requestOptions)
+        return await fetch(Config.BuildUrl(`/Guilds/current/operations`, { DateMonth: formatDateTime(DateMonth, 'm') }), requestOptions)
             .then<BaseResponse & Array<any>>(getResponse)
             .then(data => {
                 if ((data && data.type) || data.traceId) {

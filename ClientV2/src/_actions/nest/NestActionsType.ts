@@ -56,7 +56,7 @@ export namespace NestActionType {
     export const PROC_GET_GUILD_CONTRACTS = () => ({
         type: "PROC_GET_GUILD_CONTRACTS",
     } as const);
-    export const SUCC_GET_GUILD_CONTRACTS = (guildContracts: IDictionary<Contract>) => ({
+    export const SUCC_GET_GUILD_CONTRACTS = (guildContracts: IDictionary<Array<Contract>>) => ({
         type: "SUCC_GET_GUILD_CONTRACTS",
         guildContracts: guildContracts,
     } as const);

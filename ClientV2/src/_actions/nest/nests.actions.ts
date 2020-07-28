@@ -3,7 +3,6 @@ import { alertInstance } from '../alert/alert.actions';
 import { NestActionType } from './NestActionsType';
 
 class NestActions {
-
     /**
     * регистрирует новый контракт в системе
     * @param props 
@@ -79,6 +78,26 @@ class NestActions {
                 .catch(
                     ex => {
                         dispatch(NestActionType.FAILED_DELETE_CONTRACT(props.id));
+                        dispatch(alertInstance.error(ex));
+                    });
+        }
+    }
+
+    /**
+     * Метод возвращает список контрактов в гильдии
+     * @param props 
+     */
+    getGuildContracts(props: {}): Function {
+        return (dispatch: Function) => {
+            dispatch(NestActionType.PROC_GET_GUILD_CONTRACTS());
+            nestService.getGuildContracts({})
+                .then(
+                    data => {
+                        dispatch(NestActionType.SUCC_GET_GUILD_CONTRACTS(data));
+                    })
+                .catch(
+                    ex => {
+                        dispatch(NestActionType.FAILED_GET_GUILD_CONTRACTS());
                         dispatch(alertInstance.error(ex));
                     });
         }

@@ -1,13 +1,14 @@
 import { NestActionTypes } from "../../_actions/nest/NestActionsType";
 import { IHolded, IDictionary } from "../../core";
 import clonedeep from 'lodash.clonedeep';
+import groupBy from 'lodash.groupby';
 import { Nest } from "../../_services/nest/Nest";
 import { Contract } from "../../_services/nest/Contract";
 
 export class NestsStore {
     nests: Array<Nest> & IHolded = [];
     userContracts: Array<Contract> & IHolded = [];
-    guildContracts: IDictionary<Contract> & IHolded = {};
+    guildContracts: IDictionary<IDictionary<Array<Contract>>> & IHolded = {};
 }
 
 export function nests(state: NestsStore = new NestsStore(), action: NestActionTypes):
@@ -76,7 +77,13 @@ export function nests(state: NestsStore = new NestsStore(), action: NestActionTy
             clonedState.guildContracts.holding = true;
             return clonedState;
         case 'SUCC_GET_GUILD_CONTRACTS':
-            clonedState.guildContracts = action.guildContracts;
+            let result: IDictionary<IDictionary<Array<Contract>>> = {};
+            Object.keys(action.guildContracts).forEach((nest: string) => {
+                let contracts = action.guildContracts[nest];
+                let grouped = groupBy(contracts, _ => _.reward)
+                result[nest] = grouped;
+            })
+            clonedState.guildContracts = result;
             clonedState.guildContracts.holding = false;
             return clonedState;
         case 'FAILED_GET_GUILD_CONTRACTS':

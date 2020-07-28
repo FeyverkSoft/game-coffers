@@ -40,6 +40,8 @@ const locString: any = {
         COFFERS: 'Казна',
         BD: 'ДР',
         REVERSE: '!СТОРНО!',
+        CONTRACTS: 'Контракты',
+        CONTRACTS_PAGE: 'Активные контракты',
         MAIN_PAGE_MAIN_INFO: 'Сводка',
         MAIN_PAGE_MAIN_BALANCE: 'Баланс',
         MAIN_PAGE_CHARACTERS_COUNT: 'Чаров в гильдии',
@@ -104,6 +106,18 @@ const locString: any = {
             Active: 'Активный',
             InActive: 'Уплачен',
             Canceled: 'Отменён'
+        },
+        REWARD_ITEMS: {
+            '65Gold': '65 G',
+            '165Gold': '165 G',
+            '365Gold': '365 G',
+            '465Сounter': '465 Контратака',
+            '465Mission6': '465 Миссия +6',
+            '465Mission7': '465 Миссия +7',
+            '465Mission8': '465 Миссия +8',
+            '465Coop6': '465 Кооператив +6',
+            '465Coop7': '465 Кооператив +7',
+            '465Coop8': '465 Кооператив +8'
         },
         MAIN_RECRUITMENTSTATUS: 'Набор',
         ADD_NEW_USER: '+',
@@ -231,7 +245,7 @@ export const DLang = memoize((value: string, key?: string): string => {
         res = getTranslate(value.toUpperCase()) || value;
     else
         res = getTranslate(CurrentLang()) || value;
-    return res[key] || '';
+    return res[key] || key;
 }, (it, ...arg) => {
     return it + arg;
 })

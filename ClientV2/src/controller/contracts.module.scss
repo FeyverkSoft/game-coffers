@@ -1,0 +1,39 @@
+@import "assets/_variables.scss"; // variables to override above
+
+.col {
+    justify-content: center;
+}
+
+.cards-wrapper {
+    display  : flex;
+    flex-wrap: wrap;
+
+    .card-name {
+        font-size  : 125%;
+        font-weight: 400;
+        margin     : 0 0.75rem;
+    }
+
+    .card {
+        margin: 0.75rem;
+
+        .item {
+            display       : flex;
+            flex-direction: column;
+            margin-bottom : 0.75rem;
+
+            .title {
+                font-weight: 500;
+                font-size  : 115%;
+            }
+
+            .body {
+                margin-left: 1rem;
+
+                div {
+                    padding: 0 0.15rem;
+                }
+            }
+        }
+    }
+}

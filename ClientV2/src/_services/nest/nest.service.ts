@@ -111,7 +111,7 @@ export class nestService {
     /**
      * Получить список контрактов в гильдии
      */
-    static async getGuildContracts(): Promise<IDictionary<Contract>> {
+    static async getGuildContracts(props: {}): Promise<IDictionary<Array<Contract>>> {
         let session = authService.getCurrentSession();
         const requestOptions: RequestInit = {
             method: 'GET',
@@ -128,7 +128,7 @@ export class nestService {
                 if ((data && data.type) || data.traceId) {
                     return errorHandle(data);
                 }
-                let result: IDictionary<Contract> = {};
+                let result: IDictionary<Array<Contract>> = {};
                 Object.keys(data).forEach(_ => {
                     result[_] = data[_].map((c: any) => new Contract(c.id, _, c.characterName, c.reward));
                 })

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Table, Switch, Button, Tooltip } from 'antd';
 import { DeleteFilled } from '@ant-design/icons';
-import { Lang } from '../../_services';
+import { Lang, DLang } from '../../_services';
 import { Card } from '../Base/Card';
 import { ICharacter } from '../../_services/profile/ICharacter';
 import { ColumnProps } from 'antd/lib/table';
@@ -43,7 +43,7 @@ export const ProfileNestList = ({ ...props }: INestList) => {
             key: 'reward',
             render: (text: string, record: Contract) => {
                 return {
-                    children: text,
+                    children: DLang('REWARD_ITEMS', text),
                 };
             },
         },
