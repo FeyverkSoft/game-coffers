@@ -21,7 +21,7 @@ interface FormProps {
 interface ISate { }
 class addContractDialog extends React.Component<FormProps, ISate> {
     formRef: RefObject<FormInstance> = createRef<FormInstance>();
-    RewardList: Array<string> = ['65Gold', '165Gold', '365Gold', '465Сounter', '465Mission6', '465Mission7', '465Mission8', '465Coop6', '465Coop7', '465Coop8'];
+    RewardList: Array<string> = ['65Gold', '165Gold', '365Gold', '465Сounter', '465Mission6', '465Mission7', '465Mission8', '465Coop6', '465Coop7', '465Coop8', 'Nightmare'];
     state = { id: getGuid() };
 
     componentDidMount = () => {

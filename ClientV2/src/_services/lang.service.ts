@@ -117,7 +117,8 @@ const locString: any = {
             '465Mission8': '465 Миссия +8',
             '465Coop6': '465 Кооператив +6',
             '465Coop7': '465 Кооператив +7',
-            '465Coop8': '465 Кооператив +8'
+            '465Coop8': '465 Кооператив +8',
+            'Nightmare': 'Кошмар'
         },
         MAIN_RECRUITMENTSTATUS: 'Набор',
         ADD_NEW_USER: '+',
