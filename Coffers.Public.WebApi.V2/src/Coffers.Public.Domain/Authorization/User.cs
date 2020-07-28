@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using Coffers.Types.Gamer;
 
 namespace Coffers.Public.Domain.Authorization
@@ -42,6 +43,12 @@ namespace Coffers.Public.Domain.Authorization
 
         public GamerRank Rank { get; }
         public Guid ConcurrencyTokens { get; } = Guid.NewGuid();
+        public String? Email { get; set; }
+
+        public Boolean IsActive =>
+            Status == GamerStatus.Active ||
+            Status == GamerStatus.Afk ||
+            Status == GamerStatus.Spirit;
 
         internal User() { }
 

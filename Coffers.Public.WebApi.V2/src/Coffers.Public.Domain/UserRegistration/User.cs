@@ -1,5 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+
+using Coffers.Public.Domain.UserRegistration.Events;
 using Coffers.Types.Gamer;
+
+using Rabbita.Core;
 
 namespace Coffers.Public.Domain.UserRegistration
 {
@@ -19,12 +24,16 @@ namespace Coffers.Public.Domain.UserRegistration
         /// <summary>
         /// Дата обновления записи
         /// </summary>
-        public DateTime UpdateDate { get; } = DateTime.UtcNow;
+        public DateTime UpdateDate { get; private set; } = DateTime.UtcNow;
 
         /// <summary>
         /// Имя игрока
         /// </summary>
-        public String Name { get; }
+        public String? Name { get; }
+        /// <summary>
+        /// Емайд
+        /// </summary>
+        public String? Email { get; }
 
         /// <summary>
         /// Звание игрока
@@ -34,23 +43,45 @@ namespace Coffers.Public.Domain.UserRegistration
         /// <summary>
         /// Статус игрока в гильдии
         /// </summary>
-        public GamerStatus Status { get; }
+        public GamerStatus Status { get; private set; }
 
         /// <summary>
         /// Дата рождения
         /// </summary>
-        public DateTime DateOfBirth { get; }
+        public DateTime? DateOfBirth { get; }
 
         /// <summary>
         /// Логин для авторизации
         /// </summary>
-        public String Login { get; }
+        public String? Login { get; }
 
         public Guid ConcurrencyTokens { get; set; } = Guid.NewGuid();
+
+        public ICollection<IEvent> Events { get; } = new List<IEvent>();
+
         internal User() { }
 
-        public User(Guid id, Guid guildId, string name, GamerRank rank, GamerStatus status, DateTime dateOfBirth, string login)
-            => (Id, GuildId, Name, Rank, Status, DateOfBirth, Login)
-                = (id, guildId, name.Trim(), rank, status, dateOfBirth, login.Trim());
+        public User(Guid id, Guid guildId, String? name, GamerRank rank, GamerStatus status, DateTime dateOfBirth, String? login, String? email)
+            => (Id, GuildId, Name, Rank, Status, DateOfBirth, Login, Email)
+                = (id, guildId, name.Trim(), rank, status, dateOfBirth, login.Trim(), email);
+
+        internal void ResendConfirmationCode(String confirmationCode)
+        {
+            if (Status != GamerStatus.New)
+                throw new InvalidOperationException($"Invalid state {Status}");
+
+            Events.Add(new SendConfirmationCode(
+                confirmationCode: confirmationCode,
+                email: Email
+            ));
+        }
+
+        public void Confirm()
+        {
+            if (Status != GamerStatus.New)
+                throw new InvalidOperationException($"Invalid state {Status}");
+            Status = GamerStatus.Active;
+            UpdateDate = DateTime.UtcNow;
+        }
     }
 }

@@ -1,27 +1,35 @@
 ﻿using System;
+
 using FluentValidation;
 
 namespace Coffers.Public.WebApi.Models.Auth
 {
-    public class AuthBinding
+    public class AuthEmailBinding
     {
         /// <summary>
-        /// Логин пользователя
+        /// Email пользователя
         /// </summary>
-        public String Login { get; set; }
+        public String Email { get; set; }
+        public Guid GuildId { get; set; }
+
         /// <summary>
         /// Пароль пользователя
         /// </summary>
         public String Password { get; set; }
     }
-    public class AuthBindingValidator : AbstractValidator<AuthBinding>
+    public class AuthEmailBindingValidator : AbstractValidator<AuthEmailBinding>
     {
-        public AuthBindingValidator()
+        public AuthEmailBindingValidator()
         {
-            RuleFor(r => r.Login)
+            RuleFor(r => r.Email)
                 .NotNull()
                 .NotEmpty()
-                .MaximumLength(64);
+                .MaximumLength(64)
+                .EmailAddress();
+
+            RuleFor(r => r.GuildId)
+                .NotNull()
+                .NotEmpty();
 
             RuleFor(r => r.Password)
                 .NotNull()

@@ -76,7 +76,7 @@ namespace Coffers.DB.Migrations.Entities
         /// <summary>
         /// Дата рождения
         /// </summary>
-        public DateTime DateOfBirth { get; }
+        public DateTime? DateOfBirth { get; }
 
         /// <summary>
         /// Логин для авторизации
@@ -87,6 +87,11 @@ namespace Coffers.DB.Migrations.Entities
         /// Пароль для авторизации
         /// </summary>
         public String Password { get; }
+
+        /// <summary>
+        /// Емайл пользователя
+        /// </summary>
+        public String? Email { get; }
 
         /// <summary>
         /// Права доступа игрока, JSON строка

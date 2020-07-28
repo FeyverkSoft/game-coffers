@@ -1,5 +1,7 @@
 ﻿using System;
+
 using Coffers.DB.Migrations.Entities;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Coffers.DB.Migrations
@@ -99,9 +101,9 @@ namespace Coffers.DB.Migrations
             {
                 b.ToTable(nameof(UserRole));
 
-                b.HasIndex(gt => new {gt.UserRoleId, gt.GuildId})
+                b.HasIndex(gt => new { gt.UserRoleId, gt.GuildId })
                     .IsUnique();
-                b.HasKey(gt => new {gt.UserRoleId, gt.GuildId});
+                b.HasKey(gt => new { gt.UserRoleId, gt.GuildId });
                 b.Property(gt => gt.UserRoleId)
                     .HasConversion<String>()
                     .HasMaxLength(32)
@@ -130,6 +132,9 @@ namespace Coffers.DB.Migrations
                 b.Property(g => g.Id)
                     .IsRequired();
 
+                b.HasIndex(u => new { u.Email, u.Login, u.GuildId })
+                    .IsUnique();
+
                 b.Property(g => g.CreateDate)
                     .IsRequired();
                 b.Property(g => g.UpdateDate);
@@ -138,7 +143,7 @@ namespace Coffers.DB.Migrations
 
                 b.Property(g => g.DateOfBirth)
                     .HasDefaultValue(new DateTime(1900, 1, 1))
-                    .IsRequired();
+                    .IsRequired(false);
 
                 b.Property(g => g.Name)
                     .HasMaxLength(64);
@@ -152,13 +157,17 @@ namespace Coffers.DB.Migrations
                     .HasMaxLength(32);
 
                 b.Property(g => g.Login)
-                    .IsRequired()
+                    .IsRequired(false)
                     .HasMaxLength(64);
                 b.Property(g => g.Password)
                     .HasMaxLength(128);
 
                 b.Property(g => g.Roles)
                     .HasMaxLength(512);
+
+                b.Property(g => g.Email)
+                    .HasMaxLength(256)
+                    .IsRequired(false);
 
 
                 b.HasMany(g => g.Characters)
@@ -413,8 +422,8 @@ namespace Coffers.DB.Migrations
                     .IsConcurrencyToken();
             });
 
-            
-            
+
+
             modelBuilder.Entity<Nest>(b =>
             {
                 b.ToTable(nameof(Nest));
@@ -441,7 +450,7 @@ namespace Coffers.DB.Migrations
                     .HasForeignKey(_ => _.GuildId)
                     .HasPrincipalKey(_ => _.Id);
             });
-            
+
             modelBuilder.Entity<NestContract>(b =>
             {
                 b.ToTable(nameof(NestContract));
@@ -452,7 +461,7 @@ namespace Coffers.DB.Migrations
                 b.Property(g => g.Id)
                     .HasColumnName("Id")
                     .IsRequired();
-                
+
                 b.Property(g => g.CharacterName)
                     .HasColumnName("Name")
                     .HasMaxLength(64)
@@ -471,14 +480,14 @@ namespace Coffers.DB.Migrations
                     .WithMany()
                     .HasForeignKey(_ => _.UserId)
                     .HasPrincipalKey(_ => _.Id);
-                
+
                 b.Property(n => n.NestId)
                     .IsRequired();
                 b.HasOne(n => n.Nest)
                     .WithMany()
                     .HasForeignKey(_ => _.NestId)
                     .HasPrincipalKey(_ => _.Id);
-                
+
                 b.Property(l => l.ConcurrencyTokens)
                     .IsRequired()
                     .IsConcurrencyToken();

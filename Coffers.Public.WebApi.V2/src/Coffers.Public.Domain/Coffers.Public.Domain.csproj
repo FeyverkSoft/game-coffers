@@ -6,6 +6,11 @@
     <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Taxes\**" />
+    <EmbeddedResource Remove="Taxes\**" />
+    <None Remove="Taxes\**" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="FeyverkSoft.Rabbita" Version="0.0.2" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.4" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
@@ -13,8 +18,5 @@
   <ItemGroup>
     <ProjectReference Include="..\Coffers.Helpers\Coffers.Helpers.csproj" />
     <ProjectReference Include="..\Coffers.Types\Coffers.Types.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Taxes\" />
   </ItemGroup>
 </Project>

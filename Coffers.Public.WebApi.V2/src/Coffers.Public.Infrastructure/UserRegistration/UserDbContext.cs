@@ -1,10 +1,11 @@
 ﻿using System;
+
 using Coffers.Public.Domain.UserRegistration;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Coffers.Public.Infrastructure.UserRegistration
 {
-
     public class UserDbContext : DbContext
     {
         public DbSet<User> Users { get; set; }
@@ -45,11 +46,14 @@ namespace Coffers.Public.Infrastructure.UserRegistration
 
                 b.Property(g => g.Name)
                     .HasMaxLength(64);
+                b.Property(g => g.Email)
+                    .HasMaxLength(256)
+                    .IsRequired(false);
 
                 b.Property(g => g.CreateDate)
                     .IsRequired();
                 b.Property(g => g.DateOfBirth)
-                    .IsRequired();
+                    .IsRequired(false);
 
                 b.Property(g => g.UpdateDate)
                     .IsRequired();

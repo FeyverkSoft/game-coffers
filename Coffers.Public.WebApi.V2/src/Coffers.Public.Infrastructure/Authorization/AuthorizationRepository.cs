@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Coffers.Public.Domain.Authorization;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Coffers.Public.Infrastructure.Authorization
@@ -52,6 +54,13 @@ namespace Coffers.Public.Infrastructure.Authorization
                 _context.Users.Add(gamer);
 
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<User> GetUserByEmail(String email, Guid guildId, CancellationToken cancellationToken)
+        {
+            return await _context.Users
+                .FirstOrDefaultAsync(gamer => gamer.Email == email &&
+                    gamer.GuildId == guildId, cancellationToken);
         }
     }
 }

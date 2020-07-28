@@ -13,6 +13,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.4" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.1.4" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="5.1.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.1.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Coffers.Helpers\Coffers.Helpers.csproj" />

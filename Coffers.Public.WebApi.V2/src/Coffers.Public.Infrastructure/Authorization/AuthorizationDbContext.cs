@@ -1,6 +1,8 @@
 ﻿using System;
+
 using Coffers.Helpers;
 using Coffers.Public.Domain.Authorization;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Coffers.Public.Infrastructure.Authorization
@@ -70,6 +72,13 @@ namespace Coffers.Public.Infrastructure.Authorization
                     .HasConversion<String>()
                     .HasMaxLength(32);
 
+                b.HasIndex(u => new { u.Email, u.Login, u.GuildId })
+                    .IsUnique();
+                b.Property(g => g.Email)
+                    .HasMaxLength(256)
+                    .IsRequired(false);
+
+
                 b.Property(o => o.Roles)
                     .HasConversion(
                         converterTo => converterTo == null ? null : converterTo.ToJson(),
@@ -85,6 +94,8 @@ namespace Coffers.Public.Infrastructure.Authorization
                 b.Property(o => o.ConcurrencyTokens)
                     .IsConcurrencyToken()
                     .IsRequired();
+
+                b.Ignore(_ => _.IsActive);
             });
 
         }

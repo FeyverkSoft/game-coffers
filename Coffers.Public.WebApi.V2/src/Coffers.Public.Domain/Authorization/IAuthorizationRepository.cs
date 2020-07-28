@@ -22,5 +22,6 @@ namespace Coffers.Public.Domain.Authorization
 
         Task<User> GetUser(Guid userId, CancellationToken cancellationToken);
         Task SaveUser(User gamer);
+        Task<User> GetUserByEmail(String email, Guid guildId, CancellationToken cancellationToken);
     }
 }
