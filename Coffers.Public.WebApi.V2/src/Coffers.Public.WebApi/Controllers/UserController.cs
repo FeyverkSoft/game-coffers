@@ -54,17 +54,15 @@ namespace Coffers.Public.WebApi.Controllers
             [FromServices] UserRegistrarService gamerFactory,
             CancellationToken cancellationToken)
         {
-            try
-            {
+            try{
                 var user = await gamerFactory.Create(binding.Id, HttpContext.GetGuildId(), binding.Login, binding.Name, binding.DateOfBirth, binding.Rank,
                     binding.Status, cancellationToken);
 
-                userRepository.Save(user);
+                await userRepository.Save(user, cancellationToken);
 
                 return Ok(new { });
             }
-            catch (UserAlreadyExistsException)
-            {
+            catch (UserAlreadyExistsException){
                 throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.GamerAlreadyExists, "Gamer already exists");
             }
         }
@@ -86,12 +84,10 @@ namespace Coffers.Public.WebApi.Controllers
             if (user == null)
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.GamerNotFound, "Gamer not found");
 
-            try
-            {
+            try{
                 user.AddCharacter(binding.Id, binding.Name, binding.ClassName, binding.IsMain);
             }
-            catch (CharacterAlreadyExists e)
-            {
+            catch (CharacterAlreadyExists e){
                 throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.CharacterAlreadyExists, e.Message, e.Character.ToDictionary(), e);
             }
 
@@ -121,12 +117,10 @@ namespace Coffers.Public.WebApi.Controllers
             if (user == null)
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.GamerNotFound, "Gamer not found");
 
-            try
-            {
+            try{
                 user.CharacterRemove(characterId);
             }
-            catch (CharacterNotFound e)
-            {
+            catch (CharacterNotFound e){
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.CharacterNotFound, e.Message);
             }
 
@@ -240,12 +234,10 @@ namespace Coffers.Public.WebApi.Controllers
             CancellationToken cancellationToken)
         {
             var user = await userRepository.Get(HttpContext.GetUserId(), HttpContext.GetGuildId(), cancellationToken);
-            try
-            {
+            try{
                 user.SetMainCharacter(characterId);
             }
-            catch (CharacterNotFound e)
-            {
+            catch (CharacterNotFound e){
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.CharacterNotFound, e.Message);
             }
 
@@ -286,12 +278,10 @@ namespace Coffers.Public.WebApi.Controllers
             CancellationToken cancellationToken)
         {
             var user = await userRepository.Get(HttpContext.GetUserId(), HttpContext.GetGuildId(), cancellationToken);
-            try
-            {
+            try{
                 user.CharacterRemove(characterId);
             }
-            catch (CharacterNotFound e)
-            {
+            catch (CharacterNotFound e){
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.CharacterNotFound, e.Message);
             }
 
@@ -309,12 +299,10 @@ namespace Coffers.Public.WebApi.Controllers
         {
             var user = await userRepository.Get(HttpContext.GetUserId(), HttpContext.GetGuildId(), cancellationToken);
 
-            try
-            {
+            try{
                 user.AddCharacter(binding.Id, binding.Name, binding.ClassName, binding.IsMain);
             }
-            catch (CharacterAlreadyExists e)
-            {
+            catch (CharacterAlreadyExists e){
                 throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.CharacterAlreadyExists, e.Message, e.Character.ToDictionary(), e);
             }
 
