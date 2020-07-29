@@ -99,8 +99,8 @@ namespace Coffers.Public.WebApi
             {
                 options.UseMySql(Configuration.GetConnectionString("Coffers"));
             });
-            services.AddScoped<Domain.UserRegistration.IUserRepository, Infrastructure.UserRegistration.UserRepository>();
-            services.AddScoped<Domain.UserRegistration.UserFactory>();
+            services.AddScoped<Domain.UserRegistration.IUserRegistrationRepository, Infrastructure.UserRegistration.UserRepository>();
+            services.AddScoped<Domain.UserRegistration.UserRegistrarService>();
 
             #endregion
 
@@ -169,8 +169,8 @@ namespace Coffers.Public.WebApi
 
             #endregion
 
-
-            services.AddScoped<IPasswordHasher, PasswordHasher>();
+            services.AddScoped<Domain.Authorization.IPasswordHasher, PasswordHasher>();
+            services.AddScoped<Domain.UserRegistration.IPasswordHasher, PasswordHasher>();
             services.AddScoped<IConfirmationCodeProvider, ConfirmationCodeProvider>();
             services.Configure<ConfirmationCodeProviderOptions>(Configuration.GetSection("ConfirmationCode"));
 

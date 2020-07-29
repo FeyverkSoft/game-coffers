@@ -50,8 +50,8 @@ namespace Coffers.Public.WebApi.Controllers
         [ProducesResponseType(201)]
         public async Task<IActionResult> AddNewGamer(
             [FromBody] GamerCreateBinding binding,
-            [FromServices] Domain.UserRegistration.IUserRepository userRepository,
-            [FromServices] UserFactory gamerFactory,
+            [FromServices] Domain.UserRegistration.IUserRegistrationRepository userRepository,
+            [FromServices] UserRegistrarService gamerFactory,
             CancellationToken cancellationToken)
         {
             try

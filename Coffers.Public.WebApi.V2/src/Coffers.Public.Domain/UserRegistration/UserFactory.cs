@@ -1,23 +1,28 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Coffers.Types.Gamer;
 
 namespace Coffers.Public.Domain.UserRegistration
 {
-    public sealed class UserFactory
+    public sealed class UserRegistrarService
     {
-        private readonly IUserRepository _repository;
+        private readonly IUserRegistrationRepository _repository;
         private readonly IConfirmationCodeProvider _confirmationCodeProvider;
+        private readonly IPasswordHasher _passwordHasher;
 
-        public UserFactory(IUserRepository repository,
-            IConfirmationCodeProvider confirmationCodeProvider)
+        public UserRegistrarService(
+            IUserRegistrationRepository repository,
+            IConfirmationCodeProvider confirmationCodeProvider,
+            IPasswordHasher passwordHasher)
         {
             _repository = repository;
             _confirmationCodeProvider = confirmationCodeProvider;
+            _passwordHasher = passwordHasher;
         }
 
-        public async Task<User> Create(Guid id, Guid guildId, string login, string name, DateTime dateOfBirth, GamerRank rank, GamerStatus status,
+        public async Task<User> Create(Guid id, Guid guildId, String login, String name, DateTime dateOfBirth, GamerRank rank, GamerStatus status,
             CancellationToken cancellationToken)
         {
             var user = await _repository.Get(id, cancellationToken);
@@ -34,21 +39,24 @@ namespace Coffers.Public.Domain.UserRegistration
             return new User(id, guildId, name, rank, status, dateOfBirth, login, null);
         }
 
-        public async Task<User> Registrate(Guid id, Guid guildId, String email, String name, DateTime dateOfBirth, GamerRank rank, GamerStatus status,
-            CancellationToken cancellationToken)
+        public async Task<User> CreateByEmail(Guid id, Guid guildId, String email, String password, String name, DateTime? dateOfBirth = null, GamerRank rank = GamerRank.Beginner, GamerStatus status = GamerStatus.New,
+            CancellationToken cancellationToken = default)
         {
-            var user = await _repository.Get(id, cancellationToken);
+            var user = await _repository.GetUserByEmail(email, guildId, cancellationToken);
 
             if (user != null)
             {
-                if (user.Email == email &&
+                if (user.Id == id &&
+                    user.Email == email &&
                     user.Name == name &&
                     user.DateOfBirth == dateOfBirth)
                     return user;
                 throw new UserAlreadyExistsException();
             }
 
-            return new User(id, guildId, name, rank, status, dateOfBirth, null, email);
+            user = new User(id, guildId, name, rank, status, dateOfBirth ?? DateTime.UtcNow, null, email);
+            _passwordHasher.GetHash(user.Id, user.Email, password);
+            return user;
         }
 
         public void ResendConfirmationCode(User user)

@@ -4,9 +4,10 @@ using System.Threading.Tasks;
 
 namespace Coffers.Public.Domain.UserRegistration
 {
-    public interface IUserRepository
+    public interface IUserRegistrationRepository
     {
         Task<User> Get(Guid userId, CancellationToken none);
-        void Save(User gamer);
+        Task Save(User gamer, CancellationToken cancellationToken);
+        Task<User> GetUserByEmail(String email, Guid guildId, CancellationToken cancellationToken);
     }
 }

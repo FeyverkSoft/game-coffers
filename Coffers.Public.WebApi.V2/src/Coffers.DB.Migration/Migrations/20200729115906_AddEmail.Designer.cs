@@ -3,14 +3,16 @@ using System;
 using Coffers.DB.Migrations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Coffers.DB.Migrations.Migrations
 {
     [DbContext(typeof(MigrateDbContext))]
-    partial class MigrateDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200729115906_AddEmail")]
+    partial class AddEmail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

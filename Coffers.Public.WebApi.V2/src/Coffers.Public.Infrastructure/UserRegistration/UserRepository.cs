@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Coffers.Public.Domain.UserRegistration;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Coffers.Public.Infrastructure.UserRegistration
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : IUserRegistrationRepository
     {
         private readonly UserDbContext _context;
 
@@ -21,13 +23,20 @@ namespace Coffers.Public.Infrastructure.UserRegistration
                 .FirstOrDefaultAsync(gamer => gamer.Id == userId, cancellationToken);
         }
 
-        public void Save(User gamer)
+        public async Task Save(User gamer, CancellationToken cancellationToken)
         {
             var entry = _context.Entry(gamer);
             if (entry.State == EntityState.Detached)
-                _context.Users.Add(gamer);
+                await _context.Users.AddAsync(gamer, cancellationToken);
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<User> GetUserByEmail(String email, Guid guildId, CancellationToken cancellationToken)
+        {
+            return await _context.Users
+                .FirstOrDefaultAsync(gamer => gamer.Email == email &&
+                                              gamer.GuildId == guildId, cancellationToken);
         }
     }
 }

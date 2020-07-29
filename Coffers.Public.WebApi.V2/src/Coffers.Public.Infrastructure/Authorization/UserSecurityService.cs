@@ -6,7 +6,9 @@ using Coffers.Public.Domain.Authorization;
 
 namespace Coffers.Public.Infrastructure.Authorization
 {
-    public sealed class PasswordHasher : IPasswordHasher
+    public sealed class PasswordHasher :
+       Domain.Authorization.IPasswordHasher,
+       Domain.UserRegistration.IPasswordHasher
     {
         public Boolean TestPassword(User gamer, String password)
         {
