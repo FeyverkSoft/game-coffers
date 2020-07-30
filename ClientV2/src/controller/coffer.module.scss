@@ -18,6 +18,10 @@
     background-color: transparentize($successColor, 0.8);
 }
 
+.spirit {
+    background-color: transparentize($errorColor, 0.98);
+}
+
 .officer {
     button {
         color      : $errorColor;
@@ -41,7 +45,7 @@
 
 .beginner {
     button {
-        color      : 4successcolor;
+        color      : $successColor;
         font-weight: 200;
     }
 }
@@ -53,8 +57,9 @@
         .sub-title {
             display: none;
         }
+
         .sub-name {
-            display: flex!important;
+            display: flex !important;
         }
     }
 
@@ -64,6 +69,7 @@
             justify-content: space-between;
             flex           : 1 1 auto;
             text-align     : left;
+            align-items    : center;
         }
 
         table {
@@ -74,7 +80,7 @@
             tr {
                 display      : block;
                 margin-bottom: 1rem;
-                border-bottom: 2px solid #e8e9eb;
+                border-bottom: 2px solid #1890ff;
             }
 
             td {
@@ -82,6 +88,7 @@
                 text-align     : right;
                 display        : flex;
                 justify-content: flex-end;
+                padding        : 4px 8px !important;
             }
 
             td:before {
