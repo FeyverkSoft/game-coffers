@@ -36,7 +36,9 @@ using Microsoft.Extensions.Hosting;
 using MySql.Data.MySqlClient;
 
 using Query.Core.FluentExtensions;
-
+using Rabbita.Core.FluentExtensions;
+using Rabbita.Entity;
+using Rabbita.Entity.FluentExtensions;
 using Rabbita.InProc.FluentExtensions;
 
 namespace Coffers.Public.WebApi
@@ -213,15 +215,24 @@ namespace Coffers.Public.WebApi
 
             #endregion
 
+            #region Email
+
+            services.Configure<Infrastructure.EmailSender.EmailSenderOptions>(Configuration.GetSection("EmailParams"));
+
+            #endregion
+
             services.AddHostedService<Infrastructure.Loans.LoanRecurrentProcessor>();
             services.AddHostedService<Infrastructure.Penalties.PenaltyRecurrentProcessor>();
             services.AddSwagger();
 
+            services.AddRabbitaSerializer()
+                .AddRabbitaPersistent();
             services.AddEventBus();
             services.AddEventProcessor(registry =>
             {
                 registry.Register<EventHandlers.LoanOperationCreatedEventHandler>();
                 registry.Register<EventHandlers.PenaltyOperationCreatedEventHandler>();
+                registry.Register<EventHandlers.ConfirmationCodeCreatedEventHandler>();
             });
         }
 

@@ -54,7 +54,7 @@ namespace Coffers.Public.Infrastructure.Loans
         {
             var entry = _context.Entry(loan);
             if (entry.State == EntityState.Detached)
-                _context.Loans.Add(loan);
+                await _context.Loans.AddAsync(loan);
 
             await _context.SaveChangesAsync();
         }

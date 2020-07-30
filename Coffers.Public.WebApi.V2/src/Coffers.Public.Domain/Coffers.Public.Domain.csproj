@@ -11,8 +11,8 @@
     <None Remove="Taxes\**" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="FeyverkSoft.Rabbita" Version="0.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.4" />
+    <PackageReference Include="FeyverkSoft.Rabbita" Version="0.0.7" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.6" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
   <ItemGroup>

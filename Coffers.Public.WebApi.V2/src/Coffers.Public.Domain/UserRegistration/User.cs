@@ -63,14 +63,14 @@ namespace Coffers.Public.Domain.UserRegistration
 
         public User(Guid id, Guid guildId, String? name, GamerRank rank, GamerStatus status, DateTime dateOfBirth, String? login, String? email)
             => (Id, GuildId, Name, Rank, Status, DateOfBirth, Login, Email)
-                = (id, guildId, name.Trim(), rank, status, dateOfBirth, login.Trim(), email);
+                = (id, guildId, name?.Trim(), rank, status, dateOfBirth, login?.Trim(), email);
 
         internal void ResendConfirmationCode(String confirmationCode)
         {
             if (Status != GamerStatus.New)
                 throw new InvalidOperationException($"Invalid state {Status}");
 
-            Events.Add(new SendConfirmationCode(
+            Events.Add(new ConfirmationCodeCreated(
                 confirmationCode: confirmationCode,
                 email: Email
             ));

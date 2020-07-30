@@ -61,7 +61,7 @@ namespace Coffers.Public.WebApi.Controllers
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.DocumentNotFound, e.Message);
             }
 
-            await operationsRepository.Save(operation);
+            await operationsRepository.Save(operation, cancellationToken);
 
             return Ok(await queryProcessor.Process<GetOperationQuery, OperationView>(
                 new GetOperationQuery(
@@ -128,7 +128,7 @@ namespace Coffers.Public.WebApi.Controllers
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.DocumentNotFound, $"Document {binding.DocumentId} of {binding.Type} not found");
             }
 
-            await operationsRepository.Save(operation);
+            await operationsRepository.Save(operation, cancellationToken);
 
             return Ok(await queryProcessor.Process<GetOperationQuery, OperationView>(
                 new GetOperationQuery(

@@ -4,9 +4,12 @@ using Coffers.Public.Domain.UserRegistration;
 
 using Microsoft.EntityFrameworkCore;
 
+using Rabbita.Entity;
+using Rabbita.Entity.FluentExtensions;
+
 namespace Coffers.Public.Infrastructure.UserRegistration
 {
-    public class UserDbContext : DbContext
+    public class UserDbContext : PersistentMessagingDbContext
     {
         public DbSet<User> Users { get; set; }
 
@@ -61,6 +64,8 @@ namespace Coffers.Public.Infrastructure.UserRegistration
                 b.Property(o => o.ConcurrencyTokens)
                     .IsConcurrencyToken()
                     .IsRequired();
+
+                b.IsEvents(_ => _.Events);
             });
 
         }

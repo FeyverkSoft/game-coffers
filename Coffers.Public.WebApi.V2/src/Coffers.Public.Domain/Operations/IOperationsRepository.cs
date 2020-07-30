@@ -13,13 +13,13 @@ namespace Coffers.Public.Domain.Operations
         /// <param name="operationId"></param>
         /// <returns></returns>
         Task<Operation> Get(Guid operationId, CancellationToken cancellationToken);
-       
+
 
         /// <summary>
         /// Сохраняет операциюв бд
         /// </summary>
         /// <param name="operation"></param>
         /// <returns></returns>
-        Task Save(Operation operation);
+        Task Save(Operation operation, CancellationToken cancellationToken);
     }
 }

@@ -12,7 +12,9 @@ namespace Coffers.Public.Infrastructure.UserRegistration
     {
         private readonly UserDbContext _context;
 
-        public UserRepository(UserDbContext context)
+        public UserRepository(
+            UserDbContext context
+            )
         {
             _context = context;
         }
@@ -23,11 +25,11 @@ namespace Coffers.Public.Infrastructure.UserRegistration
                 .FirstOrDefaultAsync(gamer => gamer.Id == userId, cancellationToken);
         }
 
-        public async Task Save(User gamer, CancellationToken cancellationToken)
+        public async Task Save(User user, CancellationToken cancellationToken)
         {
-            var entry = _context.Entry(gamer);
+            var entry = _context.Entry(user);
             if (entry.State == EntityState.Detached)
-                await _context.Users.AddAsync(gamer, cancellationToken);
+                await _context.Users.AddAsync(user, cancellationToken);
 
             await _context.SaveChangesAsync(cancellationToken);
         }

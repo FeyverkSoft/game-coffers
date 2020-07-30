@@ -6,21 +6,15 @@ using Coffers.Public.Domain.Operations;
 using Coffers.Public.Domain.Operations.Entity;
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
-
-using Rabbita.Core;
 
 namespace Coffers.Public.Infrastructure.Operations
 {
     public sealed class OperationRepository : IOperationsRepository
     {
         private readonly OperationDbContext _context;
-        private readonly IEventBus _bus;
-        public OperationRepository(OperationDbContext context,
-            IEventBus bus)
+        public OperationRepository(OperationDbContext context)
         {
             _context = context;
-            _bus = bus;
         }
 
         public async Task<Operation> Get(Guid id, CancellationToken cancellationToken)
@@ -28,19 +22,13 @@ namespace Coffers.Public.Infrastructure.Operations
             return await _context.Operations.FirstOrDefaultAsync(_ => _.Id == id, cancellationToken);
         }
 
-        public async Task Save(Operation operation)
+        public async Task Save(Operation operation, CancellationToken cancellationToken)
         {
             var entry = _context.Entry(operation);
             if (entry.State == EntityState.Detached)
-                _context.Operations.Add(operation);
+                await _context.Operations.AddAsync(operation, cancellationToken);
 
-            if (operation.Events?.Any() == true)
-                foreach (var operationEvent in operation.Events)
-                {
-                    await _bus.Send(operationEvent);
-                }
-
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

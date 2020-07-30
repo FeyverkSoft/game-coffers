@@ -1,11 +1,16 @@
 ﻿using System;
+
 using Coffers.Public.Domain.Operations.Entity;
+
 using Microsoft.EntityFrameworkCore;
+
+using Rabbita.Entity;
+using Rabbita.Entity.FluentExtensions;
 
 namespace Coffers.Public.Infrastructure.Operations
 {
 
-    public class OperationDbContext : DbContext
+    public class OperationDbContext : PersistentMessagingDbContext
     {
         public DbSet<Loan> Loans { get; set; }
         public DbSet<Penalty> Penalties { get; set; }
@@ -51,7 +56,7 @@ namespace Coffers.Public.Infrastructure.Operations
                 b.Property(o => o.ParentOperationId)
                     .IsRequired(false);
 
-                b.Ignore(_ => _.Events);
+                b.IsEvents(_ => _.Events);
             });
 
             modelBuilder.Entity<Loan>(b =>
