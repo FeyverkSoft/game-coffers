@@ -32,7 +32,7 @@ namespace Coffers.Public.Infrastructure.UserRegistration
                     .IsRequired();
 
                 b.Property(o => o.Login)
-                    .IsRequired()
+                    .IsRequired(false)
                     .HasMaxLength(64);
 
                 b.Property(o => o.GuildId)

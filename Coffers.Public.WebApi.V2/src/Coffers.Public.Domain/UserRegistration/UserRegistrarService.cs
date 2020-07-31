@@ -49,7 +49,7 @@ namespace Coffers.Public.Domain.UserRegistration
                 if (user.Id == id &&
                     user.Email == email &&
                     user.Name == name &&
-                    user.DateOfBirth == dateOfBirth)
+                    (dateOfBirth == null || user.DateOfBirth == dateOfBirth))
                     return user;
                 throw new UserAlreadyExistsException();
             }
