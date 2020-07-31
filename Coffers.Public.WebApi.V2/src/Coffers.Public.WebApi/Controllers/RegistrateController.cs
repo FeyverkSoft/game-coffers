@@ -39,10 +39,9 @@ namespace Coffers.Public.WebApi.Controllers
                    name: binding.Name,
                    cancellationToken: cancellationToken
                    );
-
-                await repository.Save(user, cancellationToken);
                 registrar.ResendConfirmationCode(user);
-
+                
+                await repository.Save(user, cancellationToken);
                 return Ok();
             }
             catch (UserAlreadyExistsException)

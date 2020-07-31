@@ -2,13 +2,12 @@ using System;
 using System.Data;
 using System.Net;
 using System.Text.Json.Serialization;
-
 using Asp.Core.FluentExtensions;
-
 using Coffers.DB.Migrations;
 using Coffers.Public.Domain.Authorization;
 using Coffers.Public.Domain.UserRegistration;
 using Coffers.Public.Infrastructure.Authorization;
+using Coffers.Public.Infrastructure.EmailSender;
 using Coffers.Public.Infrastructure.UserRegistration;
 using Coffers.Public.Queries.Infrastructure.Guilds;
 using Coffers.Public.Queries.Infrastructure.Loans;
@@ -20,9 +19,7 @@ using Coffers.Public.WebApi.Authorization;
 using Coffers.Public.WebApi.Extensions;
 using Coffers.Public.WebApi.Filters;
 using Coffers.Public.WebApi.Middlewares;
-
 using FluentValidation.AspNetCore;
-
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -32,13 +29,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
 using MySql.Data.MySqlClient;
-
 using Query.Core.FluentExtensions;
 using Rabbita.Core.FluentExtensions;
-using Rabbita.Entity;
 using Rabbita.Entity.FluentExtensions;
+using Rabbita.Entity.MariaDbTarget;
 using Rabbita.InProc.FluentExtensions;
 
 namespace Coffers.Public.WebApi
@@ -218,6 +213,7 @@ namespace Coffers.Public.WebApi
             #region Email
 
             services.Configure<Infrastructure.EmailSender.EmailSenderOptions>(Configuration.GetSection("EmailParams"));
+            services.AddScoped<EmailSender>();
 
             #endregion
 
@@ -225,8 +221,19 @@ namespace Coffers.Public.WebApi
             services.AddHostedService<Infrastructure.Penalties.PenaltyRecurrentProcessor>();
             services.AddSwagger();
 
-            services.AddRabbitaSerializer()
-                .AddRabbitaPersistent();
+            services.AddRabbitaDbPersistentMigrator(options =>
+            {
+                options.ConnectionString = Configuration.GetConnectionString("CoffersMigration");
+                options.DbCommandTimeout = 30;
+            });
+
+            services
+                .AddRabbitaSerializer()
+                .AddRabbitaPersistent(
+                    options => { },
+                    options => { options.UseMySql(Configuration.GetConnectionString("Coffers")); }
+                );
+
             services.AddEventBus();
             services.AddEventProcessor(registry =>
             {
@@ -239,8 +246,7 @@ namespace Coffers.Public.WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
+            if (env.IsDevelopment()){
                 app.UseDeveloperExceptionPage();
             }
 
@@ -263,7 +269,7 @@ namespace Coffers.Public.WebApi
 
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("v1/swagger.json", "Coffer Api v2"); });
-            app.UseRewriter(new RewriteOptions().AddRedirect(@"^$", "swagger", (Int32)HttpStatusCode.Redirect));
+            app.UseRewriter(new RewriteOptions().AddRedirect(@"^$", "swagger", (Int32) HttpStatusCode.Redirect));
         }
     }
 }

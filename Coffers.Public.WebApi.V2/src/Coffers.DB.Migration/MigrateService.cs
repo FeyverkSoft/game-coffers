@@ -39,38 +39,35 @@ namespace Coffers.DB.Migrations
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             _logger.LogInformation("Starting migrations...");
-            using (var scope = _scopeFactory.CreateScope())
+            using var scope = _scopeFactory.CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<TContext>();
+            var attempt = 0;
+            do
             {
-                var context = scope.ServiceProvider.GetRequiredService<TContext>();
-                var attempt = 0;
-                do
+                if (stoppingToken.IsCancellationRequested)
+                    return;
+
+                attempt++;
+                try
                 {
-                    if (stoppingToken.IsCancellationRequested)
-                        return;
 
-                    attempt++;
-                    try
-                    {
+                    await context.Database.MigrateAsync(cancellationToken: stoppingToken);
 
-                        await context.Database.MigrateAsync(cancellationToken: stoppingToken);
-
-                        _logger.LogInformation("Migrations ended...");
-                        return;
-                    }
-                    catch (SocketException e)
-                    {
-                        _logger.LogError(e, $"Try #{attempt}; Connection to Database server FAILED");
-                    }
-                    catch (Exception exception)
-                    {
-                        _logger.LogError(exception, $"Try #{attempt};");
-                    }
-
-                    await Task.Delay(attempt * 1000, stoppingToken);
+                    _logger.LogInformation("Migrations ended...");
+                    return;
                 }
-                while (attempt < RetryCount || !stoppingToken.IsCancellationRequested);
-            }
+                catch (SocketException e)
+                {
+                    _logger.LogError(e, $"Try #{attempt}; Connection to Database server FAILED");
+                }
+                catch (Exception exception)
+                {
+                    _logger.LogError(exception, $"Try #{attempt};");
+                }
 
+                await Task.Delay(attempt * 1000, stoppingToken);
+            }
+            while (attempt < RetryCount || !stoppingToken.IsCancellationRequested);
         }
     }
 

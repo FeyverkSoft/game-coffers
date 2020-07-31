@@ -4,6 +4,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Serilog;
+using Rabbita.Entity.Migration;
 
 namespace Coffers.Public.WebApi
 {
@@ -18,15 +19,20 @@ namespace Coffers.Public.WebApi
 
         public static void Main(String[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            CreateWebHostBuilder(args)
+                .Build()
+                .MessagingDbInitialize()
+                .Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(String[] args) =>
-            WebHost.CreateDefaultBuilder(args)
+            WebHost
+                .CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .UseConfiguration(Configuration)
                 .UseSerilog((hostingContext, loggerConfiguration) => loggerConfiguration
-                    .ReadFrom.Configuration(hostingContext.Configuration));
+                    .ReadFrom.Configuration(hostingContext.Configuration))
+                ;
 
     }
 }
