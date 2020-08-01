@@ -37,7 +37,7 @@ namespace Coffers.Public.WebApi.EventHandlers
             if (loan == null)
                 throw new InvalidOperationException($"Loan: {message.LoanId} not found");
             await _loanProcessor.Process(loan, cancellationToken);
-            await _loanRepository.Save(loan);
+            await _loanRepository.Save(loan, cancellationToken);
         }
     }
 }

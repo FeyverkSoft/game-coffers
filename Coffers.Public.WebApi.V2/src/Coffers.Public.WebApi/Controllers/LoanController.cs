@@ -47,7 +47,7 @@ namespace Coffers.Public.WebApi.Controllers
                     binding.Description,
                     14,
                     cancellationToken);
-                await repository.Save(loan);
+                await repository.Save(loan, cancellationToken);
             }
             catch (UserNotFoundException e){
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.GamerNotFound, e.Message);
@@ -82,7 +82,7 @@ namespace Coffers.Public.WebApi.Controllers
 
             try{
                 loan.MakeCancel();
-                await repository.Save(loan);
+                await repository.Save(loan, cancellationToken);
             }
             catch (InvalidOperationException){
                 throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.IncorrectOperation, $"Incorrect loan state");
@@ -115,7 +115,7 @@ namespace Coffers.Public.WebApi.Controllers
 
             try{
                 await processor.Process(loan, cancellationToken);
-                await repository.Save(loan);
+                await repository.Save(loan, cancellationToken);
             }
             catch (InvalidOperationException){
                 throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.IncorrectOperation, $"Incorrect loan state");

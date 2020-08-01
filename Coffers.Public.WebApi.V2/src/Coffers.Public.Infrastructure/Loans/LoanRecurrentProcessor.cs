@@ -11,8 +11,8 @@ namespace Coffers.Public.Infrastructure.Loans
     public sealed class LoanRecurrentProcessor : BackgroundService
     {
         private readonly ILogger _logger;
-        private readonly ILoanRepository _repository;
         private readonly LoanExpireProcessor _loanExpireProcessor;
+        private readonly IServiceScopeFactory _scopeFactory;
         private readonly LoanTaxProcessor _loanTaxProcessor;
         private readonly LoanProcessor _loanProcessor;
 
@@ -21,7 +21,7 @@ namespace Coffers.Public.Infrastructure.Loans
             ILogger<LoanRecurrentProcessor> logger)
         {
             _logger = logger;
-            _repository = scopeFactory.CreateScope().ServiceProvider.GetService<ILoanRepository>();
+            _scopeFactory = scopeFactory;
             _loanExpireProcessor = scopeFactory.CreateScope().ServiceProvider.GetService<LoanExpireProcessor>();
             _loanTaxProcessor = scopeFactory.CreateScope().ServiceProvider.GetService<LoanTaxProcessor>();
             _loanProcessor = scopeFactory.CreateScope().ServiceProvider.GetService<LoanProcessor>();
@@ -31,25 +31,27 @@ namespace Coffers.Public.Infrastructure.Loans
         {
             cancellationToken.Register(() => _logger.LogInformation("LoanRecurrentProcessor stopped"));
             while (!cancellationToken.IsCancellationRequested){
-                await LoanWorker(cancellationToken);
-                await LoanExpireWorker(cancellationToken);
-                await LoanExpireTaxWorker(cancellationToken);
-                await LoanActiveTaxWorker(cancellationToken);
+                using var scope = _scopeFactory.CreateScope();
+                var repository = scope.ServiceProvider.GetService<ILoanRepository>();
+                await LoanWorker(repository, cancellationToken);
+                await LoanExpireWorker(repository, cancellationToken);
+                await LoanExpireTaxWorker(repository, cancellationToken);
+                await LoanActiveTaxWorker(repository, cancellationToken);
                 await Task.Delay(TimeSpan.FromMinutes(1), cancellationToken);
             }
         }
 
-        private async Task LoanExpireWorker(CancellationToken cancellationToken)
+        private async Task LoanExpireWorker(ILoanRepository repository, CancellationToken cancellationToken)
         {
             try{
-                var loans = await _repository.GetAllUnprocessedExpiredLoan(cancellationToken);
+                var loans = await repository.GetAllUnprocessedExpiredLoan(cancellationToken);
                 foreach (var loan in loans){
                     if (cancellationToken.IsCancellationRequested)
                         return;
                     try{
                         _logger.LogInformation($"ExpireWorker: Start process loan: {loan.Id}");
                         await _loanExpireProcessor.Process(loan, cancellationToken);
-                        await _repository.Save(loan);
+                        await repository.Save(loan, cancellationToken);
                         _logger.LogInformation($"ExpireWorker: End process loan: {loan.Id}");
                     }
                     catch (Exception e){
@@ -62,10 +64,10 @@ namespace Coffers.Public.Infrastructure.Loans
             }
         }
 
-        private async Task LoanExpireTaxWorker(CancellationToken cancellationToken)
+        private async Task LoanExpireTaxWorker(ILoanRepository repository, CancellationToken cancellationToken)
         {
             try{
-                var loans = await _repository.GetExpiredLoan(cancellationToken);
+                var loans = await repository.GetExpiredLoan(cancellationToken);
                 foreach (var loan in loans){
                     if (cancellationToken.IsCancellationRequested)
                         return;
@@ -73,7 +75,7 @@ namespace Coffers.Public.Infrastructure.Loans
                         _logger.LogInformation($"LoanExpireTaxWorker: Start process loan: {loan.Id}");
                         _loanTaxProcessor.ProcessExpireLoan(loan);
                         await _loanProcessor.Process(loan, cancellationToken);
-                        await _repository.Save(loan);
+                        await repository.Save(loan, cancellationToken);
                         _logger.LogInformation($"LoanExpireTaxWorker: End process loan: {loan.Id}");
                     }
                     catch (Exception e){
@@ -86,17 +88,17 @@ namespace Coffers.Public.Infrastructure.Loans
             }
         }
 
-        private async Task LoanActiveTaxWorker(CancellationToken cancellationToken)
+        private async Task LoanActiveTaxWorker(ILoanRepository repository, CancellationToken cancellationToken)
         {
             try{
-                var loans = await _repository.GetActiveLoan(cancellationToken);
+                var loans = await repository.GetActiveLoan(cancellationToken);
                 foreach (var loan in loans){
                     if (cancellationToken.IsCancellationRequested)
                         return;
                     try{
                         _logger.LogInformation($"LoanActiveTaxWorker: Start process loan: {loan.Id}");
                         _loanTaxProcessor.ProcessLoanTax(loan);
-                        await _repository.Save(loan);
+                        await repository.Save(loan, cancellationToken);
                         _logger.LogInformation($"LoanActiveTaxWorker: End process loan: {loan.Id}");
                     }
                     catch (Exception e){
@@ -109,17 +111,17 @@ namespace Coffers.Public.Infrastructure.Loans
             }
         }
 
-        private async Task LoanWorker(CancellationToken cancellationToken)
+        private async Task LoanWorker(ILoanRepository repository, CancellationToken cancellationToken)
         {
             try{
-                var loans = await _repository.GetActiveLoan(cancellationToken);
+                var loans = await repository.GetActiveLoan(cancellationToken);
                 foreach (var loan in loans){
                     if (cancellationToken.IsCancellationRequested)
                         return;
                     try{
                         _logger.LogInformation($"LoanWorker: Start process loan: {loan.Id}");
                         await _loanProcessor.Process(loan, cancellationToken);
-                        await _repository.Save(loan);
+                        await repository.Save(loan, cancellationToken);
                         _logger.LogInformation($"LoanWorker: End process loan: {loan.Id}");
                     }
                     catch (Exception e){

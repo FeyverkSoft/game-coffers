@@ -50,13 +50,13 @@ namespace Coffers.Public.Infrastructure.Loans
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task Save(Loan loan)
+        public async Task Save(Loan loan, CancellationToken cancellationToken)
         {
             var entry = _context.Entry(loan);
             if (entry.State == EntityState.Detached)
-                await _context.Loans.AddAsync(loan);
+                await _context.Loans.AddAsync(loan, cancellationToken);
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }
