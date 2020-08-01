@@ -2,7 +2,9 @@ using System;
 using System.IO;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Serilog;
 using Rabbita.Entity.Migration;
 
@@ -30,11 +32,15 @@ namespace Coffers.Public.WebApi
                 .CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .UseConfiguration(Configuration)
-                .UseSerilog((hostingContext, loggerConfiguration) => loggerConfiguration
-                    .ReadFrom.Configuration(hostingContext.Configuration))
-                ;
-
+                .UseSerilog((hostingContext, loggerConfiguration) =>
+                {
+                    loggerConfiguration
+                        .ReadFrom.Configuration(hostingContext.Configuration);
+                }).ConfigureLogging(_ =>
+                {
+                    _.AddFilter(DbLoggerCategory.Database.Command.Name, LogLevel.Trace);
+                    _.AddFilter(DbLoggerCategory.Database.Connection.Name, LogLevel.Trace);
+                    _.AddFilter(DbLoggerCategory.Query.Name, LogLevel.Trace);
+                });
     }
 }
-
-

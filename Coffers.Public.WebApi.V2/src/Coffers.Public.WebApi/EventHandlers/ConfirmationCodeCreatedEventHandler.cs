@@ -33,6 +33,8 @@ namespace Coffers.Public.WebApi.EventHandlers
                 body: $"Ваш код для подтверждания регистрации {message.ConfirmationCode}",
                 subject: "Регистрация пользователя"
                 ), cancellationToken);
+            
+            _logger.LogInformation($"ConfirmationCodeCreated for email {message.Email} has send");
         }
     }
 }

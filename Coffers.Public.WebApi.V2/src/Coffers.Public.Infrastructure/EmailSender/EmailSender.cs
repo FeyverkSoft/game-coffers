@@ -25,22 +25,21 @@ namespace Coffers.Public.Infrastructure.EmailSender
             {
                 EnableSsl = _options.SmtpUseSsl,
                 Credentials = new NetworkCredential(_options.SmtpLogin, _options.SmtpPassword),
-                UseDefaultCredentials = string.IsNullOrEmpty(_options.SmtpLogin) && string.IsNullOrEmpty(_options.SmtpPassword)
+                UseDefaultCredentials = String.IsNullOrEmpty(_options.SmtpLogin) && String.IsNullOrEmpty(_options.SmtpPassword),
+                DeliveryMethod = SmtpDeliveryMethod.Network
             };
         }
 
         public async Task Send(Email email, CancellationToken cancellationToken)
         {
             var logger = _loggerFactory.CreateLogger<EmailSender>();
-            try
-            {
+            try{
                 using var smtpClient = CreateSmtpClient();
                 var message = new MailMessage(_options.From, email.To, email.Subject, email.Body) {IsBodyHtml = true};
                 await smtpClient.SendMailAsync(message);
                 logger.LogInformation($"Email to {email.To} sent");
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex){
                 logger.LogError(ex, $"Email to {email.To} send is fail");
                 throw;
             }

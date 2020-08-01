@@ -30,11 +30,11 @@ namespace Coffers.Public.Infrastructure.EmailSender
 
         public Email Build(Dictionary<String, String> bodyParams, Dictionary<String, String> subjectParams)
         {
-            if (string.IsNullOrEmpty(_bodyTemplate))
+            if (String.IsNullOrEmpty(_bodyTemplate))
                 throw new ArgumentException("BodyTemplate");
-            if (string.IsNullOrEmpty(_subjectTemplate))
+            if (String.IsNullOrEmpty(_subjectTemplate))
                 throw new ArgumentException("SubjectTemplate");
-            if (string.IsNullOrEmpty(_email))
+            if (String.IsNullOrEmpty(_email))
                 throw new ArgumentException("Email");
 
             return new Email(_email,
@@ -47,8 +47,8 @@ namespace Coffers.Public.Infrastructure.EmailSender
             if (@params == null)
                 return template;
 
-            if (string.IsNullOrEmpty(template))
-                return string.Empty;
+            if (String.IsNullOrEmpty(template))
+                return String.Empty;
 
             return @params.Keys.Aggregate(template, (current, key) => current.Replace($"{{{key}}}", @params[key], StringComparison.InvariantCultureIgnoreCase));
         }
