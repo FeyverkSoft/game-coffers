@@ -1,10 +1,12 @@
 ﻿using System;
 using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Coffers.Public.WebApi.Models.Auth
 {
     public class ConfirmationCodeBinding
     {
+        [FromQuery]
         public String ConfirmationCode { get; set; }
     }
 

@@ -60,7 +60,7 @@ namespace Coffers.Public.WebApi.Controllers
         [ProducesResponseType(typeof(ProblemDetails), 409)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
         public async Task<IActionResult> ConfirmEmail(
-            [FromBody] ConfirmationCodeBinding binding,
+            [FromQuery] ConfirmationCodeBinding binding,
             [FromServices] UserRegistrarService registrar,
             [FromServices] IUserRegistrationRepository repository,
             CancellationToken cancellationToken)
