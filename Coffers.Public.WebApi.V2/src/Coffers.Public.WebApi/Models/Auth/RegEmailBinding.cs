@@ -4,8 +4,13 @@ using FluentValidation;
 
 namespace Coffers.Public.WebApi.Models.Auth
 {
-    public class AuthEmailBinding
+    public class RegEmailBinding
     {
+        /// <summary>
+        /// Id пользователя
+        /// </summary>
+        public Guid Id { get; set; }
+
         /// <summary>
         /// Email пользователя
         /// </summary>
@@ -20,11 +25,20 @@ namespace Coffers.Public.WebApi.Models.Auth
         /// Пароль пользователя
         /// </summary>
         public String Password { get; set; }
+
+        /// <summary>
+        /// Имя/Ник пользователя
+        /// </summary> 
+        public String Name { get; set; }
     }
-    public class AuthEmailBindingValidator : AbstractValidator<AuthEmailBinding>
+    public class RegEmailBindingValidator : AbstractValidator<RegEmailBinding>
     {
-        public AuthEmailBindingValidator()
+        public RegEmailBindingValidator()
         {
+            RuleFor(r => r.Id)
+                .NotNull()
+                .NotEmpty();
+
             RuleFor(r => r.Email)
                 .NotNull()
                 .NotEmpty()

@@ -81,7 +81,7 @@ namespace Coffers.Public.WebApi.Controllers
         {
             var gamer = await _authorizationRepository.GetUserByEmail(binding.Email, binding.GuildId, cancellationToken);
             if (gamer == null)
-                throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.Forbidden, "");
+                throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");
 
             if (!gamer.IsActive){
                 throw new ApiException(HttpStatusCode.Forbidden, ErrorCodes.Forbidden, "");

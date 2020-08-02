@@ -3,7 +3,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -21,11 +20,12 @@ namespace Coffers.Public.Infrastructure.UserRegistration
             _lifetimeCodeInMinutes = options.Value.LifeTimeCodeInMinute ?? 1440;
         }
 
-        public String Generate(String email)
+        public String Generate(String email, Guid userId)
         {
             var claims = new ClaimsIdentity(new[]
             {
-                new Claim(JwtRegisteredClaimNames.Email, email)
+                new Claim(JwtRegisteredClaimNames.Email, email),
+                new Claim(JwtRegisteredClaimNames.UniqueName, userId.ToString())
             });
             return InternalGenerate(claims);
         }
@@ -44,12 +44,12 @@ namespace Coffers.Public.Infrastructure.UserRegistration
             return handler.WriteToken(token);
         }
 
-        public Boolean Validate(in String token, out String email)
+        public Boolean Validate(in String token, out String email, out Guid userId)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             email = null;
-            try
-            {
+            userId = Guid.Empty;
+            try{
                 var jwtToken = tokenHandler.ReadJwtToken(token);
                 if (jwtToken == null)
                     return false;
@@ -62,10 +62,10 @@ namespace Coffers.Public.Infrastructure.UserRegistration
                 };
                 tokenHandler.ValidateToken(token, parameters, out _);
                 email = jwtToken.Claims.FirstOrDefault(_ => _.Type == JwtRegisteredClaimNames.Email)?.Value;
+                Guid.TryParse(jwtToken.Claims.FirstOrDefault(_ => _.Type == JwtRegisteredClaimNames.UniqueName)?.Value, out userId);
                 return true;
             }
-            catch (Exception)
-            {
+            catch (Exception){
                 return false;
             }
         }
