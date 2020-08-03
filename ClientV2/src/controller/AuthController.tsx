@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { LoginForm } from '../_components/LoginForm/LoginForm';
-import { Card, Breadcrumb } from 'antd';
+import { Card, Breadcrumb, Tabs } from 'antd';
 import { HomeOutlined } from '@ant-design/icons';
 import { Lang } from '../_services';
 import style from './auth.module.scss';
@@ -24,11 +24,14 @@ export default class AuthController extends React.Component {
                     </Breadcrumb.Item>
                 </Breadcrumb>
                 <div className={style['auth']}>
-                    <Card
-                        title={Lang("AUTHORIZE_FORM")}
-                        style={{ width: '500px' }}
-                    >
-                        <LoginForm />
+                    <Card>
+                        <Tabs defaultActiveKey="1"         style={{ width: '500px' }}>
+                            <Tabs.TabPane tab={Lang("AUTHORIZE_FORM")} key="1">
+                                <LoginForm />
+                            </Tabs.TabPane>
+                            <Tabs.TabPane tab={Lang("REG_IN_PUBLIC")} key="2">
+                            </Tabs.TabPane>
+                        </Tabs>
                     </Card>
                 </div>
             </Content>
