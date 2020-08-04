@@ -25,13 +25,17 @@ export default class AuthController extends React.Component {
                 </Breadcrumb>
                 <div className={style['auth']}>
                     <Card>
-                        <Tabs defaultActiveKey="1"
-                            style={{ width: '500px' }}>
+                        <Tabs defaultActiveKey="1">
                             <Tabs.TabPane tab={Lang("AUTH_PUBLIC")} key="1">
                             </Tabs.TabPane>
                             <Tabs.TabPane tab={Lang("REG_PUBLIC")} key="2">
                             </Tabs.TabPane>
-                            <Tabs.TabPane tab={Lang("AUTHORIZE_FORM")} key="3">
+                            <Tabs.TabPane
+                                tab={<span className={style['guild-tab']}>
+                                    {Lang("AUTHORIZE_FORM")}
+                                </span>}
+                                key="3"
+                            >
                                 <LoginForm />
                             </Tabs.TabPane>
                         </Tabs>

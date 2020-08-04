@@ -123,7 +123,6 @@ const locString: any = {
         MAIN_RECRUITMENTSTATUS: 'Набор',
         ADD_NEW_USER: '+',
         PAGE_AUTH: "Авторизация",
-        AUTHORIZE_FORM: "Введите логин и пароль",
         USER_PENALTY_AMOUNT: "ШТРАФ: {0}",
         USER_BALANCE: 'Ваш баланс',
         USER_TITLE: "Вы",
@@ -190,8 +189,10 @@ const locString: any = {
         NEW_CHAR: 'Новый персонаж',
         DATE: 'Дата',
         OPERATIONS_PAGE: 'Список операций',
-        REG_PUBLIC:'Публичная Регистрация',
-        AUTH_PUBLIC:'Публичная Авторизация',
+        REG_PUBLIC: 'Доска Регистрация',
+        AUTH_PUBLIC: 'Доска Авторизация',
+        AUTHORIZE_FORM: "Казна ГИ",
+        PASSWORD: 'Ваш пароль'
     }
 };
 
