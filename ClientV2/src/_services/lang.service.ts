@@ -189,7 +189,9 @@ const locString: any = {
         ACTIONS: 'Действия',
         NEW_CHAR: 'Новый персонаж',
         DATE: 'Дата',
-        OPERATIONS_PAGE: 'Список операций'
+        OPERATIONS_PAGE: 'Список операций',
+        REG_PUBLIC:'Публичная Регистрация',
+        AUTH_PUBLIC:'Публичная Авторизация',
     }
 };
 
