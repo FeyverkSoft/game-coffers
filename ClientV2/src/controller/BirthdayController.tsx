@@ -182,4 +182,4 @@ const BirthdayController = connect<{}, {}, {}, IStore>(
         }
     })(_BirthdayController);
 
-export default BirthdayController;
+export default React.memo(BirthdayController);

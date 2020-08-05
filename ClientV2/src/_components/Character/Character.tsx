@@ -13,7 +13,7 @@ interface ICharacters {
     toggleAddCharModal(userId: string): void;
     onDeleteChar(id: string, userId: string): void;
 }
-export const Characters = ({ ...props }: ICharacters) => <div className={style['chars_wrapper']}>
+export const Characters = React.memo(({ ...props }: ICharacters) => <div className={style['chars_wrapper']}>
     {
         Object.keys(props.characters).filter(_ => _ !== 'holding').map(_ => <Character
             key={props.characters[_].id}
@@ -31,7 +31,7 @@ export const Characters = ({ ...props }: ICharacters) => <div className={style['
             />
         </Tooltip>
     </Private>
-</div>;
+</div>);
 
 interface ICharacterProps {
     character: ICharacter;

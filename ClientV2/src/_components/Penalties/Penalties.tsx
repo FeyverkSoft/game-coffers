@@ -11,11 +11,11 @@ import { formatDateTime } from "../../_helpers";
 interface IPenalties {
     penalties: Dictionary<IPenaltyView>;
     userId: string;
-    onAddLoan(userId: string): void;
+    onAddPenalty(userId: string): void;
 }
-export const Penalties = ({ ...props }: IPenalties) => <div className={style['penalty_wrapper']}>
+export const Penalties = React.memo(({ ...props }: IPenalties) => <div className={style['penalty_wrapper']}>
     {
-        Object.keys(props.penalties).filter(_ => _ !== 'holding').map(_ => <Loan
+        Object.keys(props.penalties).filter(_ => _ !== 'holding').map(_ => <Penalty
             key={props.penalties[_].id}
             penaly={props.penalties[_]}
         />)
@@ -26,23 +26,22 @@ export const Penalties = ({ ...props }: IPenalties) => <div className={style['pe
                 type="link"
                 className={style['add']}
                 icon={<PlusCircleFilled />}
-                onClick={() => props.onAddLoan(props.userId)}
+                onClick={() => props.onAddPenalty(props.userId)}
             />
         </Tooltip>
     </Private>
-</div>;
+</div>);
 
 interface IPenalyProps {
     penaly: IPenaltyView;
 }
 
-export const Loan = React.memo(({ ...props }: IPenalyProps) => {
+export const Penalty = React.memo(({ ...props }: IPenalyProps) => {
     const { penaly } = props;
     return <div key={penaly.id} className={`${style['penalty']}`}>
         <Tooltip
             className={`${style['penalty']} ${style[penaly.penaltyStatus.toLowerCase()]}`}
             title={`${formatDateTime(penaly.createDate, 'd')} ${penaly.description}`}
-        // onClick={() => props.showLoanInfo(loan.id, loan.userId)}
         >
             <span>{penaly.amount}</span>
         </Tooltip>

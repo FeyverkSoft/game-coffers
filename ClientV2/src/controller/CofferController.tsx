@@ -25,6 +25,7 @@ import { AddUserDialog } from "../_components/Coffers/AddUserDialog";
 import { Private } from "../_components/Private";
 import { EditableSelect, IItem } from "../_components/Coffers/UserStatus";
 import { AddOperationDialog } from "../_components/Operations/AddOperationDialog";
+import memoize from "lodash.memoize";
 
 
 interface IMainProps {
@@ -80,7 +81,7 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                     sorter: (a: IGamersListView, b: IGamersListView) => {
                         return a.name === b.name ? 0 : (a.name > b.name ? 1 : -1);
                     },
-                    render: (value: string, record: IGamersListView) => {
+                    render: memoize((value: string, record: IGamersListView) => {
                         return {
                             props: {
                                 className: style[record.status.toLocaleLowerCase()]
@@ -102,17 +103,16 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                                 </Col>
                             </div>
                         }
-                    }
+                    }, (it, p) => JSON.stringify(p))
                 },
                 {
                     title: Lang('USER_ROW_STATUS'),
                     dataIndex: 'status',
                     key: 'status',
                     sorter: (a: IGamersListView, b: IGamersListView) => {
-
                         return a.status === b.status ? 0 : (a.status > b.status ? 1 : -1);
                     },
-                    render: (value: string, record: IGamersListView) => {
+                    render: memoize((value: string, record: IGamersListView) => {
                         return {
                             props: {
                                 className: style[record.status.toLocaleLowerCase()]
@@ -137,7 +137,7 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                                 </Col>
                             </div>
                         }
-                    }
+                    }, (it, p) => JSON.stringify(p))
                 },
                 {
                     title: Lang('USER_ROW_RANK'),
@@ -147,7 +147,7 @@ export class _CofferController extends React.Component<IMainProps, IState> {
 
                         return a.rank === b.rank ? 0 : (a.rank > b.rank ? 1 : -1);
                     },
-                    render: (value: string, record: IGamersListView) => {
+                    render: memoize((value: string, record: IGamersListView) => {
                         return {
                             props: {
                                 className: `${style[record.status.toLocaleLowerCase()]} ${style[record.rank.toLocaleLowerCase()]}`
@@ -169,17 +169,16 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                                 </Col>
                             </div>
                         }
-                    }
+                    }, (it, p) => JSON.stringify(p))
                 },
                 {
                     title: Lang('USER_ROW_BALANCE'),
                     dataIndex: 'balance',
                     key: 'balance',
                     sorter: (a: IGamersListView, b: IGamersListView) => {
-
                         return a.balance - b.balance;
                     },
-                    render: (value: number, record: IGamersListView) => {
+                    render: memoize((value: number, record: IGamersListView) => {
                         return {
                             props: {
                                 className: style[record.status.toLocaleLowerCase()]
@@ -206,18 +205,20 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                                 </Col>
                             </div>
                         };
-                    }
+                    }, (it, p) => JSON.stringify(p))
                 },
                 {
                     title: Lang('USER_ROW_LOANS'),
                     dataIndex: 'loans',
                     key: 'loans',
-                    render: (value: number, record: IGamersListView) => {
+                    render: memoize((value: number, record: IGamersListView) => {
                         return {
                             props: {
                                 className: style[record.status.toLocaleLowerCase()]
                             },
-                            children: <div className={style['title']}>
+                            children: <div
+                                id={record.id}
+                                className={style['title']}>
                                 <Col style={{
                                     fontWeight: 500,
                                     padding: '.25rem .5rem',
@@ -234,18 +235,20 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                                 </Col>
                             </div>
                         }
-                    }
+                    }, (it, p) => JSON.stringify(p))
                 },
                 {
                     title: Lang('USER_ROW_PENALTIES'),
                     dataIndex: 'penalties',
                     key: 'penalties',
-                    render: (value: number, record: IGamersListView) => {
+                    render: memoize((value: number, record: IGamersListView) => {
                         return {
                             props: {
                                 className: style[record.status.toLocaleLowerCase()]
                             },
-                            children: <div className={style['title']}>
+                            children: <div
+                                id={record.id}
+                                className={style['title']}>
                                 <Col style={{
                                     fontWeight: 500,
                                     padding: '.25rem .5rem',
@@ -255,12 +258,12 @@ export class _CofferController extends React.Component<IMainProps, IState> {
                                 <Col><Penalties
                                     penalties={record.penalties}
                                     userId={record.id}
-                                    onAddLoan={this.toggleAddPenaltyModal}
+                                    onAddPenalty={this.toggleAddPenaltyModal}
                                 />
                                 </Col>
                             </div>
                         }
-                    }
+                    }, (it, p) => JSON.stringify(p))
                 },
             ]
         }
@@ -531,4 +534,4 @@ const CofferController = connect<{}, {}, {}, IStore>(
         }
     })(_CofferController);
 
-export default CofferController;
+export default React.memo(CofferController);
