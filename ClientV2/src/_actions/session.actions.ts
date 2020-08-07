@@ -4,6 +4,7 @@ import { alertInstance } from './alert/alert.actions';
 import { SessionActionsType } from './SessionActionsType';
 
 export class SessionActions {
+
     /**
      * Авторизировать пользователя по логину и парлю
      * @param {*} username 
@@ -13,6 +14,29 @@ export class SessionActions {
         return (dispatch: Function) => {
             dispatch(SessionActionsType.CREATE_SESSION());
             authService.logIn(username, password)
+                .then(
+                    data => {
+                        dispatch(SessionActionsType.CREATE_SESSION_SUCCESS(data));
+                        history.push('/');
+                    })
+                .catch(
+                    ex => {
+                        dispatch(SessionActionsType.CREATE_SESSION_FAILURE());
+                        this.clearLocalSession();
+                        dispatch(alertInstance.error(ex));
+                    });
+        }
+    }
+
+     /**
+     * Авторизировать пользователя по логину и парлю
+     * @param {*} username 
+     * @param {*} password 
+     */
+    logInByEmail(guildId: string, email: string, password: string): Function {
+        return (dispatch: Function) => {
+            dispatch(SessionActionsType.CREATE_SESSION());
+            authService.logInByEmail(guildId, email, password)
                 .then(
                     data => {
                         dispatch(SessionActionsType.CREATE_SESSION_SUCCESS(data));

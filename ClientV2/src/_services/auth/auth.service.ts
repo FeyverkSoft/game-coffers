@@ -48,6 +48,32 @@ export class authService {
             .catch(catchHandle);
     };
 
+    static async logInByEmail(guildId: string, email: string, password: string): Promise<SessionInfo> {
+        const requestOptions: RequestInit = {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json'
+            },
+            body: JSON.stringify({guildId:guildId, email: email, password: password })
+        };
+        return fetch(Config.BuildUrl('/Session/byemail'), requestOptions)
+            .then<BaseResponse & SessionInfo>(getResponse)
+            .then((data: any) => {
+                if ((data && data.type) || data.traceId) {
+                    authService.clearLocalSession();
+                    throw new Error(LangF(data.type || 'INVALID_ARGUMENT', Object.keys(data.errors || {})[0]));
+                }
+                let session: SessionInfo = new SessionInfo(data);
+                localStorage.setItem('session', JSON.stringify(session));
+                localStorage.setItem('Coffer_apiUrl', Config.GetUrl());
+                return data;
+
+            })
+            .catch(catchHandle);
+    };
+
     static async logOut(): Promise<any> {
         let session = authService.getCurrentSession();
         if (session) {

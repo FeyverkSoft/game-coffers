@@ -6,6 +6,8 @@ import { Lang } from '../_services';
 import style from './auth.module.scss';
 import { Content } from '../_components/Content/Content';
 import { Link } from 'react-router-dom';
+import { EmailLoginForm } from '../_components/LoginForm/EmailLoginForm';
+import { RegForm } from '../_components/Reg/RegForm';
 
 export default class AuthController extends React.Component {
     render() {
@@ -27,8 +29,14 @@ export default class AuthController extends React.Component {
                     <Card>
                         <Tabs defaultActiveKey="1">
                             <Tabs.TabPane tab={Lang("AUTH_PUBLIC")} key="1">
+                                <EmailLoginForm
+                                    guildId={'00000000-0000-4000-0000-000000000003'}
+                                />
                             </Tabs.TabPane>
                             <Tabs.TabPane tab={Lang("REG_PUBLIC")} key="2">
+                                <RegForm
+                                    guildId={'00000000-0000-4000-0000-000000000003'}
+                                />
                             </Tabs.TabPane>
                             <Tabs.TabPane
                                 tab={<span className={style['guild-tab']}>

@@ -1,19 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Input, Button } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { IStore } from '../../_helpers';
 import { Lang } from '../../_services';
 import { sessionInstance } from '../../_actions/session.actions';
 
 interface UserFormProps {
     isLoading: boolean,
-    LogIn(username: string, password: string): void;
+    guildId?: string;
+    LogIn(guildId: string, email: string, password: string): void;
 }
 
-class _LoginForm extends React.Component<UserFormProps, any> {
+class _EmailLoginForm extends React.Component<UserFormProps, any> {
     handleSubmit = (values: any) => {
-        this.props.LogIn(values.username, values.password);
+        const guildId: string = this.props.guildId || values.guildId;
+        this.props.LogIn(guildId, values.email, values.password);
     };
 
     render() {
@@ -23,17 +25,22 @@ class _LoginForm extends React.Component<UserFormProps, any> {
                 onFinish={this.handleSubmit}
             >
                 <Form.Item
-                    name="username"
+                    name="email"
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your username!',
+                            message: 'Please input your email!',
                         },
+                        {
+                            type: 'email',
+                            message: 'is not validate email!',
+                        }
                     ]}
                 >
                     <Input
-                        prefix={<UserOutlined />}
-                        placeholder={Lang('NAME')}
+                        itemID="email"
+                        prefix={<MailOutlined />}
+                        placeholder={Lang('Email')}
                     />
                 </Form.Item>
                 <Form.Item
@@ -44,9 +51,9 @@ class _LoginForm extends React.Component<UserFormProps, any> {
                             message: 'Please input your password!',
                         }]}
                 >
-
                     <Input
                         prefix={<LockOutlined />}
+                        itemID="password"
                         type="password"
                         placeholder={Lang('PASSWORD')}
                     />
@@ -65,17 +72,21 @@ class _LoginForm extends React.Component<UserFormProps, any> {
     }
 }
 
-const connectedLoginForm = connect<{}, {}, any, IStore>(
-    (state: IStore) => {
+interface EmailFormProps {
+    guildId?: string;
+}
+const connectedLoginForm = connect<{}, {}, EmailFormProps & any, IStore>(
+    (state: IStore, props: any) => {
         const { session } = state;
         return {
             isLoading: session && session.holding,
+            guildId: props.guildId
         };
     },
     (dispatch: Function) => {
         return {
-            LogIn: (username: string, password: string) => dispatch(sessionInstance.logIn(username, password)),
+            LogIn: (guildId: string, email: string, password: string) => dispatch(sessionInstance.logInByEmail(guildId, email, password)),
         }
-    })(_LoginForm);
+    })(_EmailLoginForm);
 
-export { connectedLoginForm as LoginForm };
+export { connectedLoginForm as EmailLoginForm };

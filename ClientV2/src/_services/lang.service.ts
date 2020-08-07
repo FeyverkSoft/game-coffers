@@ -55,7 +55,7 @@ const locString: any = {
         MAIN_PAGE_GUILD_LOANS: 'Погашено от займов ',
         NEW_CHAR_MODAL: 'Добавление нового чара',
         NAME: "Имя",
-        LOGIN: 'Логин',
+        LOGIN: 'Войти',
         LOGOUT: 'Выход',
         LOGOUT_PAGE: 'Страница выхода',
         LOGOUT_PAGE_: 'Подтвердите выход',
@@ -192,7 +192,8 @@ const locString: any = {
         REG_PUBLIC: 'Доска Регистрация',
         AUTH_PUBLIC: 'Доска Авторизация',
         AUTHORIZE_FORM: "Казна ГИ",
-        PASSWORD: 'Ваш пароль'
+        PASSWORD: 'Ваш пароль',
+        Reg: 'Регистрация'
     }
 };
 
