@@ -10,9 +10,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Coffers.Public.WebApi.Controllers
 {
+    [Route("[controller]")]
     [ApiController]
     [AllowAnonymous]
-    public sealed class RegistrateController : ControllerBase
+    public sealed class RegistrarController : ControllerBase
     {
         /// <summary>
         /// Регистрация пользователя в сервисе по емайлу
