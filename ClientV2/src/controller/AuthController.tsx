@@ -18,6 +18,7 @@ const antIcon = <LoadingOutlined style={{ fontSize: 64 }} spin />;
 
 interface IProps {
     isFinal: boolean;
+    isNew?: boolean;
     location: Location;
     checkCode(code: string): void;
 }
@@ -62,12 +63,12 @@ class _authController extends React.Component<IProps, ISate> {
                     <Card>
                         <IF value={this.state.code === '' || this.props.isFinal}>
                             <Tabs defaultActiveKey="1">
-                                <Tabs.TabPane tab={Lang("AUTH_PUBLIC")} key="1">
+                                <Tabs.TabPane tab={Lang("AUTH_PUBLIC")} key={this.props.isNew ? "2" : "1"}>
                                     <EmailLoginForm
                                         guildId={'00000000-0000-4000-0000-000000000003'}
                                     />
                                 </Tabs.TabPane>
-                                <Tabs.TabPane tab={Lang("REG_PUBLIC")} key="2">
+                                <Tabs.TabPane tab={Lang("REG_PUBLIC")} key={this.props.isNew ? "1" : "2"}>
                                     <RegForm
                                         guildId={'00000000-0000-4000-0000-000000000003'}
                                     />
@@ -105,7 +106,8 @@ class _authController extends React.Component<IProps, ISate> {
 const connectedAuthController = connect<{}, {}, {}, IStore>(
     (state: IStore) => {
         return {
-            isFinal: state.session.ConfirmCodeState
+            isFinal: state.session.ConfirmCodeState,
+            isNew: state.session.isNew
         };
     },
     (dispatch: any) => {

@@ -47,6 +47,9 @@ namespace Coffers.Public.Infrastructure.NestContracts
                     .HasMaxLength(64)
                     .IsRequired();
 
+                b.Property(n => n.ExpDate)
+                    .IsRequired(false);
+
                 b.Property(n => n.UserId)
                     .IsRequired();
 

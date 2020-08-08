@@ -53,16 +53,24 @@ namespace Coffers.Public.WebApi.Controllers
             [FromServices] IQueryProcessor queryProcessor,
             CancellationToken cancellationToken)
         {
-            try{
-                var contract = await contractCreator.Create(HttpContext.GetUserId(), HttpContext.GetGuildId(), binding.Id, binding.NestId,
+            try
+            {
+                var contract = await contractCreator.Create(HttpContext.GetUserId(), HttpContext.GetGuildId(),
+                    binding.Id, binding.NestId,
                     binding.Reward, binding.CharacterName, cancellationToken);
                 await repository.Save(contract, cancellationToken);
             }
-            catch (ContractAlreadyExistsException e){
+            catch (ContractAlreadyExistsException e)
+            {
                 throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.ContractAlreadyExists, e.Message);
             }
-            catch (NestNotFoundException e){
+            catch (NestNotFoundException e)
+            {
                 throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.NestNotFound, e.Message);
+            }
+            catch (LimitExceededException e)
+            {
+                throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.LimitExceeded, e.Message);
             }
 
             return Ok(await queryProcessor.Process<NestContractQuery, NestContractView>(new NestContractQuery(

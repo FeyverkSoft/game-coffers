@@ -108,7 +108,13 @@ export const App = ({ ...props }) => {
           </TryCatch>
         </Content>
       </Router>
-      <Footer style={{ display: 'flex', justifyContent: 'space-between' }}><div>© Peter 2019 - {(new Date()).getFullYear()}</div> <div>developed by Mazin Peter</div></Footer>
+      <Footer style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div>© Peter 2019 - {(new Date()).getFullYear()}</div>
+        <span>admin[гав-гав]guild-treasury.ru</span>
+        <div>
+          <a href="https://petr-mazin.ru/">developed by Mazin Peter</a>
+        </div>
+      </Footer>
     </Layout>
   );
 }

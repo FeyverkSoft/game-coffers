@@ -34,7 +34,7 @@ class _RegForm extends React.Component<RegFormProps, any> {
                 <Result
                     status="success"
                     title="Регистрация успешно завершена!"
-                    subTitle="Осталось подтвердить ваш емайл."
+                    subTitle="Осталось подтвердить ваш емайл. Если письмо не пришло, то пиши на admin@guild-treasury.ru"
                 />
             );
         return (
@@ -81,6 +81,10 @@ class _RegForm extends React.Component<RegFormProps, any> {
                         {
                             required: true,
                             message: 'Please input your password!',
+                        },
+                        {
+                            message: 'Your password is too short.!',
+                            min: 8
                         }]}
                 >
                     <Input

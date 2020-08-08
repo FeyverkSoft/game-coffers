@@ -30,7 +30,7 @@ namespace Coffers.Public.WebApi.EventHandlers
 
             await _emailSender.Send(new Email(
                 to: message.Email,
-                body: $"Ваш код для подтверждания регистрации {message.ConfirmationCode}",
+                body: $"Добрый день!<br/> Для завершения регистрации в сервисе guild-treasury пожалуйста перейтиде по ссылке <br/> <a href=\"https://guild-treasury.ru/auth?code={message.ConfirmationCode}\">Подтвердить емайл!</a><br/><br/> ----<br/> С уважением администрация сервиса guild-treasury",
                 subject: "Регистрация пользователя"
                 ), cancellationToken);
             

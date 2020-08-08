@@ -49,6 +49,10 @@ class _EmailLoginForm extends React.Component<UserFormProps, any> {
                         {
                             required: true,
                             message: 'Please input your password!',
+                        },
+                        {
+                            message: 'Your password is too short.!',
+                            min: 8
                         }]}
                 >
                     <Input

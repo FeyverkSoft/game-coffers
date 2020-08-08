@@ -23,6 +23,8 @@ namespace Coffers.DB.Migrations.Entities
         /// </summary>
         public String Reward { get; }
 
+        public DateTime? ExpDate { get; }
+
         /// <summary>
         /// Состояние контракта
         /// </summary>

@@ -1,4 +1,5 @@
 ﻿using System;
+
 using Coffers.Types.Nest;
 
 namespace Coffers.Public.Domain.NestContracts
@@ -13,6 +14,8 @@ namespace Coffers.Public.Domain.NestContracts
         public Guid UserId { get; }
 
         public Guid NestId { get; }
+
+        public DateTime? ExpDate { get; private set; }
 
         public String CharacterName { get; }
 
@@ -41,6 +44,25 @@ namespace Coffers.Public.Domain.NestContracts
 
         public void Close()
         {
+            Status = NestContractStatus.Closed;
+            ConcurrencyTokens = Guid.NewGuid();
+        }
+
+        public void SetTimeOut(Int32 hours)
+        {
+            if (hours <= 0)
+                throw new ArgumentOutOfRangeException(nameof(hours));
+
+            ExpDate = DateTime.UtcNow.AddHours(hours);
+            ConcurrencyTokens = Guid.NewGuid();
+        }
+
+        public void MarkAsExpire()
+        {
+            if (Status == NestContractStatus.Closed)
+                return;
+            if (ExpDate == null || ExpDate >= DateTime.UtcNow)
+                return;
             Status = NestContractStatus.Closed;
             ConcurrencyTokens = Guid.NewGuid();
         }

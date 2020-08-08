@@ -26,6 +26,7 @@ namespace Coffers.Public.Domain.NestContracts
         /// <param name="reward"></param>
         /// <param name="characterName"></param>
         /// <param name="cancellationToken"></param>
+        /// <exception cref="LimitExceededException"></exception>
         /// <returns></returns>
         /// <exception cref="NestNotFoundException"></exception>
         /// <exception cref="ContractAlreadyExistsException"></exception>
@@ -38,7 +39,8 @@ namespace Coffers.Public.Domain.NestContracts
 
             var existsContract = await _repository.Get(id, cancellationToken);
 
-            if (existsContract != null){
+            if (existsContract != null)
+            {
                 if (existsContract.Reward != reward ||
                     existsContract.CharacterName != characterName ||
                     existsContract.UserId != userId ||
@@ -47,11 +49,18 @@ namespace Coffers.Public.Domain.NestContracts
                 return existsContract;
             }
 
-            return new NestContract(id: id,
+            var activeCount = await _repository.GetActiveCount(userId, cancellationToken);
+            if (activeCount >= 35)
+                throw new LimitExceededException(35);
+
+            var nc = new NestContract(id: id,
                 userId: userId,
                 nestId: nestId,
                 characterName: characterName,
                 reward: reward);
+
+            nc.SetTimeOut(168);
+            return nc;
         }
     }
 }

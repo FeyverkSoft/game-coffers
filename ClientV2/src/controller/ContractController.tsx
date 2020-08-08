@@ -24,6 +24,7 @@ interface IState {
 }
 
 export class _ContractController extends React.Component<IMainProps, IState> {
+    intervalId?: NodeJS.Timeout;
     constructor(props: IMainProps) {
         super(props);
         this.state = {
@@ -37,6 +38,12 @@ export class _ContractController extends React.Component<IMainProps, IState> {
 
     componentDidMount() {
         this.loadData();
+        this.intervalId = setInterval(this.loadData, 120000);
+    }
+
+    componentWillUnmount() {
+        if (this.intervalId != undefined)
+            clearInterval(this.intervalId);
     }
 
     render() {

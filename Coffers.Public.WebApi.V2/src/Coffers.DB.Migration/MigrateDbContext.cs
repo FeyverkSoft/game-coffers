@@ -469,6 +469,8 @@ namespace Coffers.DB.Migrations
 
                 b.Property(n => n.UserId)
                     .IsRequired();
+                b.Property(n => n.ExpDate)
+                    .IsRequired(false);
                 b.Property(n => n.Reward)
                     .HasMaxLength(512)
                     .IsRequired();

@@ -24,6 +24,10 @@ export function getResponse<T = any>(response: Response): Promise<T> {
     try {
         if (response.status === 204)
             return Promise.resolve<any>('{}');
+        if (response.status === 400)
+            return Promise.resolve(response.json().then(_ => {
+                return errorHandle(_);
+            }));
         return response.json();
     } catch (error) {
         return Promise.reject(HttpStatusDecode(status));
@@ -36,13 +40,14 @@ export const errorHandle = (data: any): Promise<any> => {
     if ((data && data.type) || data.traceId) {
         if (data.type || data.traceId) {
             let error: string = '';
+
             if (data.status === 400) {
                 let validationMessages: string | undefined = undefined;
-
                 if (data.errors) {
                     validationMessages = Object.keys(data.errors).map(_ => data.errors[_]).join('\n');
                 }
                 error = LangF('INVALID_ARGUMENT', validationMessages || data.title || '');
+                return Promise.reject(error); 
             }
             else
                 error = LangF(data.type, data.errors || data.title || '');

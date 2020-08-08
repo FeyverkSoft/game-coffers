@@ -1,7 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Coffers.Public.Domain.NestContracts;
+using Coffers.Types.Nest;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Coffers.Public.Infrastructure.NestContracts
@@ -29,6 +34,21 @@ namespace Coffers.Public.Infrastructure.NestContracts
                 await _context.NestContracts.AddAsync(loan, cancellationToken);
 
             await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<Int32> GetActiveCount(Guid userId, CancellationToken cancellationToken)
+        {
+            return await _context.NestContracts.CountAsync(_ => _.UserId == userId &&
+                                                                _.Status == NestContractStatus.Active,
+                cancellationToken);
+        }
+
+        public async Task<IEnumerable<NestContract>> GetAllUnprocessedExpired(CancellationToken cancellationToken)
+        {
+            return await _context.NestContracts.Where(_ => _.ExpDate != null &&
+                                                           _.ExpDate <= DateTime.UtcNow &&
+                                                           _.Status == NestContractStatus.Active)
+                .ToListAsync(cancellationToken);
         }
 
         async Task<Nest?> INestGetter.Get(Guid nestId, Guid guildId, CancellationToken cancellationToken)

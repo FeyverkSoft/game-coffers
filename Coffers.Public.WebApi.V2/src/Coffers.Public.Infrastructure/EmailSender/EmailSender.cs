@@ -25,7 +25,7 @@ namespace Coffers.Public.Infrastructure.EmailSender
             {
                 EnableSsl = _options.SmtpUseSsl,
                 Credentials = new NetworkCredential(_options.SmtpLogin, _options.SmtpPassword),
-                UseDefaultCredentials = String.IsNullOrEmpty(_options.SmtpLogin) && String.IsNullOrEmpty(_options.SmtpPassword),
+                //UseDefaultCredentials = (String.IsNullOrEmpty(_options.SmtpLogin) && String.IsNullOrEmpty(_options.SmtpPassword)),
                 DeliveryMethod = SmtpDeliveryMethod.Network
             };
         }
@@ -35,6 +35,7 @@ namespace Coffers.Public.Infrastructure.EmailSender
             var logger = _loggerFactory.CreateLogger<EmailSender>();
             try{
                 using var smtpClient = CreateSmtpClient();
+                logger.LogInformation($"Email to {email.To} init sent from {_options.From}");
                 var message = new MailMessage(_options.From, email.To, email.Subject, email.Body) {IsBodyHtml = true};
                 await smtpClient.SendMailAsync(message);
                 logger.LogInformation($"Email to {email.To} sent");
