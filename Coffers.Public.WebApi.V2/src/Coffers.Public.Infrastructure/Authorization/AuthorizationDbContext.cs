@@ -61,7 +61,8 @@ namespace Coffers.Public.Infrastructure.Authorization
 
                 b.Property(o => o.Login)
                     .HasColumnName("Login")
-                    .IsRequired();
+                    .HasMaxLength(256)
+                    .IsRequired(false);
                 b.Property(o => o.Password)
                     .HasColumnName("Password");
                 b.Property(o => o.GuildId)

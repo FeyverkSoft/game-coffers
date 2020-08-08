@@ -41,38 +41,55 @@ export const App = ({ ...props }) => {
             <Logo />
           </Link>
           <Private>
-            <Menu
-              /*defaultSelectedKeys={['/']}*/
-
-              mode="horizontal"
-              theme="light"
-            >
-              <Menu.Item key="/profile" >
-                <HeaderLink to="/profile">
-                  {Lang('PROFILE')}
-                </HeaderLink>
-              </Menu.Item>
-              <Menu.Item key="/operations" >
-                <HeaderLink to="/operations">
-                  {Lang('OPERATIONS')}
-                </HeaderLink>
-              </Menu.Item>
-              <Menu.Item key="/">
-                <HeaderLink to="/">
-                  {Lang('COFFERS')}
-                </HeaderLink>
-              </Menu.Item>
-              <Menu.Item key="/birthday">
-                <HeaderLink to="/birthday">
-                  {Lang('BD')}
-                </HeaderLink>
-              </Menu.Item>
-              <Menu.Item key="/contracts">
-                <HeaderLink to="/contracts">
-                  {Lang('CONTRACTS')}
-                </HeaderLink>
-              </Menu.Item>
-            </Menu>
+            <Private hiddenFor={['demo']}>
+              <Menu
+                mode="horizontal"
+                theme="light"
+              >
+                <Menu.Item key="/profile" >
+                  <HeaderLink to="/profile">
+                    {Lang('PROFILE')}
+                  </HeaderLink>
+                </Menu.Item>
+                <Menu.Item key="/operations" >
+                  <HeaderLink to="/operations">
+                    {Lang('OPERATIONS')}
+                  </HeaderLink>
+                </Menu.Item>
+                <Menu.Item key="/">
+                  <HeaderLink to="/">
+                    {Lang('COFFERS')}
+                  </HeaderLink>
+                </Menu.Item>
+                <Menu.Item key="/birthday">
+                  <HeaderLink to="/birthday">
+                    {Lang('BD')}
+                  </HeaderLink>
+                </Menu.Item>
+                <Menu.Item key="/contracts">
+                  <HeaderLink to="/contracts">
+                    {Lang('CONTRACTS')}
+                  </HeaderLink>
+                </Menu.Item>
+              </Menu>
+            </Private>
+            <Private roles={['demo']}>
+              <Menu
+                mode="horizontal"
+                theme="light"
+              >
+                <Menu.Item key="/profile" >
+                  <HeaderLink to="/profile">
+                    {Lang('PROFILE')}
+                  </HeaderLink>
+                </Menu.Item>
+                <Menu.Item key="/contracts">
+                  <HeaderLink to="/contracts">
+                    {Lang('CONTRACTS')}
+                  </HeaderLink>
+                </Menu.Item>
+              </Menu>
+            </Private>
             <ProfileButton />
           </Private>
         </Header>

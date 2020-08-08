@@ -4,6 +4,7 @@ import { store } from '../../_helpers';
 import { Config } from '../../core';
 
 export class authService {
+
     ///Возвращает текущую сессию пользователя
     static getCurrentSession(): SessionInfo {
         try {
@@ -48,6 +49,50 @@ export class authService {
             .catch(catchHandle);
     };
 
+    static async checkCode(code: string): Promise<any> {
+        const requestOptions: RequestInit = {
+            method: 'get',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json'
+            },
+            // body: JSON.stringify({ ConfirmationCode: code })
+        };
+        return fetch(Config.BuildUrl(`/Registrar/confirm?ConfirmationCode=${code}`), requestOptions)
+            .then<BaseResponse & SessionInfo>(getResponse)
+            .then((data: any) => {
+                if ((data && data.type) || data.traceId) {
+                    authService.clearLocalSession();
+                    throw new Error(LangF(data.type || 'INVALID_ARGUMENT', Object.keys(data.errors || {})[0]));
+                }
+                return;
+            })
+            .catch(catchHandle);
+    };
+
+    static async reg(id: string, guildId: string, username: string, email: string, password: string): Promise<void> {
+        const requestOptions: RequestInit = {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json'
+            },
+            body: JSON.stringify({ id: id, guildId: guildId, email: email, password: password, name: username })
+        };
+        return fetch(Config.BuildUrl('/Registrar/byemail'), requestOptions)
+            .then<BaseResponse & SessionInfo>(getResponse)
+            .then((data: any) => {
+                if ((data && data.type) || data.traceId) {
+                    throw new Error(LangF(data.type || 'INVALID_ARGUMENT', Object.keys(data.errors || {})[0]));
+                }
+                return data;
+
+            })
+            .catch(catchHandle);
+    };
+
     static async logInByEmail(guildId: string, email: string, password: string): Promise<SessionInfo> {
         const requestOptions: RequestInit = {
             method: 'POST',
@@ -56,7 +101,7 @@ export class authService {
                 'Content-Type': 'application/json',
                 'accept': 'application/json'
             },
-            body: JSON.stringify({guildId:guildId, email: email, password: password })
+            body: JSON.stringify({ guildId: guildId, email: email, password: password })
         };
         return fetch(Config.BuildUrl('/Session/byemail'), requestOptions)
             .then<BaseResponse & SessionInfo>(getResponse)

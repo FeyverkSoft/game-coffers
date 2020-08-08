@@ -30,7 +30,7 @@ namespace Coffers.Public.Domain.Authorization
         /// <summary>
         /// Логин для авторизации
         /// </summary>
-        public String Login { get; }
+        public String? Login { get; }
 
         /// <summary>
         /// Пароль для авторизации

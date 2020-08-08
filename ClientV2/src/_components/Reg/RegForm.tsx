@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, Result } from 'antd';
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
 import { IStore, getGuid } from '../../_helpers';
 import { Lang } from '../../_services';
@@ -9,6 +9,7 @@ import { sessionInstance } from '../../_actions/session.actions';
 interface RegFormProps {
     isLoading: boolean,
     guildId?: string;
+    isNew: boolean;
     Reg(id: string, guildId: string, username: string, email: string, password: string): void;
 }
 
@@ -27,7 +28,15 @@ class _RegForm extends React.Component<RegFormProps, any> {
     };
 
     render() {
-        const { isLoading } = this.props;
+        const { isLoading, isNew } = this.props;
+        if (isNew)
+            return (
+                <Result
+                    status="success"
+                    title="Регистрация успешно завершена!"
+                    subTitle="Осталось подтвердить ваш емайл."
+                />
+            );
         return (
             <Form
                 onFinish={this.handleSubmit}
@@ -42,6 +51,7 @@ class _RegForm extends React.Component<RegFormProps, any> {
                     ]}
                 >
                     <Input
+                        itemID="name"
                         prefix={<UserOutlined />}
                         placeholder={Lang('NAME')}
                     />
@@ -101,13 +111,14 @@ const connectedLoginForm = connect<{}, {}, EmailFormProps & any, IStore>(
         const { session } = state;
         return {
             isLoading: session && session.holding,
-            guildId: props.guildId
+            guildId: props.guildId,
+            isNew: session.isNew || false
         };
     },
     (dispatch: Function) => {
         return {
             Reg: (id: string, guildId: string, username: string, email: string, password: string) =>
-                dispatch(sessionInstance.logIn(username, password)),
+                dispatch(sessionInstance.reg({ id: id, guildId: guildId, username: username, email: email, password: password })),
         }
     })(_RegForm);
 

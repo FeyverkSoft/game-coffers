@@ -24,6 +24,33 @@ export function session(state = initialState, action: SessionActionsTypes): Sess
 
         case 'CLOSED_SESSION':
             return new SessionInfo();
+
+        case 'CREATE_NEW_USER':
+            return new SessionInfo();
+
+        case 'CREATE_NEW_USER_SUCCESS':
+            var s = new SessionInfo();
+            s.isNew = true;
+            return s;
+
+        case 'CREATE_NEW_USER_SUCCESS':
+            return new SessionInfo();
+
+            
+
+        case 'CHECK_CODE_PROCESS':
+            return new SessionInfo();
+
+        case 'CHECK_CODE_SUCCESS':
+            var s = new SessionInfo();
+            s.ConfirmCodeState = true;
+            return s;
+
+        case 'CHECK_CODE_FAILURE':
+            var s = new SessionInfo();
+            s.ConfirmCodeState = false;
+            return s;
+
         default:
             return state
     }

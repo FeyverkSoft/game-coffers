@@ -22,6 +22,8 @@ const HttpStatusDecode = (code: number | string): string => {
 export function getResponse<T = any>(response: Response): Promise<T> {
     let status: number | string = response.statusText || response.status;
     try {
+        if (response.status === 204)
+            return Promise.resolve<any>('{}');
         return response.json();
     } catch (error) {
         return Promise.reject(HttpStatusDecode(status));

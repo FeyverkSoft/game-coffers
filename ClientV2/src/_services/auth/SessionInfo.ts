@@ -3,6 +3,9 @@ export class SessionInfo {
     guildId: string;
     holding: boolean;
     roles: string[];
+    isNew?: boolean = false;
+    ConfirmCodeState?: boolean;
+    
     constructor(data: any = { holding: false }) {
         let obj;
         if (typeof (data) === typeof ('')) {

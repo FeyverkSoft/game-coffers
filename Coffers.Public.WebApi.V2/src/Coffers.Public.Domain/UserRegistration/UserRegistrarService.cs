@@ -42,10 +42,10 @@ namespace Coffers.Public.Domain.UserRegistration
             CancellationToken cancellationToken = default)
         {
             var user = await _repository.Get(id, cancellationToken);
-            
+
             if (user == null)
                 user = await _repository.GetUserByEmail(email, guildId, cancellationToken);
-            
+
             if (user != null){
                 if (user.Id == id &&
                     user.Email == email &&
@@ -57,7 +57,7 @@ namespace Coffers.Public.Domain.UserRegistration
             }
 
             user = new User(id, guildId, name, rank, status, dateOfBirth ?? DateTime.UtcNow, null, email);
-            _passwordHasher.GetHash(user.Id, user.Email, password);
+            user.SetPassword(_passwordHasher.GetHash(user.Id, user.Email, password));
             return user;
         }
 

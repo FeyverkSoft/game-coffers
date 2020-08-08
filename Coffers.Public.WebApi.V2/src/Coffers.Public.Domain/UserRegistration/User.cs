@@ -54,6 +54,11 @@ namespace Coffers.Public.Domain.UserRegistration
         /// Логин для авторизации
         /// </summary>
         public String? Login { get; }
+        
+        /// <summary>
+        /// Пароль для авторизации
+        /// </summary>
+        public String? Password { get; private set; }
 
         public Guid ConcurrencyTokens { get; set; } = Guid.NewGuid();
 
@@ -81,6 +86,14 @@ namespace Coffers.Public.Domain.UserRegistration
             if (Status != GamerStatus.New)
                 throw new InvalidOperationException($"Invalid state {Status}");
             Status = GamerStatus.Active;
+            UpdateDate = DateTime.UtcNow;
+        }
+        
+        internal void SetPassword(String hash)
+        {
+            if (String.IsNullOrEmpty(hash))
+                throw new ArgumentException($"Argument: {nameof(hash)} cannot be null or empty.");
+            Password = hash;
             UpdateDate = DateTime.UtcNow;
         }
     }

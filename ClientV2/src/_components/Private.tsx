@@ -9,6 +9,7 @@ import { SessionInfo } from '../_services';
 interface _IPrivateProps extends React.Props<any> {
     session: SessionInfo;
     roles?: Array<string>;
+    hiddenFor?: Array<string>;
     skipRoleTest?: Boolean;
 }
 
@@ -23,6 +24,14 @@ class _Private extends React.Component<_IPrivateProps> {
         if (!session.isActive())
             return true;
         flag = session === undefined || !session.isActive();
+
+        if (this.props.hiddenFor && this.props.hiddenFor.length > 0 && session.roles) {
+            for (let i = 0; i < this.props.hiddenFor.length; i++) {
+                let role = this.props.hiddenFor[i].toLowerCase();
+                return session.roles.filter(s => s.toLowerCase() === role).length > 0;
+            }
+        }
+
         if (!this.props.skipRoleTest && this.props.roles && this.props.roles.length > 0) {
             for (let i = 0; i < this.props.roles.length; i++) {
                 let role = this.props.roles[i].toLowerCase();
@@ -47,7 +56,7 @@ interface IPrivateProps extends React.Props<any> {
     skipRoleTest?: Boolean;
 }
 
-const connectedPrivate = connect<IPrivateProps, any, any, IStore>(
+const connectedPrivate = React.memo(connect<IPrivateProps, any, any, IStore>(
     (state: IStore, props: IPrivateProps): _IPrivateProps => {
         const { session } = state;
         return {
@@ -55,6 +64,6 @@ const connectedPrivate = connect<IPrivateProps, any, any, IStore>(
             roles: props.roles,
             skipRoleTest: props.skipRoleTest
         };
-    })(_Private);
+    })(_Private));
 
 export { connectedPrivate as Private };

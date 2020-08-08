@@ -19,6 +19,7 @@ import { Nest } from '../_services/nest/Nest';
 import { nestsInstance } from '../_actions/nest/nests.actions';
 import { Contract } from '../_services/nest/Contract';
 import { AddContractDialog } from '../_components/Nests/AddContractDialog';
+import { Private } from '../_components/Private';
 
 interface IProfileProps {
     Get: Function;
@@ -117,71 +118,75 @@ export class _ProfileController extends React.Component<IProfileProps, IState> {
                             isLoading={profile.holding !== false}
                         />
                     </Col>
-                    <Col xs={24} sm={12} md={5} lg={4} xl={3} xxl={2} >
-                        <Card
-                            loading={profile.holding}>
-                            <Statistic
-                                title={Lang('USER_CHAR_COUNT')}
-                                valueStyle={{ color: '#3f8600' }}
-                                value={profile.charCount}
-                                precision={0} />
-                        </Card>
-                    </Col>
-                    <Col xs={24} sm={12} md={5} lg={4} xl={3} xxl={2} >
-                        <Card
-                            loading={profile.holding}
-                        >
-                            <Statistic
-                                title={Lang('USER_ROW_BALANCE')}
-                                value={profile.balance}
-                                precision={2}
-                                suffix="G"
+                    <Private hiddenFor={['demo']}>
+                        <Col xs={24} sm={12} md={5} lg={4} xl={3} xxl={2} >
+                            <Card
+                                loading={profile.holding}>
+                                <Statistic
+                                    title={Lang('USER_CHAR_COUNT')}
+                                    valueStyle={{ color: '#3f8600' }}
+                                    value={profile.charCount}
+                                    precision={0} />
+                            </Card>
+                        </Col>
+                        <Col xs={24} sm={12} md={5} lg={4} xl={3} xxl={2} >
+                            <Card
+                                loading={profile.holding}
+                            >
+                                <Statistic
+                                    title={Lang('USER_ROW_BALANCE')}
+                                    value={profile.balance}
+                                    precision={2}
+                                    suffix="G"
+                                />
+                            </Card>
+                        </Col>
+                        <Col xs={24} sm={12} md={6} lg={4} xl={5} xxl={3} >
+                            <Card
+                                loading={profile.holding}
+                            >
+                                <Statistic
+                                    title={Lang('USER_LOAN_AMOUNT')}
+                                    value={profile.activeLoanAmount}
+                                    precision={2}
+                                    suffix="G"
+                                />
+                            </Card>
+                        </Col>
+                        <Col xs={24} sm={12} md={6} lg={4} xl={5} xxl={3} >
+                            <Card
+                                loading={profile.holding}
+                            >
+                                <Statistic
+                                    title={Lang('USER_AMOUNT_PENALTIES')}
+                                    valueStyle={{ color: '#cf1322' }}
+                                    value={profile.activePenaltyAmount}
+                                    precision={2}
+                                    suffix="G"
+                                />
+                            </Card>
+                        </Col>
+                        <Col xs={24} sm={24} md={12} lg={24} xl={24} xxl={8} >
+                            <TaxCard
+                                loading={tax.holding}
+                                tax={tax}
+                                charCount={profile.charCount}
                             />
-                        </Card>
-                    </Col>
-                    <Col xs={24} sm={12} md={6} lg={4} xl={5} xxl={3} >
-                        <Card
-                            loading={profile.holding}
-                        >
-                            <Statistic
-                                title={Lang('USER_LOAN_AMOUNT')}
-                                value={profile.activeLoanAmount}
-                                precision={2}
-                                suffix="G"
-                            />
-                        </Card>
-                    </Col>
-                    <Col xs={24} sm={12} md={6} lg={4} xl={5} xxl={3} >
-                        <Card
-                            loading={profile.holding}
-                        >
-                            <Statistic
-                                title={Lang('USER_AMOUNT_PENALTIES')}
-                                valueStyle={{ color: '#cf1322' }}
-                                value={profile.activePenaltyAmount}
-                                precision={2}
-                                suffix="G"
-                            />
-                        </Card>
-                    </Col>
-                    <Col xs={24} sm={24} md={12} lg={24} xl={24} xxl={8} >
-                        <TaxCard
-                            loading={tax.holding}
-                            tax={tax}
-                            charCount={profile.charCount}
-                        />
-                    </Col>
+                        </Col>
+                    </Private>
                 </Row>
                 <Row gutter={[16, 16]}>
-                    <Col xs={24} sm={24} md={24} lg={12} xl={12} >
-                        <ProfileCharList
-                            characters={characters}
-                            loading={characters.holding}
-                            SetMainChar={this.setMainChar}
-                            DeleteChar={this.deleteChar}
-                            AddChar={this.toggleAddCharModal}
-                        />
-                    </Col>
+                    <Private hiddenFor={['demo']}>
+                        <Col xs={24} sm={24} md={24} lg={12} xl={12} >
+                            <ProfileCharList
+                                characters={characters}
+                                loading={characters.holding}
+                                SetMainChar={this.setMainChar}
+                                DeleteChar={this.deleteChar}
+                                AddChar={this.toggleAddCharModal}
+                            />
+                        </Col>
+                    </Private>
                     <Col xs={24} sm={24} md={24} lg={12} xl={12} >
                         <ProfileNestList
                             nestContract={nestContracts}

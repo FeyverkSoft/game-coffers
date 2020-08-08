@@ -235,6 +235,15 @@ namespace Coffers.Public.WebApi
                 );
 
             services.AddEventBus();
+            /*services.AddEventBus(registry =>
+            {
+                registry.AddEvent<Domain.Operations.Events.LoanOperationCreated>(_ =>
+                {
+                    _.Type = "LoanOperationCreated";
+                    _.Queue = "Loan";
+                    _.Exchanger = "WebApi";
+                });
+            });*/
             services.AddEventProcessor(registry =>
             {
                 registry.Register<EventHandlers.LoanOperationCreatedEventHandler>();

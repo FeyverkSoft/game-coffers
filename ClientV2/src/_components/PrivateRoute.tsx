@@ -9,6 +9,17 @@ export const PrivateRoute = ({ component, ...rest }: RouteProps) => {
     let session = new SessionInfo(localStorage.getItem('session'));
     const Component = component;
     const render = (props: RouteComponentProps<any>): (React.ReactNode | Redirect) => {
+        if (session.roles && session.roles.filter(_ => _.toLowerCase() === 'demo').length > 0 &&
+            !(props.location.pathname.toLowerCase().includes('contracts') ||
+                props.location.pathname.toLowerCase().includes('profile') ||
+                props.location.pathname.toLowerCase().includes('logout')
+            ))
+            return <Redirect
+                exact={rest.exact}
+                strict={rest.strict}
+                children={rest.children}
+                to={{ pathname: '/profile' }} />;
+
         return session.isActive() ?
             <Component {...rest} {...props} /> :
             <Redirect
