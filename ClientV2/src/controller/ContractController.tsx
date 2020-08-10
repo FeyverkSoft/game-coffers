@@ -81,7 +81,7 @@ export class _ContractController extends React.Component<IMainProps, IState> {
                                     }}
                                 />
                             </Col>
-                            <Col xs={4} sm={3} md={3} lg={2} xl={1}>
+                            <Col xs={4} sm={3} md={3} lg={2} xl={1} className={style['col']}>
                                 <Tooltip title="update">
                                     <Button
                                         type="primary"

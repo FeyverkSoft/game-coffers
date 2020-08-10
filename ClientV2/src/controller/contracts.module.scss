@@ -1,6 +1,7 @@
 @import "assets/_variables.scss"; // variables to override above
 
 .col {
+    display        : flex;
     justify-content: center;
 }
 
