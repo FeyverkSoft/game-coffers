@@ -7,7 +7,6 @@ const {
     addWebpackAlias,
     /* addLessLoader,*/
 } = require("customize-cra");
-
 const rewireWebpackBundleAnalyzer = require('react-app-rewire-webpack-bundle-analyzer')
 
 module.exports = override(

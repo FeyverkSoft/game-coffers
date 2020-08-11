@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "GuildCoffer",
+  "name": "GuildCoffer",
+  "description": "Проект для управления казной игровых гильдий",
   "icons": [
     {
       "src": "favicon.ico",
