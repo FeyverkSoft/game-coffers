@@ -96,9 +96,8 @@ function useFallback() {
 }
 
 
-/* eslint-disable */
-self.addEventListener('fetch', (event) => {
-    event.respondWith(fromNetwork(event.request, timeout)
+function fromNetwork(event) {
+    return fromNetwork(event.request, timeout)
         .catch((err) => {
             console.log(`Error: ${err}`);
             if (event.request.destination == "document" ||
@@ -106,5 +105,21 @@ self.addEventListener('fetch', (event) => {
             )
                 return fromCache(event.request) || useFallback();
             throw err;
-        }));
+        });
+}
+
+/* eslint-disable */
+self.addEventListener('fetch', (event) => {
+    let resp;
+    if (event.request &&
+        event.request.url &&
+        event.request.method === "GET" &&
+        (event.request.url.includes("static/js") || event.request.url.includes("static/css"))
+    )
+        resp = fromCache(event.request);
+
+    if (resp)
+        event.respondWith(resp.then(_ => _ || fromNetwork(event)));
+    else
+        event.respondWith(fromNetwork(event));
 });
