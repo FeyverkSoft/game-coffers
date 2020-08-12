@@ -27,6 +27,13 @@ function fromNetwork(request, timeout) {
             clearTimeout(timeoutId);
             fulfill(response);
         }, reject);
+    }).catch((err) => {
+        console.log(`Error: ${err}`);
+        if (event.request.destination == "document" ||
+            event.request.mode == "navigate"
+        )
+            return fromCache(event.request) || useFallback();
+        throw err;
     });
 }
 
@@ -95,21 +102,10 @@ function useFallback() {
     }));
 }
 
-
-function fromNetwork(event) {
-    return fromNetwork(event.request, timeout)
-        .catch((err) => {
-            console.log(`Error: ${err}`);
-            if (event.request.destination == "document" ||
-                event.request.mode == "navigate"
-            )
-                return fromCache(event.request) || useFallback();
-            throw err;
-        });
-}
-
 /* eslint-disable */
 self.addEventListener('fetch', (event) => {
+    if (!event.request)
+        return;
     let resp;
     if (event.request &&
         event.request.url &&
@@ -119,7 +115,7 @@ self.addEventListener('fetch', (event) => {
         resp = fromCache(event.request);
 
     if (resp)
-        event.respondWith(resp.then(_ => _ || fromNetwork(event)));
+        event.respondWith(resp.then(_ => _ || fromNetwork(event.request, timeout)));
     else
-        event.respondWith(fromNetwork(event));
+        event.respondWith(fromNetwork(event.request, timeout));
 });
