@@ -24,7 +24,7 @@ namespace Coffers.Public.Domain.Loans
                 loan.LoanStatus == LoanStatus.Expired)
                 return;
 
-            var operations = await _operationRepository.Get(loan.Id, cancellationToken);
+            var operations = await _operationRepository.GetByDocument(loan.Id, cancellationToken);
             var loanAmount = loan.TaxAmount + loan.PenaltyAmount;
 
             if (operations.Sum(_ => _.Amount) >= loanAmount)

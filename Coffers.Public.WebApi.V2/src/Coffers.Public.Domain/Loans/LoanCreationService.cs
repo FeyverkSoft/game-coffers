@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Coffers.Public.Domain.Loans.Entity;
 
 namespace Coffers.Public.Domain.Loans
@@ -9,6 +10,7 @@ namespace Coffers.Public.Domain.Loans
     {
         private readonly IGuildRepository _guildRepository;
         private readonly ILoanRepository _loanRepository;
+
         public LoanCreationService(IGuildRepository guildRepository,
             ILoanRepository loanRepository)
         {
@@ -41,7 +43,6 @@ namespace Coffers.Public.Domain.Loans
                     return existsLoan;
 
             return new Loan(id, userId, tariff?.Id, guildId, description?.Trim(), DateTime.UtcNow.AddDays(loanPeriod), amount, 0);
-
         }
     }
 }

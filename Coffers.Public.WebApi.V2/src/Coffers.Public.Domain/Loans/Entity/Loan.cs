@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Coffers.Helpers;
 using Coffers.Types.Account;
 using Coffers.Types.Gamer;
@@ -55,7 +56,7 @@ namespace Coffers.Public.Domain.Loans.Entity
         /// <summary>
         /// Дата стухания займа
         /// </summary>
-        public DateTime ExpiredDate { get; }
+        public DateTime ExpiredDate { get; private set; }
 
         /// <summary>
         /// Сумма займа
@@ -206,5 +207,27 @@ namespace Coffers.Public.Domain.Loans.Entity
         /// </summary>
         /// <returns></returns>
         public Decimal GetExpireTaxAmountPerDay() => IsFreeTax ? 0 : Amount * (Tariff.ExpiredLoanTax / 100);
+
+        /// <summary>
+        /// Продляет срок действия займа на указанное количество дней,
+        /// поумолчанию эти 14 дней
+        /// </summary>
+        /// <param name="days"></param>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        public void Prolong(Int32 days = 14)
+        {
+            if (days < 0 || days > 356)
+                throw new ArgumentOutOfRangeException(nameof(days));
+
+            if (LoanStatus == LoanStatus.Paid ||
+                LoanStatus == LoanStatus.Canceled)
+                throw new InvalidOperationException($"Incorrect current loan state; State:{LoanStatus}; Id:{Id}");
+
+            ExpiredDate = DateTime.UtcNow.AddDays(days);
+            LoanStatus = LoanStatus.Active;
+            UpdateDate = DateTime.UtcNow;
+            ConcurrencyTokens = Guid.NewGuid();
+        }
     }
 }

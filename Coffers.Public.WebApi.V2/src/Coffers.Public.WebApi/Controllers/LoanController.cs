@@ -21,6 +21,7 @@ namespace Coffers.Public.WebApi.Controllers
     {
         /// <summary>
         /// This method add new loan for user
+        /// for officer and leader
         /// </summary>
         /// <param name="binding"></param>
         /// <param name="creator"></param>
@@ -61,6 +62,7 @@ namespace Coffers.Public.WebApi.Controllers
 
         /// <summary>
         /// This method cancel Loan
+        /// for officer and leader
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="cancellationToken"></param>
@@ -93,6 +95,7 @@ namespace Coffers.Public.WebApi.Controllers
 
         /// <summary>
         /// This method process Loan
+        /// принудительное проведение займа, если что-то пошло не так, и сообщение потерялось в шине
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="cancellationToken"></param>
@@ -115,6 +118,39 @@ namespace Coffers.Public.WebApi.Controllers
 
             try{
                 await processor.Process(loan, cancellationToken);
+                await repository.Save(loan, cancellationToken);
+            }
+            catch (InvalidOperationException){
+                throw new ApiException(HttpStatusCode.Conflict, ErrorCodes.IncorrectOperation, $"Incorrect loan state");
+            }
+
+            return Ok(await queryProcessor.Process<LoanViewQuery, LoanView>(new LoanViewQuery(id), cancellationToken));
+        }
+        
+        /// <summary>
+        /// This method prolong Loan
+        /// for officer and leader
+        /// </summary>
+        /// <param name="repository"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [Authorize]
+        [PermissionRequired("officer", "leader", "admin")]
+        [HttpPost("/loans/{id}/prolong")]
+        [ProducesResponseType(typeof(LoanView), 200)]
+        public async Task<IActionResult> ProlongLoan(
+            [FromServices] ILoanRepository repository,
+            [FromRoute] Guid id,
+            [FromServices] IQueryProcessor queryProcessor,
+            CancellationToken cancellationToken)
+        {
+            var loan = await repository.Get(id, cancellationToken);
+
+            if (loan == null)
+                throw new ApiException(HttpStatusCode.NotFound, ErrorCodes.LoanNotFound, $"Loan {id} not found");
+
+            try{
+                loan.Prolong();
                 await repository.Save(loan, cancellationToken);
             }
             catch (InvalidOperationException){

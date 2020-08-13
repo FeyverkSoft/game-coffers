@@ -2,9 +2,11 @@
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Coffers.Public.Domain.UserRegistration;
 using Coffers.Public.WebApi.Exceptions;
 using Coffers.Public.WebApi.Models.Auth;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

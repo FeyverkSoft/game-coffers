@@ -18,7 +18,7 @@ namespace Coffers.Public.Infrastructure.Loans
             _context = context;
         }
 
-        public async Task<ICollection<Operation>> Get(Guid id, CancellationToken cancellationToken)
+        public async Task<ICollection<Operation>> GetByDocument(Guid id, CancellationToken cancellationToken)
         {
             return await _context.Operations.AsNoTracking()
                  .Where(_ => _.DocumentId == id)

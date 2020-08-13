@@ -8,6 +8,6 @@ namespace Coffers.Public.Domain.Loans
 {
     public interface IOperationRepository
     {
-        public Task<ICollection<Operation>> Get(Guid id, CancellationToken cancellationToken);
+        public Task<ICollection<Operation>> GetByDocument(Guid id, CancellationToken cancellationToken);
     }
 }
