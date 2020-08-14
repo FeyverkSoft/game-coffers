@@ -108,6 +108,19 @@ export namespace GamerActionsType {
         loanId: loanId,
     } as const)
 
+    export const PROC_PROLONG_GAMER_LOAN = (loanId: string) => ({
+        type: "PROC_PROLONG_GAMER_LOAN",
+        loanId: loanId,
+    } as const)
+    export const SUCC_PROLONG_GAMER_LOAN = (loanId: string, loan: ILoanView) => ({
+        type: "SUCC_PROLONG_GAMER_LOAN",
+        loanId: loanId,
+        loan: loan,
+    } as const)
+    export const FAILED_PROLONG_GAMER_LOAN = (loanId: string) => ({
+        type: "FAILED_PROLONG_GAMER_LOAN",
+        loanId: loanId,
+    } as const)
 
     export const PROC_ADD_GAMER_PENALTY = (userId: string) => ({
         type: "PROC_ADD_GAMER_PENALTY",
@@ -167,6 +180,10 @@ export type GamerActionsTypes =
     ReturnType<typeof GamerActionsType.PROC_CANCEL_GAMER_LOAN> |
     ReturnType<typeof GamerActionsType.SUCC_CANCEL_GAMER_LOAN> |
     ReturnType<typeof GamerActionsType.FAILED_CANCEL_GAMER_LOAN> |
+
+    ReturnType<typeof GamerActionsType.PROC_PROLONG_GAMER_LOAN> |
+    ReturnType<typeof GamerActionsType.SUCC_PROLONG_GAMER_LOAN> |
+    ReturnType<typeof GamerActionsType.FAILED_PROLONG_GAMER_LOAN> |
 
     ReturnType<typeof GamerActionsType.PROC_ADD_GAMER_PENALTY> |
     ReturnType<typeof GamerActionsType.SUCC_ADD_GAMER_PENALTY> |

@@ -191,6 +191,33 @@ export class GamerActions {
         }
     }
 
+    
+    /**
+     * Продляет займ если это возможно
+     */
+    prolongLoan(props: { loanId: string; }): Function {
+        return (dispatch: Function) => {
+            dispatch(GamerActionsType.PROC_PROLONG_GAMER_LOAN(props.loanId));
+            gamerService.prolongLoan(props.loanId)
+                .then(
+                    data => {
+                        dispatch(GamerActionsType.SUCC_PROLONG_GAMER_LOAN(props.loanId, {
+                            id: String(data.id),
+                            amount: Number(data.amount),
+                            balance: Number(data.balance),
+                            createDate: new Date(data.createDate),
+                            expiredDate: new Date(data.expiredDate),
+                            description: String(data.description),
+                            loanStatus: data.loanStatus
+                        }));
+                    })
+                .catch(
+                    ex => {
+                        dispatch(GamerActionsType.FAILED_PROLONG_GAMER_LOAN(props.loanId));
+                        dispatch(alertInstance.error(ex));
+                    });
+        }
+    }
 
     // /**
     //  * отменяет штраф если это возможно

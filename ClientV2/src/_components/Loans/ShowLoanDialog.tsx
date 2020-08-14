@@ -14,6 +14,7 @@ interface ILoanDialogProps {
     visible?: boolean;
     onClose(): void;
     onCancel(loanId: string): void;
+    onProlong(loanId: string): void;
     onReverse(loanId: string): void;
 }
 
@@ -33,6 +34,15 @@ const showLoanDialog = ({ ...props }: ILoanDialogProps) => {
                             loading={loan.holding}
                         >
                             {Lang('CANCEL')}
+                        </Button>
+                    </IF>
+                    <IF value={loan.loanStatus === 'Active' || loan.loanStatus === 'Expired'}>
+                        <Button
+                            danger={true}
+                            onClick={() => props.onProlong(loan.id)}
+                            loading={loan.holding}
+                        >
+                            {Lang('PROLONG')}
                         </Button>
                     </IF>
                 </Private>
@@ -93,6 +103,7 @@ const connectedShowLoanDialog = connect<{}, {}, any, IStore>(
     (dispatch: any) => {
         return {
             onCancel: (loanId: string) => dispatch(gamerInstance.cancelLoan({ loanId: loanId })),
+            onProlong: (loanId: string) => dispatch(gamerInstance.prolongLoan({ loanId: loanId })),
         }
     }
 )(showLoanDialog);

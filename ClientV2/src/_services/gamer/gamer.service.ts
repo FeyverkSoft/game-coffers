@@ -272,4 +272,29 @@ export class gamerService {
             })
             .catch(catchHandle);
     }
+
+    /**
+     * Продлить ещё не оплаченный займ у игрока
+     * @param id 
+     */
+    static async prolongLoan(id: string): Promise<ILoanView> {
+        let session = authService.getCurrentSession();
+        const requestOptions: RequestInit = {
+            method: 'POST',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+                'Authorization': 'Bearer ' + session.sessionId
+            },
+        };
+        return await fetch(Config.BuildUrl(`/loans/${id}/prolong`), requestOptions)
+            .then<BaseResponse & ILoanView>(getResponse)
+            .then(data => {
+                if (data && data.type || data.traceId) {
+                    return errorHandle(data);
+                }
+            })
+            .catch(catchHandle);
+    }
 }

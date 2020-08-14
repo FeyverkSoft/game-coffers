@@ -121,6 +121,17 @@ export function gamers(state: IGamerStore = new IGamerStore(), action: GamerActi
             clonedState.loans[action.loanId].holding = false;
             return clonedState;
 
+            
+        case 'PROC_PROLONG_GAMER_LOAN':
+            clonedState.loans[action.loanId].holding = true;
+            return clonedState;
+        case 'SUCC_PROLONG_GAMER_LOAN':
+            clonedState.loans[action.loanId] = action.loan;
+            return clonedState;
+        case 'FAILED_PROLONG_GAMER_LOAN':
+            clonedState.loans[action.loanId].holding = false;
+            return clonedState;
+
 
         case 'PROC_SET_GAMER_RANK':
             clonedState.gamersList.holding = true;
