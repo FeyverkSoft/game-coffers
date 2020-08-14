@@ -193,7 +193,9 @@ const locString: any = {
         AUTH_PUBLIC: 'Доска Авторизация',
         AUTHORIZE_FORM: "Казна ГИ",
         PASSWORD: 'Ваш пароль',
-        Reg: 'Регистрация'
+        Reg: 'Регистрация',
+        PROLONG: 'Продлить',
+        CANCEL: 'Отменить',
     }
 };
 

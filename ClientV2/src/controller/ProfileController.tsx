@@ -112,7 +112,8 @@ export class _ProfileController extends React.Component<IProfileProps, IState> {
             </Breadcrumb>
             <Layout>
                 <Row gutter={[16, 16]}>
-                    <Col xs={24} sm={24} md={14} lg={8} xl={8} xxl={6}>
+                    <Col xs={24} sm={24} md={14} lg={8} xl={8} xxl={6}
+                        onClick={() => import('antd/dist/antd.dark.css')}>
                         <ProfileCard
                             profile={profile}
                             isLoading={profile.holding !== false}

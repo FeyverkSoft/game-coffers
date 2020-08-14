@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { Avatar, Row } from "antd";
+import { Avatar, Row, Typography } from "antd";
 import { IProfile, DLang, Lang } from "../../_services";
 import { IF } from '../../_helpers'
 import { Card } from '../Base/Card';
+const { Text } = Typography;
 
 const colorArray = ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
     '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D',
@@ -45,18 +46,18 @@ export const ProfileCard = ({ ...props }: IProfileCardProps) => {
             </Avatar>
         </Row>
         <Row gutter={[16, 16]} justify='center' align='middle'>
-            <span style={{
-                fontWeight: 500
-            }}>{profile.name}&nbsp;
+            <Text strong={true}>{profile.name}&nbsp;
                 <IF value={profile.characterName}>
                     -&nbsp;{profile.characterName}
                 </IF>
-            </span>
+            </Text>
         </Row>
         <Row gutter={[16, 16]} justify='center' align='middle'>
-            {DLang('USER_RANK', profile.rank)},&nbsp;
+            <Text>
+                {DLang('USER_RANK', profile.rank)},&nbsp;
             {Lang('DATEOFBIRTH')}:&nbsp;
             {`${year}-${month + 1 > 9 ? month : '0' + month}-${day > 9 ? day : '0' + day}`}
+            </Text>
         </Row>
     </Card>)
 }

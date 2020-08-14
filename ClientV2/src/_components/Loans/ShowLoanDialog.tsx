@@ -38,7 +38,8 @@ const showLoanDialog = ({ ...props }: ILoanDialogProps) => {
                     </IF>
                     <IF value={loan.loanStatus === 'Active' || loan.loanStatus === 'Expired'}>
                         <Button
-                            danger={true}
+                            danger={false}
+                            type='primary'
                             onClick={() => props.onProlong(loan.id)}
                             loading={loan.holding}
                         >

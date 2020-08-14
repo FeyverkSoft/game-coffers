@@ -294,6 +294,7 @@ export class gamerService {
                 if (data && data.type || data.traceId) {
                     return errorHandle(data);
                 }
+                return data;
             })
             .catch(catchHandle);
     }
