@@ -4,8 +4,11 @@ using System.Data;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Coffers.Public.Queries.NestContract;
+
 using Query.Core;
+
 using Dapper;
 
 namespace Coffers.Public.Queries.Infrastructure.NestContracts
@@ -25,11 +28,16 @@ namespace Coffers.Public.Queries.Infrastructure.NestContracts
 
         async Task<NestContractView> IQueryHandler<NestContractQuery, NestContractView>.Handle(NestContractQuery query, CancellationToken cancellationToken)
         {
-            var nestContract = await _db.QuerySingleOrDefaultAsync<Entity.NestContract>(Entity.NestContract.Sql, new
-            {
-                NestContractId = query.NestContractId,
-                GuildId = query.GuildId
-            });
+            var nestContract = await _db.QuerySingleOrDefaultAsync<Entity.NestContract>(new CommandDefinition(
+                commandText: Entity.NestContract.Sql,
+                parameters: new
+                {
+                    NestContractId = query.NestContractId,
+                    GuildId = query.GuildId
+                },
+                commandType: CommandType.Text,
+                cancellationToken: cancellationToken
+            ));
             return new NestContractView(
                 id: nestContract.Id,
                 userId: nestContract.UserId,
@@ -41,10 +49,16 @@ namespace Coffers.Public.Queries.Infrastructure.NestContracts
 
         async Task<IEnumerable<NestView>> IQueryHandler<NestsQuery, IEnumerable<NestView>>.Handle(NestsQuery query, CancellationToken cancellationToken)
         {
-            var nest = await _db.QueryAsync<Entity.Nest>(Entity.Nest.Sql, new
-            {
-                GuildId = query.GuildId
-            });
+            var nest = await _db.QueryAsync<Entity.Nest>(
+                new CommandDefinition(
+                    commandText: Entity.Nest.Sql,
+                    parameters: new
+                    {
+                        GuildId = query.GuildId
+                    },
+                    commandType: CommandType.Text,
+                    cancellationToken: cancellationToken
+                ));
             return nest.Select(_ => new NestView(
                 id: _.Id,
                 name: _.Name,
@@ -54,11 +68,17 @@ namespace Coffers.Public.Queries.Infrastructure.NestContracts
         async Task<IEnumerable<NestContractView>> IQueryHandler<NestContractsQuery, IEnumerable<NestContractView>>.Handle(NestContractsQuery query,
             CancellationToken cancellationToken)
         {
-            var nestContracts = await _db.QueryAsync<Entity.UserNestContracts>(Entity.UserNestContracts.Sql, new
-            {
-                UserId = query.UserId,
-                GuildId = query.GuildId
-            });
+            var nestContracts = await _db.QueryAsync<Entity.UserNestContracts>(
+                new CommandDefinition(
+                    commandText: Entity.UserNestContracts.Sql,
+                    parameters: new
+                    {
+                        UserId = query.UserId,
+                        GuildId = query.GuildId
+                    },
+                    commandType: CommandType.Text,
+                    cancellationToken: cancellationToken
+                ));
 
             return nestContracts.Select(nestContract => new NestContractView(
                 id: nestContract.Id,
@@ -74,10 +94,16 @@ namespace Coffers.Public.Queries.Infrastructure.NestContracts
                 GuildNestContractsQuery query,
                 CancellationToken cancellationToken)
         {
-            var nestContracts = await _db.QueryAsync<Entity.GuildNestContracts>(Entity.GuildNestContracts.Sql, new
-            {
-                GuildId = query.GuildId
-            });
+            var nestContracts = await _db.QueryAsync<Entity.GuildNestContracts>(
+                new CommandDefinition(
+                    commandText: Entity.GuildNestContracts.Sql,
+                    parameters: new
+                    {
+                        GuildId = query.GuildId
+                    },
+                    commandType: CommandType.Text,
+                    cancellationToken: cancellationToken
+                ));
 
             return nestContracts.GroupBy(_ => _.NestName, nestContract => new GuildNestContractView(
                 id: nestContract.Id,

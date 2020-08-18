@@ -4,10 +4,13 @@ using System.Data;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Coffers.Helpers;
 using Coffers.Public.Queries.Users;
 using Coffers.Types.Gamer;
+
 using Query.Core;
+
 using Dapper;
 
 namespace Coffers.Public.Queries.Infrastructure.Users
@@ -31,29 +34,55 @@ namespace Coffers.Public.Queries.Infrastructure.Users
         {
             var dateMonth = (query.DateMonth ?? DateTime.UtcNow).Trunc(DateTruncType.Month);
 
-            var users = await _db.QueryAsync<Entity.GamersList.GamerView>(Entity.GamersList.GamerView.Sql, new
-            {
-                GuildId = query.GuildId,
-                DeleteDate = dateMonth,
-                Statuses = query.GamerStatuses.Any() ? query.GamerStatuses.Select(_ => _.ToString()) : Enum.GetNames(typeof(GamerStatus))
-            });
+            var users = await _db.QueryAsync<Entity.GamersList.GamerView>(
+                new CommandDefinition(
+                    commandText: Entity.GamersList.GamerView.Sql,
+                    parameters: new
+                    {
+                        GuildId = query.GuildId,
+                        DeleteDate = dateMonth,
+                        Statuses = query.GamerStatuses.Any() ? query.GamerStatuses.Select(_ => _.ToString()) : Enum.GetNames(typeof(GamerStatus))
+                    },
+                    commandType: CommandType.Text,
+                    cancellationToken: cancellationToken
+                ));
 
             var userIds = users.Select(_ => _.Id);
-            var characters = await _db.QueryAsync<Entity.GamersList.CharacterView>(Entity.GamersList.CharacterView.Sql, new
-            {
-                UserIds = userIds,
-                Statuses = new[] {CharStatus.Active.ToString()}
-            });
-            var loans = await _db.QueryAsync<Entity.GamersList.LoanView>(Entity.GamersList.LoanView.Sql, new
-            {
-                UserIds = userIds,
-                Date = dateMonth
-            });
-            var penalties = await _db.QueryAsync<Entity.GamersList.PenaltyView>(Entity.GamersList.PenaltyView.Sql, new
-            {
-                UserIds = userIds,
-                Date = dateMonth,
-            });
+            var characters = await _db.QueryAsync<Entity.GamersList.CharacterView>(
+                new CommandDefinition(
+                    commandText: Entity.GamersList.CharacterView.Sql,
+                    parameters: new
+                    {
+                        UserIds = userIds,
+                        Statuses = new[] {CharStatus.Active.ToString()}
+                    },
+                    commandType: CommandType.Text,
+                    cancellationToken: cancellationToken
+                ));
+
+            var loans = await _db.QueryAsync<Entity.GamersList.LoanView>(
+                new CommandDefinition(
+                    commandText: Entity.GamersList.LoanView.Sql,
+                    parameters: new
+                    {
+                        UserIds = userIds,
+                        Date = dateMonth
+                    },
+                    commandType: CommandType.Text,
+                    cancellationToken: cancellationToken
+                ));
+
+            var penalties = await _db.QueryAsync<Entity.GamersList.PenaltyView>(
+                new CommandDefinition(
+                    commandText: Entity.GamersList.PenaltyView.Sql,
+                    parameters: new
+                    {
+                        UserIds = userIds,
+                        Date = dateMonth,
+                    },
+                    commandType: CommandType.Text,
+                    cancellationToken: cancellationToken
+                ));
 
             return users.Select(user => new GamersListView(
                     id: user.Id,
@@ -68,19 +97,25 @@ namespace Coffers.Public.Queries.Infrastructure.Users
                         .Select(_ => new PenaltyView(_.Id, _.Amount, _.CreateDate, _.Description, _.Status)),
                     loans: loans.Where(_ => _.UserId == user.Id)
                         .Select(_ => new LoanView(_.Id, _.Amount, _.Balance, _.Description, _.Status, _.CreateDate, _.ExpiredDate))))
-                .OrderBy(_=>_.Rank)
-                .ThenBy(_=>_.Status)
-                .ThenBy(_=>_.Name)
+                .OrderBy(_ => _.Rank)
+                .ThenBy(_ => _.Status)
+                .ThenBy(_ => _.Name)
                 .ToList();
         }
 
         async Task<ProfileView> IQueryHandler<ProfileViewQuery, ProfileView>.Handle(ProfileViewQuery query, CancellationToken cancellationToken)
         {
-            var profile = await _db.QuerySingleAsync<Entity.Profile.ProfileView>(Entity.Profile.ProfileView.Sql, new
-            {
-                GuildId = query.GuildId,
-                UserId = query.UserId
-            });
+            var profile = await _db.QuerySingleAsync<Entity.Profile.ProfileView>(
+                new CommandDefinition(
+                    commandText: Entity.Profile.ProfileView.Sql,
+                    parameters: new
+                    {
+                        GuildId = query.GuildId,
+                        UserId = query.UserId,
+                    },
+                    commandType: CommandType.Text,
+                    cancellationToken: cancellationToken
+                ));
 
             return new ProfileView(
                 profile.UserId,
@@ -99,12 +134,18 @@ namespace Coffers.Public.Queries.Infrastructure.Users
         async Task<IEnumerable<CharacterView>> IQueryHandler<CharacterViewQuery, IEnumerable<CharacterView>>.Handle(CharacterViewQuery query,
             CancellationToken cancellationToken)
         {
-            var list = await _db.QueryAsync<Entity.Profile.CharacterView>(Entity.Profile.CharacterView.Sql, new
-            {
-                GuildId = query.GuildId,
-                Statuses = new[] {CharStatus.Active.ToString()},
-                UserIds = new[] {query.UserId}
-            });
+            var list = await _db.QueryAsync<Entity.Profile.CharacterView>(
+                new CommandDefinition(
+                    commandText: Entity.Profile.CharacterView.Sql,
+                    parameters: new
+                    {
+                        GuildId = query.GuildId,
+                        Statuses = new[] {CharStatus.Active.ToString()},
+                        UserIds = new[] {query.UserId},
+                    },
+                    commandType: CommandType.Text,
+                    cancellationToken: cancellationToken
+                ));
 
             return list.Select(ch => new CharacterView(
                 ch.Id,
@@ -116,11 +157,17 @@ namespace Coffers.Public.Queries.Infrastructure.Users
 
         async Task<UserTaxView> IQueryHandler<UserTaxViewQuery, UserTaxView>.Handle(UserTaxViewQuery query, CancellationToken cancellationToken)
         {
-            var tax = await _db.QuerySingleAsync<Entity.Profile.UserTaxView>(Entity.Profile.UserTaxView.Sql, new
-            {
-                GuildId = query.GuildId,
-                UserId = query.UserId
-            });
+            var tax = await _db.QuerySingleAsync<Entity.Profile.UserTaxView>(
+                new CommandDefinition(
+                    commandText: Entity.Profile.UserTaxView.Sql,
+                    parameters: new
+                    {
+                        GuildId = query.GuildId,
+                        UserId = query.UserId
+                    },
+                    commandType: CommandType.Text,
+                    cancellationToken: cancellationToken
+                ));
 
             if (String.IsNullOrEmpty(tax.TaxTariff))
                 return new UserTaxView(tax.UserId, 0, new List<Decimal>());

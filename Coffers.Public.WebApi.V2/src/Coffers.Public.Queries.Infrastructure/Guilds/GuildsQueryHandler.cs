@@ -4,11 +4,14 @@ using System.Data;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Coffers.Helpers;
 using Coffers.Public.Queries.Guilds;
 using Coffers.Public.Queries.Infrastructure.Guilds.Entity.Guild;
 using Coffers.Public.Queries.Infrastructure.Guilds.Entity.GuildBalance;
+
 using Query.Core;
+
 using Dapper;
 
 namespace Coffers.Public.Queries.Infrastructure.Guilds
@@ -33,9 +36,18 @@ namespace Coffers.Public.Queries.Infrastructure.Guilds
 
         public async Task<GuildBalanceView> Handle(GuildBalanceQuery query, CancellationToken cancellationToken)
         {
-            var chList = await _db.QueryAsync<UserTaxList>(UserTaxList.Sql, new {GuildId = query.GuildId});
+            var chList = await _db.QueryAsync<UserTaxList>(new CommandDefinition(
+                commandText: UserTaxList.Sql,
+                parameters: new {GuildId = query.GuildId},
+                commandType: CommandType.Text,
+                cancellationToken: cancellationToken
+            ));
             var guildBalance =
-                await _db.QuerySingleAsync<GuildBalance>(GuildBalance.Sql, new {GuildId = query.GuildId, Data = DateTime.UtcNow.Trunc(DateTruncType.Month)});
+                await _db.QuerySingleAsync<GuildBalance>(GuildBalance.Sql, new
+                {
+                    GuildId = query.GuildId,
+                    Data = DateTime.UtcNow.Trunc(DateTruncType.Month)
+                });
             var expectedTaxAmount = (
                 from userTaxList in chList
                 let tax = userTaxList.Tax?.ParseJson<Decimal[]>() ?? new Decimal[] { }
@@ -54,7 +66,15 @@ namespace Coffers.Public.Queries.Infrastructure.Guilds
 
         public async Task<ICollection<GuildRoleView>> Handle(GuildRoleListQuery query, CancellationToken cancellationToken)
         {
-            var result = await _db.QueryAsync<GuildRole>(GuildRole.Sql, new {GuildId = query.GuildId});
+            var result = await _db.QueryAsync<GuildRole>(new CommandDefinition(
+                commandText: GuildRole.Sql,
+                parameters: new
+                {
+                    GuildId = query.GuildId
+                },
+                commandType: CommandType.Text,
+                cancellationToken: cancellationToken
+            ));
             return result.Select(_ => new GuildRoleView(query.GuildId, _.UserRoleId, _.LoanTax, _.ExpiredLoanTax, _.Tax?.TryParseJson<Decimal[]>())).ToList();
         }
     }
