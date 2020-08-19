@@ -3,7 +3,7 @@ import style from "./header.module.scss";
 
 export const Header = ({ ...props }) => {
     return (
-        <header className={style["header"]}>
+        <header className={`${style["header"]} ant-menu`}>
             {props.children}
         </header>
     );
